@@ -1,0 +1,16 @@
+name: JukeBukkit
+main: cc.thedudeguy.jukebukkit.JukeBukkit
+version: 0.1
+description: Allows you to "Burn" new music onto Music Discs and play them in the Jukeboxes.
+author: Chris Churchwell (thedudeguy)
+website: https://github.com/thedudeguy/JukeBukkit
+depend: [Spout]
+commands:
+   jukebukkit:
+      aliases: [cd]
+   dubsong:
+      description: Sets an already dubbed disc's song name
+      usage: /<command> [song_name]
+   dubartist:
+      description: Sets an already dubbed disc's artist name
+      usage: /<command> [artist_name]
