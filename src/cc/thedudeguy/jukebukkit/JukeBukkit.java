@@ -228,6 +228,12 @@ public class JukeBukkit extends JavaPlugin {
 				}
 				else if (args[0].equalsIgnoreCase("burn"))
 				{
+					if (!player.hasPermission("jukebukkit.burn"))
+					{
+						player.sendMessage("You do not have permission to burn discs.");
+						return true;
+					}
+					
 					ItemStack inHand = player.getItemInHand();
 					if (inHand == null || inHand.getType() != Material.GOLD_RECORD ) {
 						player.sendMessage("Must hold a Golden Record in your hand.");
@@ -332,10 +338,13 @@ public class JukeBukkit extends JavaPlugin {
 					}
 					Disc disc = discs.get(discId);
 					
-					if (!disc.getCreator().equalsIgnoreCase(player.getName()))
+					if (!player.hasPermission("jukebukkit.edit"))
 					{
-						player.sendMessage("Only he who burned this disc can decipher the encryption to edit it.");
-						return true;
+						if (!disc.getCreator().equalsIgnoreCase(player.getName()))
+						{
+							player.sendMessage("Only he who burned this disc can decipher the encryption to edit it.");
+							return true;
+						}
 					}
 					
 					if (args[1].equalsIgnoreCase("title")) {

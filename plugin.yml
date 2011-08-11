@@ -6,11 +6,17 @@ author: Chris Churchwell (thedudeguy)
 website: https://github.com/thedudeguy/JukeBukkit
 depend: [Spout]
 commands:
-   jukebukkit:
-      aliases: [cd]
-   dubsong:
-      description: Sets an already dubbed disc's song name
-      usage: /<command> [song_name]
-   dubartist:
-      description: Sets an already dubbed disc's artist name
-      usage: /<command> [artist_name]
+    jukebukkit:
+        aliases: [cd]
+permissions:
+    jukebukkit.*:
+        description: Gives access to all jukebukkit commands
+        children:
+            jukebukkit.burn: true
+            jukebukkit.edit: true
+    jukebukkit.burn:
+        description: Allows a user to burn new cds
+        default: true
+    jukebukkit.edit:
+        description: Allows a user to edit cd title and artist without being the creator of the cd
+        default: op
