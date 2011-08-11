@@ -16,16 +16,13 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class JukeBukkitBlockListener extends BlockListener {
 	
@@ -35,15 +32,44 @@ public class JukeBukkitBlockListener extends BlockListener {
         plugin = instance;
 	}
 	
-	private void stopMusic()
+	public void onBlockPhysics(BlockPhysicsEvent event)
 	{
-		//since this plugin is marked as depend sprout, no need to check if sprout is loaded...
-		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            SpoutPlayer sp = SpoutManager.getPlayer(p);
-            if (sp.isSpoutCraftEnabled() == true)
-            {
-            	plugin.sm.stopMusic(sp);
-            }
+		Block block = event.getBlock();
+		if (block.getType() == Material.JUKEBOX)
+		{
+			if (block.isBlockPowered())
+			{
+				
+				if (block.getData() != 0x0)
+				{
+					//jukebox has an original minecraft disc in it. run the default actiom
+					return;
+				}
+				
+				//check if the jukebox has a disk in it already...
+				String locationString = block.getLocation().toString();
+				if (plugin.jukeboxes.containsKey(locationString))
+				{
+					//stop any music first
+					//plugin.stopMusic();
+					
+					//replay the song...
+					short discId = plugin.jukeboxes.get(locationString);
+					if (!plugin.discs.containsKey(discId))
+					{
+						//player.sendMessage("This disc seems to be broken. Maybe it's too scratched up?");
+					} else {
+						try {
+							plugin.playDisc(discId, block.getLocation());
+						} catch (Exception e) {
+							plugin.log.severe("[JukeBukkit] " + e.getMessage());
+							//player.sendMessage(e.getMessage());
+						}
+					}
+				}
+				
+				
+			}
 		}
 	}
 	
@@ -65,7 +91,7 @@ public class JukeBukkitBlockListener extends BlockListener {
 				plugin.jukeboxes.remove(locationString);
 				
 				//stop playing the music...
-				stopMusic();
+				plugin.stopMusic(block.getLocation());
 				return;
 			}
 		}

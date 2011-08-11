@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -42,6 +44,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.player.SpoutPlayer;
 import org.getspout.spoutapi.sound.SoundManager;
 
 public class JukeBukkit extends JavaPlugin {
@@ -57,6 +60,7 @@ public class JukeBukkit extends JavaPlugin {
 	
 	protected HashMap<Short,Disc> discs;
 	protected HashMap<String, Short> jukeboxes;
+	protected HashMap<String, Location> playersToJukebox;
 	
 	public void onEnable() {
 		
@@ -70,10 +74,12 @@ public class JukeBukkit extends JavaPlugin {
         
 		loadDiscs();
 		loadJukeBoxes();
+		playersToJukebox = new HashMap<String, Location>();
 		
 		this.pm = this.getServer().getPluginManager();
 		this.pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
 		this.pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Event.Priority.Normal, this);
+		this.pm.registerEvent(Event.Type.BLOCK_PHYSICS, blockListener, Event.Priority.Normal, this);
 		//this.pm.registerEvent(Event.Type.CUSTOM_EVENT, spoutAudioListener, Event.Priority.Normal, this);
 		
 		this.sm = SpoutManager.getSoundManager();
@@ -90,6 +96,9 @@ public class JukeBukkit extends JavaPlugin {
 		this.log.info("[JukeBukkit] Disabled.");
 	}
 	
+	//a location string looks like this:
+	//Location{world=CraftWorld{name=world}x=112.0y=117.0z=255.0pitch=0.0yaw=0.0}
+	
 	public short getAvailableDiscId()
 	{
 		short id = 1;
@@ -104,6 +113,85 @@ public class JukeBukkit extends JavaPlugin {
 		return id;
 	}
 	
+	public void stopMusic(Location location)
+	{
+		int range = config.getInt("range", 15);
+		
+		/**
+		 * we need to stop the music in 2 different ways:
+		 * 1, any players in range of the location
+		 * 2, any players who were listening to music who are now outside of the range 
+		 * since this plugin is marked as depend sprout, no need to check if sprout is loaded...
+		 **/
+		
+		/**
+		 * stop for whoever is in range
+		 * this also takes care of default game music plays, since it messes it up if you start music while music is already playing
+		 **/
+		for (Player player : location.getWorld().getPlayers())
+		{
+			if ( location.toVector().distance(player.getLocation().toVector()) < (double)range )
+			{
+				//and only if they have spout
+				SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
+				if (spoutPlayer.isSpoutCraftEnabled())
+				{
+					sm.stopMusic(spoutPlayer);
+					//keep track of who is listening to what...
+					playersToJukebox.remove(spoutPlayer.getName());
+				}
+			}
+		}
+		/**
+		 * now stop the music for any players who WERE listening to this jukebox,
+		 * but are NOW outside of its range
+		 * This way they dont come back to hear music that has ended for everyone else.
+		 */
+		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+			if ( playersToJukebox.containsKey(player.getName()) && playersToJukebox.get(player.getName()).toString().equals(location.toString()) )
+			{
+				SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
+				if (spoutPlayer.isSpoutCraftEnabled() == true)
+	            {
+	            	sm.stopMusic(spoutPlayer);
+	            	playersToJukebox.remove(spoutPlayer.getName());
+	            }
+			}
+            
+            
+		}
+	}
+	
+	public void playDisc(short discId, Location location) throws UnsupportedOperationException
+	{
+		Disc disc = discs.get(discId);
+		playDisc(disc, location);
+	}
+	
+	public void playDisc(Disc disc, Location location) throws UnsupportedOperationException
+	{
+		//stop playing any already playing music...
+		stopMusic(location);
+		
+		int range = config.getInt("range", 15);
+		String url = disc.getUrl();
+		
+		//only start playing for players in range...
+		for (Player player : location.getWorld().getPlayers())
+		{
+			if ( location.toVector().distance(player.getLocation().toVector()) < (double)range )
+			{
+				//and only if they have spout
+				SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
+				if (spoutPlayer.isSpoutCraftEnabled())
+				{
+					sm.playCustomMusic(this, spoutPlayer, url, true, location, range);
+					//keep track of who is listening to what...
+					playersToJukebox.put(spoutPlayer.getName(), location);
+				}
+			}
+		}
+	}
 	
 	public void saveAllDiscs()
 	{

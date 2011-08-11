@@ -16,7 +16,6 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,8 +24,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class JukeBukkitPlayerListener extends PlayerListener {
 	
@@ -34,32 +31,6 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 	
 	public JukeBukkitPlayerListener(JukeBukkit instance) {
         plugin = instance;
-	}
-	
-	private void stopMusic()
-	{
-		//since this plugin is marked as depend sprout, no need to check if sprout is loaded...
-		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            SpoutPlayer sp = SpoutManager.getPlayer(p);
-            if (sp.isSpoutCraftEnabled() == true)
-            {
-            	plugin.sm.stopMusic(sp);
-            }
-		}
-	}
-	
-	private void playDisc(short discId, Location location) throws UnsupportedOperationException
-	{
-		Disc disc = plugin.discs.get(discId);
-		playDisc(disc, location);
-	}
-	
-	private void playDisc(Disc disc, Location location) throws UnsupportedOperationException
-	{
-		String url = disc.getUrl();
-		int distance = plugin.config.getInt("range", 15);
-		//plugin.sm.playGlobalCustomSoundEffect(plugin, url, true, block.getLocation());
-		plugin.sm.playGlobalCustomMusic(plugin, url, true, location, distance);
 	}
 	
 	public void onPlayerInteract(PlayerInteractEvent event) {
@@ -76,11 +47,12 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 				
 				//check if the jukebox has a disk in it already...
 				String locationString = block.getLocation().toString();
+				plugin.log.info(locationString);
 				if (plugin.jukeboxes.containsKey(locationString))
 				{
 					
 					//stop playing the music...
-					stopMusic();
+					plugin.stopMusic(block.getLocation());
 					
 					//eject the disc...
 					ItemStack newDisc = new ItemStack(Material.GOLD_RECORD, 1);
@@ -116,11 +88,9 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 						player.sendMessage("This disc seems to be broken. Maybe it's too scratched up?");
 					} else {
 						
-						//stop playing any already playing music...
-						stopMusic();
 						
 						try {
-							playDisc(discId, block.getLocation());
+							plugin.playDisc(discId, block.getLocation());
 						} catch (Exception e) {
 							plugin.log.severe("[JukeBukkit] " + e.getMessage());
 							player.sendMessage(e.getMessage());
@@ -150,8 +120,6 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 				String locationString = block.getLocation().toString();
 				if (plugin.jukeboxes.containsKey(locationString))
 				{
-					//stop any music first
-					stopMusic();
 					
 					//replay the song...
 					short discId = plugin.jukeboxes.get(locationString);
@@ -160,7 +128,7 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 						player.sendMessage("This disc seems to be broken. Maybe it's too scratched up?");
 					} else {
 						try {
-							playDisc(discId, block.getLocation());
+							plugin.playDisc(discId, block.getLocation());
 						} catch (Exception e) {
 							plugin.log.severe("[JukeBukkit] " + e.getMessage());
 							player.sendMessage(e.getMessage());
