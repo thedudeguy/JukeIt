@@ -46,9 +46,10 @@ import org.getspout.spoutapi.sound.SoundManager;
 
 public class JukeBukkit extends JavaPlugin {
 	
-	Logger log = Logger.getLogger("Minecraft");
-	PluginManager pm;
+	public Logger log = Logger.getLogger("Minecraft");
+	public PluginManager pm;
 	public SoundManager sm;
+	public Configuration config;
 	
 	private final JukeBukkitPlayerListener playerListener = new JukeBukkitPlayerListener(this);
 	private final JukeBukkitBlockListener blockListener = new JukeBukkitBlockListener(this);
@@ -63,6 +64,9 @@ public class JukeBukkit extends JavaPlugin {
         if (!getDataFolder().exists()) {
                 getDataFolder().mkdir();
         }
+        
+        config = getConfiguration();
+        checkConfigDefaults();
         
 		loadDiscs();
 		loadJukeBoxes();
@@ -191,7 +195,12 @@ public class JukeBukkit extends JavaPlugin {
 			discs.put(discId, disc);
 		}
 	}
-	
+		
+	private void checkConfigDefaults()
+	{
+		config.setProperty("range", config.getInt("range", 15));
+		config.save();
+	}
 	
 	public void showHelp(Player player)
 	{

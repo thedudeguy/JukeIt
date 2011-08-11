@@ -57,8 +57,9 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 	private void playDisc(Disc disc, Location location) throws UnsupportedOperationException
 	{
 		String url = disc.getUrl();
+		int distance = plugin.config.getInt("range", 15);
 		//plugin.sm.playGlobalCustomSoundEffect(plugin, url, true, block.getLocation());
-		plugin.sm.playGlobalCustomMusic(plugin, url, true, location);
+		plugin.sm.playGlobalCustomMusic(plugin, url, true, location, distance);
 	}
 	
 	public void onPlayerInteract(PlayerInteractEvent event) {
@@ -77,6 +78,10 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 				String locationString = block.getLocation().toString();
 				if (plugin.jukeboxes.containsKey(locationString))
 				{
+					
+					//stop playing the music...
+					stopMusic();
+					
 					//eject the disc...
 					ItemStack newDisc = new ItemStack(Material.GOLD_RECORD, 1);
 					newDisc.setDurability(plugin.jukeboxes.get(locationString));
@@ -85,9 +90,6 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 					block.getWorld().dropItem(spawnLoc, newDisc);
 					//remove the reference
 					plugin.jukeboxes.remove(locationString);
-					
-					//stop playing the music...
-					stopMusic();
 					
 					event.setCancelled(true);
 					return;
@@ -113,6 +115,10 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 					{
 						player.sendMessage("This disc seems to be broken. Maybe it's too scratched up?");
 					} else {
+						
+						//stop playing any already playing music...
+						stopMusic();
+						
 						try {
 							playDisc(discId, block.getLocation());
 						} catch (Exception e) {
@@ -144,6 +150,9 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 				String locationString = block.getLocation().toString();
 				if (plugin.jukeboxes.containsKey(locationString))
 				{
+					//stop any music first
+					stopMusic();
+					
 					//replay the song...
 					short discId = plugin.jukeboxes.get(locationString);
 					if (!plugin.discs.containsKey(discId))
