@@ -14,9 +14,13 @@ permissions:
         children:
             jukebukkit.burn: true
             jukebukkit.edit: true
+            jukebukkit.clone: true
     jukebukkit.burn:
         description: Allows a user to burn new cds
         default: true
     jukebukkit.edit:
         description: Allows a user to edit cd title and artist without being the creator of the cd
+        default: op
+    jukebukkit.clone:
+        description: Allows discs to be cloned
         default: op

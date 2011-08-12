@@ -299,6 +299,7 @@ public class JukeBukkit extends JavaPlugin {
 		player.sendMessage("/cd burn <url>");
 		player.sendMessage("/cd set title <title>");
 		player.sendMessage("/cd set artist <artist>");
+		player.sendMessage("/cd clone");
 		player.sendMessage("/jukebukkit about");
 	}
 	
@@ -313,6 +314,7 @@ public class JukeBukkit extends JavaPlugin {
 					showHelp(player);
 					return true;
 				}
+				
 				if (args[0].equalsIgnoreCase("about"))
 				{
 					if (args.length != 1){
@@ -325,6 +327,39 @@ public class JukeBukkit extends JavaPlugin {
 					player.sendMessage("This is free software, licensed under the GNU GPL v3.");
 					player.sendMessage("You are welcome to redistribute it under certain conditions");
 					return true;
+				}
+				else if (args[0].equalsIgnoreCase("clone"))
+				{
+					if (args.length != 1){
+						showHelp(player);
+						return true;
+					}
+					
+					if (!player.hasPermission("jukebukkit.clone"))
+					{
+						player.sendMessage("You do not have permission to clone cd's");
+						return true;
+					}
+					
+					ItemStack inHand = player.getItemInHand();
+					if (inHand == null || inHand.getType() != Material.GOLD_RECORD ) {
+						player.sendMessage("Must hold a Golden Record in your hand.");
+						return true;
+					}
+					
+					//check that the record is in fact a dubbed disc.
+					if (inHand.getDurability() == 0) {
+						player.sendMessage("You can only clone a disc that has already been burned. This disc has not been burned yet.");
+						return true;
+					}
+					
+					//all criteria met.
+					ItemStack newDisc = new ItemStack(Material.GOLD_RECORD, 1);
+					newDisc.setDurability(inHand.getDurability());
+					player.getWorld().dropItem(player.getLocation(), newDisc);
+					player.sendMessage("Disc Cloned.");
+					return true;
+					
 				}
 				else if (args[0].equalsIgnoreCase("burn"))
 				{
