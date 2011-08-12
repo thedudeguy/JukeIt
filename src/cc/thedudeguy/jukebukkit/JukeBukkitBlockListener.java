@@ -50,7 +50,7 @@ public class JukeBukkitBlockListener extends BlockListener {
 				String locationString = block.getLocation().toString();
 				if (plugin.jukeboxes.containsKey(locationString))
 				{
-					//stop any music first
+					//stop any music first :: this seems like it might cause more problems, commenting out for now
 					//plugin.stopMusic();
 					
 					//replay the song...
@@ -71,6 +71,7 @@ public class JukeBukkitBlockListener extends BlockListener {
 				
 			}
 		}
+		return;
 	}
 	
 	public void onBlockBreak(BlockBreakEvent event) {
@@ -94,6 +95,8 @@ public class JukeBukkitBlockListener extends BlockListener {
 				plugin.stopMusic(block.getLocation());
 				return;
 			}
+			
 		}
+		return;
 	}
 }

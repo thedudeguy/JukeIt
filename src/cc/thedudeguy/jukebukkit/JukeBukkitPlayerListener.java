@@ -47,7 +47,7 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 				
 				//check if the jukebox has a disk in it already...
 				String locationString = block.getLocation().toString();
-				plugin.log.info(locationString);
+				//plugin.log.info(locationString);
 				if (plugin.jukeboxes.containsKey(locationString))
 				{
 					
