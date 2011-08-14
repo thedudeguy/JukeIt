@@ -18,6 +18,10 @@ permissions:
             jukebukkit.eject: true
             jukebukkit.use: true
             jukebukkit.play: true
+            jukebukkit.wipe: true
+    jukebukkit.wipe:
+        description: Allows a user to clear a cd
+        default: true
     jukebukkit.use:
         description: Allows a user to play cds from the jukebox
         default: true

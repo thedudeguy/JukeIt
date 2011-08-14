@@ -335,6 +335,7 @@ public class JukeBukkit extends JavaPlugin {
 		if (player.hasPermission("jukebukkit.burn")) player.sendMessage("/cd burn <url>");
 		player.sendMessage("/cd set title <title>");
 		player.sendMessage("/cd set artist <artist>");
+		if (player.hasPermission("jukebukkit.wipe")) player.sendMessage("/cd wipe");
 		if (player.hasPermission("jukebukkit.clone")) player.sendMessage("/cd clone");
 		if (player.hasPermission("jukebukkit.play")) player.sendMessage("/cd play <url>");
 		player.sendMessage("/cd about");
@@ -471,6 +472,31 @@ public class JukeBukkit extends JavaPlugin {
 					newDisc.setDurability(inHand.getDurability());
 					player.getWorld().dropItem(player.getLocation(), newDisc);
 					player.sendMessage("Disc Cloned.");
+					return true;
+					
+				}
+				else if (args[0].equalsIgnoreCase("wipe"))
+				{
+					if (args.length != 1){
+						showHelp(player);
+						return true;
+					}
+					if (!player.hasPermission("jukebukkit.wipe"))
+					{
+						player.sendMessage("You do not have permission to wipe discs.");
+						return true;
+					}
+					ItemStack inHand = player.getItemInHand();
+					if (inHand == null || inHand.getType() != Material.GOLD_RECORD ) {
+						player.sendMessage("Must hold a Golden Record in your hand.");
+						return true;
+					}
+					if (inHand.getDurability() == 0) {
+						player.sendMessage("This disc has not been burned yet.");
+						return true;
+					}
+					//and wipe is easy
+					inHand.setDurability((short)0);
 					return true;
 					
 				}
