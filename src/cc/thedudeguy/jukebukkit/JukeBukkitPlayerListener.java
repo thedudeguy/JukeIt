@@ -45,11 +45,19 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 					return;
 				}
 				
+				Player player = event.getPlayer();
 				//check if the jukebox has a disk in it already...
 				String locationString = block.getLocation().toString();
-				//plugin.log.info(locationString);
+				
 				if (plugin.jukeboxes.containsKey(locationString))
 				{
+					//check if a player has permission to eject.
+					if (!player.hasPermission("jukebukkit.eject"))
+					{
+						player.sendMessage("You do not have permission to eject discs.");
+						event.setCancelled(true);
+						return;
+					}
 					
 					//stop playing the music...
 					plugin.stopMusic(block.getLocation());
@@ -67,7 +75,7 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 					return;
 				}
 				
-				Player player = event.getPlayer();
+				
 				ItemStack inHand = player.getItemInHand();
 				if (inHand.getType() == Material.GOLD_RECORD) {
 					short discId = inHand.getDurability();

@@ -15,6 +15,10 @@ permissions:
             jukebukkit.burn: true
             jukebukkit.edit: true
             jukebukkit.clone: true
+            jukebukkit.eject: true
+    jukebukkit.eject:
+        description: Allows a user to eject cds from the jukebox
+        default: true
     jukebukkit.burn:
         description: Allows a user to burn new cds
         default: true
