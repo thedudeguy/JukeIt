@@ -17,6 +17,7 @@ permissions:
             jukebukkit.clone: true
             jukebukkit.eject: true
             jukebukkit.use: true
+            jukebukkit.play: true
     jukebukkit.use:
         description: Allows a user to play cds from the jukebox
         default: true
@@ -26,6 +27,9 @@ permissions:
     jukebukkit.burn:
         description: Allows a user to burn new cds
         default: true
+    jukebukkit.play:
+        description: Allows a user to play a url globally via play command
+        default: op
     jukebukkit.edit:
         description: Allows a user to edit cd title and artist without being the creator of the cd
         default: op

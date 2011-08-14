@@ -176,6 +176,17 @@ public class JukeBukkit extends JavaPlugin {
 	}
 	
 	
+	public void playURL(String url)
+	{
+		SoundManager soundManager = SpoutManager.getSoundManager();
+		if (config.getString("mode", "music").equalsIgnoreCase("music"))
+		{
+			soundManager.playGlobalCustomMusic(this, url, true);
+		} else {
+			soundManager.playGlobalCustomSoundEffect(this, url, true);
+		}
+	}
+	
 	public void playDisc(short discId, Location location) throws UnsupportedOperationException
 	{
 		Disc disc = discs.get(discId);
@@ -321,11 +332,50 @@ public class JukeBukkit extends JavaPlugin {
 	public void showHelp(Player player)
 	{
 		player.sendMessage("Usage:");
-		player.sendMessage("/cd burn <url>");
+		if (player.hasPermission("jukebukkit.burn")) player.sendMessage("/cd burn <url>");
 		player.sendMessage("/cd set title <title>");
 		player.sendMessage("/cd set artist <artist>");
-		player.sendMessage("/cd clone");
-		player.sendMessage("/jukebukkit about");
+		if (player.hasPermission("jukebukkit.clone")) player.sendMessage("/cd clone");
+		if (player.hasPermission("jukebukkit.play")) player.sendMessage("/cd play <url>");
+		player.sendMessage("/cd about");
+	}
+	
+	private void validate_url(String url) throws URLMinLengthException, URLInvalidExtension, URLConnectionError, MalformedURLException, IOException
+	{
+		if (url.length() < 5){
+			throw new URLMinLengthException();
+		}
+		
+		//at them moment, it seems spout checks for the extension of a url (.ogg) instead
+		//of a mimetype, so passing a url without .ogg or .wav on the end
+		//will fail.
+		//i havent tested wavs, bud midis just mess EVERYTHING up, and dont follow
+		//distance or volume rules. YUCK!. im not supporting them at this time.
+		//get the extension
+		String ext = url.substring( url.lastIndexOf('.')+1, url.length() );
+		if ( !ext.equalsIgnoreCase("ogg") && !ext.equalsIgnoreCase("wav")) {
+			throw new URLInvalidExtension();
+		}
+		
+		URL conurl = new URL(url);
+	    URLConnection conn = conurl.openConnection();
+	    conn.connect();
+	    
+	    if ( conn instanceof HttpURLConnection)
+	    {
+	       HttpURLConnection httpConnection = (HttpURLConnection) conn;
+	       int code = httpConnection.getResponseCode();
+	       if (code != 200)
+	       {
+	    	   throw new URLConnectionError();
+	       }
+	    }
+	    else
+	    {
+	    	throw new URLConnectionError();
+	    }
+		
+		return;
 	}
 	
 	@Override
@@ -352,6 +402,44 @@ public class JukeBukkit extends JavaPlugin {
 					player.sendMessage("This is free software, licensed under the GNU GPL v3.");
 					player.sendMessage("You are welcome to redistribute it under certain conditions");
 					return true;
+				}
+				else if (args[0].equalsIgnoreCase("play"))
+				{
+					if (!player.hasPermission("jukebukkit.play"))
+					{
+						player.sendMessage("You do not have permission to perform this action.");
+						return true;
+					}
+					
+					if (args.length != 2){
+						showHelp(player);
+						return true;
+					}
+					
+					String url = args[1];
+					
+					try {
+						validate_url(url);
+					} catch (MalformedURLException e) {
+						player.sendMessage("The URL does not appear to be valid. Maybe you entered it wrong?");
+						return true;
+					} catch (URLMinLengthException e) {
+						player.sendMessage(e.getMessage());
+						return true;
+					} catch (URLInvalidExtension e) {
+						player.sendMessage(e.getMessage());
+						return true;
+					} catch (URLConnectionError e) {
+						player.sendMessage(e.getMessage());
+						return true;
+					} catch (IOException e) {
+						player.sendMessage("Was not able to connect to the given URL. Maybe you entered it wrong?");
+						return true;
+					}
+					
+					playURL(url);
+					return true;
+					
 				}
 				else if (args[0].equalsIgnoreCase("clone"))
 				{
@@ -409,48 +497,19 @@ public class JukeBukkit extends JavaPlugin {
 					}
 					String url = args[1];
 					
-					//validate the url
-					//must be atleast 5 characters.
-					if (url.length() < 5){
-						player.sendMessage("A url must be atleast 5 characters.");
-						return true;
-					}
-					
-					//at them moment, it seems spout checks for the extension of a url (.ogg) instead
-					//of a mimetype, so passing a url without .ogg or .wav on the end
-					//will fail.
-					//i havent tested wavs, bud midis just mess EVERYTHING up, and dont follow
-					//distance or volume rules. YUCK!. im not supporting them at this time.
-					//get the extension
-					String ext = url.substring( url.lastIndexOf('.')+1, url.length() );
-					if ( !ext.equalsIgnoreCase("ogg") && !ext.equalsIgnoreCase("wav")) {
-						player.sendMessage("A url must end with .ogg or .wav");
-						return true;
-					}
-					//check the url
-					
 					try {
-					    URL conurl = new URL(url);
-					    URLConnection conn = conurl.openConnection();
-					    conn.connect();
-					    
-					    if ( conn instanceof HttpURLConnection)
-					    {
-					       HttpURLConnection httpConnection = (HttpURLConnection) conn;
-					       int code = httpConnection.getResponseCode();
-					       if (code != 200)
-					       {
-					    	   player.sendMessage("Was not able to connect to the given URL. Maybe you entered it wrong?");
-					    	   return true;
-					       }
-					    }
-					    else
-					    {
-					    	player.sendMessage("Was not able to connect to the given URL. Maybe you entered it wrong?");
-					    	return true;
-					    }
+						validate_url(url);
 					} catch (MalformedURLException e) {
 						player.sendMessage("The URL does not appear to be valid. Maybe you entered it wrong?");
+						return true;
+					} catch (URLMinLengthException e) {
+						player.sendMessage(e.getMessage());
+						return true;
+					} catch (URLInvalidExtension e) {
+						player.sendMessage(e.getMessage());
+						return true;
+					} catch (URLConnectionError e) {
+						player.sendMessage(e.getMessage());
 						return true;
 					} catch (IOException e) {
 						player.sendMessage("Was not able to connect to the given URL. Maybe you entered it wrong?");
