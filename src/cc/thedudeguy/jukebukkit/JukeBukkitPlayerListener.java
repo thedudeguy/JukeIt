@@ -79,7 +79,7 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 				ItemStack inHand = player.getItemInHand();
 				if (inHand.getType() == Material.GOLD_RECORD) {
 					
-					if (!player.hasPermission("jukebukkit.play"))
+					if (!player.hasPermission("jukebukkit.use"))
 					{
 						player.sendMessage("You do not have permission to play discs.");
 						event.setCancelled(true);
@@ -137,7 +137,7 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 				if (plugin.jukeboxes.containsKey(locationString))
 				{
 					
-					if (!player.hasPermission("jukebukkit.play"))
+					if (!player.hasPermission("jukebukkit.use"))
 					{
 						player.sendMessage("You do not have permission to play discs.");
 						event.setCancelled(true);

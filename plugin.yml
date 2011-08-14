@@ -16,8 +16,8 @@ permissions:
             jukebukkit.edit: true
             jukebukkit.clone: true
             jukebukkit.eject: true
-            jukebukkit.play: true
-    jukebukkit.play:
+            jukebukkit.use: true
+    jukebukkit.use:
         description: Allows a user to play cds from the jukebox
         default: true
     jukebukkit.eject:
