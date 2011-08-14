@@ -115,6 +115,13 @@ public class JukeBukkit extends JavaPlugin {
 	
 	public void stopMusic(Location location)
 	{
+		
+		if (config.getString("mode", "music").equalsIgnoreCase("sound"))
+		{
+			//if in sound mode, music cannot be stopped anyway, so just return
+			return;
+		}
+		
 		int range = config.getInt("range", 15);
 		SoundManager soundManager = SpoutManager.getSoundManager();
 		/**
@@ -164,6 +171,7 @@ public class JukeBukkit extends JavaPlugin {
 		}
 	}
 	
+	
 	public void playDisc(short discId, Location location) throws UnsupportedOperationException
 	{
 		Disc disc = discs.get(discId);
@@ -178,23 +186,29 @@ public class JukeBukkit extends JavaPlugin {
 		int range = config.getInt("range", 15);
 		String url = disc.getUrl();
 		SoundManager soundManager = SpoutManager.getSoundManager();
-		
-		//only start playing for players in range...
-		for (Player player : location.getWorld().getPlayers())
+		if (config.getString("mode", "music").equalsIgnoreCase("music"))
 		{
-			if ( location.toVector().distance(player.getLocation().toVector()) <= (double)range )
+		//only start playing for players in range...
+			for (Player player : location.getWorld().getPlayers())
 			{
-				//and only if they have spout
-				SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
-				if (spoutPlayer.isSpoutCraftEnabled())
+				if ( location.toVector().distance(player.getLocation().toVector()) <= (double)range )
 				{
-					soundManager.playCustomMusic(this, spoutPlayer, url, true, location, range);
-					//keep track of who is listening to what...
-					playersToJukebox.put(spoutPlayer.getName(), location);
+					//and only if they have spout
+					SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
+					if (spoutPlayer.isSpoutCraftEnabled())
+					{
+						soundManager.playCustomMusic(this, spoutPlayer, url, true, location, range);
+						//keep track of who is listening to what...
+						playersToJukebox.put(spoutPlayer.getName(), location);
+					}
 				}
 			}
+		} else {
+			soundManager.playGlobalCustomSoundEffect(this, url, true, location, range);
 		}
 	}
+	
+	
 	
 	public void saveAllDiscs()
 	{
@@ -290,6 +304,12 @@ public class JukeBukkit extends JavaPlugin {
 	private void checkConfigDefaults()
 	{
 		config.setProperty("range", config.getInt("range", 15));
+		String musicMode = config.getString("mode", "music");
+		if (!musicMode.equalsIgnoreCase("music") && !musicMode.equalsIgnoreCase("sound"))
+		{
+			musicMode = "music";
+		}
+		config.setProperty("mode", musicMode.toLowerCase());
 		config.save();
 	}
 	
