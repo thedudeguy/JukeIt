@@ -79,8 +79,12 @@ public class JukeBukkit extends JavaPlugin {
 		this.pm = this.getServer().getPluginManager();
 		this.pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
 		this.pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Event.Priority.Normal, this);
-		this.pm.registerEvent(Event.Type.BLOCK_PHYSICS, blockListener, Event.Priority.Normal, this);
 		//this.pm.registerEvent(Event.Type.CUSTOM_EVENT, spoutAudioListener, Event.Priority.Normal, this);
+		
+		if (config.getBoolean("redstone", false) == true)
+		{
+			this.pm.registerEvent(Event.Type.BLOCK_PHYSICS, blockListener, Event.Priority.Normal, this);
+		}
 		
 		//this.sm = SpoutManager.getSoundManager();
 		
@@ -304,6 +308,7 @@ public class JukeBukkit extends JavaPlugin {
 	private void checkConfigDefaults()
 	{
 		config.setProperty("range", config.getInt("range", 15));
+		config.setProperty("redstone", config.getBoolean("redstone", false));
 		String musicMode = config.getString("mode", "music");
 		if (!musicMode.equalsIgnoreCase("music") && !musicMode.equalsIgnoreCase("sound"))
 		{
