@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -60,6 +61,7 @@ public class JukeBukkit extends JavaPlugin {
 	protected HashMap<Short,Disc> discs;
 	protected HashMap<String, Short> jukeboxes;
 	protected HashMap<String, Location> playersToJukebox;
+	protected HashMap<String, Integer> looptasks;
 	
 	public void onEnable() {
 		
@@ -74,7 +76,7 @@ public class JukeBukkit extends JavaPlugin {
 		loadDiscs();
 		loadJukeBoxes();
 		playersToJukebox = new HashMap<String, Location>();
-		
+		looptasks = new HashMap<String, Integer>();
 		
 		this.pm = this.getServer().getPluginManager();
 		this.pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
@@ -187,6 +189,67 @@ public class JukeBukkit extends JavaPlugin {
 		}
 	}
 	
+	public class LoopRunnable implements Runnable {
+		Disc disc;
+		Location location;
+		public LoopRunnable(Disc disc, Location location) {
+			this.disc = disc;
+			this.location = location;
+		}
+		public void run(){
+			//getServer().broadcastMessage("Should I Loop now?");
+			Block block = location.getBlock();
+			if (block.isBlockPowered())
+			{
+				//getServer().broadcastMessage("yes");
+				playDisc(disc, location);
+			} else {
+				//getServer().broadcastMessage("no");
+			}
+		}
+	}
+	
+	public void cancelLoop(Location location)
+	{
+		//getServer().broadcastMessage("Could there be a loop queued already?");
+		//check if there is already a loop task.
+		if (looptasks.containsKey(location.toString()))
+		{
+			//getServer().broadcastMessage("Possibly");
+			int task = looptasks.get(location.toString());
+			if (this.getServer().getScheduler().isQueued(task))
+			{
+				this.getServer().getScheduler().cancelTask(task);
+			}
+			looptasks.remove(location.toString());
+		}
+		//getServer().broadcastMessage("Continuing on...");
+		return;
+	}
+	
+	public void loopDisc(Disc disc, Location location)
+	{
+		//getServer().broadcastMessage("Disc might be looping...");
+		if (config.getBoolean("enable_looping", true))
+		{
+			//getServer().broadcastMessage("Looping is enabled...");
+			//cancel any already running loops
+			cancelLoop(location);
+			//getServer().broadcastMessage("Were clean for sure.");
+			
+			if (disc.loopIsset())
+			{
+				//getServer().broadcastMessage("Disc has a loop time set...");
+				//start loop
+				long ticks = disc.getLoopInt() * 20L;
+				//it can be looped... lets set up it up.
+				int taskId = this.getServer().getScheduler().scheduleSyncDelayedTask(this, new LoopRunnable(disc, location), ticks);
+				looptasks.put(location.toString(), taskId);
+				
+			}
+		}
+	}
+	
 	public void playDisc(short discId, Location location) throws UnsupportedOperationException
 	{
 		Disc disc = discs.get(discId);
@@ -234,26 +297,7 @@ public class JukeBukkit extends JavaPlugin {
 		} else {
 			soundManager.playGlobalCustomSoundEffect(this, url, notify, location, range);
 		}
-	}
-	
-	
-	
-	public void saveAllDiscs()
-	{
-		Configuration config = new Configuration(new File(getDataFolder(), "discs.yml"));
-		
-		for (Map.Entry<Short,Disc> discmap : discs.entrySet()) {
-			Disc disc = discmap.getValue();
-			
-			HashMap<String, String> configmap = new HashMap<String, String>();
-			configmap.put("url", disc.getUrl());
-			configmap.put("name", disc.getName());
-			configmap.put("artist", disc.getArtist());
-			configmap.put("creator", disc.getCreator());
-			
-			config.setProperty(Short.toString(disc.getId()), configmap);
-		}
-		config.save();
+		loopDisc(disc, location);
 	}
 	
 	/** 
@@ -304,6 +348,25 @@ public class JukeBukkit extends JavaPlugin {
 		
 	}
 	
+	public void saveAllDiscs()
+	{
+		Configuration config = new Configuration(new File(getDataFolder(), "discs.yml"));
+		
+		for (Map.Entry<Short,Disc> discmap : discs.entrySet()) {
+			Disc disc = discmap.getValue();
+			
+			HashMap<String, String> configmap = new HashMap<String, String>();
+			configmap.put("url", disc.getUrl());
+			configmap.put("name", disc.getName());
+			configmap.put("artist", disc.getArtist());
+			configmap.put("creator", disc.getCreator());
+			configmap.put("loop", disc.getLoopString());
+			
+			config.setProperty(Short.toString(disc.getId()), configmap);
+		}
+		config.save();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void loadDiscs()
 	{
@@ -323,7 +386,8 @@ public class JukeBukkit extends JavaPlugin {
 					discData.get("creator"),
 					discData.get("url"),
 					discData.get("name"),
-					discData.get("artist")
+					discData.get("artist"),
+					discData.get("loop")
 			);
 			discs.put(discId, disc);
 		}
@@ -365,6 +429,7 @@ public class JukeBukkit extends JavaPlugin {
 		if (player.hasPermission("jukebukkit.burn")) player.sendMessage("/cd burn <url>");
 		player.sendMessage("/cd set title <title>");
 		player.sendMessage("/cd set artist <artist>");
+		player.sendMessage("/cd set loop <minutes> <seconds>");
 		if (player.hasPermission("jukebukkit.wipe")) player.sendMessage("/cd wipe");
 		if (player.hasPermission("jukebukkit.clone")) player.sendMessage("/cd clone");
 		if (player.hasPermission("jukebukkit.play")) player.sendMessage("/cd play <url>");
@@ -408,6 +473,19 @@ public class JukeBukkit extends JavaPlugin {
 		
 		return;
 	}
+	
+	private boolean isInteger( String input )  
+	{  
+		try  
+		{  
+			Integer.parseInt( input );  
+			return true;  
+		}  
+		catch( Exception e)  
+		{  
+			return false;  
+		}  
+	}  
 	
 	@Override
     public boolean onCommand(CommandSender sender, Command command, String label, String [] args) {
@@ -621,8 +699,29 @@ public class JukeBukkit extends JavaPlugin {
 							return true;
 						}
 					}
+					if (args[1].equalsIgnoreCase("loop")) {
+						if (args.length < 4)
+						{
+							showHelp(player);
+							return true;
+						}
+						
+						String minutes = args[2];
+						String seconds = args[3];
+						
+						if (!isInteger(minutes) || !isInteger(seconds))
+						{
+							player.sendMessage("Invalid Time");
+							return true;
+						}
+						
+						int loop = (Integer.valueOf(minutes)*60) + Integer.valueOf(seconds);
+						disc.setLoop(loop);
+						discs.put(discId, disc);
+						player.sendMessage("You have changed the disc's loop time.");
+						return true;
 					
-					if (args[1].equalsIgnoreCase("title")) {
+					} else if (args[1].equalsIgnoreCase("title")) {
 						// form the string
 						String title = "";
 						

@@ -30,6 +30,7 @@ public class Disc {
 	private String creator;
 	private String songName;
 	private String songArtist;
+	private int loopTime;
 	
 	protected Disc(short id, String creator, String url) {
 		this.id = id;
@@ -37,6 +38,7 @@ public class Disc {
 		this.url = url;
 		this.songArtist = "";
 		this.songName = "";
+		this.loopTime = 0;
 		refreshItemName();
 	}
 	
@@ -48,6 +50,30 @@ public class Disc {
 		if (artist == null) artist = "";
 		this.songName = name;
 		this.songArtist = artist;
+		this.loopTime = 0;
+		refreshItemName();
+	}
+	
+	protected Disc(short id, String creator, String url, String name, String artist, String loop) {
+		this.id = id;
+		this.creator = creator;
+		this.url = url;
+		if (name == null) name = "";
+		if (artist == null) artist = "";
+		this.songName = name;
+		this.songArtist = artist;
+		
+		if (loop == null)
+		{
+			loopTime = 0;
+		} else {
+			try {
+				loopTime = Integer.valueOf(loop);
+			} catch (Exception e) {
+				loopTime = 0;
+			}
+		}
+		
 		refreshItemName();
 	}
 	
@@ -67,6 +93,21 @@ public class Disc {
 	public String getArtist()
 	{
 		return songArtist;
+	}
+	
+	public String getLoopString()
+	{
+		return String.valueOf(loopTime);
+	}
+	
+	public int getLoopInt()
+	{
+		return loopTime;
+	}
+	
+	public void setLoop(int loop)
+	{
+		loopTime = loop;
 	}
 	
 	public void setSongName(String name)
@@ -106,6 +147,12 @@ public class Disc {
 		setItemName(itemName);
 		return;
 		
+	}
+	
+	public boolean loopIsset()
+	{
+		if (loopTime > 0) return true;
+		return false;
 	}
 	
 	private boolean songArtistIsset()
