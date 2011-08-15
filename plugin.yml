@@ -1,6 +1,6 @@
 name: JukeBukkit
 main: cc.thedudeguy.jukebukkit.JukeBukkit
-version: 0.3
+version: 0.4
 description: Allows you to "Burn" new music onto Music Discs and play them in the Jukeboxes.
 author: Chris Churchwell (thedudeguy)
 website: https://github.com/thedudeguy/JukeBukkit

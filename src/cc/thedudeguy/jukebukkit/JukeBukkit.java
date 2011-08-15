@@ -49,6 +49,8 @@ import org.getspout.spoutapi.sound.SoundManager;
 
 public class JukeBukkit extends JavaPlugin {
 	
+	public final static String version = "v0.4";
+	
 	public Logger log = Logger.getLogger("Minecraft");
 	public PluginManager pm;
 	//public SoundManager sm;
@@ -506,7 +508,7 @@ public class JukeBukkit extends JavaPlugin {
 						return true;
 					}
 					
-					player.sendMessage("JukeBukkit :: Copyright (C) 2011 Chris Churchwell");
+					player.sendMessage("JukeBukkit "+ version +" :: Copyright (C) 2011 Chris Churchwell");
 					player.sendMessage("This program comes with ABSOLUTELY NO WARRANTY");
 					player.sendMessage("This is free software, licensed under the GNU GPL v3.");
 					player.sendMessage("You are welcome to redistribute it under certain conditions");
