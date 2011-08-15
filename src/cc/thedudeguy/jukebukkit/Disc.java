@@ -35,6 +35,8 @@ public class Disc {
 		this.id = id;
 		this.creator = creator;
 		this.url = url;
+		this.songArtist = "";
+		this.songName = "";
 		refreshItemName();
 	}
 	
@@ -42,6 +44,8 @@ public class Disc {
 		this.id = id;
 		this.creator = creator;
 		this.url = url;
+		if (name == null) name = "";
+		if (artist == null) artist = "";
 		this.songName = name;
 		this.songArtist = artist;
 		refreshItemName();
@@ -106,7 +110,7 @@ public class Disc {
 	
 	private boolean songArtistIsset()
 	{
-		if (songArtist != null && songArtist != "")
+		if (songArtist != null && !songArtist.equalsIgnoreCase(""))
 		{
 			return true;
 		}
@@ -115,7 +119,7 @@ public class Disc {
 	
 	private boolean songNameIsset()
 	{
-		if (songName != null && songName != "")
+		if (songName != null && !songName.equalsIgnoreCase(""))
 		{
 			return true;
 		}

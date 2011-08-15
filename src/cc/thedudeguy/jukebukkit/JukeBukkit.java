@@ -197,6 +197,8 @@ public class JukeBukkit extends JavaPlugin {
 	{
 		//stop playing any already playing music...
 		//stopMusic(location);
+		boolean notify = config.getBoolean("notify_download", true);
+		boolean notifyPlay = config.getBoolean("notify_play", true);
 		
 		int range = config.getInt("range", 15);
 		String url = disc.getUrl();
@@ -206,20 +208,31 @@ public class JukeBukkit extends JavaPlugin {
 		//only start playing for players in range...
 			for (Player player : location.getWorld().getPlayers())
 			{
-				if ( location.toVector().distance(player.getLocation().toVector()) <= (double)range )
+				if ( config.getInt("range", 15)==-1 || location.toVector().distance(player.getLocation().toVector()) <= (double)range )
 				{
 					//and only if they have spout
 					SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 					if (spoutPlayer.isSpoutCraftEnabled())
 					{
-						soundManager.playCustomMusic(this, spoutPlayer, url, true, location, range);
+						soundManager.playCustomMusic(this, spoutPlayer, url, notify, location, range);
 						//keep track of who is listening to what...
 						playersToJukebox.put(spoutPlayer.getName(), location);
+						if (notifyPlay == true)
+							if (disc.getName().length() > 26 || disc.getArtist().length() > 26)
+							{
+								player.sendMessage("Now Playing: " + disc.getName() + " by " + disc.getArtist());
+							} else {
+								spoutPlayer.sendNotification(disc.getName(), disc.getArtist(), Material.GOLD_RECORD);
+							}
+					} else {
+						//player doesnt have spout... :( :( :(
+						if (notifyPlay == true)
+							player.sendMessage("Now Playing: " + disc.getName() + " by " + disc.getArtist() + " :: But you must have SpoutCraft to hear it :( (sad face)");
 					}
 				}
 			}
 		} else {
-			soundManager.playGlobalCustomSoundEffect(this, url, true, location, range);
+			soundManager.playGlobalCustomSoundEffect(this, url, notify, location, range);
 		}
 	}
 	
@@ -326,6 +339,23 @@ public class JukeBukkit extends JavaPlugin {
 			musicMode = "music";
 		}
 		config.setProperty("mode", musicMode.toLowerCase());
+		config.setProperty("notify_start", config.getBoolean("notify_start", true));
+		config.setProperty("notify_download", config.getBoolean("notify_download", true));
+		config.setProperty("enable_looping", config.getBoolean("enable_looping", true));
+		
+		
+		config.setHeader(
+			"# --------------------",
+			"# Setting Descriptions",
+			"# --------------------",
+			"# range: default 15. Sets the range in blocksmusic can be heard from a jukebox. set to -1 for global.", 
+			"# redstone: (true | false). default false. Sets whether redstone can activate jukeboxes",
+			"# mode: (music | sound) default music. set the mode music plays on. For more details see the forum post",
+			"# notify_start: (true | false) default true. Notifies users the song when it starts.",
+			"# notify_download: (true | false) default true. Notifies users the song is downloading.",
+			"# enable_looping: (true | false) default true. Enable the looping feature?.",
+			"# --------------------"
+		);
 		config.save();
 	}
 	
