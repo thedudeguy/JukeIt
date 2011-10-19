@@ -16,748 +16,119 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
-import org.getspout.spoutapi.sound.SoundManager;
+import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
+import org.getspout.spoutapi.material.MaterialData;
 
+/**
+ * The main class for the Jukebukkit Plugin
+ * @author Chris Churchwell
+ */
 public class JukeBukkit extends JavaPlugin {
 	
-	public final static String version = "v0.4";
+	public static String version = "v0.5";
 	
 	public Logger log = Logger.getLogger("Minecraft");
+	
 	public PluginManager pm;
-	//public SoundManager sm;
-	public Configuration config;
+	private JukeBukkitCommandExecutor commandExecutor;
 	
+	private DiscsManager discsManager;
+	private JukeBoxManager jukeBoxManager;
+	private LabelManager labelManager;
+	private CustomsManager customsManager;
+	
+	//public CustomBlock blockPrototypeDiscPlayer;
+	
+	//listeners
 	private final JukeBukkitPlayerListener playerListener = new JukeBukkitPlayerListener(this);
-	private final JukeBukkitBlockListener blockListener = new JukeBukkitBlockListener(this);
-	//private final JukeBukkitSpoutAudioListener spoutAudioListener = new JukeBukkitSpoutAudioListener(this);
+	private final JukeBukkitInventoryListener inventoryListener = new JukeBukkitInventoryListener(this);
 	
-	protected HashMap<Short,Disc> discs;
-	protected HashMap<String, Short> jukeboxes;
-	protected HashMap<String, Location> playersToJukebox;
-	protected HashMap<String, Integer> looptasks;
-	
-	public void onEnable() {
-		
-		// make sure save folder exists
-        if (!getDataFolder().exists()) {
-                getDataFolder().mkdir();
-        }
-        
-        config = getConfiguration();
-        checkConfigDefaults();
-        
-		loadDiscs();
-		loadJukeBoxes();
-		playersToJukebox = new HashMap<String, Location>();
-		looptasks = new HashMap<String, Integer>();
-		
-		this.pm = this.getServer().getPluginManager();
-		this.pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
-		this.pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Event.Priority.Normal, this);
-		//this.pm.registerEvent(Event.Type.CUSTOM_EVENT, spoutAudioListener, Event.Priority.Normal, this);
-		
-		if (config.getBoolean("redstone", false) == true)
-		{
-			this.pm.registerEvent(Event.Type.BLOCK_PHYSICS, blockListener, Event.Priority.Normal, this);
-		}
-		
-		//this.sm = SpoutManager.getSoundManager();
-		
-		this.log.info("[JukeBukkit] Enabled");
-		
-	}
-	
-	public void onDisable() {
-		
-		saveAllDiscs();
-		saveJukeBoxes();
-		
-		this.log.info("[JukeBukkit] Disabled.");
-	}
-	
-	//a location string looks like this:
-	//Location{world=CraftWorld{name=world}x=112.0y=117.0z=255.0pitch=0.0yaw=0.0}
-	
-	public short getAvailableDiscId()
-	{
-		short id = 1;
-		while ( id < Short.MAX_VALUE )
-		{
-			if ( discs.containsKey(id) == false)
-			{
-				break;
-			}
-			id = (short)(id + 1);
-		}
-		return id;
-	}
-	
-	public void stopMusic(Location location)
-	{
-		
-		if (config.getString("mode", "music").equalsIgnoreCase("sound"))
-		{
-			//if in sound mode, music cannot be stopped anyway, so just return
-			return;
-		}
-		
-		int range = config.getInt("range", 15);
-		SoundManager soundManager = SpoutManager.getSoundManager();
-		/**
-		 * we need to stop the music in 2 different ways:
-		 * 1, any players in range of the location
-		 * 2, any players who were listening to music who are now outside of the range 
-		 * since this plugin is marked as depend sprout, no need to check if sprout is loaded...
-		 **/
-		
-		/**
-		 * stop for whoever is in range
-		 * this also takes care of default game music plays, since it messes it up if you start music while music is already playing
-		 **/
-		for (Player player : location.getWorld().getPlayers())
-		{
-			
-			
-			if ( location.toVector().distance(player.getLocation().toVector()) < (double)range )
-			{
-				//and only if they have spout
-				SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
-				if (spoutPlayer.isSpoutCraftEnabled())
-				{
-					soundManager.stopMusic(spoutPlayer);
-					//keep track of who is listening to what...
-					playersToJukebox.remove(spoutPlayer.getName());
-				}
-			}
-		}
-		/**
-		 * now stop the music for any players who WERE listening to this jukebox,
-		 * but are NOW outside of its range
-		 * This way they dont come back to hear music that has ended for everyone else.
-		 */
-		for (Player player : location.getWorld().getPlayers()) {
-			if ( playersToJukebox.containsKey(player.getName()) && playersToJukebox.get(player.getName()).toString().equals(location.toString()) )
-			{
-				SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
-				if (spoutPlayer.isSpoutCraftEnabled() == true)
-	            {
-	            	soundManager.stopMusic(spoutPlayer);
-	            	playersToJukebox.remove(spoutPlayer.getName());
-	            }
-			}
-            
-            
-		}
-	}
-	
-	
-	public void playURL(String url)
-	{
-		SoundManager soundManager = SpoutManager.getSoundManager();
-		if (config.getString("mode", "music").equalsIgnoreCase("music"))
-		{
-			soundManager.playGlobalCustomMusic(this, url, true);
-		} else {
-			soundManager.playGlobalCustomSoundEffect(this, url, true);
-		}
-	}
-	
-	public class LoopRunnable implements Runnable {
-		Disc disc;
-		Location location;
-		public LoopRunnable(Disc disc, Location location) {
-			this.disc = disc;
-			this.location = location;
-		}
-		public void run(){
-			//getServer().broadcastMessage("Should I Loop now?");
-			Block block = location.getBlock();
-			if (block.isBlockPowered())
-			{
-				//getServer().broadcastMessage("yes");
-				playDisc(disc, location);
-			} else {
-				//getServer().broadcastMessage("no");
-			}
-		}
-	}
-	
-	public void cancelLoop(Location location)
-	{
-		//getServer().broadcastMessage("Could there be a loop queued already?");
-		//check if there is already a loop task.
-		if (looptasks.containsKey(location.toString()))
-		{
-			//getServer().broadcastMessage("Possibly");
-			int task = looptasks.get(location.toString());
-			if (this.getServer().getScheduler().isQueued(task))
-			{
-				this.getServer().getScheduler().cancelTask(task);
-			}
-			looptasks.remove(location.toString());
-		}
-		//getServer().broadcastMessage("Continuing on...");
-		return;
-	}
-	
-	public void loopDisc(Disc disc, Location location)
-	{
-		//getServer().broadcastMessage("Disc might be looping...");
-		if (config.getBoolean("enable_looping", true))
-		{
-			//getServer().broadcastMessage("Looping is enabled...");
-			//cancel any already running loops
-			cancelLoop(location);
-			//getServer().broadcastMessage("Were clean for sure.");
-			
-			if (disc.loopIsset())
-			{
-				//getServer().broadcastMessage("Disc has a loop time set...");
-				//start loop
-				long ticks = disc.getLoopInt() * 20L;
-				//it can be looped... lets set up it up.
-				int taskId = this.getServer().getScheduler().scheduleSyncDelayedTask(this, new LoopRunnable(disc, location), ticks);
-				looptasks.put(location.toString(), taskId);
-				
-			}
-		}
-	}
-	
-	public void playDisc(short discId, Location location) throws UnsupportedOperationException
-	{
-		Disc disc = discs.get(discId);
-		playDisc(disc, location);
-	}
-	
-	public void playDisc(Disc disc, Location location) throws UnsupportedOperationException
-	{
-		//stop playing any already playing music...
-		//stopMusic(location);
-		boolean notify = config.getBoolean("notify_download", true);
-		boolean notifyPlay = config.getBoolean("notify_play", true);
-		
-		int range = config.getInt("range", 15);
-		String url = disc.getUrl();
-		SoundManager soundManager = SpoutManager.getSoundManager();
-		if (config.getString("mode", "music").equalsIgnoreCase("music"))
-		{
-		//only start playing for players in range...
-			for (Player player : location.getWorld().getPlayers())
-			{
-				if ( config.getInt("range", 15)==-1 || location.toVector().distance(player.getLocation().toVector()) <= (double)range )
-				{
-					//and only if they have spout
-					SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
-					if (spoutPlayer.isSpoutCraftEnabled())
-					{
-						soundManager.playCustomMusic(this, spoutPlayer, url, notify, location, range);
-						//keep track of who is listening to what...
-						playersToJukebox.put(spoutPlayer.getName(), location);
-						if (notifyPlay == true)
-							if (disc.getName().length() > 26 || disc.getArtist().length() > 26)
-							{
-								player.sendMessage("Now Playing: " + disc.getName() + " by " + disc.getArtist());
-							} else {
-								spoutPlayer.sendNotification(disc.getName(), disc.getArtist(), Material.GOLD_RECORD);
-							}
-					} else {
-						//player doesnt have spout... :( :( :(
-						if (notifyPlay == true)
-							player.sendMessage("Now Playing: " + disc.getName() + " by " + disc.getArtist() + " :: But you must have SpoutCraft to hear it :( (sad face)");
-					}
-				}
-			}
-		} else {
-			soundManager.playGlobalCustomSoundEffect(this, url, notify, location, range);
-		}
-		loopDisc(disc, location);
-	}
-	
-	/** 
-	 * Saves the jukebox hashmap to file
-	 * @authors Tomsik68, Chris Churchwell
-	 * 
-	 * This function is derived from Tomsik68's Example code on http://wiki.bukkit.org/HUGE_Plugin_Tutorial
-	 */
-	public void saveJukeBoxes()
+	public void onEnable()
 	{	
-		ObjectOutputStream oos;
-		try {
-			oos = new ObjectOutputStream(new FileOutputStream(new File(getDataFolder(), "jukeboxes.dat")));
-			oos.writeObject(jukeboxes);
-			oos.flush();
-			oos.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	/** 
-	 * Saves the jukebox hashmap to file
-	 * @authors Tomsik68, Chris Churchwell
-	 * 
-	 * This function is derived from Tomsik68's Example code on http://wiki.bukkit.org/HUGE_Plugin_Tutorial
-	 */
-	@SuppressWarnings("unchecked")
-	public void loadJukeBoxes()
-	{
-		try {
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(getDataFolder(), "jukeboxes.dat")));
-			Object result = ois.readObject();
-			ois.close();
-			jukeboxes = (HashMap<String, Short>)result;
-			return;
-			
-		} catch (Exception e) {
-			jukeboxes = new HashMap<String, Short>();
-			//e.printStackTrace();
-		}
+		version = this.getDescription().getVersion();
 		
-		jukeboxes = new HashMap<String, Short>();
+		//load the textures and precaches
+		customsManager = new CustomsManager(this);
+				
+		//load the disc manager so that it can be used throughout
+		discsManager = new DiscsManager(this);
+		//reinit the discs to fix a reload/restart bug
+		discsManager.reInitDiscs();
+		//initialize the jukebox manager
+		jukeBoxManager = new JukeBoxManager(this);
+		//initialize the label manager
+		labelManager = new LabelManager(this);
 		
-	}
-	
-	public void saveAllDiscs()
-	{
-		Configuration config = new Configuration(new File(getDataFolder(), "discs.yml"));
+		//TODO: Cleanup no longer used item ids for lables, and discs
 		
-		for (Map.Entry<Short,Disc> discmap : discs.entrySet()) {
-			Disc disc = discmap.getValue();
-			
-			HashMap<String, String> configmap = new HashMap<String, String>();
-			configmap.put("url", disc.getUrl());
-			configmap.put("name", disc.getName());
-			configmap.put("artist", disc.getArtist());
-			configmap.put("creator", disc.getCreator());
-			configmap.put("loop", disc.getLoopString());
-			
-			config.setProperty(Short.toString(disc.getId()), configmap);
-		}
-		config.save();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void loadDiscs()
-	{
-		discs = new HashMap<Short,Disc>();
-		
-		Configuration config = new Configuration(new File(getDataFolder(), "discs.yml"));
-		config.load();
-		
-		List<String> keys = config.getKeys();
-		
-		for ( String key : keys )
-		{
-			short discId = Short.valueOf(key);
-			HashMap<String, String> discData = (HashMap<String, String>)config.getProperty(key);
-			Disc disc = new Disc(
-					discId, 
-					discData.get("creator"),
-					discData.get("url"),
-					discData.get("name"),
-					discData.get("artist"),
-					discData.get("loop")
-			);
-			discs.put(discId, disc);
-		}
-	}
-		
-	private void checkConfigDefaults()
-	{
-		config.setProperty("range", config.getInt("range", 15));
-		config.setProperty("redstone", config.getBoolean("redstone", false));
-		String musicMode = config.getString("mode", "music");
-		if (!musicMode.equalsIgnoreCase("music") && !musicMode.equalsIgnoreCase("sound"))
-		{
-			musicMode = "music";
-		}
-		config.setProperty("mode", musicMode.toLowerCase());
-		config.setProperty("notify_start", config.getBoolean("notify_start", true));
-		config.setProperty("notify_download", config.getBoolean("notify_download", true));
-		config.setProperty("enable_looping", config.getBoolean("enable_looping", true));
-		
-		
-		config.setHeader(
-			"# --------------------",
-			"# Setting Descriptions",
-			"# --------------------",
-			"# range: default 15. Sets the range in blocksmusic can be heard from a jukebox. set to -1 for global.", 
-			"# redstone: (true | false). default false. Sets whether redstone can activate jukeboxes",
-			"# mode: (music | sound) default music. set the mode music plays on. For more details see the forum post",
-			"# notify_start: (true | false) default true. Notifies users the song when it starts.",
-			"# notify_download: (true | false) default true. Notifies users the song is downloading.",
-			"# enable_looping: (true | false) default true. Enable the looping feature?.",
-			"# --------------------"
+		////////////////////////////////
+		//load recipes//////////////////
+		////////////////////////////////
+		//recipe - Recordable Music Disc
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankObsidyisc(this), 1) )
+			.shape(" o ", "oRo", " o ")
+			.setIngredient('o', MaterialData.obsidian)
+			.setIngredient('R', MaterialData.redstone)
 		);
-		config.save();
+		
+		//disc player prototype
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new BlockPrototypeJukebox(this), 1) )
+			.shape("jn")
+			.setIngredient('j', MaterialData.jukebox)
+			.setIngredient('n', MaterialData.noteblock)
+		);
+		
+		//prototype burner
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new BlockPrototypeBurner(this), 1) )
+			.shape("jf")
+			.setIngredient('j', MaterialData.jukebox)
+			.setIngredient('f', MaterialData.furnace)
+		);
+		//end recipes///////////////////
+		
+		//load the command executor
+		//register the command executor
+		//commandExecutor = new JukeBukkitCommandExecutor(this);
+		//getCommand("jukebukkit").setExecutor(commandExecutor);
+		
+		//load the plugin manager and listeners
+		pm = this.getServer().getPluginManager();
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.CUSTOM_EVENT, inventoryListener, Event.Priority.Normal, this);
+		
+		
+		log.info("[JukeBukkit] Enabled");
+		
 	}
 	
-	public void showHelp(Player player)
+	public void onDisable()
 	{
-		player.sendMessage("Usage:");
-		if (player.hasPermission("jukebukkit.burn")) player.sendMessage("/cd burn <url>");
-		player.sendMessage("/cd set title <title>");
-		player.sendMessage("/cd set artist <artist>");
-		player.sendMessage("/cd set loop <minutes> <seconds>");
-		if (player.hasPermission("jukebukkit.wipe")) player.sendMessage("/cd wipe");
-		if (player.hasPermission("jukebukkit.clone")) player.sendMessage("/cd clone");
-		if (player.hasPermission("jukebukkit.play")) player.sendMessage("/cd play <url>");
-		player.sendMessage("/cd about");
+		log.info("[JukeBukkit] Disabled.");
 	}
 	
-	private void validate_url(String url) throws URLMinLengthException, URLInvalidExtension, URLConnectionError, MalformedURLException, IOException
+	public DiscsManager getDiscsManager()
 	{
-		if (url.length() < 5){
-			throw new URLMinLengthException();
-		}
-		
-		//at them moment, it seems spout checks for the extension of a url (.ogg) instead
-		//of a mimetype, so passing a url without .ogg or .wav on the end
-		//will fail.
-		//i havent tested wavs, bud midis just mess EVERYTHING up, and dont follow
-		//distance or volume rules. YUCK!. im not supporting them at this time.
-		//get the extension
-		String ext = url.substring( url.lastIndexOf('.')+1, url.length() );
-		if ( !ext.equalsIgnoreCase("ogg") && !ext.equalsIgnoreCase("wav")) {
-			throw new URLInvalidExtension();
-		}
-		
-		URL conurl = new URL(url);
-	    URLConnection conn = conurl.openConnection();
-	    conn.connect();
-	    
-	    if ( conn instanceof HttpURLConnection)
-	    {
-	       HttpURLConnection httpConnection = (HttpURLConnection) conn;
-	       int code = httpConnection.getResponseCode();
-	       if (code != 200)
-	       {
-	    	   throw new URLConnectionError();
-	       }
-	    }
-	    else
-	    {
-	    	throw new URLConnectionError();
-	    }
-		
-		return;
+		return discsManager;
 	}
-	
-	private boolean isInteger( String input )  
-	{  
-		try  
-		{  
-			Integer.parseInt( input );  
-			return true;  
-		}  
-		catch( Exception e)  
-		{  
-			return false;  
-		}  
-	}  
-	
-	@Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String [] args) {
-		if (sender instanceof Player){
-			if(command.getName().equalsIgnoreCase("jukebukkit")){
-				
-				Player player = (Player)sender;
-				
-				if (args.length == 0){
-					showHelp(player);
-					return true;
-				}
-				
-				if (args[0].equalsIgnoreCase("about"))
-				{
-					if (args.length != 1){
-						showHelp(player);
-						return true;
-					}
-					
-					player.sendMessage("JukeBukkit "+ version +" :: Copyright (C) 2011 Chris Churchwell");
-					player.sendMessage("This program comes with ABSOLUTELY NO WARRANTY");
-					player.sendMessage("This is free software, licensed under the GNU GPL v3.");
-					player.sendMessage("You are welcome to redistribute it under certain conditions");
-					return true;
-				}
-				else if (args[0].equalsIgnoreCase("play"))
-				{
-					if (!player.hasPermission("jukebukkit.play"))
-					{
-						player.sendMessage("You do not have permission to perform this action.");
-						return true;
-					}
-					
-					if (args.length != 2){
-						showHelp(player);
-						return true;
-					}
-					
-					String url = args[1];
-					
-					try {
-						validate_url(url);
-					} catch (MalformedURLException e) {
-						player.sendMessage("The URL does not appear to be valid. Maybe you entered it wrong?");
-						return true;
-					} catch (URLMinLengthException e) {
-						player.sendMessage(e.getMessage());
-						return true;
-					} catch (URLInvalidExtension e) {
-						player.sendMessage(e.getMessage());
-						return true;
-					} catch (URLConnectionError e) {
-						player.sendMessage(e.getMessage());
-						return true;
-					} catch (IOException e) {
-						player.sendMessage("Was not able to connect to the given URL. Maybe you entered it wrong?");
-						return true;
-					}
-					
-					playURL(url);
-					return true;
-					
-				}
-				else if (args[0].equalsIgnoreCase("clone"))
-				{
-					if (args.length != 1){
-						showHelp(player);
-						return true;
-					}
-					
-					if (!player.hasPermission("jukebukkit.clone"))
-					{
-						player.sendMessage("You do not have permission to clone cd's");
-						return true;
-					}
-					
-					ItemStack inHand = player.getItemInHand();
-					if (inHand == null || inHand.getType() != Material.GOLD_RECORD ) {
-						player.sendMessage("Must hold a Golden Record in your hand.");
-						return true;
-					}
-					
-					//check that the record is in fact a dubbed disc.
-					if (inHand.getDurability() == 0) {
-						player.sendMessage("You can only clone a disc that has already been burned. This disc has not been burned yet.");
-						return true;
-					}
-					
-					//all criteria met.
-					ItemStack newDisc = new ItemStack(Material.GOLD_RECORD, 1);
-					newDisc.setDurability(inHand.getDurability());
-					player.getWorld().dropItem(player.getLocation(), newDisc);
-					player.sendMessage("Disc Cloned.");
-					return true;
-					
-				}
-				else if (args[0].equalsIgnoreCase("wipe"))
-				{
-					if (args.length != 1){
-						showHelp(player);
-						return true;
-					}
-					if (!player.hasPermission("jukebukkit.wipe"))
-					{
-						player.sendMessage("You do not have permission to wipe discs.");
-						return true;
-					}
-					ItemStack inHand = player.getItemInHand();
-					if (inHand == null || inHand.getType() != Material.GOLD_RECORD ) {
-						player.sendMessage("Must hold a Golden Record in your hand.");
-						return true;
-					}
-					if (inHand.getDurability() == 0) {
-						player.sendMessage("This disc has not been burned yet.");
-						return true;
-					}
-					//and wipe is easy
-					inHand.setDurability((short)0);
-					return true;
-					
-				}
-				else if (args[0].equalsIgnoreCase("burn"))
-				{
-					if (!player.hasPermission("jukebukkit.burn"))
-					{
-						player.sendMessage("You do not have permission to burn discs.");
-						return true;
-					}
-					
-					ItemStack inHand = player.getItemInHand();
-					if (inHand == null || inHand.getType() != Material.GOLD_RECORD ) {
-						player.sendMessage("Must hold a Golden Record in your hand.");
-						return true;
-					}
-					if (inHand.getDurability() != 0) {
-						player.sendMessage("This disc has already been burned! Pff. Someone should invent re-writeable discs...");
-						return true;
-					}
-					if (args.length != 2){
-						showHelp(player);
-						return true;
-					}
-					String url = args[1];
-					
-					try {
-						validate_url(url);
-					} catch (MalformedURLException e) {
-						player.sendMessage("The URL does not appear to be valid. Maybe you entered it wrong?");
-						return true;
-					} catch (URLMinLengthException e) {
-						player.sendMessage(e.getMessage());
-						return true;
-					} catch (URLInvalidExtension e) {
-						player.sendMessage(e.getMessage());
-						return true;
-					} catch (URLConnectionError e) {
-						player.sendMessage(e.getMessage());
-						return true;
-					} catch (IOException e) {
-						player.sendMessage("Was not able to connect to the given URL. Maybe you entered it wrong?");
-						return true;
-					}
-					
-					
-					short discId = this.getAvailableDiscId();
-					//burn it!
-					try {
-						Disc disc = new Disc(discId, player.getName(), url);
-						discs.put(discId, disc);
-					} catch (Exception e) {
-						player.sendMessage("Unable to burn disc");
-					} finally {
-						inHand.setDurability(discId);
-						player.sendMessage("Disc has been burned...");
-					}
-					
-					return true;
-				}
-				else if (args[0].equalsIgnoreCase("set")) {
-					if (args.length < 3)
-					{
-						showHelp(player);
-						return true;
-					}
-					
-					ItemStack inHand = player.getItemInHand();
-					
-					if (inHand == null || inHand.getType() != Material.GOLD_RECORD ) {
-						player.sendMessage("Must hold an already burned Record.");
-						return true;
-					}
-					if (inHand.getDurability() < 1) {
-						player.sendMessage("This disc has not been burned yet.");
-						return true;
-					}
-					//make sure the hashmap has a value
-					short discId = inHand.getDurability();
-					if (!discs.containsKey(discId))
-					{
-						player.sendMessage("This disc has is no longer decipherable.");
-						return true;
-					}
-					Disc disc = discs.get(discId);
-					
-					if (!player.hasPermission("jukebukkit.edit"))
-					{
-						if (!disc.getCreator().equalsIgnoreCase(player.getName()))
-						{
-							player.sendMessage("Only he who burned this disc can decipher the encryption to edit it.");
-							return true;
-						}
-					}
-					if (args[1].equalsIgnoreCase("loop")) {
-						if (args.length < 4)
-						{
-							showHelp(player);
-							return true;
-						}
-						
-						String minutes = args[2];
-						String seconds = args[3];
-						
-						if (!isInteger(minutes) || !isInteger(seconds))
-						{
-							player.sendMessage("Invalid Time");
-							return true;
-						}
-						
-						int loop = (Integer.valueOf(minutes)*60) + Integer.valueOf(seconds);
-						disc.setLoop(loop);
-						discs.put(discId, disc);
-						player.sendMessage("You have changed the disc's loop time.");
-						return true;
-					
-					} else if (args[1].equalsIgnoreCase("title")) {
-						// form the string
-						String title = "";
-						
-						for (int i=2; i<args.length; i++)
-						{
-							title = title + args[i] + " ";
-						}
-						title = title.trim();
-						disc.setSongName(title);
-						discs.put(discId, disc);
-						
-						player.sendMessage("You have changed the disc's Title.");
-						return true;
-					} else if (args[1].equalsIgnoreCase("artist")) {
-						// form the string
-						String title = "";
-						for (int i=2; i<args.length; i++)
-						{
-							title = title + args[i] + " ";
-						}
-						title = title.trim();
-						disc.setSongArtist(title);
-						discs.put(discId, disc);
-						
-						player.sendMessage("You have edited the disc's Artist.");
-						
-						return true;
-					}
-				}
-				showHelp(player);
-				return true;
-			}
-			return true;
-		}
-		return true;
+	public JukeBoxManager getJukeBoxManager()
+	{
+		return jukeBoxManager;
+	}
+	public CustomsManager getCustomsManager()
+	{
+		return customsManager;
+	}
+	public LabelManager getLabelManager()
+	{
+		return labelManager;
 	}
 }

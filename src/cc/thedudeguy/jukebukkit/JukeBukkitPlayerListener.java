@@ -16,15 +16,26 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.event.screen.ButtonClickEvent;
+import org.getspout.spoutapi.gui.GenericButton;
+import org.getspout.spoutapi.gui.GenericLabel;
+import org.getspout.spoutapi.gui.GenericPopup;
+import org.getspout.spoutapi.gui.GenericTextField;
+import org.getspout.spoutapi.gui.WidgetAnchor;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
+/**
+ * Player Listerner. Handles writing of labels and opening the label maker gui.
+ * @author Chris Churchwell
+ *
+ */
 public class JukeBukkitPlayerListener extends PlayerListener {
 	
 	public static JukeBukkit plugin; 
@@ -33,133 +44,89 @@ public class JukeBukkitPlayerListener extends PlayerListener {
         plugin = instance;
 	}
 	
-	public void onPlayerInteract(PlayerInteractEvent event) {
-		if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			Block block = event.getClickedBlock();
-			if(block.getType() == Material.JUKEBOX) {
-				
-				//check if the jukebox has an original disc loaded.
-				if (block.getData() != 0x0)
-				{
-					//jukebox has an original minecraft disc in it. run the default actiom
-					return;
-				}
-				
-				Player player = event.getPlayer();
-				//check if the jukebox has a disk in it already...
-				String locationString = block.getLocation().toString();
-				
-				if (plugin.jukeboxes.containsKey(locationString))
-				{
-					//check if a player has permission to eject.
-					if (!player.hasPermission("jukebukkit.eject"))
-					{
-						player.sendMessage("You do not have permission to eject discs.");
-						event.setCancelled(true);
-						return;
-					}
-					
-					//stop playing the music...
-					plugin.stopMusic(block.getLocation());
-					
-					//eject the disc...
-					ItemStack newDisc = new ItemStack(Material.GOLD_RECORD, 1);
-					newDisc.setDurability(plugin.jukeboxes.get(locationString));
-					Location spawnLoc = block.getLocation();
-					spawnLoc.setY(spawnLoc.getY()+1);
-					block.getWorld().dropItem(spawnLoc, newDisc);
-					//remove the reference
-					plugin.jukeboxes.remove(locationString);
-					
-					event.setCancelled(true);
-					return;
-				}
-				
-				
-				ItemStack inHand = player.getItemInHand();
-				if (inHand.getType() == Material.GOLD_RECORD) {
-					
-					if (!player.hasPermission("jukebukkit.use"))
-					{
-						player.sendMessage("You do not have permission to play discs.");
-						event.setCancelled(true);
-						return;
-					}
-					
-					short discId = inHand.getDurability();
-					
-					if (discId < 1)
-					{
-						//original minecraft disc is in hand, run the default action
-						return;
-					}
-				
-					//otherwise, put the disc into the jukebox...
-					plugin.jukeboxes.put(locationString, discId);
-					player.setItemInHand(null);
-					
-					
-					if (!plugin.discs.containsKey(discId))
-					{
-						player.sendMessage("This disc seems to be broken. Maybe it's too scratched up?");
-					} else {
-						
-						
-						try {
-							plugin.playDisc(discId, block.getLocation());
-						} catch (Exception e) {
-							plugin.log.severe("[JukeBukkit] " + e.getMessage());
-							player.sendMessage(e.getMessage());
-						}
-						
-					}
-					
-					event.setCancelled(true);
-					return;
-					
-					
-				}
+	public class CreateButton extends GenericButton
+	{
+		private GenericTextField input;
+		private GenericPopup popup;
+		private JukeBukkit plugin;
+		
+		public CreateButton(JukeBukkit plugin, GenericPopup assocPopup, GenericTextField assocInputField)
+		{
+			super();
+			setText("Create Label");
+			input = assocInputField;
+			popup = assocPopup;
+			this.plugin = plugin;
+			
+			//plugin.log.info("Burn Disc Button Initialized");
+		}
+		public void onButtonClick(ButtonClickEvent event) 
+		{
+			//give the label to the player.
+			if (!input.getText().equals(""))
+			{
+				ItemStack newLabel = plugin.getLabelManager().create(input.getText());
+				event.getPlayer().getInventory().addItem(newLabel);
 			}
-		} else if(event.getAction() == Action.LEFT_CLICK_BLOCK) {
-			Block block = event.getClickedBlock();
-			if(block.getType() == Material.JUKEBOX) {
-				Player player = event.getPlayer();
-				//check if the jukebox has an original disc loaded.
-				if (block.getData() != 0x0)
-				{
-					//jukebox has an original minecraft disc in it. run the default actiom
-					player.sendMessage("This Jukebox has an original Music Disc (Blank Disc) in it!");
-					return;
-				}
+			popup.close();
+	        
+	    }
+	}
+	
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		SpoutPlayer player = SpoutManager.getPlayer(event.getPlayer());
+		
+		if (player.isSpoutCraftEnabled())
+		{
+			ItemStack inHand = event.getPlayer().getItemInHand();
+			
+			if (
+					event.useItemInHand() != Result.DENY && 
+					event.getAction() == Action.RIGHT_CLICK_AIR &&  
+					inHand.getType() == Material.PAPER && 
+					!SpoutManager.getMaterialManager().isCustomItem(inHand)
+				) {
 				
-				//check if the jukebox has a disk in it already...
-				String locationString = block.getLocation().toString();
-				if (plugin.jukeboxes.containsKey(locationString))
-				{
-					
-					if (!player.hasPermission("jukebukkit.use"))
-					{
-						player.sendMessage("You do not have permission to play discs.");
-						event.setCancelled(true);
-						return;
-					}
-					
-					//replay the song...
-					short discId = plugin.jukeboxes.get(locationString);
-					if (!plugin.discs.containsKey(discId))
-					{
-						player.sendMessage("This disc seems to be broken. Maybe it's too scratched up?");
-					} else {
-						try {
-							plugin.playDisc(discId, block.getLocation());
-						} catch (Exception e) {
-							plugin.log.severe("[JukeBukkit] " + e.getMessage());
-							player.sendMessage(e.getMessage());
-						}
-					}
-				}
+				//punching air while holding a blank peice of paper.
+				GenericPopup labelPopup = new GenericPopup();
+				labelPopup.setAnchor(WidgetAnchor.CENTER_CENTER);
+				labelPopup.setWidth(128).setWidth(64);
+				labelPopup.setBgVisible(true);
+				
+				GenericLabel label = new GenericLabel();
+				label.setText("Write Label");
+				label.setX(5).setY(5);
+				labelPopup.attachWidget(plugin, label);
+				
+				/*
+				GenericTexture paperTexture = new GenericTexture();
+				paperTexture.setUrl(CustomsManager.TEXTURE_URL_GUI_PAPER); //Have to be a png or jpg
+				paperTexture.setWidth(128).setHeight(64); //Use the same size as the png here.
+				paperTexture.setY(10).setX(10);
+				labelPopup.attachWidget(plugin, paperTexture);
+				*/
+				
+				GenericTextField labelInput = new GenericTextField();
+				labelInput.setMaximumCharacters(500);
+				labelInput.setHeight(15).setWidth(200);
+				labelInput.setY(25);
+				labelInput.setX(5);
+				labelInput.setMaximumLines(1);
+				labelInput.setFocus(true);
+				labelPopup.attachWidget(plugin, labelInput);
+				
+				CreateButton button = new CreateButton(plugin, labelPopup, labelInput);
+				button.setY(45).setX(5);
+				button.setWidth(75).setHeight(20);
+				//button.setAnchor(WidgetAnchor.BOTTOM_CENTER);
+				labelPopup.attachWidget(plugin, button);
+				
+				player.getMainScreen().attachPopupScreen(labelPopup);
+				
+				/*
+				SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_START, false, location, 3);
+				*/
 			}
 		}
-		
 	}
 }
