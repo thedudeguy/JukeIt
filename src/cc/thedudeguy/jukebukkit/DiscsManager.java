@@ -52,7 +52,7 @@ public class DiscsManager {
 	        
 	        String dkey = discsConfig.getString(key+".key");
 	        String dtitle = discsConfig.getString(key+".title");
-	        new BurnedMusicDisc(plugin, dkey, dtitle);
+	        new ItemBurnedObsidyisc(plugin, dkey, dtitle);
 	    }
 	}
 	

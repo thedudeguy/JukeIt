@@ -105,7 +105,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			//create the key
 			String key = UUID.randomUUID().toString();
 			//create the physical disc for the pplayer
-			BurnedMusicDisc disc = new BurnedMusicDisc(plugin, key);
+			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, key);
 			ItemStack iss = SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
 			location.setY(location.getY()+1);
 			location.getWorld().dropItem(location, iss);

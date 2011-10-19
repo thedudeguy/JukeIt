@@ -193,7 +193,7 @@ public class JukeBukkitCommandExecutor implements CommandExecutor{
 		String key = UUID.randomUUID().toString();
 		
 		//create the physical disc for the pplayer
-		BurnedMusicDisc disc = new BurnedMusicDisc(plugin, key);
+		ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, key);
 		ItemStack iss=SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
 		player.getInventory().addItem(iss);
 		

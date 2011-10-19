@@ -1,42 +1,7 @@
 name: JukeBukkit
 main: cc.thedudeguy.jukebukkit.JukeBukkit
-version: 0.4
+version: 1.0
 description: Allows you to "Burn" new music onto Music Discs and play them in the Jukeboxes.
 author: Chris Churchwell (thedudeguy)
-website: https://github.com/thedudeguy/JukeBukkit
+website: http://dev.bukkit.org/server-mods/jukebukkit/
 depend: [Spout]
-commands:
-    jukebukkit:
-        aliases: [cd]
-permissions:
-    jukebukkit.*:
-        description: Gives access to all jukebukkit commands
-        children:
-            jukebukkit.burn: true
-            jukebukkit.edit: true
-            jukebukkit.clone: true
-            jukebukkit.eject: true
-            jukebukkit.use: true
-            jukebukkit.play: true
-            jukebukkit.wipe: true
-    jukebukkit.wipe:
-        description: Allows a user to clear a cd
-        default: true
-    jukebukkit.use:
-        description: Allows a user to play cds from the jukebox
-        default: true
-    jukebukkit.eject:
-        description: Allows a user to eject cds from the jukebox
-        default: true
-    jukebukkit.burn:
-        description: Allows a user to burn new cds
-        default: true
-    jukebukkit.play:
-        description: Allows a user to play a url globally via play command
-        default: op
-    jukebukkit.edit:
-        description: Allows a user to edit cd title and artist without being the creator of the cd
-        default: op
-    jukebukkit.clone:
-        description: Allows discs to be cloned
-        default: op

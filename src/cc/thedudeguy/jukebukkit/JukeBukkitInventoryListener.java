@@ -63,7 +63,7 @@ public class JukeBukkitInventoryListener extends InventoryListener {
 						
 						//its custom could be a disc...
 						CustomItem itemClickedOn = SpoutManager.getMaterialManager().getCustomItem(event.getItem());
-						if ( itemClickedOn instanceof BurnedMusicDisc)
+						if ( itemClickedOn instanceof ItemBurnedObsidyisc)
 						{
 							//its a burned disc! we can do stuff to it.
 							String label = plugin.getLabelManager().get(itemOnCursor.getCustomId());

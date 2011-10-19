@@ -130,7 +130,7 @@ public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 			int discId = plugin.getJukeBoxManager().getDisc(locationKey);
 			
 			//spawn disc
-			BurnedMusicDisc disc = new BurnedMusicDisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId));
+			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId));
 			ItemStack iss = SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
 			location.setY(location.getY()+1);
 			location.getWorld().dropItem(location, iss);
@@ -199,7 +199,7 @@ public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 		{
 			int discId = plugin.getJukeBoxManager().getDisc(locationKey);
 			
-			BurnedMusicDisc disc = new BurnedMusicDisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId));
+			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId));
 			ItemStack iss = SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
 			location.getWorld().dropItem(location, iss);
 			

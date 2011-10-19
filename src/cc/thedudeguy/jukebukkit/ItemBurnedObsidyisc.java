@@ -23,17 +23,17 @@ import org.getspout.spoutapi.material.item.GenericCustomItem;
  * @author Chris Churchwell
  *
  */
-public class BurnedMusicDisc extends GenericCustomItem {
-	public BurnedMusicDisc(JukeBukkit plugin)
+public class ItemBurnedObsidyisc extends GenericCustomItem {
+	public ItemBurnedObsidyisc(JukeBukkit plugin)
 	{
 		super(plugin, "Burned Obsidyisc", CustomsManager.TEXTURE_URL_WHITE_DISC_BURNED);
 	}
-	public BurnedMusicDisc(JukeBukkit plugin, String key)
+	public ItemBurnedObsidyisc(JukeBukkit plugin, String key)
 	{
 		super(plugin, key, CustomsManager.TEXTURE_URL_WHITE_DISC_BURNED);
 		this.setName("Burned Obsidyisc");
 	}
-	public BurnedMusicDisc(JukeBukkit plugin, String key, String name)
+	public ItemBurnedObsidyisc(JukeBukkit plugin, String key, String name)
 	{
 		super(plugin, key, CustomsManager.TEXTURE_URL_WHITE_DISC_BURNED);
 		this.setName(name);
