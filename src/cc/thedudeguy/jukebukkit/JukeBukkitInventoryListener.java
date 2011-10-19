@@ -37,10 +37,12 @@ public class JukeBukkitInventoryListener extends InventoryListener {
 		this.plugin = plugin;
 	}
 	
+	/*
 	public void onInventoryCraft(InventoryCraftEvent event)
 	{
 		plugin.log.info("Inventory Craft Event");
 	}
+	*/
 	
 	/**
 	 * Basically handles when a user dropes a label onto a written disc.
