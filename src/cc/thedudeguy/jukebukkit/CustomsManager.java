@@ -33,6 +33,9 @@ public class CustomsManager {
 	
 	public static final String TEXTURE_URL_WHITE_DISC = "http://dev.bukkit.org/media/attachments/21/200/rdisc_white.png";
 	public static final String TEXTURE_URL_WHITE_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/201/rdisc_white_burned.png";
+	public static final String TEXTURE_URL_RED_DISC = "http://dev.bukkit.org/media/attachments/21/239/rdisc_red.png";
+	public static final String TEXTURE_URL_RED_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/240/rdisc_red_burned.png";
+	
 	public static final String TEXTURE_URL_LABEL = "http://dev.bukkit.org/media/attachments/21/204/label.png";
 	
 	public static final String TEXTURE_URL_BLOCKS = "http://dev.bukkit.org/media/attachments/21/205/customblocks.png";
@@ -40,7 +43,7 @@ public class CustomsManager {
 	//public static final String TEXTURE_URL_GUI_PAPER = "http://chrischurchwell.com/minecraft/paper.png";
 	
 	/** Item Block id's **/
-	public static int WHITE_DISC;
+	//public static int WHITE_DISC;
 	//public static int PROTOTYPE_JUKEBOX;
 	
 	public Texture customBlockTexture;
@@ -53,7 +56,7 @@ public class CustomsManager {
 		this.plugin = plugin;
 		
 		//load item id's
-		WHITE_DISC = new ItemBlankObsidyisc(plugin).getCustomId();
+		//WHITE_DISC = new ItemBlankObsidyisc(plugin).getCustomId();
 		
 		customBlockTexture = new Texture(this.plugin, TEXTURE_URL_BLOCKS, 256, 256, 16);
 		

@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.List;
 
 import org.bukkit.util.config.Configuration;
+import org.getspout.spoutapi.material.CustomItem;
 
 /**
  * Handles the loading and saving of Burned discs in order to provide persistance.
@@ -30,6 +31,9 @@ public class DiscsManager {
 	
 	private JukeBukkit plugin;
 	private Configuration discsConfig;
+	
+	public static final int WHITE = 0;
+	public static final int RED = 1;
 	
 	public DiscsManager(JukeBukkit plugin)
 	{
@@ -83,6 +87,10 @@ public class DiscsManager {
 	{
 		discsConfig.setProperty(String.valueOf(discId)+".key", key);
 	}
+	public void setColor(int discId, int color)
+	{
+		discsConfig.setProperty(String.valueOf(discId)+".color", color);
+	}
 	
 	public Boolean hasDiscId(int discId)
 	{
@@ -104,6 +112,26 @@ public class DiscsManager {
 	public String getKey(int discId)
 	{
 		return discsConfig.getString(String.valueOf(discId)+".key", "");
+	}
+	
+	
+	public int findDiscColor(CustomItem discItem)
+	{
+		
+		if (discItem instanceof ItemBlankRedObsidyisc) {
+			return RED;
+		} else {
+			return WHITE;
+		}
+	}
+	
+	public String getBurnedColorDiscUrl(int color)
+	{
+		if (color == RED) {
+			return CustomsManager.TEXTURE_URL_RED_DISC_BURNED;
+		}
+		
+		return CustomsManager.TEXTURE_URL_WHITE_DISC_BURNED;
 	}
 	
 }

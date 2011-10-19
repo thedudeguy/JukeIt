@@ -93,6 +93,14 @@ public class JukeBukkit extends JavaPlugin {
 			.setIngredient('j', MaterialData.jukebox)
 			.setIngredient('f', MaterialData.furnace)
 		);
+		
+		//red disc
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankRedObsidyisc(this), 1) )
+			.shape("r", "d")
+			.setIngredient('r', MaterialData.roseRed)
+			.setIngredient('d', new ItemBlankObsidyisc(this))
+		);
 		//end recipes///////////////////
 		
 		//load the command executor

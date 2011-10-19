@@ -38,4 +38,11 @@ public class ItemBurnedObsidyisc extends GenericCustomItem {
 		super(plugin, key, CustomsManager.TEXTURE_URL_WHITE_DISC_BURNED);
 		this.setName(name);
 	}
+	
+	public ItemBurnedObsidyisc(JukeBukkit plugin, String key, int color)
+	{
+		super(plugin, key, CustomsManager.TEXTURE_URL_WHITE_DISC_BURNED);
+		setTexture(plugin.getDiscsManager().getBurnedColorDiscUrl(color));
+	}
+	
 }
