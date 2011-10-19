@@ -106,10 +106,10 @@ public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 										player.sendMessage(e.getMessage());
 										SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_ERROR, false, location, 3);
 									}
-									return true;
 								}
 							}
 						}
+						return true;
 					}
 					
 					
