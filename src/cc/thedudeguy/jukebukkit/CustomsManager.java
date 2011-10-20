@@ -63,6 +63,8 @@ public class CustomsManager {
 		//client preloads
 		SpoutManager.getFileManager().addToPreLoginCache(plugin, TEXTURE_URL_WHITE_DISC);
 		SpoutManager.getFileManager().addToPreLoginCache(plugin, TEXTURE_URL_WHITE_DISC_BURNED);
+		SpoutManager.getFileManager().addToPreLoginCache(plugin, TEXTURE_URL_RED_DISC);
+		SpoutManager.getFileManager().addToPreLoginCache(plugin, TEXTURE_URL_RED_DISC_BURNED);
 		SpoutManager.getFileManager().addToPreLoginCache(plugin, TEXTURE_URL_LABEL);
 		
 		SpoutManager.getFileManager().addToPreLoginCache(plugin, TEXTURE_URL_BLOCKS);

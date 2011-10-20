@@ -54,9 +54,10 @@ public class DiscsManager {
 		for(int i = 0, n = keys.size(); i < n; i++) {
 	        String key = keys.get(i);
 	        
-	        String dkey = discsConfig.getString(key+".key");
-	        String dtitle = discsConfig.getString(key+".title");
-	        new ItemBurnedObsidyisc(plugin, dkey, dtitle);
+	        String dkey = discsConfig.getString(key+".key", "");
+	        String dtitle = discsConfig.getString(key+".title", "");
+	        int dcolor = discsConfig.getInt(key+".color", 0);
+	        new ItemBurnedObsidyisc(plugin, dkey, dtitle, dcolor);
 	    }
 	}
 	
@@ -113,7 +114,10 @@ public class DiscsManager {
 	{
 		return discsConfig.getString(String.valueOf(discId)+".key", "");
 	}
-	
+	public int getColor(int discId)
+	{
+		return discsConfig.getInt(String.valueOf(discId)+".color", 0);
+	}
 	
 	public int findDiscColor(CustomItem discItem)
 	{
@@ -123,15 +127,6 @@ public class DiscsManager {
 		} else {
 			return WHITE;
 		}
-	}
-	
-	public String getBurnedColorDiscUrl(int color)
-	{
-		if (color == RED) {
-			return CustomsManager.TEXTURE_URL_RED_DISC_BURNED;
-		}
-		
-		return CustomsManager.TEXTURE_URL_WHITE_DISC_BURNED;
 	}
 	
 }
