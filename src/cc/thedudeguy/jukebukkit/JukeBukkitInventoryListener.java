@@ -37,10 +37,12 @@ public class JukeBukkitInventoryListener extends InventoryListener {
 		this.plugin = plugin;
 	}
 	
+	/*
 	public void onInventoryCraft(InventoryCraftEvent event)
 	{
 		plugin.log.info("Inventory Craft Event");
 	}
+	*/
 	
 	/**
 	 * Basically handles when a user dropes a label onto a written disc.
@@ -51,7 +53,7 @@ public class JukeBukkitInventoryListener extends InventoryListener {
 		if (!event.isLeftClick())
 		{
 			//only if a Label is on the cursor. is it even a custom item?
-			if (SpoutManager.getMaterialManager().isCustomItem(event.getCursor())) {
+			if (event.getCursor() != null && SpoutManager.getMaterialManager().isCustomItem(event.getCursor())) {
 				
 				CustomItem itemOnCursor = SpoutManager.getMaterialManager().getCustomItem(event.getCursor());
 				if (itemOnCursor instanceof ItemLabel)

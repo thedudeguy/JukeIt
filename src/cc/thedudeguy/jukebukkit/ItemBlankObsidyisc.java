@@ -29,4 +29,9 @@ public class ItemBlankObsidyisc extends GenericCustomItem {
 	{
 		super(plugin, "Blank Obsidyisc", CustomsManager.TEXTURE_URL_WHITE_DISC);
 	}
+	
+	public ItemBlankObsidyisc(JukeBukkit plugin, String name, String texture_url)
+	{
+		super(plugin, name, texture_url);
+	}
 }

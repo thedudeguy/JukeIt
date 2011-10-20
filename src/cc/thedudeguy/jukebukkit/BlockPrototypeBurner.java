@@ -94,6 +94,9 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	        SpoutPlayer player = event.getPlayer();
 	        ItemStack inHand = player.getItemInHand();
 	        
+	        //whats the color of the disc in hand?
+	        int color = plugin.getDiscsManager().findDiscColor(SpoutManager.getMaterialManager().getCustomItem(inHand));
+	        
 	        //remove 1 from hand
 			if (inHand.getAmount()<2)
 			{
@@ -105,7 +108,8 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			//create the key
 			String key = UUID.randomUUID().toString();
 			//create the physical disc for the pplayer
-			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, key);
+			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, key, color);
+			
 			ItemStack iss = SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
 			location.setY(location.getY()+1);
 			location.getWorld().dropItem(location, iss);
@@ -116,6 +120,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			plugin.getDiscsManager().setUrl(disc.getCustomId(), url);
 			plugin.getDiscsManager().setTitle(disc.getCustomId(), "Burned Obsidyisc");
 			plugin.getDiscsManager().setKey(disc.getCustomId(), key);
+			plugin.getDiscsManager().setColor(disc.getCustomId(), color);
 			plugin.getDiscsManager().save();
 			popup.close();
 			

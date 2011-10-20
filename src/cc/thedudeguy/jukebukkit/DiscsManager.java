@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.List;
 
 import org.bukkit.util.config.Configuration;
+import org.getspout.spoutapi.material.CustomItem;
 
 /**
  * Handles the loading and saving of Burned discs in order to provide persistance.
@@ -30,6 +31,9 @@ public class DiscsManager {
 	
 	private JukeBukkit plugin;
 	private Configuration discsConfig;
+	
+	public static final int WHITE = 0;
+	public static final int RED = 1;
 	
 	public DiscsManager(JukeBukkit plugin)
 	{
@@ -50,9 +54,10 @@ public class DiscsManager {
 		for(int i = 0, n = keys.size(); i < n; i++) {
 	        String key = keys.get(i);
 	        
-	        String dkey = discsConfig.getString(key+".key");
-	        String dtitle = discsConfig.getString(key+".title");
-	        new ItemBurnedObsidyisc(plugin, dkey, dtitle);
+	        String dkey = discsConfig.getString(key+".key", "");
+	        String dtitle = discsConfig.getString(key+".title", "");
+	        int dcolor = discsConfig.getInt(key+".color", 0);
+	        new ItemBurnedObsidyisc(plugin, dkey, dtitle, dcolor);
 	    }
 	}
 	
@@ -83,6 +88,10 @@ public class DiscsManager {
 	{
 		discsConfig.setProperty(String.valueOf(discId)+".key", key);
 	}
+	public void setColor(int discId, int color)
+	{
+		discsConfig.setProperty(String.valueOf(discId)+".color", color);
+	}
 	
 	public Boolean hasDiscId(int discId)
 	{
@@ -104,6 +113,20 @@ public class DiscsManager {
 	public String getKey(int discId)
 	{
 		return discsConfig.getString(String.valueOf(discId)+".key", "");
+	}
+	public int getColor(int discId)
+	{
+		return discsConfig.getInt(String.valueOf(discId)+".color", 0);
+	}
+	
+	public int findDiscColor(CustomItem discItem)
+	{
+		
+		if (discItem instanceof ItemBlankRedObsidyisc) {
+			return RED;
+		} else {
+			return WHITE;
+		}
 	}
 	
 }

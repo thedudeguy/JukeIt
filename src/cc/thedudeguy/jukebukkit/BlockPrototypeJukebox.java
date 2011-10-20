@@ -16,6 +16,7 @@
  **/
 package cc.thedudeguy.jukebukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -106,10 +107,10 @@ public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 										player.sendMessage(e.getMessage());
 										SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_ERROR, false, location, 3);
 									}
-									return true;
 								}
 							}
 						}
+						return true;
 					}
 					
 					
@@ -130,7 +131,7 @@ public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 			int discId = plugin.getJukeBoxManager().getDisc(locationKey);
 			
 			//spawn disc
-			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId));
+			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId), plugin.getDiscsManager().getColor(discId));
 			ItemStack iss = SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
 			location.setY(location.getY()+1);
 			location.getWorld().dropItem(location, iss);
@@ -237,15 +238,13 @@ public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 	}
 
 	@Override
-	public boolean isIndirectlyProdivingPowerTo(World arg0, int arg1, int arg2,
-			int arg3, BlockFace arg4) {
+	public boolean isIndirectlyProdivingPowerTo(World arg0, int arg1, int arg2, int arg3, BlockFace arg4) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean isProvidingPowerTo(World arg0, int arg1, int arg2, int arg3,
-			BlockFace arg4) {
+	public boolean isProvidingPowerTo(World arg0, int arg1, int arg2, int arg3, BlockFace arg4) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -257,24 +256,60 @@ public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 	}
 
 	@Override
-	public void onBlockPlace(World arg0, int arg1, int arg2, int arg3,
-			LivingEntity arg4) {
+	public void onBlockPlace(World arg0, int arg1, int arg2, int arg3, LivingEntity arg4) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void onEntityMoveAt(World arg0, int arg1, int arg2, int arg3,
-			Entity arg4) {
+	public void onEntityMoveAt(World arg0, int arg1, int arg2, int arg3, Entity arg4) {
 		// TODO Auto-generated method stub
+		//plugin.log.info("on Entity Mova At");
 		
 	}
 
 	@Override
-	public void onNeighborBlockChange(World arg0, int arg1, int arg2, int arg3,
-			int arg4) {
-		// TODO Auto-generated method stub
+	public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) {
+		Location location = new Location(world, (double)x, (double)y, (double)z);
 		
+		if (location.getBlock().isBlockPowered())
+		{
+			
+			if (this.getCustomMetaData() == 0)
+			{
+				//block is currently not powered. //set to powered
+				this.setCustomMetaData(1);
+				
+				//if the jukebox has a disc in it, go ahead and play it.
+				String locationKey = plugin.getJukeBoxManager().createLocationKey(location);
+				if (plugin.getJukeBoxManager().hasDisc(locationKey))
+				{
+					//play disc.
+					int discId = plugin.getJukeBoxManager().getDisc(locationKey);
+					if (plugin.getDiscsManager().hasDiscId(discId))
+					{
+						String url = plugin.getDiscsManager().getUrl(discId);
+						/** get players in radius of the jukebox and start it for only those players **/
+						for(Player p:location.getWorld().getPlayers())
+						{
+							double distance = location.toVector().distance(p.getLocation().toVector());
+							if (distance<=(double)range)
+							{
+								SpoutPlayer sp = SpoutManager.getPlayer(p);
+								if (sp.isSpoutCraftEnabled()) {
+									SpoutManager.getSoundManager().playCustomMusic(plugin, sp, url, true, location, range);
+								}
+							}
+						}
+						return;
+					}
+				}
+			} else {
+				//block is currently powered. do nothing.
+				//set power setting back to unpowered
+				this.setCustomMetaData(0);
+			}
+		}
 	}
 
 

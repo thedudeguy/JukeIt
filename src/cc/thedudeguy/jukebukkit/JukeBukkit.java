@@ -31,12 +31,10 @@ import org.getspout.spoutapi.material.MaterialData;
  */
 public class JukeBukkit extends JavaPlugin {
 	
-	public static String version = "v0.5";
-	
 	public Logger log = Logger.getLogger("Minecraft");
 	
 	public PluginManager pm;
-	private JukeBukkitCommandExecutor commandExecutor;
+	//private JukeBukkitCommandExecutor commandExecutor;
 	
 	private DiscsManager discsManager;
 	private JukeBoxManager jukeBoxManager;
@@ -51,8 +49,6 @@ public class JukeBukkit extends JavaPlugin {
 	
 	public void onEnable()
 	{	
-		version = this.getDescription().getVersion();
-		
 		//load the textures and precaches
 		customsManager = new CustomsManager(this);
 				
@@ -93,10 +89,17 @@ public class JukeBukkit extends JavaPlugin {
 			.setIngredient('j', MaterialData.jukebox)
 			.setIngredient('f', MaterialData.furnace)
 		);
+		
+		//red disc
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankRedObsidyisc(this), 1) )
+			.shape("r", "d")
+			.setIngredient('r', MaterialData.roseRed)
+			.setIngredient('d', new ItemBlankObsidyisc(this))
+		);
 		//end recipes///////////////////
 		
 		//load the command executor
-		//register the command executor
 		//commandExecutor = new JukeBukkitCommandExecutor(this);
 		//getCommand("jukebukkit").setExecutor(commandExecutor);
 		

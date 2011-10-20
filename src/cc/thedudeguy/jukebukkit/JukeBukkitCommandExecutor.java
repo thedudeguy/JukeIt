@@ -34,7 +34,7 @@ import org.getspout.spoutapi.material.CustomItem;
  */
 public class JukeBukkitCommandExecutor implements CommandExecutor{
 
-	private JukeBukkit plugin;
+	public JukeBukkit plugin;
 	
 	public JukeBukkitCommandExecutor(JukeBukkit plugin) {
 		this.plugin = plugin;
@@ -78,7 +78,7 @@ public class JukeBukkitCommandExecutor implements CommandExecutor{
 			showHelp(player);
 			return true;
 		}
-		player.sendMessage("JukeBukkit "+ JukeBukkit.version +" :: Copyright (C) 2011 Chris Churchwell");
+		player.sendMessage(plugin.getDescription().getFullName() +" :: Copyright (C) 2011 Chris Churchwell");
 		player.sendMessage("This program comes with ABSOLUTELY NO WARRANTY");
 		player.sendMessage("This is free software, licensed under the GNU GPL v3.");
 		player.sendMessage("You are welcome to redistribute it under certain conditions");
