@@ -16,7 +16,6 @@
  **/
 package cc.thedudeguy.jukebukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
