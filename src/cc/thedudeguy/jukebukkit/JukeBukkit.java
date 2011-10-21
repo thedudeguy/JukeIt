@@ -21,9 +21,6 @@ import java.util.logging.Logger;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
-import org.getspout.spoutapi.material.MaterialData;
 
 /**
  * The main class for the Jukebukkit Plugin
@@ -62,42 +59,6 @@ public class JukeBukkit extends JavaPlugin {
 		labelManager = new LabelManager(this);
 		
 		//TODO: Cleanup no longer used item ids for lables, and discs
-		
-		////////////////////////////////
-		//load recipes//////////////////
-		////////////////////////////////
-		//recipe - Recordable Music Disc
-		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankObsidyisc(this), 1) )
-			.shape(" o ", "oRo", " o ")
-			.setIngredient('o', MaterialData.obsidian)
-			.setIngredient('R', MaterialData.redstone)
-		);
-		
-		//disc player prototype
-		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new BlockPrototypeJukebox(this), 1) )
-			.shape("jn")
-			.setIngredient('j', MaterialData.jukebox)
-			.setIngredient('n', MaterialData.noteblock)
-		);
-		
-		//prototype burner
-		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new BlockPrototypeBurner(this), 1) )
-			.shape("jf")
-			.setIngredient('j', MaterialData.jukebox)
-			.setIngredient('f', MaterialData.furnace)
-		);
-		
-		//red disc
-		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankRedObsidyisc(this), 1) )
-			.shape("r", "d")
-			.setIngredient('r', MaterialData.roseRed)
-			.setIngredient('d', new ItemBlankObsidyisc(this))
-		);
-		//end recipes///////////////////
 		
 		//load the command executor
 		//commandExecutor = new JukeBukkitCommandExecutor(this);

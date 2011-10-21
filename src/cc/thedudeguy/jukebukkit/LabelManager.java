@@ -23,6 +23,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.config.Configuration;
 import org.getspout.spoutapi.SpoutManager;
 
+import cc.thedudeguy.jukebukkit.items.ItemLabel;
+
 /**
  * Handles Flatfile data storage pertaining to labels, in order to maintain persistance.
  * @author Chris Churchwell

@@ -23,6 +23,9 @@ import org.getspout.spoutapi.event.inventory.InventoryCraftEvent;
 import org.getspout.spoutapi.event.inventory.InventoryListener;
 import org.getspout.spoutapi.material.CustomItem;
 
+import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
+import cc.thedudeguy.jukebukkit.items.ItemLabel;
+
 /**
  * Inventory Listener to handle when the user clicks around in their Inventory
  * @author Chris Churchwell 

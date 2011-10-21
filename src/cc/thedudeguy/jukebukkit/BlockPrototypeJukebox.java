@@ -24,9 +24,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
+import org.getspout.spoutapi.block.design.Texture;
 import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.block.GenericCubeCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
+
+import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
 
 /**
  * Prototype Jukebox. The Base Custom Disc player. Short range. A model in which I can build from.
@@ -36,7 +39,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 {
 
-	private JukeBukkit plugin;
+	public JukeBukkit plugin;
 	private int range = 10;
 	
 	public BlockPrototypeJukebox(JukeBukkit plugin)
@@ -47,6 +50,20 @@ public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 			new GenericCubeBlockDesign(
 				plugin, 
 				plugin.getCustomsManager().customBlockTexture, 
+				new int[] { 0, 0, 0, 0, 0, 1 }
+			)
+		);
+		//ints are { bottom, north, ?, ?, ?, top }
+		this.plugin = plugin;
+	}
+	public BlockPrototypeJukebox(JukeBukkit plugin, Texture texture)
+	{
+		super(
+			plugin, 
+			"Prototype Jukebox rev. A",
+			new GenericCubeBlockDesign(
+				plugin, 
+				texture, 
 				new int[] { 0, 0, 0, 0, 0, 1 }
 			)
 		);

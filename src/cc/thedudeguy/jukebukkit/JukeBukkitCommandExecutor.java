@@ -27,6 +27,8 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.material.CustomItem;
 
+import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
+
 /**
  * Command Executor for JukeBukkit.
  * @author Chris Churchwell

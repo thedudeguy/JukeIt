@@ -26,6 +26,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
+import org.getspout.spoutapi.block.design.Texture;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericLabel;
@@ -36,14 +37,17 @@ import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.block.GenericCubeCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import cc.thedudeguy.jukebukkit.items.ItemBlankObsidyisc;
+import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
+
+
 /**
  * The Prototype Disc Burner. Basic Custom Block in which I can expand with.
  * @author Chris Churchwell
  */
 public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 
-	private JukeBukkit plugin;
-	
+	public JukeBukkit plugin;
 	
 	/**
 	 * Construct
@@ -57,6 +61,20 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			new GenericCubeBlockDesign(
 				plugin, 
 				plugin.getCustomsManager().customBlockTexture, 
+				new int[] { 2, 3, 3, 4, 3, 2 }
+			)
+		);
+		//int faces => { bottom, north, ?, south (should default for inventory faceing), ?, top}
+		this.plugin = plugin;
+	}
+	public BlockPrototypeBurner(JukeBukkit plugin, Texture texture)
+	{
+		super(
+			plugin, 
+			"Prototype Burner rev. A", 
+			new GenericCubeBlockDesign(
+				plugin, 
+				texture, 
 				new int[] { 2, 3, 3, 4, 3, 2 }
 			)
 		);

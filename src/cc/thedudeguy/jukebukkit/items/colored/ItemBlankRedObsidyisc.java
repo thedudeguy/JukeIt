@@ -1,4 +1,8 @@
-package cc.thedudeguy.jukebukkit;
+package cc.thedudeguy.jukebukkit.items.colored;
+
+import cc.thedudeguy.jukebukkit.CustomsManager;
+import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.items.ItemBlankObsidyisc;
 
 public class ItemBlankRedObsidyisc extends ItemBlankObsidyisc {
 

@@ -14,9 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
-package cc.thedudeguy.jukebukkit;
+package cc.thedudeguy.jukebukkit.items;
 
 import org.getspout.spoutapi.material.item.GenericCustomItem;
+
+import cc.thedudeguy.jukebukkit.CustomsManager;
+import cc.thedudeguy.jukebukkit.DiscsManager;
+import cc.thedudeguy.jukebukkit.JukeBukkit;
 
 /**
  * Custom Item representing a Music Disc that has already been burned.
