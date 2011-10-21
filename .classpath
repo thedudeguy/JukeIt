@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/dev/bukkit/941/bukkit-0.0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="C:/dev/spout/246/SpoutAPI.jar"/>
+	<classpathentry kind="lib" path="C:/dev/bukkitapi/951/bukkit-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/dev/spoutapi/246/SpoutAPI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
