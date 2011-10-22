@@ -47,22 +47,137 @@ public class ItemBurnedObsidyisc extends GenericCustomItem {
 	{
 		super(plugin, key);
 		this.setName(name);
-		if (color == DiscsManager.RED)
+		
+		if (color == DiscsManager.BLACK)
 		{
+			this.setTexture(CustomsManager.TEXTURE_URL_BLACK_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.RED) {
 			this.setTexture(CustomsManager.TEXTURE_URL_RED_DISC_BURNED);
-		} else {
+		} 
+		else if (color == DiscsManager.GREEN)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_GREEN_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.BROWN)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_BROWN_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.BLUE)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_BLUE_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.PURPLE)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_PURPLE_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.CYAN)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_CYAN_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.LIGHTGRAY)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_LIGHTGRAY_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.GRAY)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_GRAY_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.PINK)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_PINK_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.LIME)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_LIME_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.YELLOW)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_YELLOW_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.LIGHTBLUE)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_LIGHTBLUE_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.MAGENTA)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_MAGENTA_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.ORANGE)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_ORANGE_DISC_BURNED);
+		} 
+		else {
 			this.setTexture(CustomsManager.TEXTURE_URL_WHITE_DISC_BURNED);
 		}
+		
 	}
 	
 	public ItemBurnedObsidyisc(JukeBukkit plugin, String key, int color)
 	{
 		super(plugin, key);
 		this.setName("Burned Obsidyisc");
-		if (color == DiscsManager.RED)
+		
+		if (color == DiscsManager.BLACK)
 		{
+			this.setTexture(CustomsManager.TEXTURE_URL_BLACK_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.RED) {
 			this.setTexture(CustomsManager.TEXTURE_URL_RED_DISC_BURNED);
-		} else {
+		} 
+		else if (color == DiscsManager.GREEN)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_GREEN_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.BROWN)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_BROWN_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.BLUE)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_BLUE_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.PURPLE)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_PURPLE_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.CYAN)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_CYAN_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.LIGHTGRAY)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_LIGHTGRAY_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.GRAY)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_GRAY_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.PINK)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_PINK_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.LIME)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_LIME_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.YELLOW)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_YELLOW_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.LIGHTBLUE)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_LIGHTBLUE_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.MAGENTA)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_MAGENTA_DISC_BURNED);
+		} 
+		else if (color == DiscsManager.ORANGE)
+		{
+			this.setTexture(CustomsManager.TEXTURE_URL_ORANGE_DISC_BURNED);
+		} 
+		else {
 			this.setTexture(CustomsManager.TEXTURE_URL_WHITE_DISC_BURNED);
 		}
 	}

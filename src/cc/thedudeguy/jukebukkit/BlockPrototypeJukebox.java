@@ -146,8 +146,10 @@ public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 			//create the disc from the id.
 			int discId = plugin.getJukeBoxManager().getDisc(locationKey);
 			
+			int color = plugin.getDiscsManager().getColor(discId);
+			plugin.log.info("Color: " + String.valueOf(color));
 			//spawn disc
-			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId), plugin.getDiscsManager().getColor(discId));
+			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId), color);
 			ItemStack iss = SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
 			location.setY(location.getY()+1);
 			location.getWorld().dropItem(location, iss);
