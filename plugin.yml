@@ -1,7 +1,7 @@
 name: JukeBukkit
 main: cc.thedudeguy.jukebukkit.JukeBukkit
-version: 1.1
-description: Allows you to "Burn" new music onto Music Discs (Obsidyiscs) and play them in Jukeboxes.
+version: 1.2
+description: Burn music on disc (Obsidyiscs) and play them in many different types of jukeboxes.
 author: Chris Churchwell (thedudeguy)
 website: http://dev.bukkit.org/server-mods/jukebukkit/
 depend: [Spout]
