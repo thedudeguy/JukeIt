@@ -62,6 +62,14 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 		}
 		public void onButtonClick(ButtonClickEvent event) 
 		{
+			//delete a paper from the hand.
+			ItemStack inHand = event.getPlayer().getItemInHand();
+			if (inHand.getAmount()<2) {
+				event.getPlayer().setItemInHand(null);
+			} else {
+				inHand.setAmount(inHand.getAmount()-1);
+			}		
+			
 			//give the label to the player.
 			if (!input.getText().equals(""))
 			{
