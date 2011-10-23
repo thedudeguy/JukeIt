@@ -48,15 +48,18 @@ public class JukeBukkit extends JavaPlugin {
 	{	
 		//load the textures and precaches
 		customsManager = new CustomsManager(this);
-				
 		//load the disc manager so that it can be used throughout
 		discsManager = new DiscsManager(this);
-		//reinit the discs to fix a reload/restart bug
-		discsManager.reInitDiscs();
 		//initialize the jukebox manager
 		jukeBoxManager = new JukeBoxManager(this);
 		//initialize the label manager
 		labelManager = new LabelManager(this);
+		
+		customsManager.createCustomTextures();
+		customsManager.createCustomItems();
+		customsManager.createCustomBlocks();
+		customsManager.createRecipes();
+		discsManager.reInitDiscs();
 		
 		//TODO: Cleanup no longer used item ids for lables, and discs
 		

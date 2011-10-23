@@ -37,6 +37,10 @@ import cc.thedudeguy.jukebukkit.items.colored.ItemBlankPinkObsidyisc;
 import cc.thedudeguy.jukebukkit.items.colored.ItemBlankPurpleObsidyisc;
 import cc.thedudeguy.jukebukkit.items.colored.ItemBlankRedObsidyisc;
 import cc.thedudeguy.jukebukkit.items.colored.ItemBlankYellowObsidyisc;
+import cc.thedudeguy.jukebukkit.jukebox.custom.JukeboxLongRange;
+import cc.thedudeguy.jukebukkit.jukebox.custom.JukeboxLowRange;
+import cc.thedudeguy.jukebukkit.jukebox.custom.JukeboxMaxRange;
+import cc.thedudeguy.jukebukkit.jukebox.custom.JukeboxMidRange;
 
 /**
  * Handles all of the custom items/blocks such as URL's to textures sounds, and block designs and textures.
@@ -86,7 +90,7 @@ public class CustomsManager {
 	
 	public static final String TEXTURE_URL_LABEL = "http://dev.bukkit.org/media/attachments/21/204/label.png";
 	
-	public static final String TEXTURE_URL_BLOCKS = "http://dev.bukkit.org/media/attachments/21/205/customblocks.png";
+	public static final String TEXTURE_URL_BLOCKS = "http://dev.bukkit.org/media/attachments/21/413/customblocksv2.png";
 	
 	//public static final String TEXTURE_URL_GUI_PAPER = "http://chrischurchwell.com/minecraft/paper.png";
 	
@@ -96,8 +100,18 @@ public class CustomsManager {
 	
 	public Texture customBlockTexture;
 	
-	public Texture prototypeJukeboxTexture;
-	public Texture prototypeBurnerTexture;
+	//public Texture prototypeJukeboxTexture;
+	//public Texture prototypeBurnerTexture;
+	
+	//custom blocks.
+	BlockPrototypeJukebox jukeboxPrototype;
+	BlockPrototypeBurner prototypeBurner;
+	JukeboxLowRange jukeboxLowRange;
+	JukeboxMidRange jukeboxMidRange;
+	JukeboxLongRange jukeboxLongRange;
+	JukeboxMaxRange jukeboxMaxRange;
+	
+	//custom items.
 	
 	public CustomsManager(JukeBukkit plugin)
 	{
@@ -106,14 +120,30 @@ public class CustomsManager {
 		//load item id's
 		//WHITE_DISC = new ItemBlankObsidyisc(plugin).getCustomId();
 		
-		customBlockTexture = new Texture(this.plugin, TEXTURE_URL_BLOCKS, 256, 256, 16);
-		
 		//client preloads
-		setPreCaches();	
-		setRecipes();
+		setPreCaches();
 	}
 	
-	private void setPreCaches()
+	public void createCustomTextures()
+	{
+		customBlockTexture = new Texture(this.plugin, TEXTURE_URL_BLOCKS, 256, 256, 16);
+	}
+	public void createCustomItems()
+	{
+		
+	}
+	public void createCustomBlocks()
+	{
+		//initialize the custom blocks...
+		jukeboxPrototype = new BlockPrototypeJukebox(plugin, customBlockTexture);
+		jukeboxLowRange = new JukeboxLowRange(plugin, customBlockTexture);
+		jukeboxMidRange = new JukeboxMidRange(plugin, customBlockTexture);
+		jukeboxLongRange = new JukeboxLongRange(plugin, customBlockTexture);
+		jukeboxMaxRange = new JukeboxMaxRange(plugin, customBlockTexture);
+		prototypeBurner = new BlockPrototypeBurner(plugin, customBlockTexture);
+		
+	}
+	public void setPreCaches()
 	{
 		SpoutManager.getFileManager().addToPreLoginCache(plugin, TEXTURE_URL_WHITE_DISC);
 		SpoutManager.getFileManager().addToPreLoginCache(plugin, TEXTURE_URL_RED_DISC);
@@ -158,24 +188,66 @@ public class CustomsManager {
 		SpoutManager.getFileManager().addToPreLoginCache(plugin, SF_JUKEBOX_ERROR);
 	}
 	
-	public void setRecipes()
+	public void createRecipes()
 	{
 		
 		///////////////////////
 		// Prototype Jukebox //
 		///////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new BlockPrototypeJukebox(plugin, customBlockTexture), 1) )
+				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxPrototype, 1) )
 				.shape("jn")
 				.setIngredient('j', MaterialData.jukebox)
 				.setIngredient('n', MaterialData.noteblock)
 				);
 		
+		///////////////////////
+		// Low Range Jukebox //
+		///////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxLowRange, 1) )
+			.shape("www", "wjw", "www")
+			.setIngredient('j', jukeboxPrototype)
+			.setIngredient('w', MaterialData.wood)
+			);
+		
+		///////////////////////
+		// Mid Range Jukebox //
+		///////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxMidRange, 1) )
+			.shape("www", "njn", "www")
+			.setIngredient('j', jukeboxLowRange)
+			.setIngredient('w', MaterialData.wood)
+			.setIngredient('n', MaterialData.noteblock)
+			);
+		
+		///////////////////////
+		// Long Range Jukebox //
+		///////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxLongRange, 1) )
+			.shape("wnw", "njn", "wnw")
+			.setIngredient('j', jukeboxMidRange)
+			.setIngredient('w', MaterialData.wood)
+			.setIngredient('n', MaterialData.noteblock)
+			);
+		
+		///////////////////////
+		// Max Range Jukebox //
+		///////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxMaxRange, 1) )
+			.shape("nnn", "njn", "nnn")
+			.setIngredient('j', jukeboxLongRange)
+			.setIngredient('n', MaterialData.noteblock)
+			);
+		
 		//////////////////////
 		// Prototype Burner //
 		//////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new BlockPrototypeBurner(this.plugin, customBlockTexture), 1) )
+				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(prototypeBurner, 1) )
 				.shape("jf")
 				.setIngredient('j', MaterialData.jukebox)
 				.setIngredient('f', MaterialData.furnace)

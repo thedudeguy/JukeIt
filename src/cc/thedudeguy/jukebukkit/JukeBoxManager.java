@@ -64,6 +64,17 @@ public class JukeBoxManager {
 		return false;
 	}
 	
+	public Boolean hasDisc(Location location)
+	{
+		String locationKey = createLocationKey(location);
+		if (jukeConfig.getKeys().contains(locationKey))
+		{
+			if (getDisc(locationKey) == 0) return false;
+			return true;
+		}
+		return false;
+	}
+	
 	public int getDisc(String locationKey)
 	{
 		return jukeConfig.getInt(locationKey, 0);

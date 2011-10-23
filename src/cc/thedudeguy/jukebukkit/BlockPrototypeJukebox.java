@@ -34,13 +34,13 @@ import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
 /**
  * Prototype Jukebox. The Base Custom Disc player. Short range. A model in which I can build from.
  * @author Chris Churchwell
- *
+ * @deprecated
  */
 public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 {
 
 	public JukeBukkit plugin;
-	private int range = 10;
+	private int range = 7;
 	
 	public BlockPrototypeJukebox(JukeBukkit plugin)
 	{
@@ -217,8 +217,8 @@ public class BlockPrototypeJukebox extends GenericCubeCustomBlock
 		if (plugin.getJukeBoxManager().hasDisc(locationKey))
 		{
 			int discId = plugin.getJukeBoxManager().getDisc(locationKey);
-			
-			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId));
+			int color = plugin.getDiscsManager().getColor(discId);
+			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId), color);
 			ItemStack iss = SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
 			location.getWorld().dropItem(location, iss);
 			
