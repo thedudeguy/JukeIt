@@ -19,7 +19,6 @@ package cc.thedudeguy.jukebukkit;
 import org.bukkit.event.Event.Result;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.inventory.InventoryClickEvent;
-import org.getspout.spoutapi.event.inventory.InventoryCraftEvent;
 import org.getspout.spoutapi.event.inventory.InventoryListener;
 import org.getspout.spoutapi.material.CustomItem;
 
