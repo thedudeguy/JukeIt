@@ -25,7 +25,7 @@ public class JukeboxBasic extends JukeboxBlock {
 			"Basic Jukebox",
 			new GenericCubeBlockDesign(
 				plugin, 
-				plugin.getCustomsManager().customBlockTexture, 
+				plugin.getCustomsManager().getCustomBlockTexture(), 
 				new int[] { 0, 0, 0, 0, 0, 1 }
 			)
 		);

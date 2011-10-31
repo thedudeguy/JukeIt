@@ -25,7 +25,7 @@ public class JukeboxMaxRange extends JukeboxBlock {
 			"Max Range Jukebox",
 			new GenericCubeBlockDesign(
 				plugin, 
-				plugin.getCustomsManager().customBlockTexture, 
+				plugin.getCustomsManager().getCustomBlockTexture(), 
 				new int[] { 0, 8, 8, 8, 8, 1 }
 			)
 		);

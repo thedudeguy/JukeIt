@@ -48,6 +48,8 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 
 	public JukeBukkit plugin;
 	
+	public GenericCubeBlockDesign blockDesign;
+	
 	/**
 	 * Construct
 	 * @param JukeBukkit plugin - JukeBukkit instance
@@ -59,10 +61,11 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			"Prototype Burner rev. A", 
 			new GenericCubeBlockDesign(
 				plugin, 
-				plugin.getCustomsManager().customBlockTexture, 
+				plugin.getCustomsManager().getCustomBlockTexture(), 
 				new int[] { 2, 3, 3, 4, 3, 2 }
 			)
 		);
+		
 		//int faces => { bottom, north, ?, south (should default for inventory faceing), ?, top}
 		this.plugin = plugin;
 	}

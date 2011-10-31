@@ -25,7 +25,7 @@ public class JukeboxLongRange extends JukeboxBlock {
 			"Long Range Jukebox",
 			new GenericCubeBlockDesign(
 				plugin, 
-				plugin.getCustomsManager().customBlockTexture, 
+				plugin.getCustomsManager().getCustomBlockTexture(), 
 				new int[] { 0, 7, 7, 7, 7, 1 }
 			)
 		);

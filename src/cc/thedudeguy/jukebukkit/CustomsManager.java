@@ -99,7 +99,7 @@ public class CustomsManager {
 	//public static int WHITE_DISC;
 	//public static int PROTOTYPE_JUKEBOX;
 	
-	public Texture customBlockTexture;
+	public static Texture customBlockTexture;
 	
 	//public Texture prototypeJukeboxTexture;
 	//public Texture prototypeBurnerTexture;
@@ -125,10 +125,17 @@ public class CustomsManager {
 		setPreCaches();
 	}
 	
+	public Texture getCustomBlockTexture()
+	{
+		return customBlockTexture;
+	}
+	
+	
 	public void createCustomTextures()
 	{
 		customBlockTexture = new Texture(this.plugin, TEXTURE_URL_BLOCKS, 256, 256, 16);
 	}
+	
 	public void createCustomItems()
 	{
 		

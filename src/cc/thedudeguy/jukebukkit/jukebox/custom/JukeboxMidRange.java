@@ -25,7 +25,7 @@ public class JukeboxMidRange extends JukeboxBlock {
 			"Mid Range Jukebox",
 			new GenericCubeBlockDesign(
 				plugin, 
-				plugin.getCustomsManager().customBlockTexture, 
+				plugin.getCustomsManager().getCustomBlockTexture(), 
 				new int[] { 0, 6, 6, 6, 6, 1 }
 			)
 		);
