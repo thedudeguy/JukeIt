@@ -17,9 +17,11 @@
 package cc.thedudeguy.jukebukkit;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.bukkit.Location;
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  * Handles the Flatfile storage, loading, and saving of persistant data representing jukeboxes placed in the world
@@ -29,24 +31,29 @@ import org.bukkit.util.config.Configuration;
  */
 public class JukeBoxManager {
 	
-	private JukeBukkit plugin;
-	private Configuration jukeConfig;
+	//private JukeBukkit plugin;
+	private FileConfiguration jukeConfig;
+	private File configFile;
 	
 	public JukeBoxManager(JukeBukkit plugin)
 	{
-		this.plugin = plugin;
-		jukeConfig = new Configuration(new File(plugin.getDataFolder(), "jukeboxes.yml"));
-		load();
-	}
-	
-	public void load()
-	{
-		jukeConfig.load();
+		//this.plugin = plugin;
+		
+		//load the file
+		configFile = new File(plugin.getDataFolder(), "jukeboxes.yml");
+				
+		//load the config.
+		jukeConfig = YamlConfiguration.loadConfiguration(configFile);
 	}
 	
 	public void save()
 	{
-		jukeConfig.save();
+		try {
+			jukeConfig.save(configFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block - error writing to file
+			e.printStackTrace();
+		}
 	}
 	
 	public String createLocationKey(Location location)
@@ -56,7 +63,7 @@ public class JukeBoxManager {
 	
 	public Boolean hasDisc(String locationKey)
 	{
-		if (jukeConfig.getKeys().contains(locationKey))
+		if (jukeConfig.contains(locationKey))
 		{
 			if (getDisc(locationKey) == 0) return false;
 			return true;
@@ -67,7 +74,7 @@ public class JukeBoxManager {
 	public Boolean hasDisc(Location location)
 	{
 		String locationKey = createLocationKey(location);
-		if (jukeConfig.getKeys().contains(locationKey))
+		if (jukeConfig.contains(locationKey))
 		{
 			if (getDisc(locationKey) == 0) return false;
 			return true;
@@ -82,13 +89,14 @@ public class JukeBoxManager {
 	
 	public void insertDisc(String locationKey, int discId)
 	{
-		jukeConfig.setProperty(locationKey, discId);
+		jukeConfig.set(locationKey, discId);
 		save();
 	}
 	
 	public void removeDisc(String locationKey)
 	{
-		jukeConfig.removeProperty(locationKey);
+		//set to null could still be bugged in 1337? it was fixed at some point, could have been after 1337.
+		jukeConfig.set(locationKey, null);
 		save();
 	}
 	

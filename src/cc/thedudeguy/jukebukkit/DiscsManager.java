@@ -17,9 +17,12 @@
 package cc.thedudeguy.jukebukkit;
 
 import java.io.File;
-import java.util.List;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
 
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.getspout.spoutapi.material.CustomItem;
 
 import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
@@ -47,7 +50,8 @@ import cc.thedudeguy.jukebukkit.items.colored.ItemBlankYellowObsidyisc;
 public class DiscsManager {
 	
 	private JukeBukkit plugin;
-	private Configuration discsConfig;
+	private FileConfiguration  discsConfig;
+	private File configFile;
 	
 	public static final int BLACK = 15;
 	public static final int RED = 1;
@@ -70,10 +74,11 @@ public class DiscsManager {
 	{
 		this.plugin = plugin;
 		
-		//load the config.
-		discsConfig = new Configuration(new File(plugin.getDataFolder(), "discs.yml"));
+		//load the file
+		configFile = new File(plugin.getDataFolder(), "discs.yml");
 		
-		load();
+		//load the config.
+		discsConfig = YamlConfiguration.loadConfiguration(configFile);
 	}
 	
 	/**
@@ -81,52 +86,55 @@ public class DiscsManager {
 	 */
 	public void reInitDiscs()
 	{
-		List<String> keys = discsConfig.getKeys();
-		for(int i = 0, n = keys.size(); i < n; i++) {
-	        String key = keys.get(i);
-	        
-	        String dkey = discsConfig.getString(key+".key", "");
-	        String dtitle = discsConfig.getString(key+".title", "");
-	        int dcolor = discsConfig.getInt(key+".color", 0);
-	        new ItemBurnedObsidyisc(plugin, dkey, dtitle, dcolor);
-	    }
+		
+		Set<String> keys = discsConfig.getKeys(false);
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
+		    // Get element
+		    String key = it.next();
+		    String dkey = discsConfig.getString(key+".key", "");
+		    String dtitle = discsConfig.getString(key+".title", "");
+		    int dcolor = discsConfig.getInt(key+".color", 0);
+		    new ItemBurnedObsidyisc(plugin, dkey, dtitle, dcolor);
+		}
 	}
 	
-	public void load()
-	{
-		discsConfig.load();
-	}
 	
 	public void save()
 	{
-		discsConfig.save();
+		try {
+			discsConfig.save(configFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block - error while saving to file
+			e.printStackTrace();
+		}
 	}
 	
 	public void add(int discId)
 	{
-		discsConfig.setProperty(String.valueOf(discId)+".url", "");
-		discsConfig.setProperty(String.valueOf(discId)+".title", "");
+		discsConfig.set(String.valueOf(discId)+".url", "");
+		discsConfig.set(String.valueOf(discId)+".title", "");
 	}
 	public void setUrl(int discId, String url)
 	{
-		discsConfig.setProperty(String.valueOf(discId)+".url", url);
+		discsConfig.set(String.valueOf(discId)+".url", url);
 	}
 	public void setTitle(int discId, String title)
 	{
-		discsConfig.setProperty(String.valueOf(discId)+".title", title);
+		discsConfig.set(String.valueOf(discId)+".title", title);
 	}
 	public void setKey(int discId, String key)
 	{
-		discsConfig.setProperty(String.valueOf(discId)+".key", key);
+		discsConfig.set(String.valueOf(discId)+".key", key);
 	}
 	public void setColor(int discId, int color)
 	{
-		discsConfig.setProperty(String.valueOf(discId)+".color", color);
+		discsConfig.set(String.valueOf(discId)+".color", color);
 	}
 	
 	public Boolean hasDiscId(int discId)
 	{
-		if (discsConfig.getKeys().contains(String.valueOf(discId))) 
+		if (discsConfig.contains(String.valueOf(discId)))
 		{
 			return true;
 		}

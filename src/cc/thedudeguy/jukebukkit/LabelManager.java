@@ -17,10 +17,13 @@
 package cc.thedudeguy.jukebukkit;
 
 import java.io.File;
-import java.util.List;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.config.Configuration;
 import org.getspout.spoutapi.SpoutManager;
 
 import cc.thedudeguy.jukebukkit.items.ItemLabel;
@@ -33,16 +36,19 @@ import cc.thedudeguy.jukebukkit.items.ItemLabel;
 public class LabelManager {
 
 	JukeBukkit plugin;
-	private Configuration labelConfig;
+	private FileConfiguration labelConfig;
+	private File configFile;
 	
 	public LabelManager(JukeBukkit plugin)
 	{
 		this.plugin = plugin;
 		
+		//load the file
+		configFile = new File(plugin.getDataFolder(), "labels.yml");
+						
 		//load the config.
-		labelConfig = new Configuration(new File(plugin.getDataFolder(), "labels.yml"));
-		load();
-		
+		labelConfig = YamlConfiguration.loadConfiguration(configFile);
+				
 		init();
 	}
 	
@@ -53,23 +59,25 @@ public class LabelManager {
 	 */
 	public void init()
 	{
-		List<String> keys = labelConfig.getKeys();
-		for(int i = 0, n = keys.size(); i < n; i++) {
-	        String key = keys.get(i);
-	        
-	        String label = labelConfig.getString(key);
-	        new ItemLabel(plugin, label);
-	    }
-	}
-	
-	public void load()
-	{
-		labelConfig.load();
+		Set<String> keys = labelConfig.getKeys(false);
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
+		    // Get element
+		    String key = it.next();
+		    
+		    String label = labelConfig.getString(key);
+		    new ItemLabel(plugin, label);
+		}
 	}
 	
 	public void save()
 	{
-		labelConfig.save();
+		try {
+			labelConfig.save(configFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block - error writing to file
+			e.printStackTrace();
+		}
 	}
 	
 	public ItemStack create(String label)
@@ -85,7 +93,7 @@ public class LabelManager {
 	
 	public void set(int labelId, String label)
 	{
-		labelConfig.setProperty(String.valueOf(labelId), label);
+		labelConfig.set(String.valueOf(labelId), label);
 		save();
 	}
 	public String get(int labelId)
@@ -94,12 +102,13 @@ public class LabelManager {
 	}
 	public void remove(int labelId)
 	{
-		labelConfig.removeProperty(String.valueOf(labelId));
+		//possible bukkit bug with set to null?
+		labelConfig.set(String.valueOf(labelId), null);
 		save();
 	}
 	public Boolean hasLabel(int labelId)
 	{
-		if (labelConfig.getKeys().contains(String.valueOf(labelId))) 
+		if (labelConfig.contains(String.valueOf(labelId))) 
 		{
 			return true;
 		}
