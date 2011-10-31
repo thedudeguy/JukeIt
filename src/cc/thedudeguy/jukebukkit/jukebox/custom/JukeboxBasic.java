@@ -11,36 +11,36 @@ import cc.thedudeguy.jukebukkit.CustomsManager;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.jukebox.JukeboxBlock;
 
-public class JukeboxLowRange extends JukeboxBlock {
+public class JukeboxBasic extends JukeboxBlock {
 	
-	public final String name = "Low Range Jukebox";
-	private final int range = 11;
+	public final String name = "Basic Jukebox";
+	private final int range = 7;
 	
 	private JukeBukkit plugin;
 	
-	public JukeboxLowRange(JukeBukkit plugin)
+	public JukeboxBasic(JukeBukkit plugin)
 	{
 		super(
 			plugin, 
-			"Low Range Jukebox",
+			"Basic Jukebox",
 			new GenericCubeBlockDesign(
 				plugin, 
 				plugin.getCustomsManager().customBlockTexture, 
-				new int[] { 0, 5, 5, 5, 5, 1 }
+				new int[] { 0, 0, 0, 0, 0, 1 }
 			)
 		);
 		//ints are { bottom, north, ?, ?, ?, top }
 		this.plugin = plugin;
 	}
-	public JukeboxLowRange(JukeBukkit plugin, Texture texture)
+	public JukeboxBasic(JukeBukkit plugin, Texture texture)
 	{
 		super(
 			plugin, 
-			"Low Range Jukebox",
+			"Basic Jukebox",
 			new GenericCubeBlockDesign(
 				plugin, 
 				texture, 
-				new int[] { 0, 5, 5, 5, 5, 1 }
+				new int[] { 0, 0, 0, 0, 0, 1 }
 			)
 		);
 		//ints are { bottom, north, ?, ?, ?, top }

@@ -35,21 +35,17 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 		jukeboxManager = plugin.getJukeBoxManager();
 	}
 	
-	@Override
 	public boolean canPlaceBlockAt(World arg0, int arg1, int arg2, int arg3) {
 		//block is placeable.
 		return true;
 	}
 	
-	@Override
 	public boolean canPlaceBlockAt(World arg0, int arg1, int arg2, int arg3, BlockFace arg4) {
 		//placeable anywhere
 		return true;
 	}
 	
-	@Override
-	public boolean isIndirectlyProdivingPowerTo(World arg0, int arg1, int arg2,
-			int arg3, BlockFace arg4) {
+	public boolean isIndirectlyProdivingPowerTo(World arg0, int arg1, int arg2, int arg3, BlockFace arg4) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -187,7 +183,13 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	@Override
+	public boolean isIndirectlyProvidingPowerTo(World arg0, int arg1, int arg2, int arg3, BlockFace arg4) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) {
 		

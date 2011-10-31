@@ -37,6 +37,7 @@ import cc.thedudeguy.jukebukkit.items.colored.ItemBlankPinkObsidyisc;
 import cc.thedudeguy.jukebukkit.items.colored.ItemBlankPurpleObsidyisc;
 import cc.thedudeguy.jukebukkit.items.colored.ItemBlankRedObsidyisc;
 import cc.thedudeguy.jukebukkit.items.colored.ItemBlankYellowObsidyisc;
+import cc.thedudeguy.jukebukkit.jukebox.custom.JukeboxBasic;
 import cc.thedudeguy.jukebukkit.jukebox.custom.JukeboxLongRange;
 import cc.thedudeguy.jukebukkit.jukebox.custom.JukeboxLowRange;
 import cc.thedudeguy.jukebukkit.jukebox.custom.JukeboxMaxRange;
@@ -104,12 +105,12 @@ public class CustomsManager {
 	//public Texture prototypeBurnerTexture;
 	
 	//custom blocks.
-	BlockPrototypeJukebox jukeboxPrototype;
-	BlockPrototypeBurner prototypeBurner;
-	JukeboxLowRange jukeboxLowRange;
-	JukeboxMidRange jukeboxMidRange;
-	JukeboxLongRange jukeboxLongRange;
-	JukeboxMaxRange jukeboxMaxRange;
+	public static BlockPrototypeBurner prototypeBurner;
+	public static JukeboxBasic jukeboxBasic;
+	public static JukeboxLowRange jukeboxLowRange;
+	public static JukeboxMidRange jukeboxMidRange;
+	public static JukeboxLongRange jukeboxLongRange;
+	public static JukeboxMaxRange jukeboxMaxRange;
 	
 	//custom items.
 	
@@ -135,7 +136,7 @@ public class CustomsManager {
 	public void createCustomBlocks()
 	{
 		//initialize the custom blocks...
-		jukeboxPrototype = new BlockPrototypeJukebox(plugin, customBlockTexture);
+		jukeboxBasic = new JukeboxBasic(plugin, customBlockTexture);
 		jukeboxLowRange = new JukeboxLowRange(plugin, customBlockTexture);
 		jukeboxMidRange = new JukeboxMidRange(plugin, customBlockTexture);
 		jukeboxLongRange = new JukeboxLongRange(plugin, customBlockTexture);
@@ -192,10 +193,10 @@ public class CustomsManager {
 	{
 		
 		///////////////////////
-		// Prototype Jukebox //
+		// Basic Jukebox //
 		///////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxPrototype, 1) )
+				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxBasic, 1) )
 				.shape("jn")
 				.setIngredient('j', MaterialData.jukebox)
 				.setIngredient('n', MaterialData.noteblock)
@@ -207,7 +208,7 @@ public class CustomsManager {
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxLowRange, 1) )
 			.shape("www", "wjw", "www")
-			.setIngredient('j', jukeboxPrototype)
+			.setIngredient('j', jukeboxBasic)
 			.setIngredient('w', MaterialData.wood)
 			);
 		

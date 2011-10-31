@@ -262,21 +262,18 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 		*/
 	}
 	
-	@Override
 	public boolean canPlaceBlockAt(World arg0, int arg1, int arg2, int arg3) {
 		//true to place anywhere
 		//plugin.log.info("canPlaceBlockAt 1");
 		return true;
 	}
 
-	@Override
 	public boolean canPlaceBlockAt(World arg0, int arg1, int arg2, int arg3, BlockFace arg4) {
 		//true to place anywhere
 		//plugin.log.info("canPlaceBlockAt 2");
 		return true;
 	}
 	
-	@Override
 	public boolean isIndirectlyProdivingPowerTo(World arg0, int arg1, int arg2, int arg3, BlockFace arg4) {
 		// TODO Auto-generated method stub
 		return false;
@@ -314,6 +311,12 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			int arg4) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public boolean isIndirectlyProvidingPowerTo(World arg0, int arg1, int arg2,
+			int arg3, BlockFace arg4) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
