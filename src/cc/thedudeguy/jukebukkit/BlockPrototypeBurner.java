@@ -32,7 +32,6 @@ import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
-import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.block.GenericCubeCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -150,7 +149,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	@Override
 	public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
 		
-		//plugin.log.info("onBlockInteract");
+		plugin.log.info("onBlockInteract");
 		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		ItemStack inHand = player.getItemInHand();
@@ -161,23 +160,18 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			CustomItem customInHand = SpoutManager.getMaterialManager().getCustomItem(inHand);
 			if (customInHand instanceof ItemBlankObsidyisc)
 			{
+				SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_START, false, location, 3);
+				
 				GenericPopup burnPopup = new GenericPopup();
 				
-				burnPopup.setBgVisible(true);
-				burnPopup.setAnchor(WidgetAnchor.CENTER_CENTER);
-				
-				GenericLabel label = new GenericLabel("Disc Burner");
-				burnPopup.attachWidget(plugin, label); //The plugin part does setVisible and setDirty automatically.
+				GenericLabel popupTitle = new GenericLabel("Disc Burner");
+				burnPopup.attachWidget(plugin, popupTitle);
 				
 				GenericLabel urlLabel = new GenericLabel("URL:");
 				urlLabel.setY(15);
 				burnPopup.attachWidget(plugin, urlLabel);
 				
 				GenericTextField urlInput = new GenericTextField();
-				//textfield.setText("URL"); //The default text
-				//textfield.setCursorPosition(3); //Puts the cursor on the third spot
-				//textfield.setFieldColor(new Color(1.0F, 1.0F, 1.0F, 1.0F)); //Makes the text-entry area white
-				//textfield.setBorderColor(new Color(0, 0, 0, 1.0F)); //Makes the border black
 				urlInput.setMaximumCharacters(500);
 				urlInput.setHeight(100).setWidth(200);
 				urlInput.setY(15);
@@ -193,31 +187,29 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 				
 				player.getMainScreen().attachPopupScreen(burnPopup);
 				
-				SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_START, false, location, 3);
 				return true;
 			}
-			/*
-			if (!discInHand.getName().equalsIgnoreCase("White Recordable Disc"))		
-			{
-				player.sendMessage("Must hold a Blank Recordable Disc in your hand.");
-				return true;
-			}
-			*/
 		}
 		
 		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_ERROR, false, location, 3);
-		return true;
 		
+		return true;
 	}
 	
 	@Override
 	public void onBlockPlace(World arg0, int arg1, int arg2, int arg3) {
+		
+		plugin.log.info("onBlockPlace No Entity");
+		
 		// TODO Auto-generated method stub
 		//plugin.log.info("onBlockPlace 1");
 	}
 
 	@Override
 	public void onBlockPlace(World world, int x, int y, int z, LivingEntity entity) {
+		
+		plugin.log.info("onBlockInteract Living Entity");
+		
 		//find which way the player is facing...
 		//plugin.log.info("onBlockPlace 2");
 		/*
@@ -287,8 +279,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	}
 
 	@Override
-	public void onBlockClicked(World arg0, int arg1, int arg2, int arg3,
-			SpoutPlayer arg4) {
+	public void onBlockClicked(World arg0, int arg1, int arg2, int arg3, SpoutPlayer arg4) {
 		// TODO Auto-generated method stub
 		
 	}
