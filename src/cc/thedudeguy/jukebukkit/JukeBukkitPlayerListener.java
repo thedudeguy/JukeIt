@@ -97,9 +97,6 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 				
 				//punching air while holding a blank peice of paper.
 				GenericPopup labelPopup = new GenericPopup();
-				labelPopup.setAnchor(WidgetAnchor.CENTER_CENTER);
-				labelPopup.setWidth(128).setWidth(64);
-				labelPopup.setBgVisible(true);
 				
 				GenericLabel label = new GenericLabel();
 				label.setText("Write Label");
