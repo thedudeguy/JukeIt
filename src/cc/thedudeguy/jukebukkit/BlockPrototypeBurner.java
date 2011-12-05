@@ -32,6 +32,7 @@ import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.block.GenericCubeCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -112,10 +113,21 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			
 	       
 	        SpoutPlayer player = event.getPlayer();
-	        ItemStack inHand = player.getItemInHand();
+	        
+	        if (player.getItemInHand() == null) {
+	        	return;
+	        }
+	        
+	        SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
+	        
+	        if (!(inHand.getMaterial() instanceof CustomItem)) {
+	        	return;
+	        }
+	        
+	        CustomItem disk = (CustomItem)inHand.getMaterial();
 	        
 	        //whats the color of the disc in hand?
-	        int color = plugin.getDiscsManager().findDiscColor(SpoutManager.getMaterialManager().getCustomItem(inHand));
+	        int color = plugin.getDiscsManager().findDiscColor(disk);
 	        
 	        //remove 1 from hand
 			if (inHand.getAmount()<2)
@@ -130,7 +142,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			//create the physical disc for the pplayer
 			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, key, color);
 			
-			ItemStack iss = SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
+			ItemStack iss = new SpoutItemStack(disc, 1);
 			location.setY(location.getY()+1);
 			location.getWorld().dropItem(location, iss);
 			
@@ -157,10 +169,10 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		ItemStack inHand = player.getItemInHand();
 		
-		if (SpoutManager.getMaterialManager().isCustomItem(inHand))
+		if (inHand != null && (new SpoutItemStack(inHand).isCustomItem()))
 		{
 			//checks if item in hand is white disc.
-			CustomItem customInHand = SpoutManager.getMaterialManager().getCustomItem(inHand);
+			CustomItem customInHand = (CustomItem)new SpoutItemStack(inHand).getMaterial();
 			if (customInHand instanceof ItemBlankObsidyisc)
 			{
 				SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_START, false, location, 3);

@@ -24,7 +24,7 @@ import java.util.Set;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 
 import cc.thedudeguy.jukebukkit.items.ItemLabel;
 
@@ -87,7 +87,7 @@ public class LabelManager {
 		
 		set(labelId, label);
 		
-		ItemStack item = SpoutManager.getMaterialManager().getCustomItemStack(newLabel, 1);
+		ItemStack item = new SpoutItemStack(newLabel, 1);
 		return item;
 	}
 	

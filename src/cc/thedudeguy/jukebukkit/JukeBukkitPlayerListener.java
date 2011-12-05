@@ -28,6 +28,7 @@ import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 /**
@@ -91,7 +92,7 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 					event.useItemInHand() != Result.DENY && 
 					event.getAction() == Action.RIGHT_CLICK_AIR &&  
 					inHand.getType() == Material.PAPER && 
-					!SpoutManager.getMaterialManager().isCustomItem(inHand)
+					!new SpoutItemStack(inHand).isCustomItem()
 				) {
 				
 				//punching air while holding a blank peice of paper.

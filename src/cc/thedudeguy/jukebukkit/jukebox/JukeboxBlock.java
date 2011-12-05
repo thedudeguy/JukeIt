@@ -1,5 +1,7 @@
 package cc.thedudeguy.jukebukkit.jukebox;
 
+import java.io.Serializable;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
@@ -7,7 +9,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -89,7 +93,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 			int color = plugin.getDiscsManager().getColor(discId);
 			
 			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId), color);
-			ItemStack iss = SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
+			ItemStack iss = new SpoutItemStack(disc, 1);
 			location.getWorld().dropItem(location, iss);
 			stopMusic(location);
 		}
@@ -108,7 +112,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 			//jukebox is empty, load
 			ItemStack inHand = player.getItemInHand();
 					
-			if (SpoutManager.getMaterialManager().isCustomItem(inHand))
+			if (new SpoutItemStack(inHand).isCustomItem())
 			{
 				//we know its a custom item, go ahaed and remove 1 from the hand.
 				if (inHand.getAmount()<2) {
@@ -117,7 +121,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 					player.getInventory().getItemInHand().setAmount(player.getInventory().getItemInHand().getAmount()-1);
 				}		
 				
-				CustomItem custom = SpoutManager.getMaterialManager().getCustomItem(inHand);
+				CustomItem custom = (CustomItem) new SpoutItemStack(inHand).getMaterial();
 				//see if its a burned disc.
 				if (plugin.getDiscsManager().hasDiscId(custom.getCustomId())) {
 					
@@ -150,7 +154,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 			int color = plugin.getDiscsManager().getColor(discId);
 			//spawn disc
 			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId), color);
-			ItemStack iss = SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
+			ItemStack iss = new SpoutItemStack(disc, 1);
 			location.setY(location.getY()+1);
 			location.getWorld().dropItem(location, iss);
 					
@@ -196,13 +200,13 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 		if (!canRedstoneActivate()) return;
 		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
-		
-		if (location.getBlock().isBlockPowered()) {
-			
-			if (this.getCustomMetaData() == 0)
+		SpoutBlock block = (SpoutBlock) location.getBlock();
+		if (block.isBlockPowered()) {
+			Serializable data = block.getData("JukeboxBlock.redstone");
+			if (data == null || ((Integer)data) == 0)
 			{
 				//block is currently not powered. //set to powered
-				this.setCustomMetaData(1);
+				block.setData("JukeboxBlock.redstone", 1);
 				
 				//if the jukebox has a disc in it, go ahead and play it.
 				String locationKey = plugin.getJukeBoxManager().createLocationKey(location);
@@ -220,7 +224,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 			} else {
 				//block is currently powered. do nothing.
 				//set power setting back to unpowered
-				this.setCustomMetaData(0);
+				block.setData("JukeboxBlock.redstone", 0);
 			}
 		}
 	}
