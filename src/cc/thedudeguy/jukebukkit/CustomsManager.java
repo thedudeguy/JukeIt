@@ -18,6 +18,7 @@ package cc.thedudeguy.jukebukkit;
 
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.design.Texture;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
 import org.getspout.spoutapi.material.MaterialData;
 
@@ -203,7 +204,7 @@ public class CustomsManager {
 		// Basic Jukebox //
 		///////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxBasic, 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(jukeboxBasic, 1) )
 				.shape("jn")
 				.setIngredient('j', MaterialData.jukebox)
 				.setIngredient('n', MaterialData.noteblock)
@@ -213,7 +214,7 @@ public class CustomsManager {
 		// Low Range Jukebox //
 		///////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxLowRange, 1) )
+			new SpoutShapedRecipe( new SpoutItemStack(jukeboxLowRange, 1) )
 			.shape("www", "wjw", "www")
 			.setIngredient('j', jukeboxBasic)
 			.setIngredient('w', MaterialData.wood)
@@ -223,7 +224,7 @@ public class CustomsManager {
 		// Mid Range Jukebox //
 		///////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxMidRange, 1) )
+			new SpoutShapedRecipe( new SpoutItemStack(jukeboxMidRange, 1) )
 			.shape("www", "njn", "www")
 			.setIngredient('j', jukeboxLowRange)
 			.setIngredient('w', MaterialData.wood)
@@ -234,7 +235,7 @@ public class CustomsManager {
 		// Long Range Jukebox //
 		///////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxLongRange, 1) )
+			new SpoutShapedRecipe( new SpoutItemStack(jukeboxLongRange, 1) )
 			.shape("wnw", "njn", "wnw")
 			.setIngredient('j', jukeboxMidRange)
 			.setIngredient('w', MaterialData.wood)
@@ -245,7 +246,7 @@ public class CustomsManager {
 		// Max Range Jukebox //
 		///////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(jukeboxMaxRange, 1) )
+			new SpoutShapedRecipe( new SpoutItemStack(jukeboxMaxRange, 1) )
 			.shape("nnn", "njn", "nnn")
 			.setIngredient('j', jukeboxLongRange)
 			.setIngredient('n', MaterialData.noteblock)
@@ -255,7 +256,7 @@ public class CustomsManager {
 		// Prototype Burner //
 		//////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(prototypeBurner, 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(prototypeBurner, 1) )
 				.shape("jf")
 				.setIngredient('j', MaterialData.jukebox)
 				.setIngredient('f', MaterialData.furnace)
@@ -265,7 +266,7 @@ public class CustomsManager {
 		// Blank Obsidyisc //
 		/////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankObsidyisc(plugin), 1) )
 				.shape(" o ", "oRo", " o ")
 				.setIngredient('o', MaterialData.obsidian)
 				.setIngredient('R', MaterialData.redstone)
@@ -275,7 +276,7 @@ public class CustomsManager {
 		// Black Blank Obsidyisc //
 		///////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankBlackObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankBlackObsidyisc(plugin), 1) )
 				.shape("d", "o")
 				.setIngredient('d', MaterialData.inkSac)
 				.setIngredient('o', new ItemBlankObsidyisc(plugin))
@@ -285,7 +286,7 @@ public class CustomsManager {
 		// Red Blank Obsidyisc //
 		/////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankRedObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankRedObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.roseRed)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -295,7 +296,7 @@ public class CustomsManager {
 		// Green Blank Obsidyisc //
 		///////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankGreenObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankGreenObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.cactusGreen)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -305,7 +306,7 @@ public class CustomsManager {
 		// Brown Blank Obsidyisc //
 		/////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankBrownObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankBrownObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.cocoaBeans)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -315,7 +316,7 @@ public class CustomsManager {
 		// Blue Blank Obsidyisc //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankBlueObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankBlueObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.lapisLazuli)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -325,7 +326,7 @@ public class CustomsManager {
 		// Purple Blank Obsidyisc //
 		////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankPurpleObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankPurpleObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.purpleDye)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -335,7 +336,7 @@ public class CustomsManager {
 		// Cyan Blank Obsidyisc //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankCyanObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankCyanObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.cyanDye)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -345,7 +346,7 @@ public class CustomsManager {
 		// Light Gray Blank Obsidyisc //
 		////////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankLightGrayObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankLightGrayObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.lightGrayDye)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -355,7 +356,7 @@ public class CustomsManager {
 		// Gray Blank Obsidyisc //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankGrayObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankGrayObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.grayDye)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -365,7 +366,7 @@ public class CustomsManager {
 		// Pink Blank Obsidyisc //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankPinkObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankPinkObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.pinkDye)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -374,7 +375,7 @@ public class CustomsManager {
 		// Lime Blank Obsidyisc //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankLimeObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankLimeObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.limeDye)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -384,7 +385,7 @@ public class CustomsManager {
 		// Yellow Blank Obsidyisc //
 		////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankYellowObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankYellowObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.dandelionYellow)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -393,7 +394,7 @@ public class CustomsManager {
 		// Light Blue Blank Obsidyisc //
 		////////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankLightBlueObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankLightBlueObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.lightBlueDye)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -403,7 +404,7 @@ public class CustomsManager {
 		// Magenta Blank Obsidyisc //
 		/////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankMagentaObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankMagentaObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.magentaDye)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))
@@ -413,7 +414,7 @@ public class CustomsManager {
 		// Orange Blank Obsidyisc //
 		////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( SpoutManager.getMaterialManager().getCustomItemStack(new ItemBlankOrangeObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankOrangeObsidyisc(plugin), 1) )
 				.shape("r", "d")
 				.setIngredient('r', MaterialData.orangeDye)
 				.setIngredient('d', new ItemBlankObsidyisc(plugin))

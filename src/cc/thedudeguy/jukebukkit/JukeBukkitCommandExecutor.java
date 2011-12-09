@@ -24,7 +24,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.CustomItem;
 
 import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
@@ -95,13 +95,13 @@ public class JukeBukkitCommandExecutor implements CommandExecutor{
 			player.sendMessage("Must hold a Burned Disc in your hand.");
 			return true;
 		}
-		if (!SpoutManager.getMaterialManager().isCustomItem(inHand))
+		if (!new SpoutItemStack(inHand).isCustomItem())
 		{
 			player.sendMessage("Must hold a Burned Disc in your hand.");
 			return true;
 		}
 		
-		CustomItem customItem = SpoutManager.getMaterialManager().getCustomItem(inHand);
+		CustomItem customItem = (CustomItem) new SpoutItemStack(inHand).getMaterial();
 		int discId = customItem.getCustomId();
 		
 		if (!plugin.getDiscsManager().hasDiscId(discId))
@@ -136,7 +136,7 @@ public class JukeBukkitCommandExecutor implements CommandExecutor{
 			return true;
 		}
 		player.sendMessage("testing...");
-		if (SpoutManager.getMaterialManager().isCustomItem(inHand))
+		if (new SpoutItemStack(inHand).isCustomItem())
 		{
 			player.sendMessage("itz cushtom");
 			//RecordableMusicDisc md = (RecordableMusicDisc)SpoutManager.getItemManager().getCustomItem(inHand);
@@ -169,13 +169,13 @@ public class JukeBukkitCommandExecutor implements CommandExecutor{
 			return true;
 		}
 		
-		if (!SpoutManager.getMaterialManager().isCustomItem(inHand))
+		if (!new SpoutItemStack(inHand).isCustomItem())
 		{
 			player.sendMessage("Must hold a Blank Recordable Disc in your hand.");
 			return true;
 		}
 		
-		CustomItem discInHand = SpoutManager.getMaterialManager().getCustomItem(inHand);
+		CustomItem discInHand = (CustomItem) new SpoutItemStack(inHand).getMaterial();
 		
 		if (!discInHand.getName().equalsIgnoreCase("White Recordable Disc"))		
 		{
@@ -196,7 +196,7 @@ public class JukeBukkitCommandExecutor implements CommandExecutor{
 		
 		//create the physical disc for the pplayer
 		ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, key);
-		ItemStack iss=SpoutManager.getMaterialManager().getCustomItemStack(disc, 1);
+		ItemStack iss=new SpoutItemStack(disc, 1);
 		player.getInventory().addItem(iss);
 		
 		//create a disc config.

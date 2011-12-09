@@ -17,9 +17,9 @@
 package cc.thedudeguy.jukebukkit;
 
 import org.bukkit.event.Event.Result;
-import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.inventory.InventoryClickEvent;
 import org.getspout.spoutapi.event.inventory.InventoryListener;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.CustomItem;
 
 import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
@@ -55,18 +55,18 @@ public class JukeBukkitInventoryListener extends InventoryListener {
 		if (!event.isLeftClick())
 		{
 			//only if a Label is on the cursor. is it even a custom item?
-			if (event.getCursor() != null && SpoutManager.getMaterialManager().isCustomItem(event.getCursor())) {
+			if (event.getCursor() != null && new SpoutItemStack(event.getCursor()).isCustomItem()) {
 				
-				CustomItem itemOnCursor = SpoutManager.getMaterialManager().getCustomItem(event.getCursor());
+				CustomItem itemOnCursor = (CustomItem) new SpoutItemStack(event.getCursor()).getMaterial();
 				if (itemOnCursor instanceof ItemLabel)
 				{
 					
 					//yep, its a label. let see what were clicking on.
-					if (SpoutManager.getMaterialManager().isCustomItem(event.getItem()))
+					if (new SpoutItemStack(event.getItem()).isCustomItem())
 					{
 						
 						//its custom could be a disc...
-						CustomItem itemClickedOn = SpoutManager.getMaterialManager().getCustomItem(event.getItem());
+						CustomItem itemClickedOn = (CustomItem) new SpoutItemStack(event.getItem()).getMaterial();
 						if ( itemClickedOn instanceof ItemBurnedObsidyisc)
 						{
 							//its a burned disc! we can do stuff to it.
