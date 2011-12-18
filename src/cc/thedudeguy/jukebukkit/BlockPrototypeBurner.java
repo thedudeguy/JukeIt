@@ -113,6 +113,17 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			
 	       
 	        SpoutPlayer player = event.getPlayer();
+			
+			String url = input.getText().trim();
+			
+			if(url == "") {
+					player.sendMessage("The URL cannot be blank. You wouldnt want to waste a disc!");
+					return;
+			} else if (url.contains(".mp3") || url.contains(".m4a") || url.contains(".aac")) {
+					player.sendMessage("Currently only .ogg and .wav formats are supported. Please convert the file to one of those.");
+					return;
+			}
+			
 	        
 	        if (player.getItemInHand() == null) {
 	        	return;
@@ -136,7 +147,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			} else {
 				inHand.setAmount(inHand.getAmount()-1);
 			}
-			
+
 			//create the key
 			String key = UUID.randomUUID().toString();
 			//create the physical disc for the pplayer
@@ -147,7 +158,6 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			location.getWorld().dropItem(location, iss);
 			
 			//set the disc data and save it
-			String url = input.getText();
 			plugin.getDiscsManager().add(disc.getCustomId());
 			plugin.getDiscsManager().setUrl(disc.getCustomId(), url);
 			plugin.getDiscsManager().setTitle(disc.getCustomId(), "Burned Obsidyisc");
@@ -207,7 +217,6 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 		}
 		
 		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_ERROR, false, location, 3);
-		
 		return true;
 	}
 	
@@ -300,8 +309,8 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	}
 
 	@Override
-	public void onBlockDestroyed(World arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
+	public void onBlockDestroyed(World world, int x, int y, int z) {
+		//CustomBlock newblock = new BlockPrototypeBurner(this.plugin);
 		
 	}
 
