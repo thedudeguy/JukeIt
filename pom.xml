@@ -34,13 +34,13 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.1-R1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.getspout</groupId>
-			<artifactId>spoutapi</artifactId>
+			<artifactId>spoutpluginapi</artifactId>
 			<version>dev-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
