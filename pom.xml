@@ -40,7 +40,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.getspout</groupId>
-			<artifactId>spoutapi</artifactId>
+			<artifactId>spoutpluginapi</artifactId>
 			<version>dev-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
