@@ -16,6 +16,11 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.design.Texture;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
@@ -53,57 +58,53 @@ public class CustomsManager {
 	
 	public JukeBukkit plugin;
 	
+	private File textureFile;
+	private FileConfiguration  textureConfig;
+	
 	public static final String SF_JUKEBOX_START = "http://dev.bukkit.org/media/attachments/21/202/jb_startup.wav";
 	public static final String SF_JUKEBOX_ERROR = "http://dev.bukkit.org/media/attachments/21/203/jb_error.wav";
 	
-	public static final String TEXTURE_URL_WHITE_DISC = "http://dev.bukkit.org/media/attachments/21/200/rdisc_white.png";
-	public static final String TEXTURE_URL_RED_DISC = "http://dev.bukkit.org/media/attachments/21/239/rdisc_red.png";
-	public static final String TEXTURE_URL_GREEN_DISC = "http://dev.bukkit.org/media/attachments/21/322/rdisc_green.png";
-	public static final String TEXTURE_URL_BROWN_DISC = "http://dev.bukkit.org/media/attachments/21/319/rdisc_brown.png";
-	public static final String TEXTURE_URL_BLUE_DISC = "http://dev.bukkit.org/media/attachments/21/318/rdisc_blue.png";
-	public static final String TEXTURE_URL_PURPLE_DISC = "http://dev.bukkit.org/media/attachments/21/329/rdisc_purple.png";
-	public static final String TEXTURE_URL_CYAN_DISC = "http://dev.bukkit.org/media/attachments/21/320/rdisc_cyan.png";
-	public static final String TEXTURE_URL_LIGHTGRAY_DISC = "http://dev.bukkit.org/media/attachments/21/324/rdisc_lightgray.png";
-	public static final String TEXTURE_URL_GRAY_DISC = "http://dev.bukkit.org/media/attachments/21/321/rdisc_gray.png";
-	public static final String TEXTURE_URL_PINK_DISC = "http://dev.bukkit.org/media/attachments/21/328/rdisc_pink.png";
-	public static final String TEXTURE_URL_LIME_DISC = "http://dev.bukkit.org/media/attachments/21/325/rdisc_lime.png";
-	public static final String TEXTURE_URL_YELLOW_DISC = "http://dev.bukkit.org/media/attachments/21/330/rdisc_yellow.png";
-	public static final String TEXTURE_URL_LIGHTBLUE_DISC = "http://dev.bukkit.org/media/attachments/21/323/rdisc_lightblue.png";
-	public static final String TEXTURE_URL_MAGENTA_DISC = "http://dev.bukkit.org/media/attachments/21/326/rdisc_magenta.png";
-	public static final String TEXTURE_URL_ORANGE_DISC = "http://dev.bukkit.org/media/attachments/21/327/rdisc_orange.png";
-	public static final String TEXTURE_URL_BLACK_DISC = "http://dev.bukkit.org/media/attachments/21/317/rdisc_black.png";
+	public static String TEXTURE_URL_WHITE_DISC;
+	public static String TEXTURE_URL_RED_DISC;
+	public static String TEXTURE_URL_GREEN_DISC;
+	public static String TEXTURE_URL_BROWN_DISC;
+	public static String TEXTURE_URL_BLUE_DISC;
+	public static String TEXTURE_URL_PURPLE_DISC;
+	public static String TEXTURE_URL_CYAN_DISC;
+	public static String TEXTURE_URL_LIGHTGRAY_DISC;
+	public static String TEXTURE_URL_GRAY_DISC;
+	public static String TEXTURE_URL_PINK_DISC;
+	public static String TEXTURE_URL_LIME_DISC;
+	public static String TEXTURE_URL_YELLOW_DISC;
+	public static String TEXTURE_URL_LIGHTBLUE_DISC;
+	public static String TEXTURE_URL_MAGENTA_DISC;
+	public static String TEXTURE_URL_ORANGE_DISC;
+	public static String TEXTURE_URL_BLACK_DISC;
 	
-	public static final String TEXTURE_URL_WHITE_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/331/rdisc_white_burned.png";
-	public static final String TEXTURE_URL_RED_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/332/rdisc_red_burned.png";
-	public static final String TEXTURE_URL_GREEN_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/338/rdisc_green_burned.png";
-	public static final String TEXTURE_URL_BROWN_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/335/rdisc_brown_burned.png";
-	public static final String TEXTURE_URL_BLUE_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/334/rdisc_blue_burned.png";
-	public static final String TEXTURE_URL_PURPLE_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/345/rdisc_purple_burned.png";
-	public static final String TEXTURE_URL_CYAN_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/336/rdisc_cyan_burned.png";
-	public static final String TEXTURE_URL_LIGHTGRAY_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/340/rdisc_lightgray_burned.png";
-	public static final String TEXTURE_URL_GRAY_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/337/rdisc_gray_burned.png";
-	public static final String TEXTURE_URL_PINK_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/344/rdisc_pink_burned.png";
-	public static final String TEXTURE_URL_LIME_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/341/rdisc_lime_burned.png";
-	public static final String TEXTURE_URL_YELLOW_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/346/rdisc_yellow_burned.png";
-	public static final String TEXTURE_URL_LIGHTBLUE_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/339/rdisc_lightblue_burned.png";
-	public static final String TEXTURE_URL_MAGENTA_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/342/rdisc_magenta_burned.png";
-	public static final String TEXTURE_URL_ORANGE_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/343/rdisc_orange_burned.png";
-	public static final String TEXTURE_URL_BLACK_DISC_BURNED = "http://dev.bukkit.org/media/attachments/21/333/rdisc_black_burned.png";
+	public static String TEXTURE_URL_WHITE_DISC_BURNED;
+	public static String TEXTURE_URL_RED_DISC_BURNED;
+	public static String TEXTURE_URL_GREEN_DISC_BURNED;
+	public static String TEXTURE_URL_BROWN_DISC_BURNED;
+	public static String TEXTURE_URL_BLUE_DISC_BURNED;
+	public static String TEXTURE_URL_PURPLE_DISC_BURNED;
+	public static String TEXTURE_URL_CYAN_DISC_BURNED;
+	public static String TEXTURE_URL_LIGHTGRAY_DISC_BURNED;
+	public static String TEXTURE_URL_GRAY_DISC_BURNED;
+	public static String TEXTURE_URL_PINK_DISC_BURNED;
+	public static String TEXTURE_URL_LIME_DISC_BURNED;
+	public static String TEXTURE_URL_YELLOW_DISC_BURNED;
+	public static String TEXTURE_URL_LIGHTBLUE_DISC_BURNED;
+	public static String TEXTURE_URL_MAGENTA_DISC_BURNED;
+	public static String TEXTURE_URL_ORANGE_DISC_BURNED;
+	public static String TEXTURE_URL_BLACK_DISC_BURNED;
 	
-	public static final String TEXTURE_URL_LABEL = "http://dev.bukkit.org/media/attachments/21/204/label.png";
+	public static String TEXTURE_URL_LABEL;
 	
-	public static final String TEXTURE_URL_BLOCKS = "http://dev.bukkit.org/media/attachments/21/413/customblocksv2.png";
+	public static String TEXTURE_URL_BLOCKS;
 	
 	//public static final String TEXTURE_URL_GUI_PAPER = "http://chrischurchwell.com/minecraft/paper.png";
 	
-	/** Item Block id's **/
-	//public static int WHITE_DISC;
-	//public static int PROTOTYPE_JUKEBOX;
-	
 	public static Texture customBlockTexture;
-	
-	//public Texture prototypeJukeboxTexture;
-	//public Texture prototypeBurnerTexture;
 	
 	//custom blocks.
 	public static BlockPrototypeBurner prototypeBurner;
@@ -119,8 +120,95 @@ public class CustomsManager {
 	{
 		this.plugin = plugin;
 		
-		//load item id's
-		//WHITE_DISC = new ItemBlankObsidyisc(plugin).getCustomId();
+		//load the texture config.
+		textureFile = new File(plugin.getDataFolder(), "textures.yml");
+		textureConfig = YamlConfiguration.loadConfiguration(textureFile);
+		
+		//create any missing configurations in the config file
+		textureConfig.set("texture.blockfaces", textureConfig.getString("texture.blockfaces", "default"));
+		
+		textureConfig.set("texture.discs.blank.white", textureConfig.getString("texture.discs.blank.white", "default"));
+		textureConfig.set("texture.discs.blank.red", textureConfig.getString("texture.discs.blank.red", "default"));
+		textureConfig.set("texture.discs.blank.green", textureConfig.getString("texture.discs.blank.green", "default"));
+		textureConfig.set("texture.discs.blank.brown", textureConfig.getString("texture.discs.blank.brown", "default"));
+		textureConfig.set("texture.discs.blank.blue", textureConfig.getString("texture.discs.blank.blue", "default"));
+		textureConfig.set("texture.discs.blank.purple", textureConfig.getString("texture.discs.blank.purple", "default"));
+		textureConfig.set("texture.discs.blank.cyan", textureConfig.getString("texture.discs.blank.cyan", "default"));
+		textureConfig.set("texture.discs.blank.lightgray", textureConfig.getString("texture.discs.blank.lightgray", "default"));
+		textureConfig.set("texture.discs.blank.gray", textureConfig.getString("texture.discs.blank.gray", "default"));
+		textureConfig.set("texture.discs.blank.pink", textureConfig.getString("texture.discs.blank.pink", "default"));
+		textureConfig.set("texture.discs.blank.lime", textureConfig.getString("texture.discs.blank.lime", "default"));
+		textureConfig.set("texture.discs.blank.yellow", textureConfig.getString("texture.discs.blank.yellow", "default"));
+		textureConfig.set("texture.discs.blank.lightblue", textureConfig.getString("texture.discs.blank.lightblue", "default"));
+		textureConfig.set("texture.discs.blank.magenta", textureConfig.getString("texture.discs.blank.magenta", "default"));
+		textureConfig.set("texture.discs.blank.orange", textureConfig.getString("texture.discs.blank.orange", "default"));
+		textureConfig.set("texture.discs.blank.black", textureConfig.getString("texture.discs.blank.black", "default"));
+		
+		textureConfig.set("texture.discs.burned.white", textureConfig.getString("texture.discs.burned.white", "default"));
+		textureConfig.set("texture.discs.burned.red", textureConfig.getString("texture.discs.burned.red", "default"));
+		textureConfig.set("texture.discs.burned.green", textureConfig.getString("texture.discs.burned.green", "default"));
+		textureConfig.set("texture.discs.burned.brown", textureConfig.getString("texture.discs.burned.brown", "default"));
+		textureConfig.set("texture.discs.burned.blue", textureConfig.getString("texture.discs.burned.blue", "default"));
+		textureConfig.set("texture.discs.burned.purple", textureConfig.getString("texture.discs.burned.purple", "default"));
+		textureConfig.set("texture.discs.burned.cyan", textureConfig.getString("texture.discs.burned.cyan", "default"));
+		textureConfig.set("texture.discs.burned.lightgray", textureConfig.getString("texture.discs.burned.lightgray", "default"));
+		textureConfig.set("texture.discs.burned.gray", textureConfig.getString("texture.discs.burned.gray", "default"));
+		textureConfig.set("texture.discs.burned.pink", textureConfig.getString("texture.discs.burned.pink", "default"));
+		textureConfig.set("texture.discs.burned.lime", textureConfig.getString("texture.discs.burned.lime", "default"));
+		textureConfig.set("texture.discs.burned.yellow", textureConfig.getString("texture.discs.burned.yellow", "default"));
+		textureConfig.set("texture.discs.burned.lightblue", textureConfig.getString("texture.discs.burned.lightblue", "default"));
+		textureConfig.set("texture.discs.burned.magenta", textureConfig.getString("texture.discs.burned.magenta", "default"));
+		textureConfig.set("texture.discs.burned.orange", textureConfig.getString("texture.discs.burned.orange", "default"));
+		textureConfig.set("texture.discs.burned.black", textureConfig.getString("texture.discs.burned.black", "default"));
+		
+		textureConfig.set("texture.label", textureConfig.getString("texture.label", "default"));
+		
+		//load the config into static vars
+		TEXTURE_URL_BLOCKS = (!textureConfig.getString("texture.blockfaces").equalsIgnoreCase("default")?textureConfig.getString("texture.blockfaces"):"http://dev.bukkit.org/media/attachments/21/413/customblocksv2.png");
+		
+		TEXTURE_URL_WHITE_DISC = (!textureConfig.getString("texture.discs.blank.white").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.white"):"http://dev.bukkit.org/media/attachments/21/200/rdisc_white.png");
+		TEXTURE_URL_RED_DISC = (!textureConfig.getString("texture.discs.blank.red").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.red"):"http://dev.bukkit.org/media/attachments/21/239/rdisc_red.png");
+		TEXTURE_URL_GREEN_DISC = (!textureConfig.getString("texture.discs.blank.green").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.green"):"http://dev.bukkit.org/media/attachments/21/322/rdisc_green.png");
+		TEXTURE_URL_BROWN_DISC = (!textureConfig.getString("texture.discs.blank.brown").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.brown"):"http://dev.bukkit.org/media/attachments/21/319/rdisc_brown.png");
+		TEXTURE_URL_BLUE_DISC = (!textureConfig.getString("texture.discs.blank.blue").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.blue"):"http://dev.bukkit.org/media/attachments/21/318/rdisc_blue.png");
+		TEXTURE_URL_PURPLE_DISC = (!textureConfig.getString("texture.discs.blank.purple").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.purple"):"http://dev.bukkit.org/media/attachments/21/329/rdisc_purple.png");
+		TEXTURE_URL_CYAN_DISC = (!textureConfig.getString("texture.discs.blank.cyan").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.cyan"):"http://dev.bukkit.org/media/attachments/21/320/rdisc_cyan.png");
+		TEXTURE_URL_LIGHTGRAY_DISC = (!textureConfig.getString("texture.discs.blank.lightgray").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.lightgray"):"http://dev.bukkit.org/media/attachments/21/324/rdisc_lightgray.png");
+		TEXTURE_URL_GRAY_DISC = (!textureConfig.getString("texture.discs.blank.gray").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.gray"):"http://dev.bukkit.org/media/attachments/21/321/rdisc_gray.png");
+		TEXTURE_URL_PINK_DISC = (!textureConfig.getString("texture.discs.blank.pink").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.pink"):"http://dev.bukkit.org/media/attachments/21/328/rdisc_pink.png");
+		TEXTURE_URL_LIME_DISC = (!textureConfig.getString("texture.discs.blank.lime").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.lime"):"http://dev.bukkit.org/media/attachments/21/325/rdisc_lime.png");
+		TEXTURE_URL_YELLOW_DISC = (!textureConfig.getString("texture.discs.blank.yellow").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.yellow"):"http://dev.bukkit.org/media/attachments/21/330/rdisc_yellow.png");
+		TEXTURE_URL_LIGHTBLUE_DISC = (!textureConfig.getString("texture.discs.blank.blue").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.blue"):"http://dev.bukkit.org/media/attachments/21/323/rdisc_lightblue.png");
+		TEXTURE_URL_MAGENTA_DISC = (!textureConfig.getString("texture.discs.blank.magenta").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.magenta"):"http://dev.bukkit.org/media/attachments/21/326/rdisc_magenta.png");
+		TEXTURE_URL_ORANGE_DISC = (!textureConfig.getString("texture.discs.blank.orange").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.orange"):"http://dev.bukkit.org/media/attachments/21/327/rdisc_orange.png");
+		TEXTURE_URL_BLACK_DISC = (!textureConfig.getString("texture.discs.blank.black").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.blank.black"):"http://dev.bukkit.org/media/attachments/21/317/rdisc_black.png");
+		
+		TEXTURE_URL_WHITE_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.white").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.white"):"http://dev.bukkit.org/media/attachments/21/331/rdisc_white_burned.png");
+		TEXTURE_URL_RED_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.red").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.red"):"http://dev.bukkit.org/media/attachments/21/332/rdisc_red_burned.png");
+		TEXTURE_URL_GREEN_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.green").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.green"):"http://dev.bukkit.org/media/attachments/21/338/rdisc_green_burned.png");
+		TEXTURE_URL_BROWN_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.brown").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.brown"):"http://dev.bukkit.org/media/attachments/21/335/rdisc_brown_burned.png");
+		TEXTURE_URL_BLUE_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.blue").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.blue"):"http://dev.bukkit.org/media/attachments/21/334/rdisc_blue_burned.png");
+		TEXTURE_URL_PURPLE_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.purple").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.purple"):"http://dev.bukkit.org/media/attachments/21/345/rdisc_purple_burned.png");
+		TEXTURE_URL_CYAN_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.cyan").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.cyan"):"http://dev.bukkit.org/media/attachments/21/336/rdisc_cyan_burned.png");
+		TEXTURE_URL_LIGHTGRAY_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.lightgray").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.lightgray"):"http://dev.bukkit.org/media/attachments/21/340/rdisc_lightgray_burned.png");
+		TEXTURE_URL_GRAY_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.gray").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.gray"):"http://dev.bukkit.org/media/attachments/21/337/rdisc_gray_burned.png");
+		TEXTURE_URL_PINK_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.pink").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.pink"):"http://dev.bukkit.org/media/attachments/21/344/rdisc_pink_burned.png");
+		TEXTURE_URL_LIME_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.lime").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.lime"):"http://dev.bukkit.org/media/attachments/21/341/rdisc_lime_burned.png");
+		TEXTURE_URL_YELLOW_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.yellow").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.yellow"):"http://dev.bukkit.org/media/attachments/21/346/rdisc_yellow_burned.png");
+		TEXTURE_URL_LIGHTBLUE_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.lightblue").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.lightblue"):"http://dev.bukkit.org/media/attachments/21/339/rdisc_lightblue_burned.png");
+		TEXTURE_URL_MAGENTA_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.magenta").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.magenta"):"http://dev.bukkit.org/media/attachments/21/342/rdisc_magenta_burned.png");
+		TEXTURE_URL_ORANGE_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.orange").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.orange"):"http://dev.bukkit.org/media/attachments/21/343/rdisc_orange_burned.png");
+		TEXTURE_URL_BLACK_DISC_BURNED = (!textureConfig.getString("texture.discs.burned.black").equalsIgnoreCase("default")?textureConfig.getString("texture.discs.burned.black"):"http://dev.bukkit.org/media/attachments/21/333/rdisc_black_burned.png");
+		
+		TEXTURE_URL_LABEL = (!textureConfig.getString("texture.label").equalsIgnoreCase("default")?textureConfig.getString("texture.label"):"http://dev.bukkit.org/media/attachments/21/204/label.png");
+		
+		//save.
+		try {
+			textureConfig.save(textureFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//client preloads
 		setPreCaches();
