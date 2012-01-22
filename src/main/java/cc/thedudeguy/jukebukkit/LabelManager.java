@@ -59,14 +59,9 @@ public class LabelManager {
 	 */
 	public void init()
 	{
-		Set<String> keys = labelConfig.getKeys(false);
-		Iterator<String> it = keys.iterator();
-		while (it.hasNext()) {
+		for(String key : labelConfig.getKeys(false)) {
 		    // Get element
-		    String key = it.next();
-		    
-		    String label = labelConfig.getString(key);
-		    new ItemLabel(plugin, label);
+		    new ItemLabel(plugin, labelConfig.getString(key));
 		}
 	}
 	
@@ -87,8 +82,7 @@ public class LabelManager {
 		
 		set(labelId, label);
 		
-		ItemStack item = new SpoutItemStack(newLabel, 1);
-		return item;
+		return new SpoutItemStack(newLabel, 1);
 	}
 	
 	public void set(int labelId, String label)
@@ -108,10 +102,6 @@ public class LabelManager {
 	}
 	public Boolean hasLabel(int labelId)
 	{
-		if (labelConfig.contains(String.valueOf(labelId))) 
-		{
-			return true;
-		}
-		return false;
+		return (labelConfig.contains(String.valueOf(labelId)));
 	}
 }
