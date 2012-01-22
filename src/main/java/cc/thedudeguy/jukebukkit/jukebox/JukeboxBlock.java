@@ -26,7 +26,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 	
 	private JukeBukkit plugin;
 	public JukeBoxManager jukeboxManager;
-	private String permission;
+	private final String permission;
 
 	/**
 	* Creates a new opaque/solid cube block material
