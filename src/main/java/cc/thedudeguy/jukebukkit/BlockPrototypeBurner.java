@@ -16,6 +16,7 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
+import java.net.URL;
 import java.util.UUID;
 
 import org.bukkit.Location;
@@ -115,13 +116,21 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	        SpoutPlayer player = event.getPlayer();
 			
 			String url = input.getText().trim();
-			
-			if(url == "") {
-					player.sendMessage("The URL cannot be blank. You wouldnt want to waste a disc!");
-					return;
-			} else if (url.contains(".mp3") || url.contains(".m4a") || url.contains(".aac")) {
+			if(url.isEmpty()) {
+				player.sendMessage("The URL cannot be blank. You wouldnt want to waste a disc!");
+				return;
+			}
+
+			try {
+				URL parseURL = new URL(url);
+				String fname = parseURL.getFile().toLowerCase();
+				if(!fname.endsWith(".ogg") && !fname.endsWith(".wav")) {
 					player.sendMessage("Currently only .ogg and .wav formats are supported. Please convert the file to one of those.");
 					return;
+				}
+			} catch(Exception e) {
+				player.sendMessage("Invalid URL!");
+				return;
 			}
 			
 	        
@@ -141,8 +150,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	        int color = plugin.getDiscsManager().findDiscColor(disk);
 	        
 	        //remove 1 from hand
-			if (inHand.getAmount()<2)
-			{
+			if (inHand.getAmount()<2) {
 				player.setItemInHand(null);
 			} else {
 				inHand.setAmount(inHand.getAmount()-1);
