@@ -41,7 +41,6 @@ public class JukeBukkit extends JavaPlugin {
 	
 	//listeners
 	private JukeBukkitPlayerListener playerListener;
-	private JukeBukkitInventoryListener inventoryListener;
 	
 	public void onEnable()
 	{	
@@ -67,7 +66,6 @@ public class JukeBukkit extends JavaPlugin {
 		//getCommand("jukebukkit").setExecutor(commandExecutor);
 
 		playerListener = new JukeBukkitPlayerListener(this);
-		inventoryListener = new JukeBukkitInventoryListener(this);
 		
 		log.info("[JukeBukkit] Enabled");
 		
