@@ -16,32 +16,45 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
+import cc.thedudeguy.jukebukkit.jukebox.JukeboxBlock;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
+import org.getspout.spout.inventory.SpoutCraftItemStack;
 import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.event.inventory.InventoryCraftEvent;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
+import org.getspout.spoutapi.inventory.MaterialManager;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.getspout.spoutapi.material.Block;
+import org.getspout.spoutapi.material.MaterialData;
 import org.getspout.spoutapi.player.SpoutPlayer;
+
+import javax.sound.midi.SysexMessage;
 
 /**
  * Player Listerner. Handles writing of labels and opening the label maker gui.
  * @author Chris Churchwell
  *
  */
-public class JukeBukkitPlayerListener extends PlayerListener {
+public class JukeBukkitPlayerListener implements Listener {
 	
 	public static JukeBukkit plugin; 
 	
 	public JukeBukkitPlayerListener(JukeBukkit instance) {
         plugin = instance;
+		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 	
 	public class CreateButton extends GenericButton
@@ -80,7 +93,39 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 	        
 	    }
 	}
-	
+
+	@EventHandler
+	public void onBlockPlaced(BlockPlaceEvent event) {
+		event.setBuild(true); //MEW!
+
+		final Player ply = event.getPlayer();
+		final Block block = ((SpoutBlock)event.getBlock()).getCustomBlock();
+		if(!(block instanceof JukeboxBlock)) return;
+		final JukeboxBlock jukeboxBlock = (JukeboxBlock)block;
+		String permission = jukeboxBlock.getPermission();
+		if(permission == null) return;
+		if(!ply.hasPermission(permission)) {
+			event.setBuild(false);
+			event.setCancelled(true);
+		}
+	}
+
+	/*@EventHandler
+	public void onPlayerCraft(InventoryCraftEvent event) {
+		final Player ply = event.getPlayer();
+		final Block block = MaterialManager.blockIdString (((SpoutCraftItemStack) event.getResult()).getTypeId());
+		System.out.println(((SpoutCraftItemStack)event.getResult()).getType());
+		if(!(block instanceof JukeboxBlock)) return;
+		final JukeboxBlock jukeboxBlock = (JukeboxBlock)block;
+		String permission = jukeboxBlock.getPermission();
+		if(permission == null) return;
+		if(!ply.hasPermission(permission)) {
+			event.setResult(null);
+			event.setCancelled(true);
+		}
+	}*/
+
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		SpoutPlayer player = SpoutManager.getPlayer(event.getPlayer());
 		
