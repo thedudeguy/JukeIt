@@ -100,7 +100,7 @@ public class LabelManager {
 		labelConfig.set(String.valueOf(labelId), null);
 		save();
 	}
-	public Boolean hasLabel(int labelId)
+	public boolean hasLabel(int labelId)
 	{
 		return (labelConfig.contains(String.valueOf(labelId)));
 	}
