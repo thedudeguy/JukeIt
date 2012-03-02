@@ -16,19 +16,30 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
+import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
+import cc.thedudeguy.jukebukkit.items.ItemLabel;
+import cc.thedudeguy.jukebukkit.jukebox.JukeboxBlock;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.event.inventory.InventoryClickEvent;
+import org.getspout.spoutapi.event.inventory.InventoryCraftEvent;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.getspout.spoutapi.material.Block;
+import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 /**
@@ -36,12 +47,13 @@ import org.getspout.spoutapi.player.SpoutPlayer;
  * @author Chris Churchwell
  *
  */
-public class JukeBukkitPlayerListener extends PlayerListener {
+public class JukeBukkitPlayerListener implements Listener {
 	
 	public static JukeBukkit plugin; 
 	
 	public JukeBukkitPlayerListener(JukeBukkit instance) {
         plugin = instance;
+		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 	
 	public class CreateButton extends GenericButton
@@ -80,7 +92,38 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 	        
 	    }
 	}
-	
+
+	@EventHandler
+	public void onBlockPlaced(BlockPlaceEvent event) {
+		event.setBuild(true); //MEW!
+
+		final Player ply = event.getPlayer();
+		final Block block = ((SpoutBlock)event.getBlock()).getCustomBlock();
+		if(!(block instanceof JukeboxBlock)) return;
+		final JukeboxBlock jukeboxBlock = (JukeboxBlock)block;
+		String permission = jukeboxBlock.getPermission();
+		if(permission == null) return;
+		if(!ply.hasPermission(permission)) {
+			event.setBuild(false);
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onPlayerCraft(InventoryCraftEvent event) {
+		final Player ply = event.getPlayer();
+		final org.getspout.spoutapi.material.Material block = new SpoutItemStack(event.getResult()).getMaterial();
+		if(!(block instanceof JukeboxBlock)) return;
+		final JukeboxBlock jukeboxBlock = (JukeboxBlock)block;
+		String permission = jukeboxBlock.getPermission();
+		if(permission == null) return;
+		if(!ply.hasPermission(permission)) {
+			event.setResult(null);
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		SpoutPlayer player = SpoutManager.getPlayer(event.getPlayer());
 		
@@ -131,6 +174,51 @@ public class JukeBukkitPlayerListener extends PlayerListener {
 				/*
 				SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_START, false, location, 3);
 				*/
+			}
+		}
+	}
+
+	/**
+	 * Basically handles when a user dropes a label onto a written disc.
+	 */
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event)
+	{
+		//only on right click.
+		if (!event.isLeftClick())
+		{
+			//only if a Label is on the cursor. is it even a custom item?
+			if (event.getCursor() != null && new SpoutItemStack(event.getCursor()).isCustomItem()) {
+
+				CustomItem itemOnCursor = (CustomItem) new SpoutItemStack(event.getCursor()).getMaterial();
+				if (itemOnCursor instanceof ItemLabel)
+				{
+
+					//yep, its a label. let see what were clicking on.
+					if (new SpoutItemStack(event.getItem()).isCustomItem())
+					{
+
+						//its custom could be a disc...
+						CustomItem itemClickedOn = (CustomItem) new SpoutItemStack(event.getItem()).getMaterial();
+						if ( itemClickedOn instanceof ItemBurnedObsidyisc)
+						{
+							//its a burned disc! we can do stuff to it.
+							String label = plugin.getLabelManager().get(itemOnCursor.getCustomId());
+
+							plugin.getDiscsManager().setTitle(itemClickedOn.getCustomId(), label);
+							plugin.getDiscsManager().save();
+
+							itemClickedOn.setName(label);
+
+							//remove the item on the cursor.
+							event.setResult(Result.ALLOW);
+							event.setCursor(null);
+
+							event.setCancelled(true);
+							//return true;
+						}
+					}
+				}
 			}
 		}
 	}

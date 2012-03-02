@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
@@ -25,6 +26,8 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 	
 	private JukeBukkit plugin;
 	public JukeBoxManager jukeboxManager;
+	private final String permission;
+
 	/**
 	* Creates a new opaque/solid cube block material
 	*
@@ -33,10 +36,19 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 	* @param design to use for the block
 	*/
 	public JukeboxBlock(JukeBukkit plugin, String name, GenericCubeBlockDesign design) {
+		this(plugin, name, design, null);
+	}
+
+	public JukeboxBlock(JukeBukkit plugin, String name, GenericCubeBlockDesign design, String permission) {
 		super(plugin, name);
 		this.setBlockDesign(design);
 		this.plugin = plugin;
 		jukeboxManager = plugin.getJukeBoxManager();
+		this.permission = permission;
+	}
+	
+	public String getPermission() {
+		return this.permission;
 	}
 	
 	public boolean canPlaceBlockAt(World arg0, int arg1, int arg2, int arg3) {
@@ -228,5 +240,49 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 			}
 		}
 	}
-	
+
+	public abstract int getRange();
+
+	@Override
+	public void playMusic(String url, Location location, SpoutPlayer player) {
+		/** get players in radius of the jukebox and start it for only those players **/
+		for(Player p:location.getWorld().getPlayers()) {
+			double distance = location.toVector().distance(p.getLocation().toVector());
+			if (distance<=(double)getRange()) {
+				SpoutPlayer sp = SpoutManager.getPlayer(p);
+				if (sp.isSpoutCraftEnabled()) {
+					try {
+						SpoutManager.getSoundManager().playCustomMusic(plugin, sp, url, true, location, getRange());
+					} catch (Exception e) {
+						//the disc has an error.
+						if(player != null) player.sendMessage(e.getMessage());
+						SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_ERROR, false, location, 3);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void playMusic(String url, Location location) {
+		playMusic(url, location, null);
+	}
+
+	@Override
+	public void stopMusic(Location location) {
+		/** get players in radius of the jukebox and start it for only those players **/
+		for(Player p:location.getWorld().getPlayers()) {
+			double distance = location.toVector().distance(p.getLocation().toVector());
+			if (distance<=(double)getRange()) {
+				SpoutPlayer sp = SpoutManager.getPlayer(p);
+				if (sp.isSpoutCraftEnabled()) {
+					SpoutManager.getSoundManager().stopMusic(sp);
+				}
+			}
+		}
+	}
+	@Override
+	public boolean canRedstoneActivate() {
+		return true;
+	}
 }

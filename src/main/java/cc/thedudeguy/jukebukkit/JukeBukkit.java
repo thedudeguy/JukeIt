@@ -18,7 +18,6 @@ package cc.thedudeguy.jukebukkit;
 
 import java.util.logging.Logger;
 
-import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -41,8 +40,7 @@ public class JukeBukkit extends JavaPlugin {
 	//public CustomBlock blockPrototypeDiscPlayer;
 	
 	//listeners
-	private final JukeBukkitPlayerListener playerListener = new JukeBukkitPlayerListener(this);
-	private final JukeBukkitInventoryListener inventoryListener = new JukeBukkitInventoryListener(this);
+	private JukeBukkitPlayerListener playerListener;
 	
 	public void onEnable()
 	{	
@@ -66,12 +64,8 @@ public class JukeBukkit extends JavaPlugin {
 		//load the command executor
 		//commandExecutor = new JukeBukkitCommandExecutor(this);
 		//getCommand("jukebukkit").setExecutor(commandExecutor);
-		
-		//load the plugin manager and listeners
-		pm = this.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.CUSTOM_EVENT, inventoryListener, Event.Priority.Normal, this);
-		
+
+		playerListener = new JukeBukkitPlayerListener(this);
 		
 		log.info("[JukeBukkit] Enabled");
 		

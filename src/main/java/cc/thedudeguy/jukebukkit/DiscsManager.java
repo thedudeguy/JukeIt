@@ -86,12 +86,8 @@ public class DiscsManager {
 	 */
 	public void reInitDiscs()
 	{
-		
-		Set<String> keys = discsConfig.getKeys(false);
-		Iterator<String> it = keys.iterator();
-		while (it.hasNext()) {
+		for(String key : discsConfig.getKeys(false)) {
 		    // Get element
-		    String key = it.next();
 		    String dkey = discsConfig.getString(key+".key", "");
 		    String dtitle = discsConfig.getString(key+".title", "");
 		    int dcolor = discsConfig.getInt(key+".color", 0);
@@ -132,13 +128,9 @@ public class DiscsManager {
 		discsConfig.set(String.valueOf(discId)+".color", color);
 	}
 	
-	public Boolean hasDiscId(int discId)
+	public boolean hasDiscId(int discId)
 	{
-		if (discsConfig.contains(String.valueOf(discId)))
-		{
-			return true;
-		}
-		return false;
+		return (discsConfig.contains(String.valueOf(discId)));
 	}
 	
 	public String getUrl(int discId)
@@ -160,7 +152,6 @@ public class DiscsManager {
 	
 	public int findDiscColor(CustomItem discItem)
 	{
-		
 		if (discItem instanceof ItemBlankBlackObsidyisc) {
 			return BLACK;
 		} else if (discItem instanceof ItemBlankRedObsidyisc) {
