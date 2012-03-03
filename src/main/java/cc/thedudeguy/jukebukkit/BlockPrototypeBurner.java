@@ -94,7 +94,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	{
 		private GenericTextField input;
 		private GenericPopup popup;
-		private JukeBukkit plugin;
+		private JukeBukkit myplugin;
 		private Location location;
 		
 		public BurnButton(JukeBukkit plugin, GenericPopup assocPopup, GenericTextField assocInputField, Location location)
@@ -104,10 +104,11 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			input = assocInputField;
 			popup = assocPopup;
 			this.location = location;
-			this.plugin = plugin;
+			this.myplugin = plugin;
 			
 			//plugin.log.info("Burn Disc Button Initialized");
 		}
+        @Override
 		public void onButtonClick(ButtonClickEvent event) 
 		{
 			//event.getPlayer().sendMessage(plugin.getDescription().getFullName());
@@ -147,7 +148,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	        CustomItem disk = (CustomItem)inHand.getMaterial();
 	        
 	        //whats the color of the disc in hand?
-	        int color = plugin.getDiscsManager().findDiscColor(disk);
+	        int color = myplugin.getDiscsManager().findDiscColor(disk);
 	        
 	        //remove 1 from hand
 			if (inHand.getAmount()<2) {
@@ -159,22 +160,22 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			//create the key
 			String key = UUID.randomUUID().toString();
 			//create the physical disc for the pplayer
-			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, key, color);
+			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(myplugin, key, color);
 			
 			ItemStack iss = new SpoutItemStack(disc, 1);
 			location.setY(location.getY()+1);
 			location.getWorld().dropItem(location, iss);
 			
 			//set the disc data and save it
-			plugin.getDiscsManager().add(disc.getCustomId());
-			plugin.getDiscsManager().setUrl(disc.getCustomId(), url);
-			plugin.getDiscsManager().setTitle(disc.getCustomId(), "Burned Obsidyisc");
-			plugin.getDiscsManager().setKey(disc.getCustomId(), key);
-			plugin.getDiscsManager().setColor(disc.getCustomId(), color);
-			plugin.getDiscsManager().save();
+			myplugin.getDiscsManager().add(disc.getCustomId());
+			myplugin.getDiscsManager().setUrl(disc.getCustomId(), url);
+			myplugin.getDiscsManager().setTitle(disc.getCustomId(), "Burned Obsidyisc");
+			myplugin.getDiscsManager().setKey(disc.getCustomId(), key);
+			myplugin.getDiscsManager().setColor(disc.getCustomId(), color);
+			myplugin.getDiscsManager().save();
 			popup.close();
 			
-			SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_START, false, location, 4);
+			SpoutManager.getSoundManager().playGlobalCustomSoundEffect(myplugin, CustomsManager.SF_JUKEBOX_START, false, location, 4);
 	        
 	    }
 	}
@@ -198,23 +199,24 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 				GenericPopup burnPopup = new GenericPopup();
 				
 				GenericLabel popupTitle = new GenericLabel("Disc Burner");
+                                popupTitle.setX(10).setY(10).setWidth(125).setHeight(15);
 				burnPopup.attachWidget(plugin, popupTitle);
 				
 				GenericLabel urlLabel = new GenericLabel("URL:");
-				urlLabel.setY(15);
+				urlLabel.setX(10).setY(30).setWidth(40).setHeight(15);
 				burnPopup.attachWidget(plugin, urlLabel);
 				
 				GenericTextField urlInput = new GenericTextField();
 				urlInput.setMaximumCharacters(500);
 				urlInput.setHeight(100).setWidth(200);
-				urlInput.setY(15);
-				urlInput.setX(40);
+				urlInput.setY(30);
+				urlInput.setX(50);
 				urlInput.setMaximumLines(0);
 				urlInput.setFocus(true);
 				burnPopup.attachWidget(plugin, urlInput);
 				
 				BurnButton button = new BurnButton(plugin, burnPopup, urlInput, location);
-				button.setY(140).setX(40);
+				button.setY(150).setX(50);
 				button.setWidth(200).setHeight(20);
 				burnPopup.attachWidget(plugin, button);
 				

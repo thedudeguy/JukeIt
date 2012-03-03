@@ -43,7 +43,7 @@ import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 /**
- * Player Listerner. Handles writing of labels and opening the label maker gui.
+ * Player Listener. Handles writing of labels and opening the label maker gui.
  * @author Chris Churchwell
  *
  */
@@ -60,7 +60,7 @@ public class JukeBukkitPlayerListener implements Listener {
 	{
 		private GenericTextField input;
 		private GenericPopup popup;
-		private JukeBukkit plugin;
+		private JukeBukkit myplugin;
 		
 		public CreateButton(JukeBukkit plugin, GenericPopup assocPopup, GenericTextField assocInputField)
 		{
@@ -68,12 +68,18 @@ public class JukeBukkitPlayerListener implements Listener {
 			setText("Create Label");
 			input = assocInputField;
 			popup = assocPopup;
-			this.plugin = plugin;
+			this.myplugin = plugin;
 			
 			//plugin.log.info("Burn Disc Button Initialized");
 		}
+                @Override
 		public void onButtonClick(ButtonClickEvent event) 
 		{
+                        // return if the label is blank
+                        if(input.getText().equals("")) {
+                            popup.close();
+                            return;
+                        }
 			//delete a paper from the hand.
 			ItemStack inHand = event.getPlayer().getItemInHand();
 			if (inHand.getAmount()<2) {
@@ -83,11 +89,8 @@ public class JukeBukkitPlayerListener implements Listener {
 			}		
 			
 			//give the label to the player.
-			if (!input.getText().equals(""))
-			{
-				ItemStack newLabel = plugin.getLabelManager().create(input.getText());
-				event.getPlayer().getInventory().addItem(newLabel);
-			}
+                        ItemStack newLabel = myplugin.getLabelManager().create(input.getText());
+                        event.getPlayer().getInventory().addItem(newLabel);
 			popup.close();
 	        
 	    }
@@ -112,7 +115,9 @@ public class JukeBukkitPlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerCraft(InventoryCraftEvent event) {
 		final Player ply = event.getPlayer();
-		final org.getspout.spoutapi.material.Material block = new SpoutItemStack(event.getResult()).getMaterial();
+                final ItemStack st = event.getResult();
+                if (st==null) return;
+		final org.getspout.spoutapi.material.Material block = new SpoutItemStack(st).getMaterial();
 		if(!(block instanceof JukeboxBlock)) return;
 		final JukeboxBlock jukeboxBlock = (JukeboxBlock)block;
 		String permission = jukeboxBlock.getPermission();
@@ -143,7 +148,7 @@ public class JukeBukkitPlayerListener implements Listener {
 				
 				GenericLabel label = new GenericLabel();
 				label.setText("Write Label");
-				label.setX(5).setY(5);
+				label.setX(5).setY(5).setWidth(120).setHeight(20);
 				labelPopup.attachWidget(plugin, label);
 				
 				/*
