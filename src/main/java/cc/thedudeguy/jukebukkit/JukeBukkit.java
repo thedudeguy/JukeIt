@@ -39,9 +39,6 @@ public class JukeBukkit extends JavaPlugin {
 	
 	//public CustomBlock blockPrototypeDiscPlayer;
 	
-	//listeners
-	private JukeBukkitPlayerListener playerListener;
-	
 	public void onEnable()
 	{	
 		//load the textures and precaches
@@ -64,8 +61,9 @@ public class JukeBukkit extends JavaPlugin {
 		//load the command executor
 		//commandExecutor = new JukeBukkitCommandExecutor(this);
 		//getCommand("jukebukkit").setExecutor(commandExecutor);
-
-		playerListener = new JukeBukkitPlayerListener(this);
+		
+		//launch the player Listener.
+		new JukeBukkitPlayerListener(this);
 		
 		log.info("[JukeBukkit] Enabled");
 		

@@ -399,8 +399,8 @@ public class CustomsManager {
 		///////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack(blackObsidyisc, 1) )
-				.addIngredient('d', MaterialData.inkSac)
-				.addIngredient('o', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.inkSac)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		/////////////////////////
@@ -408,8 +408,8 @@ public class CustomsManager {
 		/////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( redObsidyisc, 1) )
-				.addIngredient('r', MaterialData.roseRed)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.roseRed)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		///////////////////////////
@@ -417,8 +417,8 @@ public class CustomsManager {
 		///////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( greenObsidyisc, 1) )
-				.addIngredient('r', MaterialData.cactusGreen)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.cactusGreen)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		/////////////////////////
@@ -426,8 +426,8 @@ public class CustomsManager {
 		/////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( brownObsidyisc, 1) )
-				.addIngredient('r', MaterialData.cocoaBeans)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.cocoaBeans)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		//////////////////////////
@@ -435,8 +435,8 @@ public class CustomsManager {
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( blueObsidyisc, 1) )
-				.addIngredient('r', MaterialData.lapisLazuli)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.lapisLazuli)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		////////////////////////////
@@ -444,8 +444,8 @@ public class CustomsManager {
 		////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( purpleObsidyisc, 1) )
-				.addIngredient('r', MaterialData.purpleDye)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.purpleDye)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		//////////////////////////
@@ -453,8 +453,8 @@ public class CustomsManager {
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( cyanObsidyisc, 1) )
-				.addIngredient('r', MaterialData.cyanDye)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.cyanDye)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		////////////////////////////////
@@ -462,8 +462,8 @@ public class CustomsManager {
 		////////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( lightGrayObsidyisc, 1) )
-				.addIngredient('r', MaterialData.lightGrayDye)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.lightGrayDye)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		//////////////////////////
@@ -471,8 +471,8 @@ public class CustomsManager {
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( grayObsidyisc, 1) )
-				.addIngredient('r', MaterialData.grayDye)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.grayDye)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		//////////////////////////
@@ -480,16 +480,16 @@ public class CustomsManager {
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( pinkObsidyisc, 1) )
-				.addIngredient('r', MaterialData.pinkDye)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.pinkDye)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		//////////////////////////
 		// Lime Blank Obsidyisc //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( limeObsidyisc, 1) )
-				.addIngredient('r', MaterialData.limeDye)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.limeDye)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		////////////////////////////
@@ -497,16 +497,16 @@ public class CustomsManager {
 		////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( yellowObsidyisc, 1) )
-				.addIngredient('r', MaterialData.dandelionYellow)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.dandelionYellow)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		////////////////////////////////
 		// Light Blue Blank Obsidyisc //
 		////////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( lightBlueObsidyisc, 1) )
-				.addIngredient('r', MaterialData.lightBlueDye)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.lightBlueDye)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		/////////////////////////////
@@ -514,8 +514,8 @@ public class CustomsManager {
 		/////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( magentaObsidyisc, 1) )
-				.addIngredient('r', MaterialData.magentaDye)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.magentaDye)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 		
 		////////////////////////////
@@ -523,8 +523,8 @@ public class CustomsManager {
 		////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapelessRecipe( new SpoutItemStack( orangeObsidyisc, 1) )
-				.addIngredient('r', MaterialData.orangeDye)
-				.addIngredient('d', basicBlankWhiteDisc)
+				.addIngredient(MaterialData.orangeDye)
+				.addIngredient(basicBlankWhiteDisc)
 				);
 	}
 }
