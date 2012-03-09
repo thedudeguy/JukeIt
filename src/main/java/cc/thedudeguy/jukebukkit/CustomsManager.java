@@ -25,6 +25,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.design.Texture;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
+import org.getspout.spoutapi.inventory.SpoutShapelessRecipe;
 import org.getspout.spoutapi.material.MaterialData;
 
 import cc.thedudeguy.jukebukkit.items.ItemBlankObsidyisc;
@@ -106,7 +107,7 @@ public class CustomsManager {
 	
 	public static Texture customBlockTexture;
 	
-	//custom blocks.
+	//custom block materials.
 	public static BlockPrototypeBurner prototypeBurner;
 	public static JukeboxBasic jukeboxBasic;
 	public static JukeboxLowRange jukeboxLowRange;
@@ -114,7 +115,24 @@ public class CustomsManager {
 	public static JukeboxLongRange jukeboxLongRange;
 	public static JukeboxMaxRange jukeboxMaxRange;
 	
-	//custom items.
+	//custom item materials.
+	public static ItemBlankObsidyisc basicBlankWhiteDisc;
+	public static ItemBlankBlackObsidyisc blackObsidyisc;
+	public static ItemBlankRedObsidyisc redObsidyisc;
+	public static ItemBlankGreenObsidyisc greenObsidyisc;
+	public static ItemBlankBrownObsidyisc brownObsidyisc;
+	public static ItemBlankBlueObsidyisc blueObsidyisc;
+	public static ItemBlankPurpleObsidyisc purpleObsidyisc;
+	public static ItemBlankCyanObsidyisc cyanObsidyisc;
+	public static ItemBlankLightGrayObsidyisc lightGrayObsidyisc;
+	public static ItemBlankGrayObsidyisc grayObsidyisc;
+	public static ItemBlankPinkObsidyisc pinkObsidyisc;
+	public static ItemBlankLimeObsidyisc limeObsidyisc;
+	public static ItemBlankYellowObsidyisc yellowObsidyisc;
+	public static ItemBlankLightBlueObsidyisc lightBlueObsidyisc;
+	public static ItemBlankMagentaObsidyisc magentaObsidyisc;
+	public static ItemBlankOrangeObsidyisc orangeObsidyisc;
+	
 	
 	public CustomsManager(JukeBukkit plugin)
 	{
@@ -227,8 +245,24 @@ public class CustomsManager {
 	
 	public void createCustomItems()
 	{
-		
+		basicBlankWhiteDisc = new ItemBlankObsidyisc(plugin);
+		blackObsidyisc = new ItemBlankBlackObsidyisc(plugin);
+		redObsidyisc = new ItemBlankRedObsidyisc(plugin);
+		greenObsidyisc = new ItemBlankGreenObsidyisc(plugin);
+		brownObsidyisc = new ItemBlankBrownObsidyisc(plugin);
+		blueObsidyisc = new ItemBlankBlueObsidyisc(plugin);
+		purpleObsidyisc = new ItemBlankPurpleObsidyisc(plugin);
+		cyanObsidyisc = new ItemBlankCyanObsidyisc(plugin);
+		lightGrayObsidyisc = new ItemBlankLightGrayObsidyisc(plugin);
+		grayObsidyisc = new ItemBlankGrayObsidyisc(plugin);
+		pinkObsidyisc = new ItemBlankPinkObsidyisc(plugin);
+		limeObsidyisc = new ItemBlankLimeObsidyisc(plugin);
+		yellowObsidyisc = new ItemBlankYellowObsidyisc(plugin);
+		lightBlueObsidyisc = new ItemBlankLightBlueObsidyisc(plugin);
+		magentaObsidyisc = new ItemBlankMagentaObsidyisc(plugin);
+		orangeObsidyisc = new ItemBlankOrangeObsidyisc(plugin);
 	}
+	
 	public void createCustomBlocks()
 	{
 		//initialize the custom blocks...
@@ -288,10 +322,8 @@ public class CustomsManager {
 	public void createRecipes()
 	{
 		
-		final ItemBlankObsidyisc basicDisc = new ItemBlankBlackObsidyisc(plugin);
-
 		///////////////////////
-		// Basic Jukebox //
+		// Basic Jukebox     //
 		///////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 				new SpoutShapedRecipe( new SpoutItemStack(jukeboxBasic, 1) )
@@ -356,7 +388,7 @@ public class CustomsManager {
 		// Blank Obsidyisc //
 		/////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankObsidyisc(plugin), 1) )
+				new SpoutShapedRecipe( new SpoutItemStack(basicBlankWhiteDisc, 1) )
 				.shape(" o ", "oRo", " o ")
 				.setIngredient('o', MaterialData.obsidian)
 				.setIngredient('R', MaterialData.redstone)
@@ -366,148 +398,133 @@ public class CustomsManager {
 		// Black Blank Obsidyisc //
 		///////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankBlackObsidyisc(plugin), 1) )
-				.shape("d", "o")
-				.setIngredient('d', MaterialData.inkSac)
-				.setIngredient('o', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack(blackObsidyisc, 1) )
+				.addIngredient('d', MaterialData.inkSac)
+				.addIngredient('o', basicBlankWhiteDisc)
 				);
 		
 		/////////////////////////
 		// Red Blank Obsidyisc //
 		/////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankRedObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.roseRed)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( redObsidyisc, 1) )
+				.addIngredient('r', MaterialData.roseRed)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		
 		///////////////////////////
 		// Green Blank Obsidyisc //
 		///////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankGreenObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.cactusGreen)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( greenObsidyisc, 1) )
+				.addIngredient('r', MaterialData.cactusGreen)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		
 		/////////////////////////
 		// Brown Blank Obsidyisc //
 		/////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankBrownObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.cocoaBeans)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( brownObsidyisc, 1) )
+				.addIngredient('r', MaterialData.cocoaBeans)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		
 		//////////////////////////
 		// Blue Blank Obsidyisc //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankBlueObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.lapisLazuli)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( blueObsidyisc, 1) )
+				.addIngredient('r', MaterialData.lapisLazuli)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		
 		////////////////////////////
 		// Purple Blank Obsidyisc //
 		////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankPurpleObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.purpleDye)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( purpleObsidyisc, 1) )
+				.addIngredient('r', MaterialData.purpleDye)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		
 		//////////////////////////
 		// Cyan Blank Obsidyisc //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankCyanObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.cyanDye)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( cyanObsidyisc, 1) )
+				.addIngredient('r', MaterialData.cyanDye)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		
 		////////////////////////////////
 		// Light Gray Blank Obsidyisc //
 		////////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankLightGrayObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.lightGrayDye)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( lightGrayObsidyisc, 1) )
+				.addIngredient('r', MaterialData.lightGrayDye)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		
 		//////////////////////////
 		// Gray Blank Obsidyisc //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankGrayObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.grayDye)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( grayObsidyisc, 1) )
+				.addIngredient('r', MaterialData.grayDye)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		
 		//////////////////////////
 		// Pink Blank Obsidyisc //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankPinkObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.pinkDye)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( pinkObsidyisc, 1) )
+				.addIngredient('r', MaterialData.pinkDye)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		//////////////////////////
 		// Lime Blank Obsidyisc //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankLimeObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.limeDye)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( limeObsidyisc, 1) )
+				.addIngredient('r', MaterialData.limeDye)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		
 		////////////////////////////
 		// Yellow Blank Obsidyisc //
 		////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankYellowObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.dandelionYellow)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( yellowObsidyisc, 1) )
+				.addIngredient('r', MaterialData.dandelionYellow)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		////////////////////////////////
 		// Light Blue Blank Obsidyisc //
 		////////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankLightBlueObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.lightBlueDye)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( lightBlueObsidyisc, 1) )
+				.addIngredient('r', MaterialData.lightBlueDye)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		
 		/////////////////////////////
 		// Magenta Blank Obsidyisc //
 		/////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankMagentaObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.magentaDye)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( magentaObsidyisc, 1) )
+				.addIngredient('r', MaterialData.magentaDye)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 		
 		////////////////////////////
 		// Orange Blank Obsidyisc //
 		////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(new ItemBlankOrangeObsidyisc(plugin), 1) )
-				.shape("r", "d")
-				.setIngredient('r', MaterialData.orangeDye)
-				.setIngredient('d', basicDisc)
+				new SpoutShapelessRecipe( new SpoutItemStack( orangeObsidyisc, 1) )
+				.addIngredient('r', MaterialData.orangeDye)
+				.addIngredient('d', basicBlankWhiteDisc)
 				);
 	}
 }
