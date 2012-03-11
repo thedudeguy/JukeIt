@@ -16,9 +16,6 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
-import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
-import cc.thedudeguy.jukebukkit.items.ItemLabel;
-import cc.thedudeguy.jukebukkit.jukebox.JukeboxBlock;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
@@ -26,12 +23,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.event.inventory.InventoryClickEvent;
-import org.getspout.spoutapi.event.inventory.InventoryCraftEvent;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericLabel;
@@ -41,6 +37,10 @@ import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.Block;
 import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.player.SpoutPlayer;
+
+import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
+import cc.thedudeguy.jukebukkit.items.ItemLabel;
+import cc.thedudeguy.jukebukkit.jukebox.JukeboxBlock;
 
 /**
  * Player Listener. Handles writing of labels and opening the label maker gui.
@@ -111,9 +111,10 @@ public class JukeBukkitPlayerListener implements Listener {
 			event.setCancelled(true);
 		}
 	}
-
+	
+	/*
 	@EventHandler
-	public void onPlayerCraft(InventoryCraftEvent event) {
+	public void onPlayerCraft(CraftItemEvent event) {
 		final Player ply = event.getPlayer();
                 final ItemStack st = event.getResult();
                 if (st==null) return;
@@ -127,7 +128,8 @@ public class JukeBukkitPlayerListener implements Listener {
 			event.setCancelled(true);
 		}
 	}
-
+	*/
+	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		SpoutPlayer player = SpoutManager.getPlayer(event.getPlayer());
@@ -200,16 +202,17 @@ public class JukeBukkitPlayerListener implements Listener {
 				{
 
 					//yep, its a label. let see what were clicking on.
-					if (new SpoutItemStack(event.getItem()).isCustomItem())
+					if (new SpoutItemStack(event.getCurrentItem()).isCustomItem())
 					{
 
 						//its custom could be a disc...
-						CustomItem itemClickedOn = (CustomItem) new SpoutItemStack(event.getItem()).getMaterial();
+						CustomItem itemClickedOn = (CustomItem) new SpoutItemStack(event.getCurrentItem()).getMaterial();
 						if ( itemClickedOn instanceof ItemBurnedObsidyisc)
 						{
+							
 							//its a burned disc! we can do stuff to it.
 							String label = plugin.getLabelManager().get(itemOnCursor.getCustomId());
-
+							
 							plugin.getDiscsManager().setTitle(itemClickedOn.getCustomId(), label);
 							plugin.getDiscsManager().save();
 
@@ -217,10 +220,9 @@ public class JukeBukkitPlayerListener implements Listener {
 
 							//remove the item on the cursor.
 							event.setResult(Result.ALLOW);
-							event.setCursor(null);
-
-							event.setCancelled(true);
-							//return true;
+							
+							event.setCursor(new ItemStack(Material.AIR, 0));
+							
 						}
 					}
 				}

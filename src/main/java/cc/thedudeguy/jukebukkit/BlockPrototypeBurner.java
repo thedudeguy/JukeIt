@@ -233,7 +233,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	@Override
 	public void onBlockPlace(World arg0, int arg1, int arg2, int arg3) {
 		
-		plugin.log.info("onBlockPlace No Entity");
+		//plugin.log.info("onBlockPlace No Entity");
 		
 		// TODO Auto-generated method stub
 		//plugin.log.info("onBlockPlace 1");
@@ -242,7 +242,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	@Override
 	public void onBlockPlace(World world, int x, int y, int z, LivingEntity entity) {
 		
-		plugin.log.info("onBlockInteract Living Entity");
+		//plugin.log.info("onBlockInteract Living Entity");
 		
 		//find which way the player is facing...
 		//plugin.log.info("onBlockPlace 2");

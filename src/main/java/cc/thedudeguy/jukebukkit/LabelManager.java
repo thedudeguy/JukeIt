@@ -18,8 +18,6 @@ package cc.thedudeguy.jukebukkit;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Set;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
