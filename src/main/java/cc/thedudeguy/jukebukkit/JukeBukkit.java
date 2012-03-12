@@ -21,12 +21,15 @@ import java.util.logging.Logger;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
+
 /**
  * The main class for the Jukebukkit Plugin
  * @author Chris Churchwell
  */
 public class JukeBukkit extends JavaPlugin {
 	
+	public static JukeBukkit instance;
 	public Logger log = Logger.getLogger("Minecraft");
 	
 	public PluginManager pm;
@@ -37,10 +40,14 @@ public class JukeBukkit extends JavaPlugin {
 	private LabelManager labelManager;
 	private CustomsManager customsManager;
 	
-	//public CustomBlock blockPrototypeDiscPlayer;
+	Blocks blocks;
 	
 	public void onEnable()
 	{	
+		instance = this;
+		
+		blocks = new Blocks();
+		
 		//load the textures and precaches
 		customsManager = new CustomsManager(this);
 		//load the disc manager so that it can be used throughout
