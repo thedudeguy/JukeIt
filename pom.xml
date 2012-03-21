@@ -8,12 +8,12 @@
 	<repositories>
 		<repository>
 			<id>bukkit-repo</id>
-			<url>http://repo.bukkit.org/artifactory/repo</url>
+			<url>http://repo.bukkit.org</url>
 		</repository>
 		<repository>
 			<id>spout-repo</id>
 			<name>Spout API</name>
-			<url>http://repo.getspout.org/</url>
+			<url>http://repo.spout.org/</url>
 			<layout>default</layout>
 		</repository>
 	</repositories>
@@ -33,7 +33,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
+			<artifactId>craftbukkit</artifactId>
 			<version>LATEST</version>
 		</dependency>
 		<dependency>
