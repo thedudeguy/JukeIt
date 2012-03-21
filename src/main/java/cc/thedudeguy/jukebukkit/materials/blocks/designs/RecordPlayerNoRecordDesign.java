@@ -25,8 +25,17 @@ public class RecordPlayerNoRecordDesign extends GenericBlockDesign {
 		SubTexture insideEdge1 = texture.getSubTexture(4);
 		SubTexture insideEdge2 = texture.getSubTexture(5);
 		
+		SubTexture needleBase = texture.getSubTexture(6);
+		
+		SubTexture indicatorRed = texture.getSubTexture(7);
+		//SubTexture indicatorGreen = texture.getSubTexture(8);
+		
+		SubTexture recordRed = texture.getSubTexture(16);
+		
+		SubTexture needleWood = texture.getSubTexture(32);
+		
 		setBoundingBox(0, 0, 0, 1, 1, 1);
-		setQuadNumber(14);
+		setQuadNumber(26);
 		
 		//main body
 		///////////////////////////////////////
@@ -138,8 +147,106 @@ public class RecordPlayerNoRecordDesign extends GenericBlockDesign {
 		insideEdgeq4.addVertex(3, 0.0625F, 1F, 0.9375F);
 		this.setQuad(insideEdgeq4);
 		
+		// INDICATOR LIGHT
 		
+		Quad indicatorLeft = new Quad(14, indicatorRed);
+		indicatorLeft.addVertex(0, 0.5F, 0.9675F, 0.8125F);
+		indicatorLeft.addVertex(1, 0.5F, 0.9675F-0.03F, 0.8125F);
+		indicatorLeft.addVertex(2, 0.5F, 0.9675F-0.03F, 0.8125F + 0.1250F);
+		indicatorLeft.addVertex(3, 0.5F, 0.9675F, 0.8125F + 0.1250F);
+		this.setQuad(indicatorLeft);
 		
+		Quad indicatorRear = new Quad(15, indicatorRed);
+		indicatorRear.addVertex(0, 0.5F, 0.9675F, 0.8125F);
+		indicatorRear.addVertex(1, 0.5F+0.0625F, 0.9675F, 0.8125F);
+		indicatorRear.addVertex(2, 0.5F+0.0625F, 0.9675F-0.03F, 0.8125F);
+		indicatorRear.addVertex(3, 0.5F, 0.9675F-0.03F, 0.8125F);
+		this.setQuad(indicatorRear);
+		
+		Quad indicatorRight = new Quad(16, indicatorRed);
+		indicatorRight.addVertex(0, 0.5F+0.0625F, 0.9675F, 0.8125F);
+		indicatorRight.addVertex(1, 0.5F+0.0625F, 0.9675F, 0.8125F+0.125F);
+		indicatorRight.addVertex(2, 0.5F+0.0625F, 0.9675F-0.03F, 0.8125F+0.125F);
+		indicatorRight.addVertex(3, 0.5F+0.0625F, 0.9675F-0.03F, 0.8125F);
+		this.setQuad(indicatorRight);
+		
+		Quad indicatorTop = new Quad(17, indicatorRed);
+		indicatorTop.addVertex(0, 0.5F, 0.9675F, 0.8125F);
+		indicatorTop.addVertex(1, 0.5F, 0.9675F, 0.8125F+0.125F);
+		indicatorTop.addVertex(2, 0.5F+0.0625F, 0.9675F, 0.8125F+0.125F);
+		indicatorTop.addVertex(3, 0.5F+0.0625F, 0.9675F, 0.8125F);
+		this.setQuad(indicatorTop);
+		
+		// NEEDLE BASE
+		
+		Quad needleBaseFront = new Quad(18, needleBase);
+		needleBaseFront.addVertex(0, 0.75F, 0.980F, 0.75F+0.0625F);
+		needleBaseFront.addVertex(1, 0.75F, 0.998F-0.0605F, 0.75F+0.0625F);
+		needleBaseFront.addVertex(2, 0.75F+0.0625F, 0.998F-0.0605F, 0.75F+0.0625F);
+		needleBaseFront.addVertex(3, 0.75F+0.0625F, 0.998F, 0.75F+0.0625F);
+		this.setQuad(needleBaseFront);
+		
+		Quad needleBaseLeft = new Quad(19, needleBase);
+		needleBaseLeft.addVertex(0, 0.75F, 0.980F, 0.75F);
+		needleBaseLeft.addVertex(1, 0.75F, 0.998F-0.0605F, 0.75F);
+		needleBaseLeft.addVertex(2, 0.75F, 0.998F-0.0605F, 0.75F+0.0625F);
+		needleBaseLeft.addVertex(3, 0.75F, 0.980F, 0.75F+0.0625F);
+		this.setQuad(needleBaseLeft);
+		
+		Quad needleBaseRight = new Quad(20, needleBase);
+		needleBaseRight.addVertex(0, 0.75F+0.0625F, 0.998F, 0.75F+0.0625F);
+		needleBaseRight.addVertex(1, 0.75F+0.0625F, 0.998F-0.0605F, 0.75F+0.0625F);
+		needleBaseRight.addVertex(2, 0.75F+0.0625F, 0.998F-0.0605F, 0.75F);
+		needleBaseRight.addVertex(3, 0.75F+0.0625F, 0.980F, 0.75F);
+		this.setQuad(needleBaseRight);
+		
+		Quad needleBaseRear = new Quad(21, needleBase);
+		needleBaseRear.addVertex(0, 0.75F+0.0625F, 0.980F, 0.75F);
+		needleBaseRear.addVertex(1, 0.75F+0.0625F, 0.998F-0.0605F, 0.75F);
+		needleBaseRear.addVertex(2, 0.75F, 0.998F-0.0605F, 0.75F);
+		needleBaseRear.addVertex(3, 0.75F, 0.980F, 0.75F);
+		this.setQuad(needleBaseRear);
+		
+		Quad needleBaseTop = new Quad(22, needleBase);
+		needleBaseTop.addVertex(0, 0.75F, 0.980F, 0.75F);
+		needleBaseTop.addVertex(1, 0.75F, 0.980F, 0.8125F);
+		needleBaseTop.addVertex(2, 0.8125F, 0.998F, 0.8125F);
+		needleBaseTop.addVertex(3, 0.8125F, 0.998F, 0.8125F);
+		this.setQuad(needleBaseTop);
+		
+		Quad needleBaseTop2 = new Quad(23, needleBase);
+		needleBaseTop2.addVertex(0, 0.8125F, 0.998F, 0.8125F);
+		needleBaseTop2.addVertex(1, 0.8125F, 0.980F, 0.75F);
+		needleBaseTop2.addVertex(2, 0.75F, 0.980F, 0.75F);
+		needleBaseTop2.addVertex(3, 0.75F, 0.980F, 0.75F);
+		this.setQuad(needleBaseTop2);
+		
+		// RECORD.
+		Quad record = new Quad(25, recordRed);
+		record.addVertex(0, 1F, 0.9675F, 0F);
+		record.addVertex(1, 0F, 0.9675F, 0F);
+		record.addVertex(2, 0F, 0.9675F, 1F);
+		record.addVertex(3, 1F, 0.9675F, 1F);
+		this.setQuad(record);
+		
+		/*
+		// NEEDLE - no disc
+		
+		Quad needle = new Quad(24, needleWood);
+		needle.addVertex(2, 0.8125F, 1F, 0.75F);
+		needle.addVertex(3, 0.3125F, 1F, 0.75F);
+		needle.addVertex(0, 0.3125F, 1F, 0.7812F);
+		needle.addVertex(1, 0.8125F, 1F, 0.8125F);
+		this.setQuad(needle);
+		*/
+		
+		// NEEDLE - with disc
+		Quad needle = new Quad(24, needleWood);
+		needle.addVertex(0, 0.3308F, 0.9675F, 0.6505F);
+		needle.addVertex(1, 0.8025F, 1F, 0.8192F);
+		needle.addVertex(2, 0.8198F, 1F, 0.7591F);
+		needle.addVertex(3, 0.3395F, 0.9675F, 0.6205F);
+		this.setQuad(needle);
 		
 	}
 	
