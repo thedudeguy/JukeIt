@@ -30,6 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
+import cc.thedudeguy.jukebukkit.materials.items.Items;
 
 /**
  * The main class for the Jukebukkit Plugin
@@ -49,6 +50,7 @@ public class JukeBukkit extends JavaPlugin {
 	private CustomsManager customsManager;
 	
 	Blocks blocks;
+	Items items;
 	
 	public void onEnable()
 	{	
@@ -57,7 +59,7 @@ public class JukeBukkit extends JavaPlugin {
 		setupDatabase();
 		
 		blocks = new Blocks();
-		
+		items = new Items();
 		
 		
 		/**

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.material.MaterialData;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -97,7 +96,7 @@ public class RecordPlayer extends GenericCustomBlock {
 	public boolean onBlockInteract(org.bukkit.World world, int x, int y, int z, SpoutPlayer player) {
 		
 		player.sendMessage("Yeah Baby");
-		SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
+		//SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
 
 		
 		//if (data.getNeedleType() == 0) Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] No Needle");
