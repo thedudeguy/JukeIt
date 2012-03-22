@@ -8,9 +8,45 @@ import org.getspout.spoutapi.block.design.Texture;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 
-public class RecordPlayerNoRecordDesign extends GenericBlockDesign {
+public class RecordPlayerDesign extends GenericBlockDesign {
 	
-	public RecordPlayerNoRecordDesign() {
+	public static final int DISC_NONE 		= 0;
+	public static final int DISC_WHITE 		= 16;
+	public static final int DISC_RED 		= 17;
+	public static final int DISC_PURPLE 	= 18;
+	public static final int DISC_PINK 		= 19;
+	public static final int DISC_ORANGE 	= 20;
+	public static final int DISC_MAGENTA	= 21;
+	public static final int DISC_LIME 		= 22;
+	public static final int DISC_LGRAY 		= 23;
+	public static final int DISC_LBLUE 		= 24;
+	public static final int DISC_GREEN 		= 25;
+	public static final int DISC_GRAY 		= 26;
+	public static final int DISC_CYAN 		= 27;
+	public static final int DISC_BROWN 		= 28;
+	public static final int DISC_BLUE		= 29;
+	public static final int DISC_BLACK 		= 30;
+	public static final int DISC_YELLOW 	= 31;
+	
+	public static final int NEEDLE_NONE 		= 0;
+	public static final int NEEDLE_WOOD_FLINT 	= 32;
+	
+	public static final int INDICATOR_RED = 7;
+	public static final int INDICATOR_GREEN = 8;
+	
+	private int discColor;
+	private int needleType;
+	private int indicatorColor;
+	
+	public RecordPlayerDesign() {
+		this(NEEDLE_NONE, DISC_NONE, INDICATOR_RED);
+	}
+	public RecordPlayerDesign(int needle, int disc, int indicator) {
+		
+		discColor = disc;
+		needleType = needle;
+		indicatorColor = indicator;
+		
 		JukeBukkit plugin = JukeBukkit.instance;
 		Texture texture = Blocks.recordPlayerTexture;
 		
@@ -24,15 +60,11 @@ public class RecordPlayerNoRecordDesign extends GenericBlockDesign {
 		SubTexture edge2 = texture.getSubTexture(3);
 		SubTexture insideEdge1 = texture.getSubTexture(4);
 		SubTexture insideEdge2 = texture.getSubTexture(5);
-		
 		SubTexture needleBase = texture.getSubTexture(6);
 		
-		SubTexture indicatorRed = texture.getSubTexture(7);
-		//SubTexture indicatorGreen = texture.getSubTexture(8);
-		
-		SubTexture recordRed = texture.getSubTexture(16);
-		
-		SubTexture needleWood = texture.getSubTexture(32);
+		SubTexture indicatorST = texture.getSubTexture(indicatorColor);
+		SubTexture recordST = texture.getSubTexture(discColor);
+		SubTexture needleST = texture.getSubTexture(needleType);
 		
 		setBoundingBox(0, 0, 0, 1, 1, 1);
 		setQuadNumber(26);
@@ -149,28 +181,28 @@ public class RecordPlayerNoRecordDesign extends GenericBlockDesign {
 		
 		// INDICATOR LIGHT
 		
-		Quad indicatorLeft = new Quad(14, indicatorRed);
+		Quad indicatorLeft = new Quad(14, indicatorST);
 		indicatorLeft.addVertex(0, 0.5F, 0.9675F, 0.8125F);
 		indicatorLeft.addVertex(1, 0.5F, 0.9675F-0.03F, 0.8125F);
 		indicatorLeft.addVertex(2, 0.5F, 0.9675F-0.03F, 0.8125F + 0.1250F);
 		indicatorLeft.addVertex(3, 0.5F, 0.9675F, 0.8125F + 0.1250F);
 		this.setQuad(indicatorLeft);
 		
-		Quad indicatorRear = new Quad(15, indicatorRed);
+		Quad indicatorRear = new Quad(15, indicatorST);
 		indicatorRear.addVertex(0, 0.5F, 0.9675F, 0.8125F);
 		indicatorRear.addVertex(1, 0.5F+0.0625F, 0.9675F, 0.8125F);
 		indicatorRear.addVertex(2, 0.5F+0.0625F, 0.9675F-0.03F, 0.8125F);
 		indicatorRear.addVertex(3, 0.5F, 0.9675F-0.03F, 0.8125F);
 		this.setQuad(indicatorRear);
 		
-		Quad indicatorRight = new Quad(16, indicatorRed);
+		Quad indicatorRight = new Quad(16, indicatorST);
 		indicatorRight.addVertex(0, 0.5F+0.0625F, 0.9675F, 0.8125F);
 		indicatorRight.addVertex(1, 0.5F+0.0625F, 0.9675F, 0.8125F+0.125F);
 		indicatorRight.addVertex(2, 0.5F+0.0625F, 0.9675F-0.03F, 0.8125F+0.125F);
 		indicatorRight.addVertex(3, 0.5F+0.0625F, 0.9675F-0.03F, 0.8125F);
 		this.setQuad(indicatorRight);
 		
-		Quad indicatorTop = new Quad(17, indicatorRed);
+		Quad indicatorTop = new Quad(17, indicatorST);
 		indicatorTop.addVertex(0, 0.5F, 0.9675F, 0.8125F);
 		indicatorTop.addVertex(1, 0.5F, 0.9675F, 0.8125F+0.125F);
 		indicatorTop.addVertex(2, 0.5F+0.0625F, 0.9675F, 0.8125F+0.125F);
@@ -222,32 +254,55 @@ public class RecordPlayerNoRecordDesign extends GenericBlockDesign {
 		this.setQuad(needleBaseTop2);
 		
 		// RECORD.
-		Quad record = new Quad(25, recordRed);
-		record.addVertex(0, 1F, 0.9675F, 0F);
-		record.addVertex(1, 0F, 0.9675F, 0F);
-		record.addVertex(2, 0F, 0.9675F, 1F);
-		record.addVertex(3, 1F, 0.9675F, 1F);
-		this.setQuad(record);
 		
-		/*
-		// NEEDLE - no disc
+		if (discColor != DISC_NONE) {
+			
+			Quad record = new Quad(25, recordST);
+			record.addVertex(0, 1F, 0.9675F, 0F);
+			record.addVertex(1, 0F, 0.9675F, 0F);
+			record.addVertex(2, 0F, 0.9675F, 1F);
+			record.addVertex(3, 1F, 0.9675F, 1F);
+			this.setQuad(record);
+		}
 		
-		Quad needle = new Quad(24, needleWood);
-		needle.addVertex(2, 0.8125F, 1F, 0.75F);
-		needle.addVertex(3, 0.3125F, 1F, 0.75F);
-		needle.addVertex(0, 0.3125F, 1F, 0.7812F);
-		needle.addVertex(1, 0.8125F, 1F, 0.8125F);
-		this.setQuad(needle);
-		*/
-		
-		// NEEDLE - with disc
-		Quad needle = new Quad(24, needleWood);
-		needle.addVertex(0, 0.3308F, 0.9675F, 0.6505F);
-		needle.addVertex(1, 0.8025F, 1F, 0.8192F);
-		needle.addVertex(2, 0.8198F, 1F, 0.7591F);
-		needle.addVertex(3, 0.3395F, 0.9675F, 0.6205F);
-		this.setQuad(needle);
-		
+		// NEEDLE
+		if (needleType != NEEDLE_NONE) {
+			
+			if (discColor == DISC_NONE) {
+				Quad needleQuad = new Quad(24, needleST);
+				needleQuad.addVertex(2, 0.8125F, 1F, 0.75F);
+				needleQuad.addVertex(3, 0.3125F, 1F, 0.75F);
+				needleQuad.addVertex(0, 0.3125F, 1F, 0.7812F);
+				needleQuad.addVertex(1, 0.8125F, 1F, 0.8125F);
+				this.setQuad(needleQuad);
+			
+			} else {
+				Quad needleQuad = new Quad(24, needleST);
+				needleQuad.addVertex(0, 0.3308F, 0.9675F, 0.6505F);
+				needleQuad.addVertex(1, 0.8025F, 1F, 0.8192F);
+				needleQuad.addVertex(2, 0.8198F, 1F, 0.7591F);
+				needleQuad.addVertex(3, 0.3395F, 0.9675F, 0.6205F);
+				this.setQuad(needleQuad);
+				
+			}	
+		}
+	}
+	
+	public int getIndicator() {
+		return indicatorColor;
+	}
+	
+	public int getDisc() {
+		return discColor;
+	}
+	
+	public int getNeedle() {
+		return needleType;
+	}
+	
+	public String getDesignTypeId()
+	{
+		return "jb_" + String.valueOf(needleType) + "_" + String.valueOf(discColor) + "_" + String.valueOf(indicatorColor);
 	}
 	
 }
