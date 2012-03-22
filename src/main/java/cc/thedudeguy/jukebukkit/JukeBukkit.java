@@ -16,11 +16,18 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.persistence.PersistenceException;
+
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 
 /**
@@ -46,7 +53,15 @@ public class JukeBukkit extends JavaPlugin {
 	{	
 		instance = this;
 		
+		setupDatabase();
+		
 		blocks = new Blocks();
+		
+		
+		
+		/**
+		 * Below is old stuff
+		 */
 		
 		//load the textures and precaches
 		customsManager = new CustomsManager(this);
@@ -81,18 +96,56 @@ public class JukeBukkit extends JavaPlugin {
 		log.info("[JukeBukkit] Disabled.");
 	}
 	
+	/**
+	 * Sets up the ebean database if needed
+	 */
+	private void setupDatabase() {
+		try {
+            getDatabase().find(RecordPlayerBlockDesigns.class).findRowCount();
+        } catch (PersistenceException ex) {
+            Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Installing database for " + getDescription().getName() + " due to first time usage");
+            installDDL();
+        }
+	}
+	
+	 @Override
+	 public List<Class<?>> getDatabaseClasses() {
+		 List<Class<?>> list = new ArrayList<Class<?>>();
+	     list.add(RecordPlayerBlockDesigns.class);
+	     return list;
+	 }
+	
+	/**
+	 * 
+	 * @depracated
+	 */
 	public DiscsManager getDiscsManager()
 	{
 		return discsManager;
 	}
+	
+	/**
+	 * 
+	 * @depracated
+	 */
 	public JukeBoxManager getJukeBoxManager()
 	{
 		return jukeBoxManager;
 	}
+	
+	/**
+	 * 
+	 * @depracated
+	 */
 	public CustomsManager getCustomsManager()
 	{
 		return customsManager;
 	}
+	
+	/**
+	 * 
+	 * @depracated
+	 */
 	public LabelManager getLabelManager()
 	{
 		return labelManager;
