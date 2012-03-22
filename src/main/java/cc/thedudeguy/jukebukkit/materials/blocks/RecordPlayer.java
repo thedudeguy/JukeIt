@@ -12,6 +12,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
+import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 
 public class RecordPlayer extends GenericCustomBlock {
@@ -76,14 +77,6 @@ public class RecordPlayer extends GenericCustomBlock {
 		super(JukeBukkit.instance, nameId, 3);
 	}
 	
-	public boolean onBlockInteract(org.bukkit.World world, int x, int y, int z, SpoutPlayer player) {
-		
-		player.sendMessage("Yeah Baby");
-		SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
-		block.setCustomBlock(getSubBlock(RecordPlayerDesign.NEEDLE_WOOD_FLINT, RecordPlayerDesign.DISC_BLUE, RecordPlayerDesign.INDICATOR_GREEN));
-		return false;
-	}
-	
 	private void initDesigns() {
 		 List<RecordPlayerBlockDesigns> rpbd = JukeBukkit.instance.getDatabase().find(RecordPlayerBlockDesigns.class).findList();
 		 
@@ -99,6 +92,57 @@ public class RecordPlayer extends GenericCustomBlock {
 			 Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Initialized "+ String.valueOf(count) +" RecordPlayer Designs.");
 		 }
 		 
+	}
+	
+	public boolean onBlockInteract(org.bukkit.World world, int x, int y, int z, SpoutPlayer player) {
+		
+		player.sendMessage("Yeah Baby");
+		SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
+
+		
+		//if (data.getNeedleType() == 0) Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] No Needle");
+		//block.setCustomBlock(getSubBlock(RecordPlayerDesign.NEEDLE_WOOD_FLINT, RecordPlayerDesign.DISC_BLUE, RecordPlayerDesign.INDICATOR_GREEN));
+		return false;
+	}
+	
+	/**
+	 * Event Fired when this block is placed.
+	 * Update/Insert the data into the DB for this block, so we can keep an eye on it.
+	 */
+	public void onBlockPlace(org.bukkit.World world, int x, int y, int z) {
+		
+		//when the block is placed we need to make sure to get data set up for it.
+		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+				.where()
+					.eq("x", x)
+					.eq("y", y)
+					.eq("z", z)
+					.ieq("worldName", world.getName())
+				.findUnique();
+		
+		rpd.setNeedleType(0);
+		rpd.setX(x);
+		rpd.setY(y);
+		rpd.setZ(z);
+		rpd.setWorldName(world.getName());
+		JukeBukkit.instance.getDatabase().save(rpd);
+	}
+	
+	/**
+	 * Event Fired when this block is destroyed.
+	 * Firstly, if this player has any items in it, like a record, or a needle, then those items need
+	 * to be spawned into the world.
+	 * lastly, remove the block data we have saved in the database to keep it nice and tidy.
+	 */
+	public void onBlockDestroyed(org.bukkit.World world, int x, int y, int z) {
+		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+				.where()
+					.eq("x", x)
+					.eq("y", y)
+					.eq("z", z)
+					.ieq("worldName", world.getName())
+				.findUnique();
+		JukeBukkit.instance.getDatabase().delete(rpd);
 	}
 	
 }
