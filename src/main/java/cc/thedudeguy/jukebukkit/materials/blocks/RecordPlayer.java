@@ -74,6 +74,9 @@ public class RecordPlayer extends GenericCustomBlock {
 	
 	public RecordPlayer(String nameId) {
 		super(JukeBukkit.instance, nameId, 3);
+		
+		this.setHardness(MaterialData.wood.getHardness());
+		this.setLightLevel(1);
 	}
 	
 	private void initDesigns() {
@@ -113,16 +116,16 @@ public class RecordPlayer extends GenericCustomBlock {
 		//when the block is placed we need to make sure to get data set up for it.
 		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
 				.where()
-					.eq("x", x)
-					.eq("y", y)
-					.eq("z", z)
+					.eq("x", (double)x)
+					.eq("y", (double)y)
+					.eq("z", (double)z)
 					.ieq("worldName", world.getName())
 				.findUnique();
-		
+		if (rpd == null) rpd = new RecordPlayerData();
 		rpd.setNeedleType(0);
-		rpd.setX(x);
-		rpd.setY(y);
-		rpd.setZ(z);
+		rpd.setX((double)x);
+		rpd.setY((double)y);
+		rpd.setZ((double)z);
 		rpd.setWorldName(world.getName());
 		JukeBukkit.instance.getDatabase().save(rpd);
 	}
@@ -134,14 +137,16 @@ public class RecordPlayer extends GenericCustomBlock {
 	 * lastly, remove the block data we have saved in the database to keep it nice and tidy.
 	 */
 	public void onBlockDestroyed(org.bukkit.World world, int x, int y, int z) {
-		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		List<RecordPlayerData> rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
 				.where()
-					.eq("x", x)
-					.eq("y", y)
-					.eq("z", z)
+					.eq("x", (double)x)
+					.eq("y", (double)y)
+					.eq("z", (double)z)
 					.ieq("worldName", world.getName())
-				.findUnique();
-		JukeBukkit.instance.getDatabase().delete(rpd);
+				.findList();
+		if (!rpd.isEmpty()) {
+			JukeBukkit.instance.getDatabase().delete(rpd);
+		}
 	}
 	
 }
