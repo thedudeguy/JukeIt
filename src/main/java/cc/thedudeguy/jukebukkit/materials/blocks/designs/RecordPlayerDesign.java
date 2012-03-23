@@ -3,9 +3,9 @@ package cc.thedudeguy.jukebukkit.materials.blocks.designs;
 import org.getspout.spoutapi.block.design.GenericBlockDesign;
 import org.getspout.spoutapi.block.design.Quad;
 import org.getspout.spoutapi.block.design.SubTexture;
-import org.getspout.spoutapi.block.design.Texture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 
 public class RecordPlayerDesign extends GenericBlockDesign {
 	
@@ -46,24 +46,21 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		needleType = needle;
 		indicatorColor = indicator;
 		
-		JukeBukkit plugin = JukeBukkit.instance;
-		Texture texture = new Texture(JukeBukkit.instance, "recordplayer.png", 256, 256, 16);
-		
-		setTexture(plugin, texture.getTexture());
+		setTexture(JukeBukkit.instance, Blocks.RecordPlayerTexture);
 		setMinBrightness(1F);
 		setMaxBrightness(1F);
 		
-		SubTexture textureSide = texture.getSubTexture(0);
-		SubTexture textureTop = texture.getSubTexture(1);
-		SubTexture edge1 = texture.getSubTexture(2);
-		SubTexture edge2 = texture.getSubTexture(3);
-		SubTexture insideEdge1 = texture.getSubTexture(4);
-		SubTexture insideEdge2 = texture.getSubTexture(5);
-		SubTexture needleBase = texture.getSubTexture(6);
+		SubTexture textureSide = getTexture().getSubTexture(0);
+		SubTexture textureTop = getTexture().getSubTexture(1);
+		SubTexture edge1 = getTexture().getSubTexture(2);
+		SubTexture edge2 = getTexture().getSubTexture(3);
+		SubTexture insideEdge1 = getTexture().getSubTexture(4);
+		SubTexture insideEdge2 = getTexture().getSubTexture(5);
+		SubTexture needleBase = getTexture().getSubTexture(6);
 		
-		SubTexture indicatorST = texture.getSubTexture(indicatorColor);
-		SubTexture recordST = texture.getSubTexture(discColor);
-		SubTexture needleST = texture.getSubTexture(needleType);
+		SubTexture indicatorST = getTexture().getSubTexture(indicatorColor);
+		SubTexture recordST = getTexture().getSubTexture(discColor);
+		SubTexture needleST = getTexture().getSubTexture(needleType);
 		
 		setBoundingBox(0, 0, 0, 1, 1, 1);
 		setQuadNumber(26);

@@ -65,6 +65,11 @@ public class RecordPlayer extends GenericCustomBlock {
 		return subBlocks.get(rpDesign.getDesignTypeId());
 	}
 	
+	public static void updateBlockDesign(SpoutBlock block, RecordPlayerData data) {
+		
+		block.setCustomBlock(getSubBlock(data.getNeedleType(), RecordPlayerDesign.DISC_NONE, RecordPlayerDesign.INDICATOR_RED));
+		
+	}
 	
 	public RecordPlayer() {
 		super(JukeBukkit.instance, "Record Player", 3);
@@ -107,12 +112,6 @@ public class RecordPlayer extends GenericCustomBlock {
 		 
 	}
 	
-	public void updateBlockDesign(SpoutBlock block, RecordPlayerData data) {
-		
-		block.setCustomBlock(getSubBlock(data.getNeedleType(), RecordPlayerDesign.DISC_NONE, RecordPlayerDesign.INDICATOR_RED));
-		
-	}
-	
 	/**
 	 * Event fired when a player right clicks on a block.
 	 * Lots of things to do here. if theres a disc in it, the disc needs to be ejected, and if the player
@@ -146,7 +145,7 @@ public class RecordPlayer extends GenericCustomBlock {
 				player.setItemInHand(inHand);
 			}
 			
-			this.updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
+			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
 			return true;
 		}
@@ -157,7 +156,7 @@ public class RecordPlayer extends GenericCustomBlock {
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			
 			world.dropItem(new Location(world, x, y, z), new SpoutItemStack(Items.needle, 1));
-			this.updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
+			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
 			return true;
 		}

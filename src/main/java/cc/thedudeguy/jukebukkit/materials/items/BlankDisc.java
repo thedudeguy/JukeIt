@@ -10,9 +10,7 @@ public abstract class BlankDisc extends GenericCustomItem implements DiscColor {
 	
 	public BlankDisc(String name) {
 		super(JukeBukkit.instance, name);
-		
 		setTexture(getTextureFileName());
-		
 	}
 
 	public abstract String getTextureFileName();

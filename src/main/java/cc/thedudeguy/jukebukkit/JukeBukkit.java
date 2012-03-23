@@ -24,9 +24,9 @@ import java.util.logging.Logger;
 import javax.persistence.PersistenceException;
 
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
@@ -42,14 +42,6 @@ public class JukeBukkit extends JavaPlugin {
 	public static JukeBukkit instance;
 	public Logger log = Logger.getLogger("Minecraft");
 	
-	public PluginManager pm;
-	//private JukeBukkitCommandExecutor commandExecutor;
-	
-	private DiscsManager discsManager;
-	private JukeBoxManager jukeBoxManager;
-	private LabelManager labelManager;
-	private CustomsManager customsManager;
-	
 	Blocks blocks;
 	Items items;
 	
@@ -63,38 +55,6 @@ public class JukeBukkit extends JavaPlugin {
 		
 		blocks = new Blocks();
 		items = new Items();
-		
-		
-		/**
-		 * Below is old stuff
-		 */
-		/*
-		//load the textures and precaches
-		customsManager = new CustomsManager(this);
-		//load the disc manager so that it can be used throughout
-		discsManager = new DiscsManager(this);
-		//initialize the jukebox manager
-		jukeBoxManager = new JukeBoxManager(this);
-		//initialize the label manager
-		labelManager = new LabelManager(this);
-		
-		customsManager.createCustomTextures();
-		customsManager.createCustomItems();
-		customsManager.createCustomBlocks();
-		customsManager.createRecipes();
-		discsManager.reInitDiscs();
-		
-		//TODO: Cleanup no longer used item ids for lables, and discs
-		
-		//load the command executor
-		//commandExecutor = new JukeBukkitCommandExecutor(this);
-		//getCommand("jukebukkit").setExecutor(commandExecutor);
-		
-		//launch the player Listener.
-		new JukeBukkitPlayerListener(this);
-		
-		log.info("[JukeBukkit] Enabled");
-		*/
 		
 	}
 	
@@ -110,17 +70,19 @@ public class JukeBukkit extends JavaPlugin {
 		try {
             getDatabase().find(RecordPlayerBlockDesigns.class).findRowCount();
             getDatabase().find(RecordPlayerData.class).findRowCount();
+            getDatabase().find(DiscData.class).findRowCount();
         } catch (PersistenceException ex) {
             Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Installing database for " + getDescription().getName() + " due to first time usage");
             installDDL();
         }
 	}
 	
-	 @Override
+	 @Override	
 	 public List<Class<?>> getDatabaseClasses() {
 		 List<Class<?>> list = new ArrayList<Class<?>>();
 	     list.add(RecordPlayerBlockDesigns.class);
 	     list.add(RecordPlayerData.class);
+	     list.add(DiscData.class);
 	     return list;
 	 }
 }
