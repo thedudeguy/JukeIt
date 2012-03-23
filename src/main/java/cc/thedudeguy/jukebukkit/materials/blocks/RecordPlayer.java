@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.MaterialData;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -13,6 +18,8 @@ import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
+import cc.thedudeguy.jukebukkit.materials.items.Items;
+import cc.thedudeguy.jukebukkit.materials.items.Needle;
 
 public class RecordPlayer extends GenericCustomBlock {
 	
@@ -25,6 +32,10 @@ public class RecordPlayer extends GenericCustomBlock {
 			
 			this.setName("Record Player SubBlock (Do Not Use)");
 			this.setBlockDesign(rpDesign);
+			
+			SpoutItemStack dropItem = new SpoutItemStack(getSubBlock(RecordPlayerDesign.NEEDLE_NONE, RecordPlayerDesign.DISC_NONE, RecordPlayerDesign.INDICATOR_RED), 1);
+			
+			this.setItemDrop(dropItem);
 		}
 	}
 	
@@ -96,14 +107,61 @@ public class RecordPlayer extends GenericCustomBlock {
 		 
 	}
 	
+	public void updateBlockDesign(SpoutBlock block, RecordPlayerData data) {
+		
+		block.setCustomBlock(getSubBlock(data.getNeedleType(), RecordPlayerDesign.DISC_NONE, RecordPlayerDesign.INDICATOR_RED));
+		
+	}
+	
+	/**
+	 * Event fired when a player right clicks on a block.
+	 * Lots of things to do here. if theres a disc in it, the disc needs to be ejected, and if the player
+	 * is holding the right items in their hand, then those select items may be taken by this block.
+	 */
 	public boolean onBlockInteract(org.bukkit.World world, int x, int y, int z, SpoutPlayer player) {
 		
-		player.sendMessage("Yeah Baby");
-		//SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
-
+		//get data from the db
+		RecordPlayerData rpdata = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+				.where()
+					.eq("x", (double)x)
+					.eq("y", (double)y)
+					.eq("z", (double)z)
+					.ieq("worldName", world.getName())
+				.findUnique();
+		if (rpdata == null) {
+			Bukkit.getLogger().log(Level.WARNING, "[JukeBukkit] Missing Record Player Data, this data should have been created when the block was placed.");
+			return false;
+		}
 		
-		//if (data.getNeedleType() == 0) Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] No Needle");
-		//block.setCustomBlock(getSubBlock(RecordPlayerDesign.NEEDLE_WOOD_FLINT, RecordPlayerDesign.DISC_BLUE, RecordPlayerDesign.INDICATOR_GREEN));
+		SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
+		if ( rpdata.getNeedleType() == RecordPlayerDesign.NEEDLE_NONE && inHand.isCustomItem() && inHand.getMaterial() instanceof Needle ) {
+			rpdata.setNeedleType(RecordPlayerDesign.NEEDLE_WOOD_FLINT);
+			JukeBukkit.instance.getDatabase().save(rpdata);
+			
+			 //remove 1 from hand
+			if (inHand.getAmount()<2) {
+				player.setItemInHand(new ItemStack(Material.AIR));
+			} else {
+				inHand.setAmount(inHand.getAmount()-1);
+				player.setItemInHand(inHand);
+			}
+			
+			this.updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
+			
+			return true;
+		}
+		
+		if ( rpdata.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE ) {
+			
+			rpdata.setNeedleType(RecordPlayerDesign.NEEDLE_NONE);
+			JukeBukkit.instance.getDatabase().save(rpdata);
+			
+			world.dropItem(new Location(world, x, y, z), new SpoutItemStack(Items.needle, 1));
+			this.updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
+			
+			return true;
+		}
+		
 		return false;
 	}
 	
@@ -112,7 +170,6 @@ public class RecordPlayer extends GenericCustomBlock {
 	 * Update/Insert the data into the DB for this block, so we can keep an eye on it.
 	 */
 	public void onBlockPlace(org.bukkit.World world, int x, int y, int z) {
-		
 		//when the block is placed we need to make sure to get data set up for it.
 		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
 				.where()
@@ -121,13 +178,16 @@ public class RecordPlayer extends GenericCustomBlock {
 					.eq("z", (double)z)
 					.ieq("worldName", world.getName())
 				.findUnique();
-		if (rpd == null) rpd = new RecordPlayerData();
-		rpd.setNeedleType(0);
-		rpd.setX((double)x);
-		rpd.setY((double)y);
-		rpd.setZ((double)z);
-		rpd.setWorldName(world.getName());
-		JukeBukkit.instance.getDatabase().save(rpd);
+		if (rpd == null) {
+			rpd = new RecordPlayerData();
+			rpd.setNeedleType(0);
+			rpd.setX((double)x);
+			rpd.setY((double)y);
+			rpd.setZ((double)z);
+			rpd.setWorldName(world.getName());
+			JukeBukkit.instance.getDatabase().save(rpd);
+		}
+		/* If its still set, well go ahead and leave it, because it could be an blockplace even from setting the custom block to a different subblock for this location */
 	}
 	
 	/**
@@ -137,15 +197,31 @@ public class RecordPlayer extends GenericCustomBlock {
 	 * lastly, remove the block data we have saved in the database to keep it nice and tidy.
 	 */
 	public void onBlockDestroyed(org.bukkit.World world, int x, int y, int z) {
-		List<RecordPlayerData> rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		
+		//if theres junk in this block we need to make sure it drops too
+		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+				.where()
+					.eq("x", (double)x)
+					.eq("y", (double)y)
+					.eq("z", (double)z)
+					.ieq("worldName", world.getName())
+				.findUnique();
+		if (rpd != null) {
+			if (rpd.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE) {
+				world.dropItem(new Location(world, x, y, z), new SpoutItemStack(Items.needle, 1));
+			}
+		}
+		
+		//delete ALL data associated to this location, just incase somehow multiples got into the database this will take care of that.
+		List<RecordPlayerData> rpdall = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
 				.where()
 					.eq("x", (double)x)
 					.eq("y", (double)y)
 					.eq("z", (double)z)
 					.ieq("worldName", world.getName())
 				.findList();
-		if (!rpd.isEmpty()) {
-			JukeBukkit.instance.getDatabase().delete(rpd);
+		if (!rpdall.isEmpty()) {
+			JukeBukkit.instance.getDatabase().delete(rpdall);
 		}
 	}
 	

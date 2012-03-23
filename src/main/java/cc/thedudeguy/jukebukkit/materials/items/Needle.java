@@ -8,6 +8,8 @@ public class Needle extends GenericCustomItem {
 
 	public Needle() {
 		super(JukeBukkit.instance, "Simple Needle", "needle_stick-flint.png");
+		
+		//TODO: Limti max item stack to 1.
 	}
 
 }
