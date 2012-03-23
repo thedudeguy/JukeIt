@@ -133,6 +133,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	        
 	        //whats the color of the disc in hand?
 	        int color = myplugin.getDiscsManager().findDiscColor(disk);
+	        int color = disk.getColor();
 	        
 	        //remove 1 from hand
 			if (inHand.getAmount()<2) {

@@ -26,6 +26,7 @@ import javax.persistence.PersistenceException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
@@ -69,6 +70,7 @@ public class JukeBukkit extends JavaPlugin {
 		try {
             getDatabase().find(RecordPlayerBlockDesigns.class).findRowCount();
             getDatabase().find(RecordPlayerData.class).findRowCount();
+            getDatabase().find(DiscData.class).findRowCount();
         } catch (PersistenceException ex) {
             Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Installing database for " + getDescription().getName() + " due to first time usage");
             installDDL();
@@ -80,6 +82,7 @@ public class JukeBukkit extends JavaPlugin {
 		 List<Class<?>> list = new ArrayList<Class<?>>();
 	     list.add(RecordPlayerBlockDesigns.class);
 	     list.add(RecordPlayerData.class);
+	     list.add(DiscData.class);
 	     return list;
 	 }
 }

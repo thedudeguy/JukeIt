@@ -8,6 +8,7 @@ public class BlankDiscBlack extends BlankDisc {
 
 	public BlankDiscBlack() {
 		super("Blank Black Obsidyisc");
+		t
 	}
 
 	@Override

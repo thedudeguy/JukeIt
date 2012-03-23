@@ -5,7 +5,9 @@ import org.getspout.spoutapi.material.item.GenericCustomItem;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 
 public abstract class BlankDisc extends GenericCustomItem implements DiscColor {
-
+	
+	private String color;
+	
 	public BlankDisc(String name) {
 		super(JukeBukkit.instance, name);
 		
@@ -13,5 +15,7 @@ public abstract class BlankDisc extends GenericCustomItem implements DiscColor {
 	}
 
 	public abstract String getTextureFileName();
+	
+	//ublic abstract int getColor();
 
 }
