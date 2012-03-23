@@ -6,7 +6,6 @@ import org.getspout.spoutapi.block.design.SubTexture;
 import org.getspout.spoutapi.block.design.Texture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 
 public class RecordPlayerDesign extends GenericBlockDesign {
 	
@@ -48,7 +47,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		indicatorColor = indicator;
 		
 		JukeBukkit plugin = JukeBukkit.instance;
-		Texture texture = Blocks.recordPlayerTexture;
+		Texture texture = new Texture(JukeBukkit.instance, "recordplayer.png", 256, 256, 16);
 		
 		setTexture(plugin, texture.getTexture());
 		setMinBrightness(1F);

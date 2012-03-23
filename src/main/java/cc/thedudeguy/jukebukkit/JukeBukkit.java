@@ -31,6 +31,7 @@ import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
+import cc.thedudeguy.jukebukkit.util.ResourceManager;
 
 /**
  * The main class for the Jukebukkit Plugin
@@ -56,6 +57,8 @@ public class JukeBukkit extends JavaPlugin {
 	{	
 		instance = this;
 		
+		ResourceManager.copyResources();
+		ResourceManager.preLoginCache();
 		setupDatabase();
 		
 		blocks = new Blocks();
@@ -65,7 +68,7 @@ public class JukeBukkit extends JavaPlugin {
 		/**
 		 * Below is old stuff
 		 */
-		
+		/*
 		//load the textures and precaches
 		customsManager = new CustomsManager(this);
 		//load the disc manager so that it can be used throughout
@@ -91,6 +94,7 @@ public class JukeBukkit extends JavaPlugin {
 		new JukeBukkitPlayerListener(this);
 		
 		log.info("[JukeBukkit] Enabled");
+		*/
 		
 	}
 	
@@ -119,40 +123,4 @@ public class JukeBukkit extends JavaPlugin {
 	     list.add(RecordPlayerData.class);
 	     return list;
 	 }
-	
-	/**
-	 * 
-	 * @depracated
-	 */
-	public DiscsManager getDiscsManager()
-	{
-		return discsManager;
-	}
-	
-	/**
-	 * 
-	 * @depracated
-	 */
-	public JukeBoxManager getJukeBoxManager()
-	{
-		return jukeBoxManager;
-	}
-	
-	/**
-	 * 
-	 * @depracated
-	 */
-	public CustomsManager getCustomsManager()
-	{
-		return customsManager;
-	}
-	
-	/**
-	 * 
-	 * @depracated
-	 */
-	public LabelManager getLabelManager()
-	{
-		return labelManager;
-	}
 }

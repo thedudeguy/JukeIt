@@ -1,25 +1,64 @@
 package cc.thedudeguy.jukebukkit.materials.items;
 
-import java.io.File;
-
-import org.getspout.spoutapi.SpoutManager;
-
-import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlack;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlue;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBrown;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscCyan;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscGray;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscGreen;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscLightBlue;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscLightGray;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscLime;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscMagenta;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscOrange;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscPink;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscPurple;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscRed;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscWhite;
+import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscYellow;
 
 public class Items {
 
 	public static Needle needle;
 	
+	public static BlankDiscBlack blankDiscBlack;
+	public static BlankDiscBlue blankDiscBlue;
+	public static BlankDiscBrown blankDiscBrown;
+	public static BlankDiscCyan blankDiscCyan;
+	public static BlankDiscGray blankDiscGray;
+	public static BlankDiscGreen blankDiscGreen;
+	public static BlankDiscLightBlue blankDiscLightBlue;
+	public static BlankDiscLightGray blankDiscLightGray;
+	public static BlankDiscLime blankDiscLime;
+	public static BlankDiscMagenta blankDiscMagenta;
+	public static BlankDiscOrange blankDiscOrange;
+	public static BlankDiscPink blankDiscPink;
+	public static BlankDiscPurple blankDiscPurple;
+	public static BlankDiscRed blankDiscRed;
+	public static BlankDiscWhite blankDiscWhite;
+	public static BlankDiscYellow blankDiscYellow;
+	
 	public Items() {
-		
-		//copy resources into the data directory, this will allow for overrides.
-		JukeBukkit.instance.saveResource("textures/needle_stick-flint.png", false);
-		
-		//precache the textures.
-		SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), "textures/needle_stick-flint.png"));
 		
 		//Init custom items.
 		needle = new Needle();
+		
+		blankDiscBlack = new BlankDiscBlack();
+		blankDiscBlue = new BlankDiscBlue();
+		blankDiscBrown = new BlankDiscBrown();
+		blankDiscCyan = new BlankDiscCyan();
+		blankDiscGray = new BlankDiscGray();
+		blankDiscGreen = new BlankDiscGreen();
+		blankDiscLightBlue = new BlankDiscLightBlue();
+		blankDiscLightGray = new BlankDiscLightGray();
+		blankDiscLime = new BlankDiscLime();
+		blankDiscMagenta = new BlankDiscMagenta();
+		blankDiscOrange = new BlankDiscOrange();
+		blankDiscPink = new BlankDiscPink();
+		blankDiscPurple = new BlankDiscPurple();
+		blankDiscRed = new BlankDiscRed();
+		blankDiscWhite = new BlankDiscWhite();
+		blankDiscYellow = new BlankDiscYellow();
 		
 	}
 }
