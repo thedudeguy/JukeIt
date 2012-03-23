@@ -8,13 +8,9 @@ public class BlankDiscLightGray extends BlankDisc {
 
 	public BlankDiscLightGray() {
 		super("Blank Light Gray Obsidyisc");
+		setColor(DiscColor.LIGHTGRAY);
 	}
-
-	@Override
-	public int getColor() {
-		return DiscColor.LIGHTGRAY;
-	}
-
+	
 	@Override
 	public String getTextureFileName() {
 		return "blank_disc_lightgray.png";

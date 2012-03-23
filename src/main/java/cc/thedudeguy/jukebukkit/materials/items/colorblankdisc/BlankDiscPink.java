@@ -8,13 +8,9 @@ public class BlankDiscPink extends BlankDisc {
 
 	public BlankDiscPink() {
 		super("Blank Pink Obsidyisc");
+		setColor(DiscColor.PINK);
 	}
-
-	@Override
-	public int getColor() {
-		return DiscColor.PINK;
-	}
-
+	
 	@Override
 	public String getTextureFileName() {
 		return "blank_disc_pink.png";

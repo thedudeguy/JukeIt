@@ -8,11 +8,7 @@ public class BlankDiscLime extends BlankDisc {
 
 	public BlankDiscLime() {
 		super("Blank Lime Obsidyisc");
-	}
-
-	@Override
-	public int getColor() {
-		return DiscColor.LIME;
+		setColor(DiscColor.LIME);
 	}
 
 	@Override

@@ -8,11 +8,7 @@ public class BlankDiscRed extends BlankDisc {
 
 	public BlankDiscRed() {
 		super("Blank Red Obsidyisc");
-	}
-
-	@Override
-	public int getColor() {
-		return DiscColor.RED;
+		setColor(DiscColor.RED);
 	}
 
 	@Override

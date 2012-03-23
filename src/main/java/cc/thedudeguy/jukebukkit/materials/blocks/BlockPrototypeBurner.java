@@ -129,10 +129,10 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	        	return;
 	        }
 	        
-	        CustomItem disk = (CustomItem)inHand.getMaterial();
+	        BlankDisc disk = (BlankDisc)inHand.getMaterial();
 	        
 	        //whats the color of the disc in hand?
-	        int color = myplugin.getDiscsManager().findDiscColor(disk);
+	        int color = disk.getColor();
 	        
 	        //remove 1 from hand
 			if (inHand.getAmount()<2) {
@@ -143,7 +143,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			}
 
 			//create the key
-			String key = UUID.randomUUID().toString();
+			String key = UUID.randomUUID().toString();BurnedDisc.
 			//create the physical disc for the pplayer
 			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(myplugin, key, color);
 			
