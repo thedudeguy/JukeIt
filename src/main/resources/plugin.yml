@@ -6,3 +6,8 @@ author: Chris Churchwell (thedudeguy)
 website: http://dev.bukkit.org/server-mods/jukebukkit/
 depend: [Spout]
 database: true
+commands:
+  jukebukkit:
+    description: All commands are subsidized from the main command /jukebukkit
+    aliases: jb
+    usage: Use "/jukebukkit help" for more information

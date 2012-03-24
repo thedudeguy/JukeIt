@@ -1,8 +1,5 @@
 package cc.thedudeguy.jukebukkit.listeners;
 
-import java.util.logging.Level;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -79,12 +76,14 @@ public class DiscLabelListener implements Listener {
 	
 	@EventHandler
 	public void handleItemDespawn(ItemDespawnEvent event) {
-		Bukkit.getLogger().log(Level.INFO, "ITEM DESPAWNED");
+		//TODO: On label despawn, remove it from the db.
+		//Bukkit.getLogger().log(Level.INFO, "ITEM DESPAWNED");
 	}
 	
 	@EventHandler
 	public void handleItemIgnite(EntityCombustEvent event) {
-		Bukkit.getLogger().log(Level.INFO, "ITEM BURNEDEDED UP");
+		//TODO: on label burn up, remove it from the db.
+		//Bukkit.getLogger().log(Level.INFO, "ITEM BURNEDEDED UP");
 	}
 	
 	@EventHandler

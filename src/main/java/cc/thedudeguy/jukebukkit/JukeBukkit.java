@@ -62,6 +62,8 @@ public class JukeBukkit extends JavaPlugin {
 		Recipies.load();
 		
 		this.getServer().getPluginManager().registerEvents(new DiscLabelListener(), this);
+		
+		this.getCommand("jukebukkit").setExecutor(new CommandHandler());
 	}
 	
 	public void onDisable()
@@ -93,4 +95,39 @@ public class JukeBukkit extends JavaPlugin {
 	     list.add(LabelData.class);
 	     return list;
 	 }
+	 
+	 /*
+		@EventHandler
+		public void onBlockPlaced(BlockPlaceEvent event) {
+			event.setBuild(true); //MEW!
+
+			final Player ply = event.getPlayer();
+			final Block block = ((SpoutBlock)event.getBlock()).getCustomBlock();
+			if(!(block instanceof JukeboxBlock)) return;
+			final JukeboxBlock jukeboxBlock = (JukeboxBlock)block;
+			String permission = jukeboxBlock.getPermission();
+			if(permission == null) return;
+			if(!ply.hasPermission(permission)) {
+				event.setBuild(false);
+				event.setCancelled(true);
+			}
+		}
+		
+		
+		@EventHandler
+		public void onPlayerCraft(CraftItemEvent event) {
+			final Player ply = event.getPlayer();
+	                final ItemStack st = event.getResult();
+	                if (st==null) return;
+			final org.getspout.spoutapi.material.Material block = new SpoutItemStack(st).getMaterial();
+			if(!(block instanceof JukeboxBlock)) return;
+			final JukeboxBlock jukeboxBlock = (JukeboxBlock)block;
+			String permission = jukeboxBlock.getPermission();
+			if(permission == null) return;
+			if(!ply.hasPermission(permission)) {
+				event.setResult(null);
+				event.setCancelled(true);
+			}
+		}
+		*/
 }
