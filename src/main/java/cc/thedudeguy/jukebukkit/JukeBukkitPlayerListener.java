@@ -40,7 +40,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
 import cc.thedudeguy.jukebukkit.items.ItemLabel;
-import cc.thedudeguy.jukebukkit.jukebox.JukeboxBlock;
+import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxBlock;
 
 /**
  * Player Listener. Handles writing of labels and opening the label maker gui.

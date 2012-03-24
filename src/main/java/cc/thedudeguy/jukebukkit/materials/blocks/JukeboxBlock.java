@@ -1,55 +1,44 @@
-package cc.thedudeguy.jukebukkit.jukebox;
+package cc.thedudeguy.jukebukkit.materials.blocks;
 
-import java.io.Serializable;
+import java.util.List;
+import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
-import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import cc.thedudeguy.jukebukkit.CustomsManager;
-import cc.thedudeguy.jukebukkit.JukeBoxManager;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
+import cc.thedudeguy.jukebukkit.database.DiscData;
+import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
+import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 
-public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox  {
-	
-	private JukeBukkit plugin;
-	public JukeBoxManager jukeboxManager;
-	private final String permission;
+public abstract class JukeboxBlock extends GenericCustomBlock  {
 
-	/**
-	* Creates a new opaque/solid cube block material
-	*
-	* @param plugin making the block
-	* @param name of the block
-	* @param design to use for the block
-	*/
-	public JukeboxBlock(JukeBukkit plugin, String name, GenericCubeBlockDesign design) {
-		this(plugin, name, design, null);
-	}
-
-	public JukeboxBlock(JukeBukkit plugin, String name, GenericCubeBlockDesign design, String permission) {
-		super(plugin, name);
-		this.setBlockDesign(design);
-		this.plugin = plugin;
-		jukeboxManager = plugin.getJukeBoxManager();
-		this.permission = permission;
+	public JukeboxBlock(String name) {
+		super(JukeBukkit.instance, name);
+		setBlockDesign(getCustomBlockDesign());
 	}
 	
-	public String getPermission() {
-		return this.permission;
-	}
+	public abstract int getRange();
+	
+	public abstract String getPermission();
+	
+	public abstract boolean canRedstoneActivate();
+	
+	public abstract GenericCubeBlockDesign getCustomBlockDesign();
+	
+	
 	
 	public boolean canPlaceBlockAt(World arg0, int arg1, int arg2, int arg3) {
 		//block is placeable.
@@ -66,15 +55,14 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 		return false;
 	}
 
-	@Override
 	public boolean isProvidingPowerTo(World arg0, int arg1, int arg2, int arg3,
 			BlockFace arg4) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {
+		/*
 		//construct our location
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		String locationKey = jukeboxManager.createLocationKey(location);
@@ -91,100 +79,118 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 		}
 		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_ERROR, false, location, 3);
 		return;
+		*/
 	}
 
-	@Override
 	public void onBlockDestroyed(World world, int x, int y, int z) {
-		//when the block is destroyed if theres a disc in it the disc should be freed from its jail.
-		Location location = new Location(world, (double)x, (double)y, (double)z);
-		String locationKey = jukeboxManager.createLocationKey(location);
+		//TODO Eject disc if contains a disc
 		
-		if (jukeboxManager.hasDisc(locationKey)) {
-			int discId = jukeboxManager.getDisc(locationKey);
-			
-			int color = plugin.getDiscsManager().getColor(discId);
-			
-			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId), color);
-			ItemStack iss = new SpoutItemStack(disc, 1);
-			location.getWorld().dropItem(location, iss);
-			stopMusic(location);
+		//delete ALL data associated to this location, just incase somehow multiples got into the database this will take care of that.
+		List<RecordPlayerData> rpdall = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+				.where()
+					.eq("x", (double)x)
+					.eq("y", (double)y)
+					.eq("z", (double)z)
+					.ieq("worldName", world.getName())
+				.findList();
+		if (!rpdall.isEmpty()) {
+			JukeBukkit.instance.getDatabase().delete(rpdall);
 		}
-		//remove disc from ff
-		plugin.getJukeBoxManager().removeDisc(locationKey);
 	}
 
-	@Override
 	public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
-		//construct our location
+		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
-		String locationKey = plugin.getJukeBoxManager().createLocationKey(location);
-		//aka right clicked - load or eject disc.
-		//check if it has a disc.
-		if (!jukeboxManager.hasDisc(locationKey)) {
-			//jukebox is empty, load
-			ItemStack inHand = player.getItemInHand();
-					
-			if (new SpoutItemStack(inHand).isCustomItem())
-			{
-				//we know its a custom item, go ahaed and remove 1 from the hand.
-				if (inHand.getAmount()<2) {
-					player.setItemInHand(null);
-				} else {
-					player.getInventory().getItemInHand().setAmount(player.getInventory().getItemInHand().getAmount()-1);
-				}		
-				
-				CustomItem custom = (CustomItem) new SpoutItemStack(inHand).getMaterial();
-				//see if its a burned disc.
-				if (plugin.getDiscsManager().hasDiscId(custom.getCustomId())) {
-					
-					jukeboxManager.insertDisc(locationKey, custom.getCustomId());
-					SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_START, false, location, 3);
-						
-					/** start the music **/
-					int discId = jukeboxManager.getDisc(locationKey);
-					if (plugin.getDiscsManager().hasDiscId(discId)) {
-						String url = plugin.getDiscsManager().getUrl(discId);
-						playMusic(url, location, player);
-						return true;
-					}
-				} else {
-					//eject it its bad whatever it is! lolza!1!!
-					ItemStack e = inHand.clone();
-					e.setAmount(1);
-					location.setY(location.getY()+1);
-					location.getWorld().dropItem(location, e);
-				}
+		
+		//get data from the db
+		RecordPlayerData rpdata = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+				.where()
+					.eq("x", (double)x)
+					.eq("y", (double)y)
+					.eq("z", (double)z)
+					.ieq("worldName", world.getName())
+				.findUnique();
+		if (rpdata == null) {
+			Bukkit.getLogger().log(Level.WARNING, "[JukeBukkit] Missing Record Player Data, this data should have been created when the block was placed.");
+			return false;
+		}
+		
+		if (rpdata.hasDisc()) {
+			
+			//get disc.
+			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+					.where()
+						.ieq("nameKey", rpdata.getDiscKey())
+					.findUnique();
+			if (discData == null) {
+				Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
+			} else {
+				//create disc to spawn
+				BurnedDisc disc = new BurnedDisc(discData);
+				ItemStack iss = new SpoutItemStack(disc, 1);
+				Location spawnLoc = location;
+				spawnLoc.setY(spawnLoc.getY()+1);
+				spawnLoc.getWorld().dropItem(spawnLoc, iss);
 			}
 			
-			SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_ERROR, false, location, 3);
-			return true;
-		} else {
-			//has disc, eject
-			//create the disc from the id.
-			int discId = plugin.getJukeBoxManager().getDisc(locationKey);
+			rpdata.setDiscKey(null);
+			JukeBukkit.instance.getDatabase().save(rpdata);
 			
-			int color = plugin.getDiscsManager().getColor(discId);
-			//spawn disc
-			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(plugin, plugin.getDiscsManager().getKey(discId), plugin.getDiscsManager().getTitle(discId), color);
-			ItemStack iss = new SpoutItemStack(disc, 1);
-			location.setY(location.getY()+1);
-			location.getWorld().dropItem(location, iss);
-					
-			//remove disc from ff
-			plugin.getJukeBoxManager().removeDisc(locationKey);
-					
-			//stop playing music for people around this box.
 			stopMusic(location);
-					
+			
+			return true;
 		}
-		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_ERROR, false, location, 3);
-		return true;
+		
+		SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
+		
+		if (inHand.getMaterial() instanceof BurnedDisc) {
+			
+			//we know its a custom item, go ahaed and remove 1 from the hand.
+			if (inHand.getAmount()<2) {
+				player.setItemInHand(new ItemStack(Material.AIR));
+			} else {
+				player.getInventory().getItemInHand().setAmount(player.getInventory().getItemInHand().getAmount()-1);
+			}
+			
+			BurnedDisc discInHand = (BurnedDisc)inHand.getMaterial();
+			
+			rpdata.setDiscKey(discInHand.getKey());
+			JukeBukkit.instance.getDatabase().save(rpdata);
+			
+			SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_startup.wav", false, location, 8);
+			
+			//start the music
+			playMusic(discInHand.getUrl(), location);
+			
+			return true;
+		}
+		
+		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_error.wav", false, location, 8);
+		return false;
 	}
 
 	@Override
-	public void onBlockPlace(World arg0, int arg1, int arg2, int arg3) {
+	public void onBlockPlace(World world, int x, int y, int z) {
 		// TODO Auto-generated method stub
-
+		//when the block is placed we need to make sure to get data set up for it.
+		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+				.where()
+					.eq("x", (double)x)
+					.eq("y", (double)y)
+					.eq("z", (double)z)
+					.ieq("worldName", world.getName())
+				.findUnique();
+		if (rpd == null) {
+			rpd = new RecordPlayerData();
+			rpd.setNeedleType(RecordPlayerDesign.NEEDLE_NONE);
+			rpd.setDiscKey(null);
+			rpd.setX((double)x);
+			rpd.setY((double)y);
+			rpd.setZ((double)z);
+			rpd.setWorldName(world.getName());
+			JukeBukkit.instance.getDatabase().save(rpd);
+		}
+		/* If its still set, well go ahead and leave it, because it could be an blockplace even from setting the custom block to a different subblock for this location */
 	}
 
 	@Override
@@ -194,8 +200,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 	}
 
 	@Override
-	public void onEntityMoveAt(World arg0, int arg1, int arg2, int arg3,
-			Entity arg4) {
+	public void onEntityMoveAt(World arg0, int arg1, int arg2, int arg3, Entity arg4) {
 		// TODO Auto-generated method stub
 
 	}
@@ -208,7 +213,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 	
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) {
-		
+		/*
 		if (!canRedstoneActivate()) return;
 		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
@@ -239,13 +244,12 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 				block.setData("JukeboxBlock.redstone", 0);
 			}
 		}
+		*/
 	}
 
-	public abstract int getRange();
-
-	@Override
 	public void playMusic(String url, Location location, SpoutPlayer player) {
-		/** get players in radius of the jukebox and start it for only those players **/
+		/*
+		//get players in radius of the jukebox and start it for only those players
 		for(Player p:location.getWorld().getPlayers()) {
 			double distance = location.toVector().distance(p.getLocation().toVector());
 			if (distance<=(double)getRange()) {
@@ -261,16 +265,18 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 				}
 			}
 		}
+		*/
 	}
 
-	@Override
 	public void playMusic(String url, Location location) {
+		/*
 		playMusic(url, location, null);
+		*/
 	}
 
-	@Override
 	public void stopMusic(Location location) {
-		/** get players in radius of the jukebox and start it for only those players **/
+		/*
+		//get players in radius of the jukebox and start it for only those players
 		for(Player p:location.getWorld().getPlayers()) {
 			double distance = location.toVector().distance(p.getLocation().toVector());
 			if (distance<=(double)getRange()) {
@@ -280,9 +286,6 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements Jukebox
 				}
 			}
 		}
-	}
-	@Override
-	public boolean canRedstoneActivate() {
-		return true;
+		*/
 	}
 }

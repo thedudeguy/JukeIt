@@ -39,11 +39,13 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	}
 	
 	private int color = DiscColor.WHITE; //whit disc is the default color
+	private String key = "";
+	private String url = "";
 	
-	public BurnedDisc(String nameKey, String label, int color) {
-		super(JukeBukkit.instance, nameKey);
+	public BurnedDisc(DiscData discData) {
+		super(JukeBukkit.instance, discData.getNameKey());
 		
-		setColor(color);
+		setColor(discData.getColor());
 		
 		if (discColorTextureMap.containsKey(color)) {
 			setTexture(discColorTextureMap.get(color));
@@ -51,11 +53,18 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 			setTexture(discColorTextureMap.get(DiscColor.WHITE));
 		}
 		
-		this.setLabel(label);
+		this.setLabel(discData.getLabel());
+		
+		key = discData.getNameKey();
+		url = discData.getUrl();
 	}
 	
-	public BurnedDisc(DiscData discData) {
-		this(discData.getNameKey(), discData.getLabel(), discData.getColor());
+	public String getKey() {
+		return key;
+	}
+	
+	public String getUrl() {
+		return url;
 	}
 	
 	@Override
@@ -75,7 +84,6 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 		} else {
 			setName(label);
 		}
-		
 	}
 
 }

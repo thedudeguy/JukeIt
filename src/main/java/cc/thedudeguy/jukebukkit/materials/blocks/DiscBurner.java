@@ -17,7 +17,9 @@
 package cc.thedudeguy.jukebukkit.materials.blocks;
 
 import java.net.URL;
+import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -27,7 +29,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
-import org.getspout.spoutapi.block.design.Texture;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericLabel;
@@ -63,7 +64,7 @@ public class DiscBurner extends GenericCubeCustomBlock {
 			"Obsidyisc Burner", 
 			new GenericCubeBlockDesign(
 				JukeBukkit.instance, 
-				new Texture(JukeBukkit.instance, "blocks_deprecated.png", 256, 256, 16), 
+				Blocks.blocksTexture, 
 				new int[] { 2, 3, 3, 4, 3, 2 }
 			)
 		);

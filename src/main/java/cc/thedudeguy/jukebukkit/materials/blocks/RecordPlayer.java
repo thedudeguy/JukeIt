@@ -182,6 +182,7 @@ public class RecordPlayer extends GenericCustomBlock {
 				.findUnique();
 		if (rpd == null) {
 			rpd = new RecordPlayerData();
+			rpd.setDiscKey(null);
 			rpd.setNeedleType(0);
 			rpd.setX((double)x);
 			rpd.setY((double)y);

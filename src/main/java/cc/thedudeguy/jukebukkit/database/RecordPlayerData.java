@@ -28,7 +28,9 @@ public class RecordPlayerData {
     
     @NotNull
     private int needleType;
-	
+    
+    private String discKey;
+    
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -75,5 +77,19 @@ public class RecordPlayerData {
 
 	public void setNeedleType(int needleType) {
 		this.needleType = needleType;
+	}
+
+	public String getDiscKey() {
+		return discKey;
+	}
+
+	public void setDiscKey(String discKey) {
+		this.discKey = discKey;
+	}
+	
+	public boolean hasDisc() {
+		if (discKey == null) return false;
+		if (discKey.equals("")) return false;
+		return true;
 	}
 }

@@ -4,7 +4,7 @@ import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
 import org.getspout.spoutapi.block.design.Texture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.jukebox.JukeboxBlock;
+import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxBlock;
 
 public class JukeboxMidRange extends JukeboxBlock {
 	public JukeboxMidRange(JukeBukkit plugin)
