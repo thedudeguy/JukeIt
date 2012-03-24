@@ -31,6 +31,7 @@ import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
+import cc.thedudeguy.jukebukkit.util.Recipies;
 import cc.thedudeguy.jukebukkit.util.ResourceManager;
 
 /**
@@ -56,6 +57,7 @@ public class JukeBukkit extends JavaPlugin {
 		blocks = new Blocks();
 		items = new Items();
 		
+		Recipies.load();
 	}
 	
 	public void onDisable()

@@ -10,10 +10,12 @@ public class Blocks {
 	public static final Texture RecordPlayerTexture = new Texture(JukeBukkit.instance, "recordplayer.png", 256, 256, 16);
 	
 	public static RecordPlayer recordPlayer;
+	public static DiscBurner discBurner;
 	
 	public Blocks() {
 		
 		recordPlayer = new RecordPlayer();
+		discBurner = new DiscBurner();
 		
 	}
 	

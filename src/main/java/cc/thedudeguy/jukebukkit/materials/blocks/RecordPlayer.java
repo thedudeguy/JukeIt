@@ -155,7 +155,10 @@ public class RecordPlayer extends GenericCustomBlock {
 			rpdata.setNeedleType(RecordPlayerDesign.NEEDLE_NONE);
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			
-			world.dropItem(new Location(world, x, y, z), new SpoutItemStack(Items.needle, 1));
+			Location location = new Location(world, x, y, z);
+			location.setY(location.getY()+1);
+			world.dropItem(location, new SpoutItemStack(Items.needle, 1));
+			
 			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
 			return true;

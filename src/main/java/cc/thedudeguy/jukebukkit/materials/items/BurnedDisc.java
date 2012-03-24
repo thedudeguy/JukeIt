@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.database.DiscData;
 
 public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	
@@ -38,7 +39,6 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	}
 	
 	private int color = DiscColor.WHITE; //whit disc is the default color
-	private String nameKey = "";
 	
 	public BurnedDisc(String nameKey, String label, int color) {
 		super(JukeBukkit.instance, nameKey);
@@ -51,9 +51,11 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 			setTexture(discColorTextureMap.get(DiscColor.WHITE));
 		}
 		
-		this.setName(label);
-		
-		
+		this.setLabel(label);
+	}
+	
+	public BurnedDisc(DiscData discData) {
+		this(discData.getNameKey(), discData.getLabel(), discData.getColor());
 	}
 	
 	@Override
@@ -65,13 +67,15 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	public void setColor(int color) {
 		this.color = color;
 	}
-
-	public String getNameKey() {
-		return nameKey;
-	}
-
-	public void setNameKey(String nameKey) {
-		this.nameKey = nameKey;
+	
+	public void setLabel(String label) {
+		
+		if (label.equalsIgnoreCase("")) {
+			setName("*Burned* Obsidyisc");
+		} else {
+			setName(label);
+		}
+		
 	}
 
 }

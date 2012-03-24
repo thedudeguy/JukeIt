@@ -6,6 +6,7 @@ import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
 import org.getspout.spoutapi.inventory.SpoutShapelessRecipe;
 import org.getspout.spoutapi.material.MaterialData;
 
+import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
 
 public class Recipies {
@@ -64,16 +65,17 @@ public class Recipies {
 		.setIngredient('n', MaterialData.noteblock)
 		);
 		
+		*/
+		
 		//////////////////////
-		// Prototype Burner //
+		// Disc Burner //
 		//////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( new SpoutItemStack(prototypeBurner, 1) )
+			new SpoutShapedRecipe( new SpoutItemStack(Blocks.discBurner, 1) )
 			.shape("jf")
 			.setIngredient('j', MaterialData.jukebox)
 			.setIngredient('f', MaterialData.furnace)
 			);
-		*/
 		
 		/////////////////////
 		// Blank Obsidyisc //

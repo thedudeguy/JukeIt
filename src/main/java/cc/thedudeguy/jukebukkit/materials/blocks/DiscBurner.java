@@ -17,7 +17,6 @@
 package cc.thedudeguy.jukebukkit.materials.blocks;
 
 import java.net.URL;
-import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,17 +38,17 @@ import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.block.GenericCubeCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import cc.thedudeguy.jukebukkit.CustomsManager;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.items.ItemBurnedObsidyisc;
+import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
+import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 
 
 /**
  * The Prototype Disc Burner. Basic Custom Block in which I can expand with.
  * @author Chris Churchwell
  */
-public class BlockPrototypeBurner extends GenericCubeCustomBlock {
+public class DiscBurner extends GenericCubeCustomBlock {
 	
 	public GenericCubeBlockDesign blockDesign;
 	
@@ -57,7 +56,7 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 	 * Construct
 	 * @param JukeBukkit plugin - JukeBukkit instance
 	 */
-	public BlockPrototypeBurner()
+	public DiscBurner()
 	{
 		super(
 			JukeBukkit.instance, 
@@ -143,21 +142,26 @@ public class BlockPrototypeBurner extends GenericCubeCustomBlock {
 			}
 
 			//create the key
-			String key = UUID.randomUUID().toString();BurnedDisc.
-			//create the physical disc for the pplayer
-			ItemBurnedObsidyisc disc = new ItemBurnedObsidyisc(myplugin, key, color);
+			String key = BurnedDisc.generateNameKey();
 			
+			//add the disc into the database
+			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+					.where()
+						.ieq("nameKey", key)
+					.findUnique();
+			if (discData == null) discData = new DiscData();
+			discData.setNameKey(key);
+			discData.setUrl(url);
+			discData.setLabel("");
+			discData.setColor(color);
+			JukeBukkit.instance.getDatabase().save(discData);
+			
+			//create the physical disc for the pplayer
+			BurnedDisc disc = new BurnedDisc(discData);
 			ItemStack iss = new SpoutItemStack(disc, 1);
 			location.setY(location.getY()+1);
 			location.getWorld().dropItem(location, iss);
 			
-			//set the disc data and save it
-			myplugin.getDiscsManager().add(disc.getCustomId());
-			myplugin.getDiscsManager().setUrl(disc.getCustomId(), url);
-			myplugin.getDiscsManager().setTitle(disc.getCustomId(), "Burned Obsidyisc");
-			myplugin.getDiscsManager().setKey(disc.getCustomId(), key);
-			myplugin.getDiscsManager().setColor(disc.getCustomId(), color);
-			myplugin.getDiscsManager().save();
 			popup.close();
 			
 			SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_startup.wav", false, location, 8);

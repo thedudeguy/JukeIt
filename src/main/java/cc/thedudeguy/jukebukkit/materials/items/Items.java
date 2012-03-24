@@ -1,5 +1,15 @@
 package cc.thedudeguy.jukebukkit.materials.items;
 
+import java.util.List;
+import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
+
+import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.database.DiscData;
+import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
+import cc.thedudeguy.jukebukkit.materials.blocks.RecordPlayer.RecordPlayerSubBlock;
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlack;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlue;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBrown;
@@ -59,6 +69,21 @@ public class Items {
 		blankDiscRed = new BlankDiscRed();
 		blankDiscWhite = new BlankDiscWhite();
 		blankDiscYellow = new BlankDiscYellow();
+		
+		//TODO: Detect if any burned disc does NOT exist in the world anymore, and remove them from the DB
+		
+		//initialize burned discs
+		List<DiscData> discDataList = JukeBukkit.instance.getDatabase().find(DiscData.class).findList();
+		if (discDataList.isEmpty()) {
+			 Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] No Burned Discs to load.");
+		} else {
+			int count = 0;
+			for (DiscData discData : discDataList) {
+				new BurnedDisc(discData);
+				count++;
+			}
+			Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Initialized "+ String.valueOf(count) +" Burned Discs.");
+		}
 		
 	}
 }
