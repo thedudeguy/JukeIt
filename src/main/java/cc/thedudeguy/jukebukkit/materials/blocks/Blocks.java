@@ -13,13 +13,20 @@ public class Blocks {
 	public static RecordPlayer recordPlayer;
 	public static DiscBurner discBurner;
 	public static JukeboxBasic jukeboxBasic;
+	public static JukeboxLowRange jukeboxLowRange;
+	public static JukeboxMidRange jukeboxMidRange;
+	public static JukeboxLongRange jukeboxLongRange;
+	public static JukeboxMaxRange jukeboxMaxRange;
 	
 	public Blocks() {
 		
 		recordPlayer = new RecordPlayer();
 		discBurner = new DiscBurner();
-		
 		jukeboxBasic = new JukeboxBasic();
+		jukeboxLowRange = new JukeboxLowRange();
+		jukeboxMidRange = new JukeboxMidRange();
+		jukeboxLongRange = new JukeboxLongRange();
+		jukeboxMaxRange = new JukeboxMaxRange();
 	}
 	
 }

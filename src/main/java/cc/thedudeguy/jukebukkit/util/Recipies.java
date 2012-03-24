@@ -12,50 +12,6 @@ import cc.thedudeguy.jukebukkit.materials.items.Items;
 public class Recipies {
 	
 	public static void load() {
-		/*
-		///////////////////////
-		// Low Range Jukebox //
-		///////////////////////
-		SpoutManager.getMaterialManager().registerSpoutRecipe(
-		new SpoutShapedRecipe( new SpoutItemStack(jukeboxLowRange, 1) )
-		.shape("www", "wjw", "www")
-		.setIngredient('j', jukeboxBasic)
-		.setIngredient('w', MaterialData.wood)
-		);
-		
-		///////////////////////
-		// Mid Range Jukebox //
-		///////////////////////
-		SpoutManager.getMaterialManager().registerSpoutRecipe(
-		new SpoutShapedRecipe( new SpoutItemStack(jukeboxMidRange, 1) )
-		.shape("www", "njn", "www")
-		.setIngredient('j', jukeboxLowRange)
-		.setIngredient('w', MaterialData.wood)
-		.setIngredient('n', MaterialData.noteblock)
-		);
-		
-		///////////////////////
-		// Long Range Jukebox //
-		///////////////////////
-		SpoutManager.getMaterialManager().registerSpoutRecipe(
-		new SpoutShapedRecipe( new SpoutItemStack(jukeboxLongRange, 1) )
-		.shape("wnw", "njn", "wnw")
-		.setIngredient('j', jukeboxMidRange)
-		.setIngredient('w', MaterialData.wood)
-		.setIngredient('n', MaterialData.noteblock)
-		);
-		
-		///////////////////////
-		// Max Range Jukebox //
-		///////////////////////
-		SpoutManager.getMaterialManager().registerSpoutRecipe(
-		new SpoutShapedRecipe( new SpoutItemStack(jukeboxMaxRange, 1) )
-		.shape("nnn", "njn", "nnn")
-		.setIngredient('j', jukeboxLongRange)
-		.setIngredient('n', MaterialData.noteblock)
-		);
-		
-		*/
 		
 		///////////////////////
 		// Basic Jukebox     //
@@ -66,7 +22,49 @@ public class Recipies {
 			.setIngredient('j', MaterialData.jukebox)
 			.setIngredient('n', MaterialData.noteblock)
 			);
+		
+		///////////////////////
+		// Low Range Jukebox //
+		///////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( new SpoutItemStack(Blocks.jukeboxLowRange, 1) )
+			.shape("www", "wjw", "www")
+			.setIngredient('j', Blocks.jukeboxBasic)
+			.setIngredient('w', MaterialData.wood)
+			);
 
+		///////////////////////
+		// Mid Range Jukebox //
+		///////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+				new SpoutShapedRecipe( new SpoutItemStack(Blocks.jukeboxMidRange, 1) )
+			.shape("www", "njn", "www")
+			.setIngredient('j', Blocks.jukeboxLowRange)
+			.setIngredient('w', MaterialData.wood)
+			.setIngredient('n', MaterialData.noteblock)
+			);
+
+		///////////////////////
+		// Long Range Jukebox //
+		///////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( new SpoutItemStack(Blocks.jukeboxLongRange, 1) )
+			.shape("wnw", "njn", "wnw")
+			.setIngredient('j', Blocks.jukeboxMidRange)
+			.setIngredient('w', MaterialData.wood)
+			.setIngredient('n', MaterialData.noteblock)
+			);
+
+		///////////////////////
+		// Max Range Jukebox //
+		///////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( new SpoutItemStack(Blocks.jukeboxMaxRange, 1) )
+			.shape("nnn", "njn", "nnn")
+			.setIngredient('j', Blocks.jukeboxLongRange)
+			.setIngredient('n', MaterialData.noteblock)
+			);
+		
 		//////////////////////
 		// Disc Burner //
 		//////////////////////
