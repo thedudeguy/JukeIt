@@ -14,16 +14,6 @@ public class Recipies {
 	public static void load() {
 		/*
 		///////////////////////
-		// Basic Jukebox     //
-		///////////////////////
-		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( new SpoutItemStack(jukeboxBasic, 1) )
-			.shape("jn")
-			.setIngredient('j', MaterialData.jukebox)
-			.setIngredient('n', MaterialData.noteblock)
-			);
-		
-		///////////////////////
 		// Low Range Jukebox //
 		///////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
@@ -67,6 +57,16 @@ public class Recipies {
 		
 		*/
 		
+		///////////////////////
+		// Basic Jukebox     //
+		///////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( new SpoutItemStack(Blocks.jukeboxBasic, 1) )
+			.shape("jn")
+			.setIngredient('j', MaterialData.jukebox)
+			.setIngredient('n', MaterialData.noteblock)
+			);
+
 		//////////////////////
 		// Disc Burner //
 		//////////////////////

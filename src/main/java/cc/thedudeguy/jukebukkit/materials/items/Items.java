@@ -7,9 +7,6 @@ import org.bukkit.Bukkit;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
-import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
-import cc.thedudeguy.jukebukkit.materials.blocks.RecordPlayer.RecordPlayerSubBlock;
-import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlack;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlue;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBrown;

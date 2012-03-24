@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
@@ -45,18 +47,20 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	public BurnedDisc(DiscData discData) {
 		super(JukeBukkit.instance, discData.getNameKey());
 		
-		setColor(discData.getColor());
-		
-		if (discColorTextureMap.containsKey(color)) {
-			setTexture(discColorTextureMap.get(color));
-		} else {
-			setTexture(discColorTextureMap.get(DiscColor.WHITE));
-		}
-		
+		this.setColor(discData.getColor());
 		this.setLabel(discData.getLabel());
 		
 		key = discData.getNameKey();
 		url = discData.getUrl();
+	}
+	
+	public boolean onItemInteract(SpoutPlayer player, SpoutBlock block, org.bukkit.block.BlockFace face) {
+		/*
+		player.sendMessage("interacting with item");
+		player.sendMessage("Key is: " + getKey());
+		player.sendMessage("Color is: " + String.valueOf(getColor()));
+		*/
+		return true;
 	}
 	
 	public String getKey() {
@@ -69,12 +73,17 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	
 	@Override
 	public int getColor() {
-		// TODO Auto-generated method stub
 		return color;
 	}
 	
 	public void setColor(int color) {
 		this.color = color;
+		
+		if (discColorTextureMap.containsKey(color)) {
+			setTexture(discColorTextureMap.get(color));
+		} else {
+			setTexture(discColorTextureMap.get(DiscColor.WHITE));
+		}
 	}
 	
 	public void setLabel(String label) {

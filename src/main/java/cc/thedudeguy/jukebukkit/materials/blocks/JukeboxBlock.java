@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
@@ -62,28 +63,79 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 	}
 
 	public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {
-		/*
-		//construct our location
+		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
-		String locationKey = jukeboxManager.createLocationKey(location);
-				
-		//aka left clicked - play disc
-		if (jukeboxManager.hasDisc(locationKey)) {
-			int discId = jukeboxManager.getDisc(locationKey);
-			if (plugin.getDiscsManager().hasDiscId(discId)) {
-			
-				String url = plugin.getDiscsManager().getUrl(discId);
-				playMusic(url, location, player);
-				return;
+		
+		//get data from the db
+		//TODO: create a join so dont have to make a second query for disc data
+		RecordPlayerData rpdata = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+				.where()
+					.eq("x", (double)x)
+					.eq("y", (double)y)
+					.eq("z", (double)z)
+					.ieq("worldName", world.getName())
+				.findUnique();
+		if (rpdata == null) {
+			Bukkit.getLogger().log(Level.WARNING, "[JukeBukkit] Missing Record Player Data, this data should have been created when the block was placed.");
+		} else {
+			if (rpdata.hasDisc()) {
+				DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+						.where()
+							.ieq("nameKey", rpdata.getDiscKey())
+						.findUnique();
+				if (discData == null) {
+					Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
+				} else {
+					//replay
+					this.playMusic(discData.getUrl(), location);
+					
+					return;
+				}
 			}
 		}
-		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_ERROR, false, location, 3);
-		return;
-		*/
+				
+		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_error.wav", false, location, 8);
+		
 	}
 
 	public void onBlockDestroyed(World world, int x, int y, int z) {
-		//TODO Eject disc if contains a disc
+		
+		Location location = new Location(world, (double)x, (double)y, (double)z);
+		
+		//get data from the db
+		RecordPlayerData rpdata = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+				.where()
+					.eq("x", (double)x)
+					.eq("y", (double)y)
+					.eq("z", (double)z)
+					.ieq("worldName", world.getName())
+				.findUnique();
+		if (rpdata == null) {
+			Bukkit.getLogger().log(Level.WARNING, "[JukeBukkit] Missing Record Player Data, this data should have been created when the block was placed.");
+		} else {
+			
+			if (rpdata.hasDisc()) {
+				//get disc.
+				DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+						.where()
+							.ieq("nameKey", rpdata.getDiscKey())
+						.findUnique();
+				if (discData == null) {
+					Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
+				} else {
+					//create disc to spawn
+					BurnedDisc disc = new BurnedDisc(discData);
+					ItemStack iss = new SpoutItemStack(disc, 1);
+					Location spawnLoc = location;
+					spawnLoc.setY(spawnLoc.getY()+1);
+					spawnLoc.getWorld().dropItem(spawnLoc, iss);
+				}
+				
+				//just in case there was a disc
+				stopMusic(location);
+			}
+			
+		}
 		
 		//delete ALL data associated to this location, just incase somehow multiples got into the database this will take care of that.
 		List<RecordPlayerData> rpdall = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
@@ -171,7 +223,6 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 
 	@Override
 	public void onBlockPlace(World world, int x, int y, int z) {
-		// TODO Auto-generated method stub
 		//when the block is placed we need to make sure to get data set up for it.
 		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
 				.where()
@@ -247,8 +298,8 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 		*/
 	}
 
-	public void playMusic(String url, Location location, SpoutPlayer player) {
-		/*
+	public void playMusic(String url, Location location) {
+		
 		//get players in radius of the jukebox and start it for only those players
 		for(Player p:location.getWorld().getPlayers()) {
 			double distance = location.toVector().distance(p.getLocation().toVector());
@@ -256,26 +307,18 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 				SpoutPlayer sp = SpoutManager.getPlayer(p);
 				if (sp.isSpoutCraftEnabled()) {
 					try {
-						SpoutManager.getSoundManager().playCustomMusic(plugin, sp, url, true, location, getRange());
+						SpoutManager.getSoundManager().playCustomMusic(JukeBukkit.instance, sp, url, true, location, getRange());
 					} catch (Exception e) {
 						//the disc has an error.
-						if(player != null) player.sendMessage(e.getMessage());
-						SpoutManager.getSoundManager().playGlobalCustomSoundEffect(plugin, CustomsManager.SF_JUKEBOX_ERROR, false, location, 3);
+						SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_error.wav", false, location, 8);
 					}
 				}
 			}
 		}
-		*/
+		
 	}
-
-	public void playMusic(String url, Location location) {
-		/*
-		playMusic(url, location, null);
-		*/
-	}
-
+	
 	public void stopMusic(Location location) {
-		/*
 		//get players in radius of the jukebox and start it for only those players
 		for(Player p:location.getWorld().getPlayers()) {
 			double distance = location.toVector().distance(p.getLocation().toVector());
@@ -286,6 +329,5 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 				}
 			}
 		}
-		*/
 	}
 }
