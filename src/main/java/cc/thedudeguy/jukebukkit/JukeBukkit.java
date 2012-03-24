@@ -27,8 +27,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import cc.thedudeguy.jukebukkit.database.DiscData;
+import cc.thedudeguy.jukebukkit.database.LabelData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
+import cc.thedudeguy.jukebukkit.listeners.DiscLabelListener;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
 import cc.thedudeguy.jukebukkit.util.Recipies;
@@ -58,6 +60,8 @@ public class JukeBukkit extends JavaPlugin {
 		items = new Items();
 		
 		Recipies.load();
+		
+		this.getServer().getPluginManager().registerEvents(new DiscLabelListener(), this);
 	}
 	
 	public void onDisable()
@@ -73,6 +77,7 @@ public class JukeBukkit extends JavaPlugin {
             getDatabase().find(RecordPlayerBlockDesigns.class).findRowCount();
             getDatabase().find(RecordPlayerData.class).findRowCount();
             getDatabase().find(DiscData.class).findRowCount();
+            getDatabase().find(LabelData.class).findRowCount();
         } catch (PersistenceException ex) {
             Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Installing database for " + getDescription().getName() + " due to first time usage");
             installDDL();
@@ -85,6 +90,7 @@ public class JukeBukkit extends JavaPlugin {
 	     list.add(RecordPlayerBlockDesigns.class);
 	     list.add(RecordPlayerData.class);
 	     list.add(DiscData.class);
+	     list.add(LabelData.class);
 	     return list;
 	 }
 }

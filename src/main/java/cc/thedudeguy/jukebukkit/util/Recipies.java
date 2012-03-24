@@ -1,17 +1,32 @@
 package cc.thedudeguy.jukebukkit.util;
 
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
 import org.getspout.spoutapi.inventory.SpoutShapelessRecipe;
 import org.getspout.spoutapi.material.MaterialData;
 
+import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
 
 public class Recipies {
 	
+	public static ShapelessRecipe genericRecipeFlintPaper;
+	
 	public static void load() {
+		
+		///////////////////////////////////////////////////
+		// Generic Recipe - Flint (Spout Item) and Paper //
+		///////////////////////////////////////////////////
+		// Captured in the prepare craft item event.
+		genericRecipeFlintPaper = new ShapelessRecipe(new ItemStack(Material.SNOW_BALL))
+			.addIngredient(Material.FLINT, -1)
+			.addIngredient(Material.PAPER);
+		JukeBukkit.instance.getServer().addRecipe(genericRecipeFlintPaper);
 		
 		///////////////////////
 		// Basic Jukebox     //

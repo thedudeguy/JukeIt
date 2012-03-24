@@ -41,8 +41,14 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	}
 	
 	private int color = DiscColor.WHITE; //whit disc is the default color
-	private String key = "";
-	private String url = "";
+	private String key;
+	private String url;
+	
+	public BurnedDisc() {
+		super(JukeBukkit.instance, "Reference Burn Disc");
+		setName("Reference Burn Disc (Do Not Use)");
+		setColor(DiscColor.WHITE);
+	}
 	
 	public BurnedDisc(DiscData discData) {
 		super(JukeBukkit.instance, discData.getNameKey());
@@ -88,7 +94,7 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	
 	public void setLabel(String label) {
 		
-		if (label.equalsIgnoreCase("")) {
+		if (label == null || label.isEmpty() || label.equalsIgnoreCase("") ) {
 			setName("*Burned* Obsidyisc");
 		} else {
 			setName(label);

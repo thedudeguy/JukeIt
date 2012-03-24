@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
+import cc.thedudeguy.jukebukkit.database.LabelData;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlack;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlue;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBrown;
@@ -45,6 +46,9 @@ public class Items {
 	public static BlankDiscWhite blankDiscWhite;
 	public static BlankDiscYellow blankDiscYellow;
 	
+	public static BurnedDisc burnedDisc;
+	public static DiscLabel discLabel;
+	
 	public Items() {
 		
 		//Init custom items.
@@ -69,6 +73,10 @@ public class Items {
 		
 		//TODO: Detect if any burned disc does NOT exist in the world anymore, and remove them from the DB
 		
+		//reference disc ONLY.
+		burnedDisc = new BurnedDisc();
+		discLabel = new DiscLabel();
+		
 		//initialize burned discs
 		List<DiscData> discDataList = JukeBukkit.instance.getDatabase().find(DiscData.class).findList();
 		if (discDataList.isEmpty()) {
@@ -80,6 +88,19 @@ public class Items {
 				count++;
 			}
 			Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Initialized "+ String.valueOf(count) +" Burned Discs.");
+		}
+		
+		//initialize labels that have been created
+		List<LabelData> labelDataList = JukeBukkit.instance.getDatabase().find(LabelData.class).findList();
+		if (labelDataList.isEmpty()) {
+			 Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] No created labels to load.");
+		} else {
+			int count = 0;
+			for (LabelData labelData : labelDataList) {
+				new DiscLabel(labelData);
+				count++;
+			}
+			Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Initialized "+ String.valueOf(count) +" labels.");
 		}
 		
 	}

@@ -2,8 +2,11 @@ package cc.thedudeguy.jukebukkit.util;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.getspout.spoutapi.SpoutManager;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
@@ -47,7 +50,8 @@ public class ResourceManager {
 			
 			"needle_stick-flint.png",
 			"recordplayer.png",
-			"blocks_deprecated.png"
+			"blocks_deprecated.png",
+			"label.png"
 			);
 	
 	public static final List<String> sounds = Arrays.asList(
@@ -57,10 +61,29 @@ public class ResourceManager {
 	
 	public static void copyResources() {
 		for (String texture : textures) {
-			JukeBukkit.instance.saveResource(new File("textures", texture).getPath(), false);
+			doCopy(texture, "textures");
 		}
 		for (String sound : sounds) {
-			JukeBukkit.instance.saveResource(new File("sounds", sound).getPath(), false);
+			doCopy(sound, "sounds");
+		}
+	}
+	
+	private static void doCopy(String filename, String pathInJar) {
+		
+		File dir = new File(JukeBukkit.instance.getDataFolder(), pathInJar);
+		
+		if (!dir.exists()) dir.mkdirs();
+		if (!dir.canWrite()) Bukkit.getLogger().log(Level.WARNING, "The path "+ dir.getPath() +" is not writable");
+		if (!dir.isDirectory()) Bukkit.getLogger().log(Level.WARNING, "The path "+ dir.getPath() +" is not a directory");
+		
+		String fileCopyRelPath = new File(pathInJar, filename).getPath();
+		
+		File fileCopy = new File(JukeBukkit.instance.getDataFolder(), fileCopyRelPath);
+		
+		if (!fileCopy.exists()) {
+			
+			JukeBukkit.instance.saveResource(fileCopyRelPath, true);
+			fileCopy.setLastModified(new Date().getTime());
 		}
 	}
 	
