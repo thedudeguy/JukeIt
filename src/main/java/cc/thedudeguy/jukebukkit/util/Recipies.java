@@ -1,32 +1,59 @@
 package cc.thedudeguy.jukebukkit.util;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapelessRecipe;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
 import org.getspout.spoutapi.inventory.SpoutShapelessRecipe;
 import org.getspout.spoutapi.material.MaterialData;
 
-import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
 
 public class Recipies {
 	
-	public static ShapelessRecipe genericRecipeFlintPaper;
-	
 	public static void load() {
 		
-		///////////////////////////////////////////////////
-		// Generic Recipe - Flint (Spout Item) and Paper //
-		///////////////////////////////////////////////////
-		// Captured in the prepare craft item event.
-		genericRecipeFlintPaper = new ShapelessRecipe(new ItemStack(Material.SNOW_BALL))
-			.addIngredient(Material.FLINT, -1)
-			.addIngredient(Material.PAPER);
-		JukeBukkit.instance.getServer().addRecipe(genericRecipeFlintPaper);
+		//////////////////////////////
+		// Wood-Flint Record Needle //
+		//////////////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+				new SpoutShapedRecipe( new SpoutItemStack(Items.needle, 1) )
+				.shape("rrr")
+				.shape("sss")
+				.shape("  f")
+				.setIngredient('r', MaterialData.redstone)
+				.setIngredient('s', MaterialData.stick)
+				.setIngredient('f', MaterialData.flint)
+				);
+		
+		//////////////////////////
+		// Badass Record Player //
+		//////////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( new SpoutItemStack(Items.needle, 1) )
+			.shape("sps")
+			.shape("njn")
+			.shape("www")
+			.setIngredient('s', MaterialData.woodenSlab)
+			.setIngredient('p', MaterialData.stonePressurePlate)
+			.setIngredient('n', MaterialData.noteblock)
+			.setIngredient('j', MaterialData.jukebox)
+			.setIngredient('w', MaterialData.wood)
+			);
+		
+		//////////////////////
+		// What? a speaker? //
+		//////////////////////
+		//SpoutManager.getMaterialManager().registerSpoutRecipe(
+		//	new SpoutShapedRecipe( new SpoutItemStack(Items.needle, 1) )
+		//	.shape("www")
+		//	.shape("cnc")
+		//	.shape("www")
+		//	.setIngredient('w', MaterialData.wood)
+		//	.setIngredient('c', MaterialData.)
+		//	.setIngredient('n', MaterialData.noteblock)
+		//	);
+		// nope not yet. soon though.
 		
 		///////////////////////
 		// Basic Jukebox     //
