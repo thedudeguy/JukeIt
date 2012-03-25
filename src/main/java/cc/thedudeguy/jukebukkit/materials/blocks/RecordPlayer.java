@@ -7,7 +7,10 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.MaterialData;
@@ -15,9 +18,11 @@ import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
+import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
 import cc.thedudeguy.jukebukkit.materials.items.Needle;
 
@@ -39,9 +44,15 @@ public class RecordPlayer extends GenericCustomBlock {
 		}
 	}
 	
-	public static RecordPlayer getSubBlock(int needle, int disc, int indicator) {
+	public static RecordPlayer getSubBlock(int needle, int discColor, int indicator) {
 		
-		RecordPlayerDesign rpDesign = new RecordPlayerDesign(needle, disc, indicator);
+		int color = RecordPlayerDesign.DISC_NONE;
+		
+		if (RecordPlayerDesign.discColorToTextureMap.containsKey(discColor)) {
+			color = RecordPlayerDesign.discColorToTextureMap.get(discColor);
+		}
+		
+		RecordPlayerDesign rpDesign = new RecordPlayerDesign(needle, color, indicator);
 		
 		if (!subBlocks.containsKey(rpDesign.getDesignTypeId())) {
 			subBlocks.put(rpDesign.getDesignTypeId(), new RecordPlayerSubBlock(rpDesign));
@@ -66,8 +77,32 @@ public class RecordPlayer extends GenericCustomBlock {
 	}
 	
 	public static void updateBlockDesign(SpoutBlock block, RecordPlayerData data) {
+		int color;
+		if (data.hasDisc()) {
+			//get the disc color.
+			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+					.where()
+						.ieq("nameKey", data.getDiscKey())
+					.findUnique();
+			if (discData == null) {
+				Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
+				color = RecordPlayerDesign.DISC_NONE;
+			} else {
+				color = discData.getColor();
+			}
+		} else {
+			color = RecordPlayerDesign.DISC_NONE;
+		}
 		
-		block.setCustomBlock(getSubBlock(data.getNeedleType(), RecordPlayerDesign.DISC_NONE, RecordPlayerDesign.INDICATOR_RED));
+		int indicator;
+		if (data.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE && color != RecordPlayerDesign.DISC_NONE)
+		{
+			indicator = RecordPlayerDesign.INDICATOR_GREEN;
+		} else {
+			indicator = RecordPlayerDesign.INDICATOR_RED;
+		}
+		
+		block.setCustomBlock(getSubBlock(data.getNeedleType(), color, indicator));
 		
 	}
 	
@@ -119,6 +154,8 @@ public class RecordPlayer extends GenericCustomBlock {
 	 */
 	public boolean onBlockInteract(org.bukkit.World world, int x, int y, int z, SpoutPlayer player) {
 		
+		Location location = new Location(world, (double)x, (double)y, (double)z);
+		
 		//get data from the db
 		RecordPlayerData rpdata = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
 				.where()
@@ -133,6 +170,31 @@ public class RecordPlayer extends GenericCustomBlock {
 		}
 		
 		SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
+		
+		if ( !rpdata.hasDisc() && inHand.getMaterial() instanceof BurnedDisc) {
+			BurnedDisc discInHand = (BurnedDisc)inHand.getMaterial();
+			
+			rpdata.setDiscKey(discInHand.getKey());
+			JukeBukkit.instance.getDatabase().save(rpdata);
+			
+			//we know its a custom item, go ahaed and remove 1 from the hand.
+			if (inHand.getAmount()<2) {
+				player.setItemInHand(new ItemStack(Material.AIR));
+			} else {
+				player.getInventory().getItemInHand().setAmount(player.getInventory().getItemInHand().getAmount()-1);
+			}
+			
+			//start the music
+			if (rpdata.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE) {
+				playMusic(discInHand.getUrl(), location);
+			}
+			
+			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
+			
+			return true;
+			
+		}
+		
 		if ( rpdata.getNeedleType() == RecordPlayerDesign.NEEDLE_NONE && inHand.isCustomItem() && inHand.getMaterial() instanceof Needle ) {
 			rpdata.setNeedleType(RecordPlayerDesign.NEEDLE_WOOD_FLINT);
 			JukeBukkit.instance.getDatabase().save(rpdata);
@@ -150,14 +212,40 @@ public class RecordPlayer extends GenericCustomBlock {
 			return true;
 		}
 		
+		if ( rpdata.hasDisc() ) {
+			//get disc.
+			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+					.where()
+						.ieq("nameKey", rpdata.getDiscKey())
+					.findUnique();
+			if (discData == null) {
+				Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
+			} else {
+				//create disc to spawn
+				BurnedDisc disc = new BurnedDisc(discData);
+				ItemStack iss = new SpoutItemStack(disc, 1);
+				Location spawnLoc = location;
+				spawnLoc.setY(spawnLoc.getY()+1);
+				spawnLoc.getWorld().dropItem(spawnLoc, iss);
+			}
+			
+			rpdata.setDiscKey(null);
+			JukeBukkit.instance.getDatabase().save(rpdata);
+			
+			stopMusic(location);
+			
+			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
+			
+			return true;
+		}
+		
 		if ( rpdata.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE ) {
 			
 			rpdata.setNeedleType(RecordPlayerDesign.NEEDLE_NONE);
 			JukeBukkit.instance.getDatabase().save(rpdata);
-			
-			Location location = new Location(world, x, y, z);
-			location.setY(location.getY()+1);
-			world.dropItem(location, new SpoutItemStack(Items.needle, 1));
+			Location spawnLoc = location;
+			spawnLoc.setY(spawnLoc.getY()+1);
+			world.dropItem(spawnLoc, new SpoutItemStack(Items.needle, 1));
 			
 			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
@@ -165,6 +253,40 @@ public class RecordPlayer extends GenericCustomBlock {
 		}
 		
 		return false;
+	}
+	
+	public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {
+		//when the block is placed we need to make sure to get data set up for it.
+		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+				.where()
+					.eq("x", (double)x)
+					.eq("y", (double)y)
+					.eq("z", (double)z)
+					.ieq("worldName", world.getName())
+				.findUnique();
+		if (rpd == null) {
+			rpd = new RecordPlayerData();
+			rpd.setDiscKey(null);
+			rpd.setNeedleType(0);
+			rpd.setX((double)x);
+			rpd.setY((double)y);
+			rpd.setZ((double)z);
+			rpd.setWorldName(world.getName());
+			JukeBukkit.instance.getDatabase().save(rpd);
+		}
+		
+		if (rpd.hasDisc() && rpd.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE) {
+			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+					.where()
+						.ieq("nameKey", rpd.getDiscKey())
+					.findUnique();
+			if (discData == null) {
+				Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
+			} else {
+				Location location = new Location(world, (double)x, (double)y, (double)z);
+				playMusic(discData.getUrl(), location);
+			}
+		}
 	}
 	
 	/**
@@ -201,6 +323,10 @@ public class RecordPlayer extends GenericCustomBlock {
 	 */
 	public void onBlockDestroyed(org.bukkit.World world, int x, int y, int z) {
 		
+		Location location = new Location(world, (double)x, (double)y, (double)z);
+		Location spawnLoc = location;
+		spawnLoc.setY(spawnLoc.getY()+1);
+		
 		//if theres junk in this block we need to make sure it drops too
 		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
 				.where()
@@ -211,7 +337,26 @@ public class RecordPlayer extends GenericCustomBlock {
 				.findUnique();
 		if (rpd != null) {
 			if (rpd.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE) {
-				world.dropItem(new Location(world, x, y, z), new SpoutItemStack(Items.needle, 1));
+				world.dropItem(spawnLoc, new SpoutItemStack(Items.needle, 1));
+			}
+			
+			if (rpd.hasDisc()) {
+				//get disc.
+				DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+						.where()
+							.ieq("nameKey", rpd.getDiscKey())
+						.findUnique();
+				if (discData == null) {
+					Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
+				} else {
+					//create disc to spawn
+					BurnedDisc disc = new BurnedDisc(discData);
+					ItemStack iss = new SpoutItemStack(disc, 1);
+					spawnLoc.getWorld().dropItem(spawnLoc, iss);
+				}
+				
+				//just in case there was a disc
+				stopMusic(location);
 			}
 		}
 		
@@ -225,6 +370,43 @@ public class RecordPlayer extends GenericCustomBlock {
 				.findList();
 		if (!rpdall.isEmpty()) {
 			JukeBukkit.instance.getDatabase().delete(rpdall);
+		}
+	}
+	
+	public int getRange() {
+		return 15;
+	}
+	
+	public void playMusic(String url, Location location) {
+		
+		//get players in radius of the jukebox and start it for only those players
+		for(Player p:location.getWorld().getPlayers()) {
+			double distance = location.toVector().distance(p.getLocation().toVector());
+			if (distance<=(double)getRange()) {
+				SpoutPlayer sp = SpoutManager.getPlayer(p);
+				if (sp.isSpoutCraftEnabled()) {
+					try {
+						SpoutManager.getSoundManager().playCustomMusic(JukeBukkit.instance, sp, url, true, location, getRange());
+					} catch (Exception e) {
+						//the disc has an error.
+						SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_error.wav", false, location, 8);
+					}
+				}
+			}
+		}
+		
+	}
+	
+	public void stopMusic(Location location) {
+		//get players in radius of the jukebox and start it for only those players
+		for(Player p:location.getWorld().getPlayers()) {
+			double distance = location.toVector().distance(p.getLocation().toVector());
+			if (distance<=(double)getRange()) {
+				SpoutPlayer sp = SpoutManager.getPlayer(p);
+				if (sp.isSpoutCraftEnabled()) {
+					SpoutManager.getSoundManager().stopMusic(sp);
+				}
+			}
 		}
 	}
 	

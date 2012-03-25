@@ -1,11 +1,16 @@
 package cc.thedudeguy.jukebukkit.materials.blocks.designs;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.getspout.spoutapi.block.design.GenericBlockDesign;
 import org.getspout.spoutapi.block.design.Quad;
 import org.getspout.spoutapi.block.design.SubTexture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
+import cc.thedudeguy.jukebukkit.materials.items.DiscColor;
 
 public class RecordPlayerDesign extends GenericBlockDesign {
 	
@@ -32,6 +37,29 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 	
 	public static final int INDICATOR_RED = 7;
 	public static final int INDICATOR_GREEN = 8;
+	
+	public static final Map<Integer, Integer> discColorToTextureMap;
+	static {
+		Map<Integer, Integer> dcttMap = new HashMap<Integer, Integer>();
+		dcttMap.put(DISC_NONE, 			DISC_NONE);
+		dcttMap.put(DiscColor.BLACK, 	DISC_BLACK);
+		dcttMap.put(DiscColor.RED, 		DISC_RED);
+		dcttMap.put(DiscColor.GREEN, 	DISC_GREEN);
+		dcttMap.put(DiscColor.BROWN, 	DISC_BROWN);
+		dcttMap.put(DiscColor.BLUE, 	DISC_BLUE);
+		dcttMap.put(DiscColor.PURPLE, 	DISC_PURPLE);
+		dcttMap.put(DiscColor.CYAN, 	DISC_CYAN);
+		dcttMap.put(DiscColor.LIGHTGRAY,DISC_LGRAY);
+		dcttMap.put(DiscColor.GRAY, 	DISC_GRAY);
+		dcttMap.put(DiscColor.PINK, 	DISC_PINK);
+		dcttMap.put(DiscColor.LIME, 	DISC_LIME);
+		dcttMap.put(DiscColor.YELLOW, 	DISC_YELLOW);
+		dcttMap.put(DiscColor.LIGHTBLUE,DISC_LBLUE);
+		dcttMap.put(DiscColor.MAGENTA, 	DISC_MAGENTA);
+		dcttMap.put(DiscColor.ORANGE, 	DISC_ORANGE);
+		dcttMap.put(DiscColor.WHITE, 	DISC_WHITE);
+		discColorToTextureMap = Collections.unmodifiableMap(dcttMap);
+	}
 	
 	private int discColor;
 	private int needleType;
