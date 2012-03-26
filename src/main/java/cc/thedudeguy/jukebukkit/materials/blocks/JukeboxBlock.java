@@ -1,5 +1,7 @@
 package cc.thedudeguy.jukebukkit.materials.blocks;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -23,6 +25,7 @@ import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
+import cc.thedudeguy.jukebukkit.util.Sound;
 
 public abstract class JukeboxBlock extends GenericCustomBlock  {
 
@@ -93,8 +96,17 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 				}
 			}
 		}
-				
-		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_error.wav", false, location, 8);
+		
+		//Sound sound = new Sound("disc_load.wav");
+		Sound sound;
+		try {
+			sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/21/203/jb_error.wav"));
+			sound.setRange(8);
+			sound.play(location);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -209,7 +221,15 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 			rpdata.setDiscKey(discInHand.getKey());
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			
-			SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_startup.wav", false, location, 8);
+			Sound sound;
+			try {
+				sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/21/202/jb_startup.wav"));
+				sound.setRange(8);
+				sound.play(location);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			//start the music
 			playMusic(discInHand.getUrl(), location);
@@ -217,7 +237,16 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 			return true;
 		}
 		
-		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_error.wav", false, location, 8);
+		Sound sound;
+		try {
+			sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/21/203/jb_error.wav"));
+			sound.setRange(8);
+			sound.play(location);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
@@ -310,7 +339,16 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 						SpoutManager.getSoundManager().playCustomMusic(JukeBukkit.instance, sp, url, true, location, getRange());
 					} catch (Exception e) {
 						//the disc has an error.
-						SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_error.wav", false, location, 8);
+						Sound sound;
+						try {
+							sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/21/203/jb_error.wav"));
+							sound.setRange(8);
+							sound.play(location);
+						} catch (MalformedURLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
 					}
 				}
 			}

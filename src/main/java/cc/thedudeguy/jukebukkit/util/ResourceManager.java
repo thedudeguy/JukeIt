@@ -54,7 +54,8 @@ public class ResourceManager {
 	
 	public static final List<String> sounds = Arrays.asList(
 			"jb_error.wav",
-			"jb_startup.wav"
+			"jb_startup.wav",
+			"disc_load.wav"
 			);
 	
 	public static void copyResources() {
@@ -101,6 +102,9 @@ public class ResourceManager {
 	public static void addCache() {
 		for (String texture : textures) {
 			SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures", texture).getPath()));
+		}
+		for (String sound : sounds) {
+			SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("sounds", sound).getPath()));
 		}
 	}
 	

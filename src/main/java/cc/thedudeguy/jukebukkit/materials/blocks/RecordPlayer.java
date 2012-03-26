@@ -1,5 +1,7 @@
 package cc.thedudeguy.jukebukkit.materials.blocks;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,6 +28,7 @@ import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
 import cc.thedudeguy.jukebukkit.materials.items.Needle;
+import cc.thedudeguy.jukebukkit.util.Sound;
 
 public class RecordPlayer extends GenericCustomBlock {
 	
@@ -149,7 +152,7 @@ public class RecordPlayer extends GenericCustomBlock {
 	 */
 	public boolean onBlockInteract(org.bukkit.World world, int x, int y, int z, SpoutPlayer player) {
 		
-		Bukkit.getLogger().log(Level.INFO, "Interacting...");
+		//Bukkit.getLogger().log(Level.INFO, "Interacting...");
 		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		
@@ -170,7 +173,7 @@ public class RecordPlayer extends GenericCustomBlock {
 		
 		if ( !rpdata.hasDisc() && inHand.getMaterial() instanceof BurnedDisc) {
 			
-			Bukkit.getLogger().log(Level.INFO, "Inserting Disc");
+			//Bukkit.getLogger().log(Level.INFO, "Inserting Disc");
 			
 			BurnedDisc discInHand = (BurnedDisc)inHand.getMaterial();
 			
@@ -189,6 +192,18 @@ public class RecordPlayer extends GenericCustomBlock {
 				playMusic(discInHand.getUrl(), location);
 			}
 			
+			//Sound sound = new Sound("disc_load.wav");
+			Sound sound;
+			try {
+				sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/700/disc_load.wav"));
+				sound.setRange(8);
+				sound.play(location);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
 			return true;
@@ -197,7 +212,7 @@ public class RecordPlayer extends GenericCustomBlock {
 		
 		if ( rpdata.getNeedleType() == RecordPlayerDesign.NEEDLE_NONE && inHand.isCustomItem() && inHand.getMaterial() instanceof Needle ) {
 			
-			Bukkit.getLogger().log(Level.INFO, "Inserting Needle");
+			//Bukkit.getLogger().log(Level.INFO, "Inserting Needle");
 			
 			rpdata.setNeedleType(RecordPlayerDesign.NEEDLE_WOOD_FLINT);
 			JukeBukkit.instance.getDatabase().save(rpdata);
@@ -210,6 +225,16 @@ public class RecordPlayer extends GenericCustomBlock {
 				player.setItemInHand(inHand);
 			}
 			
+			Sound sound;
+			try {
+				sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/703/needle_attach.wav"));
+				sound.setRange(8);
+				sound.play(location);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
 			return true;
@@ -217,7 +242,7 @@ public class RecordPlayer extends GenericCustomBlock {
 		
 		if ( rpdata.hasDisc() ) {
 			
-			Bukkit.getLogger().log(Level.INFO, "Ejecting Disc");
+			//Bukkit.getLogger().log(Level.INFO, "Ejecting Disc");
 			
 			//get disc.
 			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
@@ -238,7 +263,19 @@ public class RecordPlayer extends GenericCustomBlock {
 			rpdata.setDiscKey(null);
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			
-			stopMusic(location);
+			if (rpdata.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE) {
+				stopMusic(location);
+			}
+			
+			Sound sound;
+			try {
+				sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/701/disc_eject.wav"));
+				sound.setRange(8);
+				sound.play(location);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
@@ -247,13 +284,23 @@ public class RecordPlayer extends GenericCustomBlock {
 		
 		if ( rpdata.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE ) {
 			
-			Bukkit.getLogger().log(Level.INFO, "Ejecting Needle");
+			//Bukkit.getLogger().log(Level.INFO, "Ejecting Needle");
 			
 			rpdata.setNeedleType(RecordPlayerDesign.NEEDLE_NONE);
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			Location spawnLoc = location;
 			spawnLoc.setY(spawnLoc.getY()+1);
 			world.dropItem(spawnLoc, new SpoutItemStack(Items.needle, 1));
+			
+			Sound sound;
+			try {
+				sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/704/needle_eject.wav"));
+				sound.setRange(8);
+				sound.play(location);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
@@ -331,7 +378,7 @@ public class RecordPlayer extends GenericCustomBlock {
 	 */
 	public void onBlockDestroyed(org.bukkit.World world, int x, int y, int z) {
 		
-		Bukkit.getLogger().log(Level.INFO, "Block Destroyed.");
+		//Bukkit.getLogger().log(Level.INFO, "Block Destroyed.");
 		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		Location spawnLoc = location;
@@ -424,6 +471,16 @@ public class RecordPlayer extends GenericCustomBlock {
 			}
 		}
 		
+		Sound sound;
+		try {
+			sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/706/disc_start.wav"));
+			sound.setRange(8);
+			sound.play(location);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void stopMusic(Location location) {
@@ -437,6 +494,16 @@ public class RecordPlayer extends GenericCustomBlock {
 					SpoutManager.getSoundManager().stopMusic(sp);
 				}
 			}
+		}
+		
+		Sound sound;
+		try {
+			sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/707/disc_stop.wav"));
+			sound.setRange(8);
+			sound.play(location);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
