@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
-import org.getspout.spoutapi.material.MaterialData;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -104,18 +103,15 @@ public class RecordPlayer extends GenericCustomBlock {
 			indicator = RecordPlayerDesign.INDICATOR_RED;
 		}
 		
-		block.setCustomBlock(getSubBlock(data.getNeedleType(), color, indicator));
+		SpoutManager.getMaterialManager().overrideBlock(block, getSubBlock(data.getNeedleType(), color, indicator));
 		
 	}
 	
 	public RecordPlayer() {
-		super(JukeBukkit.instance, "Record Player", 3);
+		super(JukeBukkit.instance, "Record Player", 5);
 		
 		RecordPlayerDesign rpDesign = new RecordPlayerDesign();
 		this.setBlockDesign(rpDesign);
-		
-		this.setHardness(MaterialData.wood.getHardness());
-		this.setLightLevel(1);
 		
 		//store this into the hashmap since it will always be the defaul
 		subBlocks.put(rpDesign.getDesignTypeId(), this);
@@ -126,10 +122,7 @@ public class RecordPlayer extends GenericCustomBlock {
 	}
 	
 	public RecordPlayer(String nameId) {
-		super(JukeBukkit.instance, nameId, 3);
-		
-		this.setHardness(MaterialData.wood.getHardness());
-		this.setLightLevel(1);
+		super(JukeBukkit.instance, nameId, 5);
 	}
 	
 	private void initDesigns() {
@@ -156,6 +149,8 @@ public class RecordPlayer extends GenericCustomBlock {
 	 */
 	public boolean onBlockInteract(org.bukkit.World world, int x, int y, int z, SpoutPlayer player) {
 		
+		Bukkit.getLogger().log(Level.INFO, "Interacting...");
+		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		
 		//get data from the db
@@ -174,6 +169,9 @@ public class RecordPlayer extends GenericCustomBlock {
 		SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
 		
 		if ( !rpdata.hasDisc() && inHand.getMaterial() instanceof BurnedDisc) {
+			
+			Bukkit.getLogger().log(Level.INFO, "Inserting Disc");
+			
 			BurnedDisc discInHand = (BurnedDisc)inHand.getMaterial();
 			
 			rpdata.setDiscKey(discInHand.getKey());
@@ -198,6 +196,9 @@ public class RecordPlayer extends GenericCustomBlock {
 		}
 		
 		if ( rpdata.getNeedleType() == RecordPlayerDesign.NEEDLE_NONE && inHand.isCustomItem() && inHand.getMaterial() instanceof Needle ) {
+			
+			Bukkit.getLogger().log(Level.INFO, "Inserting Needle");
+			
 			rpdata.setNeedleType(RecordPlayerDesign.NEEDLE_WOOD_FLINT);
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			
@@ -215,6 +216,9 @@ public class RecordPlayer extends GenericCustomBlock {
 		}
 		
 		if ( rpdata.hasDisc() ) {
+			
+			Bukkit.getLogger().log(Level.INFO, "Ejecting Disc");
+			
 			//get disc.
 			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
 					.where()
@@ -242,6 +246,8 @@ public class RecordPlayer extends GenericCustomBlock {
 		}
 		
 		if ( rpdata.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE ) {
+			
+			Bukkit.getLogger().log(Level.INFO, "Ejecting Needle");
 			
 			rpdata.setNeedleType(RecordPlayerDesign.NEEDLE_NONE);
 			JukeBukkit.instance.getDatabase().save(rpdata);
@@ -325,6 +331,8 @@ public class RecordPlayer extends GenericCustomBlock {
 	 */
 	public void onBlockDestroyed(org.bukkit.World world, int x, int y, int z) {
 		
+		Bukkit.getLogger().log(Level.INFO, "Block Destroyed.");
+		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		Location spawnLoc = location;
 		spawnLoc.setY(spawnLoc.getY()+1);
@@ -398,7 +406,7 @@ public class RecordPlayer extends GenericCustomBlock {
 		
 		int range = getRange(location);
 		
-		Bukkit.getLogger().log(Level.INFO, "RANGE: " + String.valueOf(range));
+		//Bukkit.getLogger().log(Level.INFO, "RANGE: " + String.valueOf(range));
 		
 		//get players in radius of the jukebox and start it for only those players
 		for(Player p:location.getWorld().getPlayers()) {

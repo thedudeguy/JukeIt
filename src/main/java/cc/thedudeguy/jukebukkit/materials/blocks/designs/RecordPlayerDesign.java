@@ -75,8 +75,8 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		indicatorColor = indicator;
 		
 		setTexture(JukeBukkit.instance, Blocks.RecordPlayerTexture);
-		setMinBrightness(1F);
-		setMaxBrightness(1F);
+		//setMinBrightness(1F);
+		//setMaxBrightness(1F);
 		
 		SubTexture textureSide = getTexture().getSubTexture(0);
 		SubTexture textureTop = getTexture().getSubTexture(1);

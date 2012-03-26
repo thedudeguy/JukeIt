@@ -7,8 +7,6 @@ import cc.thedudeguy.jukebukkit.JukeBukkit;
 public class Speaker extends GenericCubeCustomBlock {
 
 	public Speaker() {
-		super(JukeBukkit.instance, "Universal Speaker", "speaker.png", 16);
+		super(JukeBukkit.instance, "Universal Speaker", 5, "speaker.png", 16);		
 	}
-
-	
 }

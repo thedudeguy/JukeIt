@@ -28,11 +28,11 @@ public class Recipies {
 		// Badass Record Player //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( new SpoutItemStack(Items.needle, 1) )
+			new SpoutShapedRecipe( new SpoutItemStack(Blocks.recordPlayer, 1) )
 			.shape("sps", "njn", "www")
 			.setIngredient('s', MaterialData.woodenSlab)
 			.setIngredient('p', MaterialData.stonePressurePlate)
-			.setIngredient('n', MaterialData.noteblock)
+			.setIngredient('n', Blocks.speaker)
 			.setIngredient('j', MaterialData.jukebox)
 			.setIngredient('w', MaterialData.wood)
 			);
