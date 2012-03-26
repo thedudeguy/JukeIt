@@ -55,7 +55,12 @@ public class ResourceManager {
 	public static final List<String> sounds = Arrays.asList(
 			"jb_error.wav",
 			"jb_startup.wav",
-			"disc_load.wav"
+			"disc_load.wav",
+			"disc_eject.wav",
+			"disc_start.wav",
+			"disc_stop.wav",
+			"needle_attach.wav",
+			"needle_eject.wav"
 			);
 	
 	public static void copyResources() {
