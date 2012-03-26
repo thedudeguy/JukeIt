@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import cc.thedudeguy.jukebukkit.util.ResourceManager;
 
@@ -88,6 +89,17 @@ public class CommandHandler implements CommandExecutor {
 	}
 	
 	public Boolean resetcache(CommandSender sender, String[] args) {
+		
+		if (sender instanceof Player) {
+			Player player = (Player)sender;
+			
+			if (!player.hasPermission("jukebukkit.command.resetcache")) {
+				player.sendMessage("You do not have permission to use this command.");
+				player.sendMessage("(jukebukkit.command.resetcache)");
+				return true;
+			}
+		}
+		
 		ResourceManager.resetCache();
 		sender.sendMessage("Cache has been reset.");
 		return true;

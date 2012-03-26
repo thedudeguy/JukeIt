@@ -1,9 +1,7 @@
 package cc.thedudeguy.jukebukkit.util;
 
 import java.net.URL;
-import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.getspout.spoutapi.SpoutManager;
 
@@ -36,8 +34,8 @@ public class Sound {
 	
 	public void play(Location location) {
 		
-		Bukkit.getLogger().log(Level.INFO, "Playing Sound");
-		Bukkit.getLogger().log(Level.INFO, getFileName());
+		//Bukkit.getLogger().log(Level.INFO, "Playing Sound");
+		//Bukkit.getLogger().log(Level.INFO, getFileName());
 		
 		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, getFileName(), isNotify(), location, getRange(), getVolume());
 		
