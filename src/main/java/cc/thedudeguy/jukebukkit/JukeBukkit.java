@@ -53,7 +53,7 @@ public class JukeBukkit extends JavaPlugin {
 		instance = this;
 		
 		ResourceManager.copyResources();
-		ResourceManager.preLoginCache();
+		//ResourceManager.preLoginCache();
 		setupDatabase();
 		
 		blocks = new Blocks();
@@ -64,6 +64,8 @@ public class JukeBukkit extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new DiscLabelListener(), this);
 		
 		this.getCommand("jukebukkit").setExecutor(new CommandHandler());
+		
+		ResourceManager.resetCache();
 	}
 	
 	public void onDisable()

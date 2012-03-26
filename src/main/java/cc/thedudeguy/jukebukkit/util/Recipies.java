@@ -17,23 +17,19 @@ public class Recipies {
 		// Wood-Flint Record Needle //
 		//////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-				new SpoutShapedRecipe( new SpoutItemStack(Items.needle, 1) )
-				.shape("rrr")
-				.shape("sss")
-				.shape("  f")
-				.setIngredient('r', MaterialData.redstone)
-				.setIngredient('s', MaterialData.stick)
-				.setIngredient('f', MaterialData.flint)
-				);
+			new SpoutShapedRecipe( new SpoutItemStack(Items.needle, 1) )
+			.shape("ttt", "sss", "  f")
+			.setIngredient('t', MaterialData.redstone)
+			.setIngredient('s', MaterialData.stick)
+			.setIngredient('f', MaterialData.flint)
+			);
 		
 		//////////////////////////
 		// Badass Record Player //
 		//////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 			new SpoutShapedRecipe( new SpoutItemStack(Items.needle, 1) )
-			.shape("sps")
-			.shape("njn")
-			.shape("www")
+			.shape("sps", "njn", "www")
 			.setIngredient('s', MaterialData.woodenSlab)
 			.setIngredient('p', MaterialData.stonePressurePlate)
 			.setIngredient('n', MaterialData.noteblock)
@@ -44,16 +40,13 @@ public class Recipies {
 		//////////////////////
 		// What? a speaker? //
 		//////////////////////
-		//SpoutManager.getMaterialManager().registerSpoutRecipe(
-		//	new SpoutShapedRecipe( new SpoutItemStack(Items.needle, 1) )
-		//	.shape("www")
-		//	.shape("cnc")
-		//	.shape("www")
-		//	.setIngredient('w', MaterialData.wood)
-		//	.setIngredient('c', MaterialData.)
-		//	.setIngredient('n', MaterialData.noteblock)
-		//	);
-		// nope not yet. soon though.
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( new SpoutItemStack(Blocks.speaker, 1) )
+			.shape("www", "cnc", "www")
+			.setIngredient('w', MaterialData.wood)
+			.setIngredient('c', MaterialData.whiteWool)
+			.setIngredient('n', MaterialData.noteblock)
+			);
 		
 		///////////////////////
 		// Basic Jukebox     //

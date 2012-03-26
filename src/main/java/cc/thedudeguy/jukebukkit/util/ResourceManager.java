@@ -2,7 +2,6 @@ package cc.thedudeguy.jukebukkit.util;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -30,7 +29,6 @@ public class ResourceManager {
 			"blank_disc_white.png",
 			"blank_disc_yellow.png",
 			"burned_disc_lightgray.png",
-			
 			"burned_disc_black.png",
 			"burned_disc_blue.png",
 			"burned_disc_brown.png",
@@ -47,11 +45,11 @@ public class ResourceManager {
 			"burned_disc_white.png",
 			"burned_disc_yellow.png",
 			"burned_disc_lightgray.png",
-			
 			"needle_stick-flint.png",
 			"recordplayer.png",
 			"blocks_deprecated.png",
-			"label.png"
+			"label.png",
+			"speaker.png"
 			);
 	
 	public static final List<String> sounds = Arrays.asList(
@@ -83,7 +81,7 @@ public class ResourceManager {
 		if (!fileCopy.exists()) {
 			
 			JukeBukkit.instance.saveResource(fileCopyRelPath, true);
-			fileCopy.setLastModified(new Date().getTime());
+			//fileCopy.setLastModified(new Date().getTime());
 		}
 	}
 	
@@ -94,5 +92,20 @@ public class ResourceManager {
 		for (String sound : sounds) {
 			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("sounds", sound).getPath()));
 		}
+	}
+	
+	public static void clearCache() {
+		SpoutManager.getFileManager().removeFromCache(JukeBukkit.instance, textures);
+	}
+	
+	public static void addCache() {
+		for (String texture : textures) {
+			SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures", texture).getPath()));
+		}
+	}
+	
+	public static void resetCache() {
+		clearCache();
+		addCache();
 	}
 }

@@ -18,6 +18,8 @@ public class Blocks {
 	public static JukeboxLongRange jukeboxLongRange;
 	public static JukeboxMaxRange jukeboxMaxRange;
 	
+	public static Speaker speaker;
+	
 	public Blocks() {
 		
 		recordPlayer = new RecordPlayer();
@@ -27,6 +29,8 @@ public class Blocks {
 		jukeboxMidRange = new JukeboxMidRange();
 		jukeboxLongRange = new JukeboxLongRange();
 		jukeboxMaxRange = new JukeboxMaxRange();
+		
+		speaker = new Speaker();
 	}
 	
 }

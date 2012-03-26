@@ -22,6 +22,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import cc.thedudeguy.jukebukkit.util.ResourceManager;
+
 
 /**
  * Command Executor for JukeBukkit.
@@ -75,6 +77,7 @@ public class CommandHandler implements CommandExecutor {
 		sender.sendMessage("========");
 		sender.sendMessage("version - Version Info");
 		sender.sendMessage("help    - Show help");
+		sender.sendMessage("recache - Can sometimes fix problems with textures.");
 		return true;
 	}
 	
@@ -84,4 +87,9 @@ public class CommandHandler implements CommandExecutor {
 		return true;
 	}
 	
+	public Boolean resetcache(CommandSender sender, String[] args) {
+		ResourceManager.resetCache();
+		sender.sendMessage("Cache has been reset.");
+		return true;
+	}
 }
