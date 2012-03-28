@@ -101,7 +101,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		frontFace.addVertex(1, 1F, 1F, 1F);
 		frontFace.addVertex(2, 0F, 1F, 1F);
 		frontFace.addVertex(3, 0F, 0F, 1F);
-		setLightSource(2, 0, 0, -1);
+		setLightSource(2, 0, 0, 1);
 		this.setQuad(frontFace);
 		
 		Quad rightFace = new Quad(1, textureSide);
@@ -109,7 +109,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		rightFace.addVertex(1, 1F, 1F, 0F);
 		rightFace.addVertex(2, 1F, 1F, 1F);
 		rightFace.addVertex(3, 1F, 0F, 1F);
-		setLightSource(1, -1, 0, 0);
+		setLightSource(1, 1, 0, 0);
 		this.setQuad(rightFace);
 		
 		Quad rearFace = new Quad(0, textureSide);
@@ -117,7 +117,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		rearFace.addVertex(1, 0F, 1F, 0F);
 		rearFace.addVertex(2, 1F, 1F, 0F);
 		rearFace.addVertex(3, 1F, 0F, 0F);
-		setLightSource(0, 0, 0, 1);
+		setLightSource(0, 0, 0, -1);
 		this.setQuad(rearFace);
 		
 		Quad leftFace = new Quad(3, textureSide);
@@ -125,7 +125,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		leftFace.addVertex(1, 0F, 1F, 1F);
 		leftFace.addVertex(2, 0F, 1F, 0F);
 		leftFace.addVertex(3, 0F, 0F, 0F);
-		setLightSource(3, 1, 0, 0);
+		setLightSource(3, -1, 0, 0);
 		this.setQuad(leftFace);
 		
 		Quad bottomFace = new Quad(4, textureSide);
