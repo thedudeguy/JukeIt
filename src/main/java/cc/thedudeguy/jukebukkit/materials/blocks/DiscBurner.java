@@ -21,11 +21,10 @@ import java.net.URL;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
@@ -39,6 +38,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.DiscBurnerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 
@@ -59,15 +59,24 @@ public class DiscBurner extends GenericCubeCustomBlock {
 	{
 		super(
 			JukeBukkit.instance, 
-			"Obsidyisc Burner", 
-			new GenericCubeBlockDesign(
-				JukeBukkit.instance, 
-				Blocks.blocksTexture, 
-				new int[] { 2, 3, 3, 4, 3, 2 }
-			)
+			"Obsidyisc Burner", 4,
+			new DiscBurnerDesign(DiscBurnerDesign.SOUTH)
 		);
 		
+		this.setName("Obsidyisc Burner");
 		//int faces => { bottom, north, ?, south (should default for inventory faceing), ?, top}
+	}
+	
+	public DiscBurner(int[] direction)
+	{
+		super(
+			JukeBukkit.instance, 
+			"discburner_"+direction.toString(), 4,
+			new DiscBurnerDesign(direction)
+		);
+		
+		this.setName("Disc Burner SubBlock (DO NOT USE)");
+		this.setItemDrop(new SpoutItemStack(Blocks.discBurner, 1));
 	}
 	
 	/**
@@ -218,118 +227,48 @@ public class DiscBurner extends GenericCubeCustomBlock {
 		return true;
 	}
 	
-	@Override
-	public void onBlockPlace(World arg0, int arg1, int arg2, int arg3) {
-		
-		//plugin.log.info("onBlockPlace No Entity");
-		
-		// TODO Auto-generated method stub
-		//plugin.log.info("onBlockPlace 1");
-	}
-
-	@Override
 	public void onBlockPlace(World world, int x, int y, int z, LivingEntity entity) {
 		
-		//plugin.log.info("onBlockInteract Living Entity");
+		//Location location = new Location(world, (double)x, (double)y, (double)z);
+		SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
 		
 		//find which way the player is facing...
-		//plugin.log.info("onBlockPlace 2");
-		/*
-		if(entity instanceof Player) {
-			Player player = (Player) entity;
-			player.sendMessage("WOW");
-		}
-		
 		double rot = (entity.getLocation().getYaw() -90) % 360;
 		if (rot < 0) {
             rot += 360.0;
         }
 		
-		int[] orientation;
-		
 		if (0 <= rot && rot < 45) {
-            //North
-			orientation = new int[] { 2, 4, 3, 3, 3, 2 };
+            //WEST
+			//Bukkit.getLogger().log(Level.INFO, "west");
+			SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerWest);
+			return;
         } else if (45 <= rot && rot < 135) {
-        	//East
-        	orientation = new int[] { 2, 3, 4, 3, 3, 2 };
+        	//NORTH
+        	//Bukkit.getLogger().log(Level.INFO, "north");
+        	SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerNorth);
+        	return;
         } else if (135 <= rot && rot < 215) {
-            //South
-        	orientation = new int[] { 2, 3, 3, 4, 3, 2 };
+            //EAST
+        	//Bukkit.getLogger().log(Level.INFO, "east");
+        	SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerEast);
+        	return;
         } else if (215 <= rot && rot < 305) {
-            //West
-        	orientation = new int[] { 2, 3, 3, 3, 4, 2 };
+            //SOUTH
+        	//Bukkit.getLogger().log(Level.INFO, "south");
+        	SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerSouth);
+        	return;
         } else if (305 <= rot && rot <= 360) {
-        	//North
-        	orientation = new int[] { 2, 4, 3, 3, 3, 2 };
+        	//WEST
+        	//Bukkit.getLogger().log(Level.INFO, "west");
+        	SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerWest);
+        	return;
         } else {
         	//unknown
-        	orientation = new int[] { 2, 4, 3, 3, 3, 2 };
+        	//Bukkit.getLogger().log(Level.INFO, "unknown");
+        	SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerSouth);
+        	return;
         }
-		
-		GenericCubeBlockDesign newDesign = new GenericCubeBlockDesign(
-				plugin, 
-				plugin.getCustomsManager().customBlockTexture, 
-				orientation
-			);
-		this.setBlockDesign(newDesign);
-		*/
 	}
 	
-	public boolean canPlaceBlockAt(World arg0, int arg1, int arg2, int arg3) {
-		//true to place anywhere
-		//plugin.log.info("canPlaceBlockAt 1");
-		return true;
-	}
-
-	public boolean canPlaceBlockAt(World arg0, int arg1, int arg2, int arg3, BlockFace arg4) {
-		//true to place anywhere
-		//plugin.log.info("canPlaceBlockAt 2");
-		return true;
-	}
-	
-	public boolean isIndirectlyProdivingPowerTo(World arg0, int arg1, int arg2, int arg3, BlockFace arg4) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isProvidingPowerTo(World arg0, int arg1, int arg2, int arg3,
-			BlockFace arg4) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void onBlockClicked(World arg0, int arg1, int arg2, int arg3, SpoutPlayer arg4) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onBlockDestroyed(World world, int x, int y, int z) {
-		//CustomBlock newblock = new BlockPrototypeBurner(this.plugin);
-		
-	}
-
-	@Override
-	public void onEntityMoveAt(World arg0, int arg1, int arg2, int arg3,
-			Entity arg4) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onNeighborBlockChange(World arg0, int arg1, int arg2, int arg3,
-			int arg4) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public boolean isIndirectlyProvidingPowerTo(World arg0, int arg1, int arg2,
-			int arg3, BlockFace arg4) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }
