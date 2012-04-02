@@ -49,10 +49,14 @@ public class Items {
 	public static BurnedDisc burnedDisc;
 	public static DiscLabel discLabel;
 	
+	public static SpeakerWire speakerWire;
+	
 	public Items() {
 		
 		//Init custom items.
 		needle = new Needle();
+		
+		speakerWire = new SpeakerWire();
 		
 		blankDiscBlack = new BlankDiscBlack();
 		blankDiscBlue = new BlankDiscBlue();

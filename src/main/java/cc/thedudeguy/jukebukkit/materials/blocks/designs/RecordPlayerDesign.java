@@ -74,7 +74,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		needleType = needle;
 		indicatorColor = indicator;
 		
-		setTexture(JukeBukkit.instance, Blocks.RecordPlayerTexture);
+		setTexture(JukeBukkit.instance, Blocks.recordPlayerTexture);
 		setMinBrightness(1.0F);
 		setMaxBrightness(1.0F);
 		

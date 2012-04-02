@@ -63,8 +63,8 @@ public class JukeBukkit extends JavaPlugin {
 		//ResourceManager.preLoginCache();
 		setupDatabase();
 		
-		blocks = new Blocks();
 		items = new Items();
+		blocks = new Blocks();
 		
 		Recipies.load();
 		

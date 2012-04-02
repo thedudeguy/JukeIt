@@ -8,8 +8,9 @@ import cc.thedudeguy.jukebukkit.materials.blocks.designs.DiscBurnerDesign;
 
 public class Blocks {
 	
-	public static final Texture RecordPlayerTexture = new Texture(JukeBukkit.instance, "recordplayer.png", 256, 256, 16);
+	public static final Texture recordPlayerTexture = new Texture(JukeBukkit.instance, "recordplayer.png", 256, 256, 16);
 	public static final Texture blocksTexture = new Texture(JukeBukkit.instance, "blocks_deprecated.png", 256, 256, 16);
+	public static final Texture speakerwireTexture = new Texture(JukeBukkit.instance, "speakerwireblock.png", 256, 256, 16);
 	
 	public static RecordPlayer recordPlayer;
 	public static JukeboxBasic jukeboxBasic;
@@ -25,6 +26,8 @@ public class Blocks {
 	public static DiscBurner discBurnerWest;
 	
 	public static Speaker speaker;
+	
+	public static SpeakerWireBlock speakerWireBlock;
 	
 	public Blocks() {
 		
@@ -43,6 +46,8 @@ public class Blocks {
 		jukeboxMaxRange = new JukeboxMaxRange();
 		
 		speaker = new Speaker();
+		
+		speakerWireBlock = new SpeakerWireBlock();
 	}
 	
 }

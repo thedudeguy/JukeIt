@@ -49,7 +49,9 @@ public class ResourceManager {
 			"recordplayer.png",
 			"blocks_deprecated.png",
 			"label.png",
-			"speaker.png"
+			"speaker.png",
+			"speakerwire.png",
+			"speakerwireblock.png"
 			);
 	
 	public static final List<String> sounds = Arrays.asList(

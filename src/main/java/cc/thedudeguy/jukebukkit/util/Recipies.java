@@ -13,6 +13,16 @@ public class Recipies {
 	
 	public static void load() {
 		
+		//////////////////
+		// Speaker Wire //
+		//////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+		new SpoutShapedRecipe( new SpoutItemStack(Items.speakerWire, 3) )
+			.shape("sss", "rrr")
+			.setIngredient('s', MaterialData.string)
+			.setIngredient('r', MaterialData.redstone)
+			);
+		
 		//////////////////////////////
 		// Wood-Flint Record Needle //
 		//////////////////////////////
