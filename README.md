@@ -1,5 +1,3 @@
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WY3RYQ3YJU946">
-<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" />
-</a>
+<a href='http://www.pledgie.com/campaigns/17072'><img alt='Click here to lend your support to: JukeBukkit and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/17072.png?skin_name=chrome' border='0' /></a>
 
 JukeBukkit is being hosted on <a href="http://dev.bukkit.org/server-mods/jukebukkit/">BukkitDev</a>
