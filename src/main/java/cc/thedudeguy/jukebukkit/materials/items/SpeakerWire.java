@@ -1,8 +1,5 @@
 package cc.thedudeguy.jukebukkit.materials.items;
 
-import java.util.logging.Level;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
