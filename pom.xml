@@ -8,7 +8,7 @@
 	<repositories>
 		<repository>
 			<id>bukkit-repo</id>
-			<url>http://repo.bukkit.org</url>
+			<url>http://repo.bukkit.org/content/groups/public/</url>
 		</repository>
 		<repository>
 			<id>spout-repo</id>
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>craftbukkit</artifactId>
-			<version>1.2.3-R0.2-SNAPSHOT</version>
+			<version>1.2.4-R1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.getspout</groupId>
