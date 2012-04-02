@@ -33,6 +33,7 @@ import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.listeners.DiscLabelListener;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
+import cc.thedudeguy.jukebukkit.util.DiscImporter;
 import cc.thedudeguy.jukebukkit.util.Recipies;
 import cc.thedudeguy.jukebukkit.util.ResourceManager;
 
@@ -62,6 +63,9 @@ public class JukeBukkit extends JavaPlugin {
 		ResourceManager.copyResources();
 		//ResourceManager.preLoginCache();
 		setupDatabase();
+		
+		//incase the old discs.yml exists, we should import the old discs.
+		DiscImporter.checkForOldDiscsImport();
 		
 		items = new Items();
 		blocks = new Blocks();
