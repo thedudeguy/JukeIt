@@ -29,7 +29,7 @@ public class Recipies {
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
 			new SpoutShapedRecipe( new SpoutItemStack(Items.needle, 1) )
 			.shape("ttt", "sss", "  f")
-			.setIngredient('t', MaterialData.redstone)
+			.setIngredient('t', Items.speakerWire)
 			.setIngredient('s', MaterialData.stick)
 			.setIngredient('f', MaterialData.flint)
 			);
