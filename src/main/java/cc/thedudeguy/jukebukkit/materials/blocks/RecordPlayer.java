@@ -31,6 +31,7 @@ import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
 import cc.thedudeguy.jukebukkit.materials.items.Needle;
+import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Sound;
 
 public class RecordPlayer extends GenericCustomBlock {
@@ -345,6 +346,48 @@ public class RecordPlayer extends GenericCustomBlock {
 				playMusic(discData.getUrl(), location);
 			}
 		}
+	}
+	
+	/**
+	 * Event fires when a neighboring block updates, like a Neighboring redstone becomes powered.
+	 * We can use this to detemind if this block is now powered.
+	 */
+	public void onNeighborBlockChange(org.bukkit.World world, int x, int y, int z, int changedId) {
+		Debug.debug("RecordPlayer: Neighboring Block Change Event. changedId=", changedId);
+		
+		SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
+		if (
+				(
+						block.getData("recordplayer.powered") == null ||
+						(Integer)block.getData("recordplayer.powered") == 0
+				) &&
+				block.isBlockPowered() == true
+				) {
+			block.setData("recordplayer.powered", 1);
+			Debug.debug("RecordPlayer: Redstone Activated");
+			
+			onBlockClicked(world, x, y, z, null);
+			
+		} else if (
+				block.getData("recordplayer.powered") != null &&
+				(Integer)block.getData("recordplayer.powered") == 1 &&
+				block.isBlockPowered() == true
+				) {
+			Debug.debug("RecordPlayer: New Redstone Power source, but block is already powered.");
+		
+		} else if (
+				block.getData("recordplayer.powered") != null &&
+				(Integer)block.getData("recordplayer.powered") == 1 &&
+				block.isBlockPowered() == false
+				) {
+			block.setData("recordplayer.powered", 0);
+			Debug.debug("RecordPlayer: Lost Redstone Power.");
+			
+		} else {
+			block.setData("recordplayer.powered", 0);
+			Debug.debug("RecordPlayer: Not Powered, and not powering");
+		}
+		
 	}
 	
 	/**

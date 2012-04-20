@@ -15,6 +15,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
@@ -25,6 +26,7 @@ import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
+import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Sound;
 
 public abstract class JukeboxBlock extends GenericCustomBlock  {
@@ -109,7 +111,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 		}
 		
 	}
-
+	
 	public void onBlockDestroyed(World world, int x, int y, int z) {
 		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
@@ -292,39 +294,46 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 	}
 	
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) {
-		/*
-		if (!canRedstoneActivate()) return;
+	/**
+	 * Event fires when a neighboring block updates, like a Neighboring redstone becomes powered.
+	 * We can use this to detemind if this block is now powered.
+	 */
+	public void onNeighborBlockChange(org.bukkit.World world, int x, int y, int z, int changedId) {
+		Debug.debug("JukeboxBlock: Neighboring Block Change Event. changedId=", changedId);
 		
-		Location location = new Location(world, (double)x, (double)y, (double)z);
-		SpoutBlock block = (SpoutBlock) location.getBlock();
-		if (block.isBlockPowered()) {
-			Serializable data = block.getData("JukeboxBlock.redstone");
-			if (data == null || ((Integer)data) == 0)
-			{
-				//block is currently not powered. //set to powered
-				block.setData("JukeboxBlock.redstone", 1);
-				
-				//if the jukebox has a disc in it, go ahead and play it.
-				String locationKey = plugin.getJukeBoxManager().createLocationKey(location);
-				if (plugin.getJukeBoxManager().hasDisc(locationKey))
-				{
-					//play disc.
-					int discId = plugin.getJukeBoxManager().getDisc(locationKey);
-					if (plugin.getDiscsManager().hasDiscId(discId))
-					{
-						String url = plugin.getDiscsManager().getUrl(discId);
-						playMusic(url, location);
-						return;
-					}
-				}
-			} else {
-				//block is currently powered. do nothing.
-				//set power setting back to unpowered
-				block.setData("JukeboxBlock.redstone", 0);
-			}
+		SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
+		if (
+				(
+						block.getData("jukeboxblock.powered") == null ||
+						(Integer)block.getData("jukeboxblock.powered") == 0
+				) &&
+				block.isBlockPowered() == true
+				) {
+			block.setData("jukeboxblock.powered", 1);
+			Debug.debug("JukeboxBlock: Redstone Activated");
+			
+			onBlockClicked(world, x, y, z, null);
+			
+		} else if (
+				block.getData("jukeboxblock.powered") != null &&
+				(Integer)block.getData("jukeboxblock.powered") == 1 &&
+				block.isBlockPowered() == true
+				) {
+			Debug.debug("JukeboxBlock: New Redstone Power source, but block is already powered.");
+		
+		} else if (
+				block.getData("jukeboxblock.powered") != null &&
+				(Integer)block.getData("jukeboxblock.powered") == 1 &&
+				block.isBlockPowered() == false
+				) {
+			block.setData("jukeboxblock.powered", 0);
+			Debug.debug("JukeboxBlock: Lost Redstone Power.");
+			
+		} else {
+			block.setData("jukeboxblock.powered", 0);
+			Debug.debug("JukeboxBlock: Not Powered, and not powering");
 		}
-		*/
+		
 	}
 
 	public void playMusic(String url, Location location) {

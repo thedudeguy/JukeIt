@@ -10,11 +10,11 @@ import cc.thedudeguy.jukebukkit.JukeBukkit;
 
 public class Debug {
 	
-	public static final String tag = "XP-in-the-Jar";
+	public static final String tag = "JukeBukkit";
 	
 	public static void debug(String debugText) {
 		if (JukeBukkit.instance.getConfig().getBoolean("debug")) {
-			Bukkit.getLogger().log(Level.INFO, tag+debugText);
+			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GOLD +"["+tag+"] " + debugText);
 		}
 	}
 	
@@ -29,7 +29,7 @@ public class Debug {
 	public static void debug(Player player, String debugText) {
 		if (JukeBukkit.instance.getConfig().getBoolean("debug")) {
 			player.sendMessage("&8["+tag + "] &7"+debugText);
-			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GOLD +"["+tag+"] " + ChatColor.YELLOW + player.getName() + ": " + debugText);
+			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GOLD +"["+tag+"] " + player.getName() + ": " + debugText);
 		}
 	}
 	
