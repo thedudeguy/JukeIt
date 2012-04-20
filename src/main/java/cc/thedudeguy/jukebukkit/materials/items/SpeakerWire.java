@@ -17,6 +17,10 @@ public class SpeakerWire extends GenericCustomItem {
 		this.setTexture("speakerwire.png");
 	}
 	
+	/**
+	 * Disabling for now since the block portion is not currently used.
+	 */
+	/*
 	@Override
 	public boolean onItemInteract(SpoutPlayer player, SpoutBlock block, org.bukkit.block.BlockFace face) {
 		
@@ -37,5 +41,6 @@ public class SpeakerWire extends GenericCustomItem {
 		}
 		return false;
 	}
+	*/
 	
 }

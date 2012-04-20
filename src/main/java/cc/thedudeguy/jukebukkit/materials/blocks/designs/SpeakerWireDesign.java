@@ -17,7 +17,6 @@ public class SpeakerWireDesign extends GenericBlockDesign {
 		
 		SubTexture wireInside = getTexture().getSubTexture(0);
 		SubTexture wireOutside = getTexture().getSubTexture(1);
-		SubTexture transparent = getTexture().getSubTexture(2);
 		
 		/* apparently setBoundingBox doesn't work with SpoutPlugin ??? */
 		setBoundingBox(0F, 0F, 0F, 1F, 0.0625F, 1F);
@@ -160,15 +159,6 @@ public class SpeakerWireDesign extends GenericBlockDesign {
 		leftNubSide.addVertex(3, 0.0937F-0.0312F, 0.0525F-0.0425F, 0.5213F);
 		setLightSource(15, 0, 1, 0);
 		this.setQuad(leftNubSide);
-		
-		//quad on bottom to be transparent maybe?//
-		Quad superBottom = new Quad(16, transparent);
-		superBottom.addVertex(0, 0F, 0F, 0F);
-		superBottom.addVertex(1, 0F, 0F, 1F);
-		superBottom.addVertex(2, 1F, 0F, 1F);
-		superBottom.addVertex(3, 1F, 0F, 0F);
-		setLightSource(16, 0, -1, 0);
-		this.setQuad(superBottom);
 		
 	}
 

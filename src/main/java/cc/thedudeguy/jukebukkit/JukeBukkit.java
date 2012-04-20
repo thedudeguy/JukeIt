@@ -51,6 +51,10 @@ public class JukeBukkit extends JavaPlugin {
 	
 	public void onEnable()
 	{	
+		//copy the config
+		this.getConfig().options().copyDefaults(true);
+		this.saveConfig();
+		
 		//double check for spout.
 		if (!Bukkit.getPluginManager().isPluginEnabled("Spout")) {
 			Bukkit.getLogger().log(Level.WARNING, "[JukeBukkit] Could not start: Spout not found.");

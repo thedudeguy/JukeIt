@@ -14,10 +14,13 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
+import org.getspout.spoutapi.particle.Particle;
+import org.getspout.spoutapi.particle.Particle.ParticleType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
@@ -450,6 +453,11 @@ public class RecordPlayer extends GenericCustomBlock {
 	}
 	
 	public void playMusic(String url, Location location) {
+		
+		Particle particle = new Particle(ParticleType.NOTE, location, new Vector(0, 10, 0));
+		particle.setMaxAge(10);
+		particle.setGravity(1F);
+		particle.spawn();
 		
 		int range = getRange(location);
 		
