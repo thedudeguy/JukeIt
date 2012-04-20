@@ -5,8 +5,11 @@
 JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn these discs with music of your liking, music that is hosted on the internet somewhere, and play the music on your obsidyiscs in jukeboxes, also crafted by players.
 
 [Download](http://dev.bukkit.org/server-mods/jukebukkit/files/)
-[Wiki] (https://github.com/thedudeguy/JukeBukkit/wiki)
+
+[Wiki](https://github.com/thedudeguy/JukeBukkit/wiki)
+
 [Source](https://github.com/thedudeguy/JukeBukkit)
+
 [Jenkens](http://build.lincomlinux.org/jenkins/job/JukeBukkit/)
 
 [![Donate](http://www.pledgie.com/campaigns/17072.png?skin_name=chrome "Donate")](http://pledgie.com/campaigns/17072)
@@ -14,6 +17,7 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 ### The Info You Want:
 
 [How to use JukeBukkit](https://github.com/thedudeguy/JukeBukkit/wiki/How-to-Use-JukeBukkit)
+
 [JukeBukkit Crafting Recipes](https://github.com/thedudeguy/JukeBukkit/wiki/Recipes)
 
 ## Features
@@ -34,6 +38,6 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 
 ## Support
 
-* [Wiki] (https://github.com/thedudeguy/JukeBukkit/wiki)
+* [Wiki](https://github.com/thedudeguy/JukeBukkit/wiki)
 * [Issues](https://github.com/thedudeguy/JukeBukkit/issues)
 * [BukkitDev](http://dev.bukkit.org/server-mods/jukebukkit/)

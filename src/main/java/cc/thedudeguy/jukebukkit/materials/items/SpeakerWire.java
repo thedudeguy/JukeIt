@@ -1,14 +1,8 @@
 package cc.thedudeguy.jukebukkit.materials.items;
 
-import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
-import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 
 public class SpeakerWire extends GenericCustomItem {
 	
