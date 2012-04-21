@@ -47,7 +47,7 @@ public class Blocks {
 		
 		speaker = new Speaker();
 		
-		speakerWireBlock = new SpeakerWireBlock();
+		speakerWireBlock = new SpeakerWireBlock(0);
 	}
 	
 }

@@ -7,9 +7,39 @@ import org.getspout.spoutapi.block.design.SubTexture;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 
+/*
+ * new_x = old_x * cos(angle) + old_y * sin(angle)
+ * new_z = old_z * cos(angle) - old_z * sin(angle)
+ */
 public class SpeakerWireDesign extends GenericBlockDesign {
 	
-	public SpeakerWireDesign() {
+	public class SimpleVertex {
+		public float x;
+		public float y;
+		public float z;
+		public int angle;
+		
+		public SimpleVertex(float x, float y, float z, int degrees) {
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.angle = degrees;
+		}
+		
+		/** conjugation? **/ 
+		
+		public float getX() {
+			return (float)( ((x - 0.5F) * Math.cos(Math.toRadians(angle))) - ((z - 0.5F) * Math.sin(Math.toRadians(angle))) ) + 0.5F;
+		}
+		public float getY() {
+			return y;
+		}
+		public float getZ() {
+			return (float)( ((x - 0.5F) * Math.sin(Math.toRadians(angle))) + ((z - 0.5F) * Math.cos(Math.toRadians(angle))) ) + 0.5F;
+		}
+	}
+	
+	public SpeakerWireDesign(int deg) {
 		
 		setTexture(JukeBukkit.instance, Blocks.speakerwireTexture);
 		setMinBrightness(0F);
@@ -27,52 +57,78 @@ public class SpeakerWireDesign extends GenericBlockDesign {
 		///////////////////////////////////////
 		
 		Quad wireFront = new Quad(0, wireOutside);
-		wireFront.addVertex(0, 0.9062F, 0.0625F, 0.5313F);
-		wireFront.addVertex(1, 0.9062F-0.8125F, 0.0625F, 0.5313F);
-		wireFront.addVertex(2, 0.9062F-0.8125F, 0F, 0.5313F);
-		wireFront.addVertex(3, 0.9062F, 0F, 0.5313F);
+		SimpleVertex p1 = new SimpleVertex(0.9062F			, 0.0625F	, 0.5313F, deg);
+		SimpleVertex p2 = new SimpleVertex(0.9062F-0.8125F	, 0.0625F	, 0.5313F, deg);
+		SimpleVertex p3 = new SimpleVertex(0.9062F-0.8125F	, 0F		, 0.5313F, deg);
+		SimpleVertex p4 = new SimpleVertex(0.9062F			, 0F		, 0.5313F, deg);
+		wireFront.addVertex(0, p1.getX(), p1.getY(), p1.getZ() );
+		wireFront.addVertex(1, p2.getX(), p2.getY(), p2.getZ());
+		wireFront.addVertex(2, p3.getX(), p3.getY(), p3.getZ());
+		wireFront.addVertex(3, p4.getX(), p4.getY(), p4.getZ());
 		setLightSource(0, 0, 1, 0);
 		this.setQuad(wireFront);
 		
 		Quad wireBottom = new Quad(1, wireOutside);
-		wireBottom.addVertex(0, 0.9062F, 0F, 0.5313F);
-		wireBottom.addVertex(1, 0.9062F-0.8125F, 0F, 0.5313F);
-		wireBottom.addVertex(2, 0.9062F-0.8125F, 0F, 0.5313F-0.0625F);
-		wireBottom.addVertex(3, 0.9062F, 0F, 0.5313F-0.0625F);
+		p1 = new SimpleVertex(0.9062F			, 0F	, 0.5313F			, deg);
+		p2 = new SimpleVertex(0.9062F-0.8125F	, 0F	, 0.5313F			, deg);
+		p3 = new SimpleVertex(0.9062F-0.8125F	, 0F	, 0.5313F-0.0625F	, deg);
+		p4 = new SimpleVertex(0.9062F			, 0F	, 0.5313F-0.0625F	, deg);
+		wireBottom.addVertex(0, p1.getX(), p1.getY(), p1.getZ() );
+		wireBottom.addVertex(1, p2.getX(), p2.getY(), p2.getZ());
+		wireBottom.addVertex(2, p3.getX(), p3.getY(), p3.getZ());
+		wireBottom.addVertex(3, p4.getX(), p4.getY(), p4.getZ());
 		setLightSource(1, 0, 1, 0);
 		this.setQuad(wireBottom);
 		
 		Quad wireRear = new Quad(2, wireOutside);
-		wireRear.addVertex(0, 0.9062F, 0F, 0.5313F-0.0625F);
-		wireRear.addVertex(1, 0.9062F-0.8125F, 0F, 0.5313F-0.0625F);
-		wireRear.addVertex(2, 0.9062F-0.8125F, 0.0625F, 0.5313F-0.0625F);
-		wireRear.addVertex(3, 0.9062F, 0.0625F, 0.5313F-0.0625F);
+		p1 = new SimpleVertex(0.9062F			, 0F		, 0.5313F-0.0625F , deg);
+		p2 = new SimpleVertex(0.9062F-0.8125F	, 0F		, 0.5313F-0.0625F , deg);
+		p3 = new SimpleVertex(0.9062F-0.8125F	, 0.0625F	, 0.5313F-0.0625F , deg);
+		p4 = new SimpleVertex(0.9062F			, 0.0625F	, 0.5313F-0.0625F , deg);
+		wireRear.addVertex(0, p1.getX(), p1.getY(), p1.getZ() );
+		wireRear.addVertex(1, p2.getX(), p2.getY(), p2.getZ());
+		wireRear.addVertex(2, p3.getX(), p3.getY(), p3.getZ());
+		wireRear.addVertex(3, p4.getX(), p4.getY(), p4.getZ());
 		setLightSource(2, 0, 1, 0);
 		this.setQuad(wireRear);
 		
 		Quad wireTop = new Quad(3, wireOutside);
-		wireTop.addVertex(0, 0.9062F, 0.0625F, 0.5313F-0.0625F);
-		wireTop.addVertex(1, 0.9062F-0.8125F, 0.0625F, 0.5313F-0.0625F);
-		wireTop.addVertex(2, 0.9062F-0.8125F, 0.0625F, 0.5313F);
-		wireTop.addVertex(3, 0.9062F, 0.0625F, 0.5313F);
+		p1 = new SimpleVertex(0.9062F			, 0.0625F	, 0.5313F-0.0625F	, deg);
+		p2 = new SimpleVertex(0.9062F-0.8125F	, 0.0625F	, 0.5313F-0.0625F	, deg);
+		p3 = new SimpleVertex(0.9062F-0.8125F	, 0.0625F	, 0.5313F			, deg);
+		p4 = new SimpleVertex(0.9062F			, 0.0625F	, 0.5313F			, deg);
+		wireTop.addVertex(0, p1.getX(), p1.getY(), p1.getZ() );
+		wireTop.addVertex(1, p2.getX(), p2.getY(), p2.getZ());
+		wireTop.addVertex(2, p3.getX(), p3.getY(), p3.getZ());
+		wireTop.addVertex(3, p4.getX(), p4.getY(), p4.getZ());
 		setLightSource(3, 0, 1, 0);
 		this.setQuad(wireTop);
 		
-		Quad wireRight = new Quad(4, wireOutside);
-		wireRight.addVertex(0, 0.9062F, 0.0625F, 0.5313F);
-		wireRight.addVertex(1, 0.9062F, 0F, 0.5313F);
-		wireRight.addVertex(2, 0.9062F, 0F, 0.5313F-0.0625F);
-		wireRight.addVertex(3, 0.9062F, 0.0625F, 0.5313F-0.0625F);
+		Quad wireRight = new Quad(4, wireInside); //setting to wire inside so i can see were it moves.
+		p1 = new SimpleVertex(0.9062F			, 0.0625F	, 0.5313F			, deg);
+		p2 = new SimpleVertex(0.9062F			, 0F		, 0.5313F			, deg);
+		p3 = new SimpleVertex(0.9062F			, 0F		, 0.5313F-0.0625F	, deg);
+		p4 = new SimpleVertex(0.9062F			, 0.0625F	, 0.5313F-0.0625F	, deg);
+		wireRight.addVertex(0, p1.getX(), p1.getY(), p1.getZ() );
+		wireRight.addVertex(1, p2.getX(), p2.getY(), p2.getZ());
+		wireRight.addVertex(2, p3.getX(), p3.getY(), p3.getZ());
+		wireRight.addVertex(3, p4.getX(), p4.getY(), p4.getZ());
 		setLightSource(4, 0, 1, 0);
 		this.setQuad(wireRight);
 		
 		Quad wireLeft = new Quad(5, wireOutside);
-		wireLeft.addVertex(0, 0.9062F-0.8125F, 0.0625F, 0.5313F);
-		wireLeft.addVertex(1, 0.9062F-0.8125F, 0.0625F, 0.5313F-0.0625F);
-		wireLeft.addVertex(2, 0.9062F-0.8125F, 0F, 0.5313F-0.0625F);
-		wireLeft.addVertex(3, 0.9062F-0.8125F, 0F, 0.5313F);
+		p1 = new SimpleVertex(0.9062F-0.8125F	, 0.0625F	, 0.5313F			, deg);
+		p2 = new SimpleVertex(0.9062F-0.8125F	, 0.0625F	, 0.5313F-0.0625F	, deg);
+		p3 = new SimpleVertex(0.9062F-0.8125F	, 0F		, 0.5313F-0.0625F	, deg);
+		p4 = new SimpleVertex(0.9062F-0.8125F	, 0F		, 0.5313F			, deg);
+		wireLeft.addVertex(0, p1.getX(), p1.getY(), p1.getZ() );
+		wireLeft.addVertex(1, p2.getX(), p2.getY(), p2.getZ());
+		wireLeft.addVertex(2, p3.getX(), p3.getY(), p3.getZ());
+		wireLeft.addVertex(3, p4.getX(), p4.getY(), p4.getZ());
 		setLightSource(5, 0, 1, 0);
 		this.setQuad(wireLeft);
+		
+		/*
 		
 		//right nub
 		///////////////////////////////////////
@@ -160,6 +216,9 @@ public class SpeakerWireDesign extends GenericBlockDesign {
 		setLightSource(15, 0, 1, 0);
 		this.setQuad(leftNubSide);
 		
+		*/
+		
 	}
-
+	
+	
 }
