@@ -38,7 +38,7 @@ public class SpeakerWireDesign extends GenericBlockDesign {
 			return (float)( ((x - 0.5F) * Math.sin(Math.toRadians(angle))) + ((z - 0.5F) * Math.cos(Math.toRadians(angle))) ) + 0.5F;
 		}
 	}
-	
+	 
 	public SpeakerWireDesign(int deg) {
 		
 		setTexture(JukeBukkit.instance, Blocks.speakerwireTexture);
