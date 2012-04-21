@@ -1,6 +1,5 @@
 package cc.thedudeguy.jukebukkit.materials.blocks;
 
-import org.bukkit.Material;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
@@ -9,7 +8,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.SpeakerWireDesign;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
-import cc.thedudeguy.jukebukkit.util.Debug;
 
 public class SpeakerWireBlock extends GenericCustomBlock {
 	
