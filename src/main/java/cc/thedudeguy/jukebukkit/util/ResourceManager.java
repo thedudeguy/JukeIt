@@ -96,18 +96,33 @@ public class ResourceManager {
 	public static void copyWebFiles() {
 		
 		File musicDir = new File(JukeBukkit.instance.getDataFolder(), "music");
-		if (!musicDir.exists()) musicDir.mkdirs();
-		if (!musicDir.canWrite()) Bukkit.getLogger().log(Level.WARNING, "The path "+ musicDir.getPath() +" is not writable");
-		if (!musicDir.isDirectory()) Bukkit.getLogger().log(Level.WARNING, "The path "+ musicDir.getPath() +" is not a directory");
-		File webDir = new File(JukeBukkit.instance.getDataFolder(), "music");
-		if (!webDir.exists()) webDir.mkdirs();
-		if (!webDir.canWrite()) Bukkit.getLogger().log(Level.WARNING, "The path "+ webDir.getPath() +" is not writable");
-		if (!webDir.isDirectory()) Bukkit.getLogger().log(Level.WARNING, "The path "+ webDir.getPath() +" is not a directory");
+		if (!musicDir.exists()){
+			musicDir.mkdirs();
+			JukeBukkit.instance.saveResource("music/swanee.ogg", true);
+		}
 		
-		//JukeBukkit.instance.saveResource(new File("music/swanee.ogg"), false);
-		
-		//JukeBukkit.instance.saveResource("web/index.html", false);
-		
+		File webDir = new File(JukeBukkit.instance.getDataFolder(), "web");
+		if (!webDir.exists()) {
+			webDir.mkdirs();
+			JukeBukkit.instance.saveResource("web/index.html", false);
+			
+			JukeBukkit.instance.saveResource("web/css/bootstrap.css", false);
+			JukeBukkit.instance.saveResource("web/css/bootstrap.min.css", false);
+			JukeBukkit.instance.saveResource("web/css/bootstrap-responsive.css", false);
+			JukeBukkit.instance.saveResource("web/css/bootstrap-responsive.min.css", false);
+			JukeBukkit.instance.saveResource("web/css/uploadify.css", false);
+			
+			JukeBukkit.instance.saveResource("web/img/glyphicons-halflings.png", false);
+			JukeBukkit.instance.saveResource("web/img/glyphicons-halflings-white.png", false);
+			JukeBukkit.instance.saveResource("web/img/uploadify-cancel.png", false);
+			
+			JukeBukkit.instance.saveResource("web/js/bootstrap.js", false);
+			JukeBukkit.instance.saveResource("web/js/bootstrap.min.js", false);
+			JukeBukkit.instance.saveResource("web/js/bootstrap-collapse.js", false);
+			JukeBukkit.instance.saveResource("web/js/jquery.js", false);
+			JukeBukkit.instance.saveResource("web/js/jquery.uploadify.min.js", false);
+			JukeBukkit.instance.saveResource("web/js/uploadify.swf", false);
+		}
 	}
 	
 	public static void preLoginCache() {

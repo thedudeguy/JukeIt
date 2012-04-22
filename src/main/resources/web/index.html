@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>${serverName}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+      #custom-demo #custom-queue {
+  		border: 1px solid #E5E5E5;
+  		height: 213px;
+		margin-bottom: 10px;
+  		width: 370px;
+	  }
+		#custom-queue .uploadifyQueueItem {
+  		border-radius: 0;
+  		border: none;
+  		border-bottom: 1px dotted #E5E5E5;
+  		margin-top: 0;
+	  }
+    </style>
+    <style type="text/css">
+        
+				</style>
+    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="/css/uploadify.css" rel="stylesheet">
+	
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!--
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+    -->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">${serverName}</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Files</a></li>
+              <li><a href="#collapse-upload" data-parent="#upload-wrap" data-toggle="collapse" >Upload</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+    	<div id="upload-wrap" class="accordion">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" href="#collapse-upload" data-parent="#upload-wrap" data-toggle="collapse"> Upload </a>
+				</div>
+				<div id="collapse-upload" class="accordion-body collapse" style="height: 0px;">
+					<div class="accordion-inner">
+      					<div id="custom-demo" class="demo">
+      						<h2>Upload</h2>
+        					<p></p>
+      						<div class="demo-box">
+        						<div id="status-message">Select some files to upload:</div>
+								<div id="custom-queue"></div>
+								<input id="custom_file_upload" type="file" name="Filedata" />
+							</div>
+      					</div>
+      				</div>
+				</div>
+			</div>
+		</div>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery.js"></script>
+    <!-- <script src="../assets/js/bootstrap-transition.js"></script> -->
+    <!-- <script src="../assets/js/bootstrap-alert.js"></script> -->
+    <!-- <script src="../assets/js/bootstrap-modal.js"></script> -->
+    <!-- <script src="../assets/js/bootstrap-dropdown.js"></script> -->
+    <!-- <script src="../assets/js/bootstrap-scrollspy.js"></script> -->
+    <!-- <script src="../assets/js/bootstrap-tab.js"></script> -->
+    <!-- <script src="../assets/js/bootstrap-tooltip.js"></script> -->
+    <!-- <script src="../assets/js/bootstrap-popover.js"></script> -->
+    <!-- <script src="../assets/js/bootstrap-button.js"></script> -->
+    <script src="/js/bootstrap-collapse.js"></script>
+    <!-- <script src="../assets/js/bootstrap-carousel.js"></script> -->
+    <!-- <script src="../assets/js/bootstrap-typeahead.js"></script> -->
+	
+	<script type="text/javascript" src="/js/jquery.uploadify.min.js"></script>
+	
+	<script type="text/javascript">
+		$(function(){
+			$("#upload-wrap").collapse();
+			
+			$('#custom_file_upload').uploadify({
+				'swf'       : '/js/uploadify.swf',
+				'uploader'         : '/upload',
+				'cancelImage'      : '/img/uploadify-cancel.png',
+				'buttonText': "Select Files",
+				'multi'          : true,
+				'auto'           : true,
+				'fileTypeExts'        : '*.ogg;*.wav',
+				'fileTypeDesc'       : 'Audio Files (.OGG, .WAV)',
+				'queueID'        : 'custom-queue',
+				'queueSizeLimit' : 3,
+				'simUploadLimit' : 3,
+				'sizeLimit'   : 10240000,
+				'width': 110,
+				'height':40,
+				'removeCompleted': false,
+				'onDialogClose'   : function(queue) {
+					$('#status-message').text(queue.filesQueued + ' files have been added to the queue.');
+				},
+				'onQueueComplete'  : function(stats) {
+					$('#status-message').text(stats.successful_uploads + ' files uploaded, ' + stats.upload_errors + ' errors.');
+				}
+			});	
+		});
+	</script>	
+  </body>
+</html>

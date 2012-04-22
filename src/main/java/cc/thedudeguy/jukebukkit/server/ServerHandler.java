@@ -3,9 +3,12 @@ package cc.thedudeguy.jukebukkit.server;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,10 +24,41 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.util.Debug;
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 
 public class ServerHandler extends AbstractHandler {
 
+	public Configuration cfg;
+	
+	public ServerHandler() {
+		cfg = new Configuration();
+		try {
+			cfg.setDirectoryForTemplateLoading( new File(JukeBukkit.instance.getDataFolder(), "web") );
+			cfg.setObjectWrapper(new DefaultObjectWrapper());  
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private List getFileList() {
+		
+		File musicFolder = new File(JukeBukkit.instance.getDataFolder(), "music");
+		if (!musicFolder.exists()) {
+			return Arrays.asList(new String[0]);
+		}
+		File[] fileList = musicFolder.listFiles(); 
+		if (fileList.length < 1) {
+			return Arrays.asList(new String[0]);
+		}
+		
+		return Arrays.asList(new String[0]);
+	}
+	
 	@Override
 	public void handle(
 				String target,
@@ -41,6 +75,23 @@ public class ServerHandler extends AbstractHandler {
 			response.setStatus(HttpServletResponse.SC_OK);
 			baseRequest.setHandled(true);
 			
+			Template template = cfg.getTemplate("index.html");
+			
+			//TODO: Fix warnings
+			Map dataRoot = new HashMap();
+			dataRoot.put("serverName", "JukeBukkit");
+			
+			List files = getFileList();
+			dataRoot.put("files", files);
+			
+			try {
+				template.process(dataRoot, response.getWriter());
+			} catch (TemplateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			/*
 			response.getWriter().println("<html><head><title>JukeBukkit Web</title></head><body>");
 			
 			response.getWriter().println("<h1>Upload</h1>");
@@ -73,6 +124,8 @@ public class ServerHandler extends AbstractHandler {
 			}
 			
 			response.getWriter().println("</body></html>");
+			*/
+			
 			return;
 		}
 		

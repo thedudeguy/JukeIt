@@ -16,6 +16,7 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,6 +26,9 @@ import javax.persistence.PersistenceException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
 
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.LabelData;
@@ -46,6 +50,7 @@ public class JukeBukkit extends JavaPlugin {
 	
 	public static JukeBukkit instance;
 	public Server HTTPserver;
+	SelectChannelConnector HTTPconnector;
 	
 	Blocks blocks;
 	Items items;
@@ -66,7 +71,9 @@ public class JukeBukkit extends JavaPlugin {
 		instance = this;
 		
 		ResourceManager.copyResources();
+		ResourceManager.copyWebFiles();
 		//ResourceManager.preLoginCache();
+		
 		setupDatabase();
 		
 		//incase the old discs.yml exists, we should import the old discs.
@@ -85,11 +92,24 @@ public class JukeBukkit extends JavaPlugin {
 		
 		//start the web server up
 		
-		HTTPserver = new Server(getConfig().getInt("webServerPort"));
+		HTTPserver = new Server();
+		HTTPconnector = new SelectChannelConnector();
+		HTTPconnector.setPort(getConfig().getInt("webServerPort"));
+		HTTPserver.addConnector(HTTPconnector);
 		
-		HTTPserver.setHandler(new ServerHandler());
+		ResourceHandler resource_handler = new ResourceHandler();
+        resource_handler.setDirectoriesListed(false);
+        resource_handler.setResourceBase(new File(this.getDataFolder(), "web").getAbsolutePath());
+        //resource_handler.setWelcomeFiles(new String[]{ "index.html" });
+ 
+		HandlerList handlers = new HandlerList();
+		handlers.addHandler(new ServerHandler());
+		handlers.addHandler(resource_handler);
+		
+		HTTPserver.setHandler(handlers);
+		
 		if (getConfig().getBoolean("enableWebServer") == true) {
-			ResourceManager.copyWebFiles();
+			
 			try {
 				HTTPserver.start();
 				//HTTPserver.join();
