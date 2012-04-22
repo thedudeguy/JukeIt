@@ -19,12 +19,12 @@ package cc.thedudeguy.jukebukkit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.persistence.PersistenceException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.eclipse.jetty.server.Server;
 
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.LabelData;
@@ -33,6 +33,7 @@ import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.listeners.DiscLabelListener;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
+import cc.thedudeguy.jukebukkit.server.ServerHandler;
 import cc.thedudeguy.jukebukkit.util.DiscImporter;
 import cc.thedudeguy.jukebukkit.util.Recipies;
 import cc.thedudeguy.jukebukkit.util.ResourceManager;
@@ -44,7 +45,7 @@ import cc.thedudeguy.jukebukkit.util.ResourceManager;
 public class JukeBukkit extends JavaPlugin {
 	
 	public static JukeBukkit instance;
-	public Logger log = Logger.getLogger("Minecraft");
+	public Server HTTPserver;
 	
 	Blocks blocks;
 	Items items;
@@ -81,11 +82,39 @@ public class JukeBukkit extends JavaPlugin {
 		this.getCommand("jukebukkit").setExecutor(new CommandHandler());
 		
 		ResourceManager.resetCache();
+		
+		//start the web server up
+		
+		HTTPserver = new Server(getConfig().getInt("webServerPort"));
+		
+		HTTPserver.setHandler(new ServerHandler());
+		if (getConfig().getBoolean("enableWebServer") == true) {
+			ResourceManager.copyWebFiles();
+			try {
+				HTTPserver.start();
+				//HTTPserver.join();
+				Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Web Server started on port: " + getConfig().getString("webServerPort"));
+			} catch (Exception e) {
+				Bukkit.getLogger().log(Level.WARNING, "[JukeBukkit] Unable to start web server");
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void onDisable()
 	{
-		log.info("[JukeBukkit] Disabled.");
+		//stop the web server
+		if (HTTPserver.isRunning()) {
+			try {
+				//TODO: Crashes on stop with a ClassNotFoundException, need to fix.
+				HTTPserver.stop();
+			} catch (Exception e) {
+				Bukkit.getLogger().log(Level.WARNING, "[JukeBukkit] Unable to stop web server");
+				e.printStackTrace();
+			}
+		}
+		
+		Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Disabled.");
 	}
 	
 	/**

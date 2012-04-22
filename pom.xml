@@ -16,6 +16,12 @@
 			<url>http://repo.spout.org/</url>
 			<layout>default</layout>
 		</repository>
+		<repository>
+			<id>jetty-repo</id>
+			<name>Jetty</name>
+			<url>http://oss.sonatype.org/content/groups/jetty/</url>
+			<layout>default</layout>
+		</repository>
 	</repositories>
 	<build>
 		<plugins>
@@ -28,18 +34,56 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+			<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-shade-plugin</artifactId>
+        		<version>1.6</version>
+        		<configuration>
+          			<!-- put your configurations here -->
+          			<artifactSet>
+          				<excludes>
+          					<exclude>org.bukkit:craftbukkit</exclude>
+          					<exclude>org.getspout:spoutpluginapi</exclude>
+          				</excludes>
+          			</artifactSet>
+        		</configuration>
+        		<executions>
+          			<execution>
+            			<phase>package</phase>
+            			<goals>
+              				<goal>shade</goal>
+            			</goals>
+          			</execution>
+        		</executions>
+      		</plugin>
 		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>craftbukkit</artifactId>
-			<version>1.2.5-R1.0</version>
+			<version>${bukkitVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.getspout</groupId>
 			<artifactId>spoutpluginapi</artifactId>
-			<version>dev-SNAPSHOT</version>
+			<version>${spoutVersion}</version>
 		</dependency>
+		<dependency>
+      		<groupId>org.eclipse.jetty</groupId>
+      		<artifactId>jetty-server</artifactId>
+      		<version>${jettyVersion}</version>
+    	</dependency>
+    	<dependency>
+      		<groupId>commons-fileupload</groupId>
+      		<artifactId>commons-fileupload</artifactId>
+      		<version>1.2.2</version>
+      		<scope>compile</scope>
+    	</dependency>
 	</dependencies>
+	<properties>
+		<jettyVersion>7.2.0.v20101020</jettyVersion>
+		<bukkitVersion>1.2.5-R1.0</bukkitVersion>
+		<spoutVersion>dev-SNAPSHOT</spoutVersion>
+	</properties>
 </project>

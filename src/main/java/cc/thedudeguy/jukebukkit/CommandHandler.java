@@ -16,6 +16,7 @@
  **/
 package cc.thedudeguy.jukebukkit;
 
+import java.io.File;
 import java.lang.reflect.Method;
 
 import org.bukkit.command.Command;
@@ -102,6 +103,32 @@ public class CommandHandler implements CommandExecutor {
 		
 		ResourceManager.resetCache();
 		sender.sendMessage("Cache has been reset.");
+		return true;
+	}
+	
+	public Boolean listmusic(CommandSender sender, String[] args) {
+		sender.sendMessage("-- Server Music List --");
+		
+		if (!JukeBukkit.instance.HTTPserver.isRunning()) {
+			sender.sendMessage("Server is not running");
+			return true;
+		}
+		File musicFolder = new File(JukeBukkit.instance.getDataFolder(), "music");
+		if (!musicFolder.exists()) {
+			sender.sendMessage("No music files on server");
+			return true;
+		}
+		File[] fileList = musicFolder.listFiles(); 
+		if (fileList.length < 1) {
+			sender.sendMessage("No music files on server");
+			return true;
+		}
+		
+		for (File file : fileList) {
+			if (file.isFile()) {
+				sender.sendMessage(file.getName());
+			}
+		}
 		return true;
 	}
 }

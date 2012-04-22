@@ -93,6 +93,23 @@ public class ResourceManager {
 		}
 	}
 	
+	public static void copyWebFiles() {
+		
+		File musicDir = new File(JukeBukkit.instance.getDataFolder(), "music");
+		if (!musicDir.exists()) musicDir.mkdirs();
+		if (!musicDir.canWrite()) Bukkit.getLogger().log(Level.WARNING, "The path "+ musicDir.getPath() +" is not writable");
+		if (!musicDir.isDirectory()) Bukkit.getLogger().log(Level.WARNING, "The path "+ musicDir.getPath() +" is not a directory");
+		File webDir = new File(JukeBukkit.instance.getDataFolder(), "music");
+		if (!webDir.exists()) webDir.mkdirs();
+		if (!webDir.canWrite()) Bukkit.getLogger().log(Level.WARNING, "The path "+ webDir.getPath() +" is not writable");
+		if (!webDir.isDirectory()) Bukkit.getLogger().log(Level.WARNING, "The path "+ webDir.getPath() +" is not a directory");
+		
+		//JukeBukkit.instance.saveResource(new File("music/swanee.ogg"), false);
+		
+		//JukeBukkit.instance.saveResource("web/index.html", false);
+		
+	}
+	
 	public static void preLoginCache() {
 		for (String texture : textures) {
 			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures", texture).getPath()));

@@ -1,1 +1,4 @@
+enableWebServer: true
+allowWebServerUploads: true
+webServerPort: 8080
 debug: false
