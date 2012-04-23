@@ -62,7 +62,6 @@ public class ServerHandler extends AbstractHandler {
 			
 			Template template = cfg.getTemplate("index.html");
 			
-			//TODO: Fix warnings
 			Map<String, Object> dataRoot = new HashMap<String, Object>();
 			dataRoot.put("serverName", JukeBukkit.instance.getConfig().getString("serverName"));
 			dataRoot.put("allowUpload", JukeBukkit.instance.getConfig().getBoolean("allowWebServerUploads"));
