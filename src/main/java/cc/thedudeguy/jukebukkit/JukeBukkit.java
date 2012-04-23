@@ -37,6 +37,7 @@ import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.listeners.DiscLabelListener;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
+import cc.thedudeguy.jukebukkit.server.MusicHandler;
 import cc.thedudeguy.jukebukkit.server.ServerHandler;
 import cc.thedudeguy.jukebukkit.util.DiscImporter;
 import cc.thedudeguy.jukebukkit.util.Recipies;
@@ -97,14 +98,15 @@ public class JukeBukkit extends JavaPlugin {
 		HTTPconnector.setPort(getConfig().getInt("webServerPort"));
 		HTTPserver.addConnector(HTTPconnector);
 		
-		ResourceHandler resource_handler = new ResourceHandler();
-        resource_handler.setDirectoriesListed(false);
-        resource_handler.setResourceBase(new File(this.getDataFolder(), "web").getAbsolutePath());
+		ResourceHandler resourceHandler = new ResourceHandler();
+		resourceHandler.setDirectoriesListed(false);
+		resourceHandler.setResourceBase(new File(this.getDataFolder(), "web").getAbsolutePath());
         //resource_handler.setWelcomeFiles(new String[]{ "index.html" });
  
 		HandlerList handlers = new HandlerList();
 		handlers.addHandler(new ServerHandler());
-		handlers.addHandler(resource_handler);
+		handlers.addHandler(new MusicHandler());
+		handlers.addHandler(resourceHandler);
 		
 		HTTPserver.setHandler(handlers);
 		
