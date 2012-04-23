@@ -67,7 +67,7 @@ public class ResourceManager {
 			);
 	
 	public static final List<String> music = Arrays.asList(
-			"swanee.ogg"
+			"battle_jesus_vs_cyborg_hitlers.ogg"
 			);
 	
 	public static final List<String> web = Arrays.asList(
