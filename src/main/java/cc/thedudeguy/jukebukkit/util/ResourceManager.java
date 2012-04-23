@@ -71,24 +71,28 @@ public class ResourceManager {
 			);
 	
 	public static final List<String> web = Arrays.asList(
-			"web/index.html",
+			"index.html",
+			"favicon.png",
 			
-			"web/css/bootstrap.css",
-			"web/css/bootstrap.min.css",
-			"web/css/bootstrap-responsive.css",
-			"web/css/bootstrap-responsive.min.css",
-			"web/css/uploadify.css",
+			"css/bootstrap.css",
+			"css/bootstrap.min.css",
+			"css/bootstrap-responsive.css",
+			"css/bootstrap-responsive.min.css",
+			"css/uploadify.css",
 			
-			"web/img/glyphicons-halflings.png",
-			"web/img/glyphicons-halflings-white.png",
-			"web/img/uploadify-cancel.png",
+			"img/glyphicons-halflings.png",
+			"img/glyphicons-halflings-white.png",
+			"img/uploadify-cancel.png",
+			"img/jb32logo.png",
 			
-			"web/js/bootstrap.js",
-			"web/js/bootstrap.min.js",
-			"web/js/bootstrap-collapse.js",
-			"web/js/jquery.js",
-			"web/js/jquery.uploadify.min.js",
-			"web/js/uploadify.swf"
+			"js/bootstrap.js",
+			"js/bootstrap.min.js",
+			"js/bootstrap-collapse.js",
+			"js/bootstrap-tooltip.js",
+			"js/bootstrap-popover.js",
+			"js/jquery.js",
+			"js/jquery.uploadify.min.js",
+			"js/uploadify.swf"
 			);
 	
 	public static void copyResources() {
@@ -99,22 +103,13 @@ public class ResourceManager {
 			doCopy(sound, "sounds");
 		}
 		
-		File musicDir = new File(JukeBukkit.instance.getDataFolder(), "music");
-		if (!musicDir.exists()){
-			musicDir.mkdirs();
-			for (String m : music) {
-				doCopy(m, "music");
-			}
+		for (String m : music) {
+			doCopy(m, "music");
 		}
 		
-		File webDir = new File(JukeBukkit.instance.getDataFolder(), "web");
-		if (!webDir.exists()) {
-			webDir.mkdirs();
-			for (String w : web) {
-				doCopy(w, "web");
-			}
+		for (String w : web) {
+			doCopy(w, "web");
 		}
-		
 	}
 	
 	private static void doCopy(String filename, String pathInJar) {
