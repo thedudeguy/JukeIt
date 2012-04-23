@@ -5,28 +5,27 @@ import org.bukkit.entity.Player;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericGradient;
 import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericListWidget;
 import org.getspout.spoutapi.gui.GenericPopup;
+import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.widget.BurnButton;
 import cc.thedudeguy.jukebukkit.gui.widget.CloseButton;
-import cc.thedudeguy.jukebukkit.gui.widget.CustomURLButton;
-import cc.thedudeguy.jukebukkit.gui.widget.ServerMusicList;
+import cc.thedudeguy.jukebukkit.gui.widget.ServerListButton;
 
 /**
  * This class is based off of WindWakers class in TextureMe.
  *
  */
-public class BurnSelector extends GenericPopup {
+public class CustomURLSelecter extends GenericPopup {
 	
-	public BurnSelector(Player player, Block block) {
+	public CustomURLSelecter(Player player, Block block) {
 		
 		
 		// Label
-		GenericLabel label = new GenericLabel("Burn Choices");
+		GenericLabel label = new GenericLabel("Custom Burn URL");
 		label.setX(175).setY(25);
 		label.setPriority(RenderPriority.Lowest);
 		label.setWidth(-1).setHeight(-1);
@@ -45,11 +44,14 @@ public class BurnSelector extends GenericPopup {
 		gradient.setX(65).setY(20);
 		gradient.setPriority(RenderPriority.Highest);
 		
-		// Texture list
-		GenericListWidget list = new ServerMusicList();
-		list.setX(90).setY(50);
-		list.setWidth(250).setHeight(125);
-		list.setPriority(RenderPriority.Lowest);
+		GenericTextField urlInput = new GenericTextField();
+		urlInput.setMaximumCharacters(500);
+		urlInput.setHeight(100).setWidth(200);
+		urlInput.setY(45);
+		urlInput.setX(110);
+		urlInput.setMaximumLines(0);
+		urlInput.setFocus(true);
+		//burnPopup.attachWidget(JukeBukkit.instance, urlInput);
 		
 		// Close button
 		CloseButton close = new CloseButton();
@@ -58,20 +60,19 @@ public class BurnSelector extends GenericPopup {
 		close.setPriority(RenderPriority.Lowest);
 		
 		// Select button
-		BurnButton burnButton = new BurnButton(list, block);
+		BurnButton burnButton = new BurnButton(urlInput, block);
 		burnButton.setX(95).setY(195);
 		burnButton.setWidth(60).setHeight(20);
 		burnButton.setPriority(RenderPriority.Lowest);
 		
-		
-		// switch to custom URL
-		CustomURLButton urlbutton = new CustomURLButton(block);
-		urlbutton.setX(215).setY(195);
-		urlbutton.setWidth(60).setHeight(20);
-		urlbutton.setPriority(RenderPriority.Lowest);
+		//switch to server list.
+		ServerListButton serverlist = new ServerListButton(block);
+		serverlist.setX(215).setY(195);
+		serverlist.setWidth(60).setHeight(20);
+		serverlist.setPriority(RenderPriority.Lowest);
 		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, list, urlbutton);
+		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, urlInput, serverlist);
 		
 	}
 	

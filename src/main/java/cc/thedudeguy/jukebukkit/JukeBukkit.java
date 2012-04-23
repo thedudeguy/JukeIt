@@ -41,6 +41,7 @@ import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
 import cc.thedudeguy.jukebukkit.server.MusicHandler;
 import cc.thedudeguy.jukebukkit.server.ServerHandler;
+import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.DiscImporter;
 import cc.thedudeguy.jukebukkit.util.Recipies;
 import cc.thedudeguy.jukebukkit.util.ResourceManager;
@@ -188,12 +189,15 @@ public class JukeBukkit extends JavaPlugin {
 	 * @return
 	 */
 	public static String finishIncompleteURL(String url) {
+		Debug.debug("Checking if URL is complete: ", url);
 		
 		try {
 			new URL(url);
+			Debug.debug("URL Passes, returning url");
 			return url;
 		} catch (MalformedURLException e) {
 			
+			Debug.debug("URL Failed, probably a server file");
 			String newURL = 
 					"http://" + 
 					JukeBukkit.instance.getConfig().getString("webServerHost") + 
@@ -203,12 +207,15 @@ public class JukeBukkit extends JavaPlugin {
 					url;
 			
 			try {
+				Debug.debug("Checking newly patched url: ", newURL);
 				URL serverURL = new URL(newURL);
+				Debug.debug("URL Passes, returning as: ", serverURL.toString());
 				return serverURL.toString();
 				
 			} catch (MalformedURLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				Debug.debug("New URL Failed, returning Original URL: ", url);
 				return url;
 			}
 		}

@@ -1,5 +1,7 @@
 package cc.thedudeguy.jukebukkit.gui.widget;
 
+import java.net.URL;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -8,6 +10,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.ListWidget;
+import org.getspout.spoutapi.gui.TextField;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -19,7 +22,14 @@ import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 public class BurnButton extends GenericButton {
 	
 	private ListWidget list;
+	private TextField textField;
 	private Block block;
+	
+	public BurnButton(TextField textField, Block block) {
+		super("Burn");
+		this.textField = textField;
+		this.block = block;
+	}
 	
 	public BurnButton(ListWidget list, Block block) {
 		super("Burn");
@@ -32,20 +42,59 @@ public class BurnButton extends GenericButton {
 		
 		Location location = block.getLocation();
 		
-		if (list.getSelectedItem() == null || list.getSelectedItem().getTitle().isEmpty()) {
-			event.getPlayer().sendMessage("No selection made");
-			event.getPlayer().getMainScreen().getActivePopup().close();
-			return;
+		String url = null;
+		
+		if (list == null && textField != null) {
+			
+			url = textField.getText().trim();
+			
+			if(url.isEmpty()) {
+				event.getPlayer().sendMessage("The URL cannot be blank. You wouldnt want to waste a disc!");
+				event.getPlayer().getMainScreen().getActivePopup().close();
+				return;
+			}
+			
+			try {
+				URL parseURL = new URL(url);
+				String fname = parseURL.getFile().toLowerCase();
+				if(!fname.endsWith(".ogg") && !fname.endsWith(".wav")) {
+					event.getPlayer().sendMessage("Currently only .ogg and .wav formats are supported. Please convert the file to one of those.");
+					event.getPlayer().getMainScreen().getActivePopup().close();
+					return;
+				}
+			} catch(Exception e) {
+				event.getPlayer().sendMessage("Invalid URL!");
+				event.getPlayer().getMainScreen().getActivePopup().close();
+				return;
+			}
+			
 		}
 		
-		if (
-				!list.getSelectedItem().getTitle().toLowerCase().endsWith(".ogg") && 
-				!list.getSelectedItem().getTitle().toLowerCase().endsWith(".wav")
-				) {
-			event.getPlayer().sendMessage("Invalid Selection");
-			event.getPlayer().getMainScreen().getActivePopup().close();
-			return;
+		else if (list != null) {
+			if (list.getSelectedItem() == null || list.getSelectedItem().getTitle().isEmpty()) {
+				event.getPlayer().sendMessage("No selection made");
+				event.getPlayer().getMainScreen().getActivePopup().close();
+				return;
+			}
+			
+			if (
+					!list.getSelectedItem().getTitle().toLowerCase().endsWith(".ogg") && 
+					!list.getSelectedItem().getTitle().toLowerCase().endsWith(".wav")
+					) {
+				event.getPlayer().sendMessage("Invalid Selection");
+				event.getPlayer().getMainScreen().getActivePopup().close();
+				return;
+			}
+			
+			url = list.getSelectedItem().getTitle();
 		}
+		
+		if (url == null)
+		{
+			event.getPlayer().sendMessage("An Error Occurred");
+			event.getPlayer().getMainScreen().getActivePopup().close();
+		}
+		
 		
 		if (event.getPlayer().getItemInHand() == null) {
 			event.getPlayer().sendMessage("Invalid Disc in Hand");
@@ -54,11 +103,9 @@ public class BurnButton extends GenericButton {
         }
 		
         SpoutPlayer player = (SpoutPlayer)event.getPlayer();
-        String fileName = list.getSelectedItem().getTitle();
+        
         
         SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
-        
-        player.sendMessage("Selected " + fileName);
         
         if (!(inHand.getMaterial() instanceof BlankDisc)) {
         	event.getPlayer().sendMessage("Invalid Disc in Hand");
@@ -89,7 +136,7 @@ public class BurnButton extends GenericButton {
       				.findUnique();
       		if (discData == null) discData = new DiscData();
       		discData.setNameKey(key);
-      		discData.setUrl(list.getSelectedItem().getTitle());
+      		discData.setUrl(url);
       		discData.setLabel("");
       		discData.setColor(color);
       		JukeBukkit.instance.getDatabase().save(discData);
@@ -106,24 +153,10 @@ public class BurnButton extends GenericButton {
     	SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_startup.wav", false, location, 8);
     	
     	/*
-    	//event.getPlayer().sendMessage(plugin.getDescription().getFullName());
-	   	SpoutPlayer player = event.getPlayer();
-		String url = input.getText().trim();
-		if(url.isEmpty()) {
-			player.sendMessage("The URL cannot be blank. You wouldnt want to waste a disc!");
-			return;
-		}
-		try {
-			URL parseURL = new URL(url);
-			String fname = parseURL.getFile().toLowerCase();
-			if(!fname.endsWith(".ogg") && !fname.endsWith(".wav")) {
-				player.sendMessage("Currently only .ogg and .wav formats are supported. Please convert the file to one of those.");
-				return;
-			}
-		} catch(Exception e) {
-			player.sendMessage("Invalid URL!");
-			return;
-		}
+    	
+	   	
+		
+		
         if (player.getItemInHand() == null) {
         	return;
         }
