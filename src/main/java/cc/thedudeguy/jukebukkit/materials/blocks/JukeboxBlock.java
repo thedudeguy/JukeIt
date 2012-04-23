@@ -338,6 +338,8 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 
 	public void playMusic(String url, Location location) {
 		
+		url = JukeBukkit.finishIncompleteURL(url);
+		
 		//get players in radius of the jukebox and start it for only those players
 		for(Player p:location.getWorld().getPlayers()) {
 			double distance = location.toVector().distance(p.getLocation().toVector());

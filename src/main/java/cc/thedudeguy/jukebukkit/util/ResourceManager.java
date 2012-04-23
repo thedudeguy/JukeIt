@@ -51,7 +51,8 @@ public class ResourceManager {
 			"label.png",
 			"speaker.png",
 			"speakerwire.png",
-			"speakerwireblock.png"
+			"speakerwireblock.png",
+			"borderblue.png"
 			);
 	
 	public static final List<String> sounds = Arrays.asList(
@@ -65,6 +66,31 @@ public class ResourceManager {
 			"needle_eject.wav"
 			);
 	
+	public static final List<String> music = Arrays.asList(
+			"swanee.ogg"
+			);
+	
+	public static final List<String> web = Arrays.asList(
+			"web/index.html",
+			
+			"web/css/bootstrap.css",
+			"web/css/bootstrap.min.css",
+			"web/css/bootstrap-responsive.css",
+			"web/css/bootstrap-responsive.min.css",
+			"web/css/uploadify.css",
+			
+			"web/img/glyphicons-halflings.png",
+			"web/img/glyphicons-halflings-white.png",
+			"web/img/uploadify-cancel.png",
+			
+			"web/js/bootstrap.js",
+			"web/js/bootstrap.min.js",
+			"web/js/bootstrap-collapse.js",
+			"web/js/jquery.js",
+			"web/js/jquery.uploadify.min.js",
+			"web/js/uploadify.swf"
+			);
+	
 	public static void copyResources() {
 		for (String texture : textures) {
 			doCopy(texture, "textures");
@@ -72,6 +98,23 @@ public class ResourceManager {
 		for (String sound : sounds) {
 			doCopy(sound, "sounds");
 		}
+		
+		File musicDir = new File(JukeBukkit.instance.getDataFolder(), "music");
+		if (!musicDir.exists()){
+			musicDir.mkdirs();
+			for (String m : music) {
+				doCopy(m, "music");
+			}
+		}
+		
+		File webDir = new File(JukeBukkit.instance.getDataFolder(), "web");
+		if (!webDir.exists()) {
+			webDir.mkdirs();
+			for (String w : web) {
+				doCopy(w, "web");
+			}
+		}
+		
 	}
 	
 	private static void doCopy(String filename, String pathInJar) {
@@ -90,38 +133,6 @@ public class ResourceManager {
 			
 			JukeBukkit.instance.saveResource(fileCopyRelPath, true);
 			//fileCopy.setLastModified(new Date().getTime());
-		}
-	}
-	
-	public static void copyWebFiles() {
-		
-		File musicDir = new File(JukeBukkit.instance.getDataFolder(), "music");
-		if (!musicDir.exists()){
-			musicDir.mkdirs();
-			JukeBukkit.instance.saveResource("music/swanee.ogg", true);
-		}
-		
-		File webDir = new File(JukeBukkit.instance.getDataFolder(), "web");
-		if (!webDir.exists()) {
-			webDir.mkdirs();
-			JukeBukkit.instance.saveResource("web/index.html", false);
-			
-			JukeBukkit.instance.saveResource("web/css/bootstrap.css", false);
-			JukeBukkit.instance.saveResource("web/css/bootstrap.min.css", false);
-			JukeBukkit.instance.saveResource("web/css/bootstrap-responsive.css", false);
-			JukeBukkit.instance.saveResource("web/css/bootstrap-responsive.min.css", false);
-			JukeBukkit.instance.saveResource("web/css/uploadify.css", false);
-			
-			JukeBukkit.instance.saveResource("web/img/glyphicons-halflings.png", false);
-			JukeBukkit.instance.saveResource("web/img/glyphicons-halflings-white.png", false);
-			JukeBukkit.instance.saveResource("web/img/uploadify-cancel.png", false);
-			
-			JukeBukkit.instance.saveResource("web/js/bootstrap.js", false);
-			JukeBukkit.instance.saveResource("web/js/bootstrap.min.js", false);
-			JukeBukkit.instance.saveResource("web/js/bootstrap-collapse.js", false);
-			JukeBukkit.instance.saveResource("web/js/jquery.js", false);
-			JukeBukkit.instance.saveResource("web/js/jquery.uploadify.min.js", false);
-			JukeBukkit.instance.saveResource("web/js/uploadify.swf", false);
 		}
 	}
 	

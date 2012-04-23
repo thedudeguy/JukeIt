@@ -17,6 +17,8 @@
 package cc.thedudeguy.jukebukkit;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -72,7 +74,6 @@ public class JukeBukkit extends JavaPlugin {
 		instance = this;
 		
 		ResourceManager.copyResources();
-		ResourceManager.copyWebFiles();
 		//ResourceManager.preLoginCache();
 		
 		setupDatabase();
@@ -154,16 +155,66 @@ public class JukeBukkit extends JavaPlugin {
         }
 	}
 	
-	 @Override	
-	 public List<Class<?>> getDatabaseClasses() {
-		 List<Class<?>> list = new ArrayList<Class<?>>();
-	     list.add(RecordPlayerBlockDesigns.class);
-	     list.add(RecordPlayerData.class);
-	     list.add(DiscData.class);
-	     list.add(LabelData.class);
-	     return list;
-	 }
-	 
+	@Override	
+	public List<Class<?>> getDatabaseClasses() {
+		List<Class<?>> list = new ArrayList<Class<?>>();
+	    list.add(RecordPlayerBlockDesigns.class);
+	    list.add(RecordPlayerData.class);
+	    list.add(DiscData.class);
+	    list.add(LabelData.class);
+	    return list;
+	}
+	
+	public static List<String> getServerFileList() {
+	
+		File musicFolder = new File(JukeBukkit.instance.getDataFolder(), "music");
+		File[] fileList = musicFolder.listFiles(); 
+		
+		List<String> strList = new ArrayList<String>();
+		
+		for (File file : fileList) {
+			if (file.isFile()) {
+				strList.add(file.getName());
+			}
+		}
+		
+		return strList;
+	}
+	
+	/**
+	 * Checks if a url is only the file name, if it is only a file name, its because its a file
+	 * on the webserver, and we need to add the rest of the url to it manually.
+	 * @param url
+	 * @return
+	 */
+	public static String finishIncompleteURL(String url) {
+		
+		try {
+			new URL(url);
+			return url;
+		} catch (MalformedURLException e) {
+			
+			String newURL = 
+					"http://" + 
+					JukeBukkit.instance.getConfig().getString("webServerHost") + 
+					":" + 
+					JukeBukkit.instance.getConfig().getString("webServerPort") +
+					"/music/" +
+					url;
+			
+			try {
+				URL serverURL = new URL(newURL);
+				return serverURL.toString();
+				
+			} catch (MalformedURLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				return url;
+			}
+		}
+		
+	}
+	
 	 /*
 		@EventHandler
 		public void onBlockPlaced(BlockPlaceEvent event) {

@@ -497,6 +497,8 @@ public class RecordPlayer extends GenericCustomBlock {
 	
 	public void playMusic(String url, Location location) {
 		
+		url = JukeBukkit.finishIncompleteURL(url);
+		
 		Particle particle = new Particle(ParticleType.NOTE, location, new Vector(0, 10, 0));
 		particle.setMaxAge(10);
 		particle.setGravity(1F);
