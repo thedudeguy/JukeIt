@@ -3,7 +3,6 @@ package cc.thedudeguy.jukebukkit.server;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -45,20 +44,6 @@ public class ServerHandler extends AbstractHandler {
 		}
 	}
 	
-	private List getFileList() {
-		
-		File musicFolder = new File(JukeBukkit.instance.getDataFolder(), "music");
-		if (!musicFolder.exists()) {
-			return Arrays.asList(new String[0]);
-		}
-		File[] fileList = musicFolder.listFiles(); 
-		if (fileList.length < 1) {
-			return Arrays.asList(new String[0]);
-		}
-		
-		return Arrays.asList(new String[0]);
-	}
-	
 	@Override
 	public void handle(
 				String target,
@@ -78,11 +63,11 @@ public class ServerHandler extends AbstractHandler {
 			Template template = cfg.getTemplate("index.html");
 			
 			//TODO: Fix warnings
-			Map dataRoot = new HashMap();
-			dataRoot.put("serverName", "JukeBukkit");
+			Map<String, Object> dataRoot = new HashMap<String, Object>();
+			dataRoot.put("serverName", JukeBukkit.instance.getConfig().getString("serverName"));
+			dataRoot.put("allowUpload", JukeBukkit.instance.getConfig().getBoolean("allowWebServerUploads"));
 			
-			List files = getFileList();
-			dataRoot.put("files", files);
+			dataRoot.put("files", JukeBukkit.getServerFileList());
 			
 			try {
 				template.process(dataRoot, response.getWriter());
@@ -91,46 +76,15 @@ public class ServerHandler extends AbstractHandler {
 				e.printStackTrace();
 			}
 			
-			/*
-			response.getWriter().println("<html><head><title>JukeBukkit Web</title></head><body>");
-			
-			response.getWriter().println("<h1>Upload</h1>");
-			
-			response.getWriter().println("<form action=\"/upload\" method=\"post\" enctype=\"multipart/form-data\">");
-			response.getWriter().println("<input type=\"file\" name=\"music\" />");
-			response.getWriter().println("<input type=\"submit\" value=\"Submit\" />");
-			response.getWriter().println("</form>");
-			
-			response.getWriter().println("<h1>Files</h1>");
-			
-			
-			File musicFolder = new File(JukeBukkit.instance.getDataFolder(), "music");
-			if (!musicFolder.exists()) {
-				
-				response.getWriter().println("<p>No music files on server</p>");
-				
-				
-			} else {
-				File[] fileList = musicFolder.listFiles(); 
-				if (fileList.length < 1) {
-					response.getWriter().println("<p>No music files on server</p>");
-				} else {
-					for (File file : fileList) {
-						if (file.isFile()) {
-							response.getWriter().println("<p>"+file.getName()+"</p>");
-						}
-					}
-				}
-			}
-			
-			response.getWriter().println("</body></html>");
-			*/
-			
 			return;
 		}
 		
 		
 		if ( target.equalsIgnoreCase("/upload") ) {
+			
+			if (!JukeBukkit.instance.getConfig().getBoolean("allowWebServerUploads")) {
+				return;
+			}
 			
 			response.setContentType("text/html;charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_OK);
