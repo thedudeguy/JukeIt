@@ -72,7 +72,11 @@ public class CustomURLSelecter extends GenericPopup {
 		serverlist.setPriority(RenderPriority.Lowest);
 		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, urlInput, serverlist);
+		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, urlInput);
+		
+		if (JukeBukkit.instance.getConfig().getBoolean("enableWebServer") && JukeBukkit.instance.HTTPserver.isRunning() ) {
+			this.attachWidget(JukeBukkit.instance, serverlist);
+		}
 		
 	}
 	

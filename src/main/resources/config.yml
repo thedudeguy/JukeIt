@@ -1,5 +1,6 @@
 enableWebServer: true
-allowWebServerUploads: true
 webServerPort: 8080
 webServerHost: 127.0.0.1
+allowWebServerUploads: true
+allowExternalURLs: true
 debug: false

@@ -9,6 +9,7 @@ import org.getspout.spoutapi.gui.GenericListWidget;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.widget.BurnButton;
@@ -24,6 +25,14 @@ public class BurnSelector extends GenericPopup {
 	
 	public BurnSelector(Player player, Block block) {
 		
+		if (
+				!JukeBukkit.instance.getConfig().getBoolean("enableWebServer") || 
+				!JukeBukkit.instance.HTTPserver.isRunning()
+				) {
+			((SpoutPlayer)player).getMainScreen().getActivePopup().close();
+			((SpoutPlayer)player).getMainScreen().attachPopupScreen(new CustomURLSelecter(((SpoutPlayer)player), block));
+		}
+			
 		
 		// Label
 		GenericLabel label = new GenericLabel("Burn Choices");
@@ -71,7 +80,11 @@ public class BurnSelector extends GenericPopup {
 		urlbutton.setPriority(RenderPriority.Lowest);
 		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, list, urlbutton);
+		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, list);
+		
+		if (JukeBukkit.instance.getConfig().getBoolean("allowExternalURLs")) {
+			this.attachWidget(JukeBukkit.instance, urlbutton);
+		}
 		
 	}
 	
