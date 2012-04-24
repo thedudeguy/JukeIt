@@ -18,56 +18,81 @@ package cc.thedudeguy.jukebukkit.materials.blocks;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.CustomItem;
-import org.getspout.spoutapi.material.block.GenericCubeCustomBlock;
+import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.BurnSelector;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.DiscBurnerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
+import cc.thedudeguy.jukebukkit.util.Debug;
 
 
 /**
  * The Prototype Disc Burner. Basic Custom Block in which I can expand with.
  * @author Chris Churchwell
  */
-public class DiscBurner extends GenericCubeCustomBlock {
+public class DiscBurner extends GenericCustomBlock {
 	
 	public GenericCubeBlockDesign blockDesign;
+	
+	/*
+	public static final int[] SOUTH =;
+	public static final int[] NORTH = ;
+	public static final int[] EAST = ;
+	public static final int[] WEST = ;
+	*/
+	
+	public static final int SOUTH = 0;
+	public static final int NORTH = 1;
+	public static final int EAST = 2;
+	public static final int WEST = 3;
 	
 	/**
 	 * Construct
 	 * @param JukeBukkit plugin - JukeBukkit instance
 	 */
-	public DiscBurner()
+	public DiscBurner(int direction)
 	{
 		super(
-			JukeBukkit.instance, 
-			"Obsidyisc Burner", 4,
-			new DiscBurnerDesign(DiscBurnerDesign.SOUTH)
+			JukeBukkit.instance,
+			"DiscBurner_"+String.valueOf(direction), 4
 		);
-		
-		this.setName("Obsidyisc Burner");
-		//int faces => { bottom, north, ?, south (should default for inventory faceing), ?, top}
+		this.setBlockDesign(direction);
+		this.setName("Disc Burner");
+		if (direction != SOUTH) {
+			this.setItemDrop(new SpoutItemStack(Blocks.discBurnerSouth, 1));
+		}
 	}
 	
-	public DiscBurner(int[] direction)
-	{
-		super(
-			JukeBukkit.instance, 
-			"discburner_"+direction.toString(), 4,
-			new DiscBurnerDesign(direction)
-		);
+	public void setBlockDesign(int direction) {
 		
-		this.setName("Disc Burner SubBlock (DO NOT USE)");
-		this.setItemDrop(new SpoutItemStack(Blocks.discBurner, 1));
+		if (direction == SOUTH) {
+			int[] t = { 2, 3, 3, 4, 3, 2 };
+			setBlockDesign(new DiscBurnerDesign(t));
+		}
+		else if (direction == NORTH) {
+			int[] t = { 2, 4, 3, 3, 3, 2 };
+			setBlockDesign(new DiscBurnerDesign(t));
+		}
+		else if (direction == EAST) {
+			int[] t = { 2, 3, 4, 3, 3, 2 };
+			setBlockDesign(new DiscBurnerDesign(t));
+		}
+		else if (direction == WEST) {
+			int[] t = { 2, 3, 3, 3, 4, 2 };
+			setBlockDesign(new DiscBurnerDesign(t));
+		}
+		else {
+			int[] t = { 2, 3, 3, 4, 3, 2 };
+			setBlockDesign(new DiscBurnerDesign(t));
+		}
+		
 	}
 	
 	@Override
@@ -93,47 +118,42 @@ public class DiscBurner extends GenericCubeCustomBlock {
 		return true;
 	}
 	
-	public void onBlockPlace(World world, int x, int y, int z, LivingEntity entity) {
+	public static final DiscBurner getBlockByYaw(double yaw) {
 		
-		//Location location = new Location(world, (double)x, (double)y, (double)z);
-		SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
+		Debug.debug("Yaw: ", yaw);
 		
 		//find which way the player is facing...
-		double rot = (entity.getLocation().getYaw() -90) % 360;
+		double rot = (yaw -90) % 360;
 		if (rot < 0) {
             rot += 360.0;
         }
 		
+		Debug.debug("rot: ", rot);
+		
 		if (0 <= rot && rot < 45) {
-            //WEST
-			//Bukkit.getLogger().log(Level.INFO, "west");
-			SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerWest);
-			return;
+            //WEST, place east
+			Debug.debug("burner east");
+			return Blocks.discBurnerEast;
         } else if (45 <= rot && rot < 135) {
-        	//NORTH
-        	//Bukkit.getLogger().log(Level.INFO, "north");
-        	SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerNorth);
-        	return;
+        	//NORTH, place south
+        	Debug.debug("burner south");
+        	return Blocks.discBurnerSouth;
         } else if (135 <= rot && rot < 215) {
-            //EAST
-        	//Bukkit.getLogger().log(Level.INFO, "east");
-        	SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerEast);
-        	return;
+            //EAST, place west
+        	Debug.debug("burner west");
+        	return Blocks.discBurnerWest;
         } else if (215 <= rot && rot < 305) {
-            //SOUTH
-        	//Bukkit.getLogger().log(Level.INFO, "south");
-        	SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerSouth);
-        	return;
+            //SOUTH, place north
+        	Debug.debug("burner north");
+        	return Blocks.discBurnerNorth;
         } else if (305 <= rot && rot <= 360) {
-        	//WEST
-        	//Bukkit.getLogger().log(Level.INFO, "west");
-        	SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerWest);
-        	return;
+        	//WEST, place east
+        	Debug.debug("burner east");
+        	return Blocks.discBurnerEast;
         } else {
         	//unknown
-        	//Bukkit.getLogger().log(Level.INFO, "unknown");
-        	SpoutManager.getMaterialManager().overrideBlock(block, Blocks.discBurnerSouth);
-        	return;
+        	Debug.debug("burner unknown");
+        	return Blocks.discBurnerSouth;
         }
 	}
 	

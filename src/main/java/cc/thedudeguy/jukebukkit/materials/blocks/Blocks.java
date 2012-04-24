@@ -9,7 +9,6 @@ import org.getspout.spoutapi.block.design.Texture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
-import cc.thedudeguy.jukebukkit.materials.blocks.designs.DiscBurnerDesign;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 
 
@@ -28,7 +27,6 @@ public class Blocks {
 	public static JukeboxLongRange jukeboxLongRange;
 	public static JukeboxMaxRange jukeboxMaxRange;
 	
-	public static DiscBurner discBurner;
 	public static DiscBurner discBurnerSouth;
 	public static DiscBurner discBurnerNorth;
 	public static DiscBurner discBurnerEast;
@@ -42,11 +40,10 @@ public class Blocks {
 		
 		recordPlayer = new RecordPlayer();
 		
-		discBurner = new DiscBurner();
-		discBurnerSouth = new DiscBurner(DiscBurnerDesign.SOUTH);
-		discBurnerNorth = new DiscBurner(DiscBurnerDesign.NORTH);
-		discBurnerEast = new DiscBurner(DiscBurnerDesign.EAST);
-		discBurnerWest = new DiscBurner(DiscBurnerDesign.WEST);
+		discBurnerSouth = new DiscBurner(DiscBurner.SOUTH);
+		discBurnerNorth = new DiscBurner(DiscBurner.NORTH);
+		discBurnerEast = new DiscBurner(DiscBurner.EAST);
+		discBurnerWest = new DiscBurner(DiscBurner.WEST);
 		
 		jukeboxBasic = new JukeboxBasic();
 		jukeboxLowRange = new JukeboxLowRange();
