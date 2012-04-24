@@ -57,7 +57,7 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 
 ## Credits
 
-* Song "Battle Jesus vs Cyborg Hitlers": FF2 Remix by John England from Leander, TX
+* Song "Battle Jesus vs Cyborg Hitlers": FFIII Talon Remix by John England from Leander, TX
 * Blue GUI Background: Michael Gaffney
 * Windwaker's TextureMe
 * Spout and Spout Team
