@@ -89,11 +89,10 @@ public class ServerHandler extends AbstractHandler {
 			response.setStatus(HttpServletResponse.SC_OK);
 			baseRequest.setHandled(true);
 			
-			StringBuffer buff = new StringBuffer();
-			
 			if (!ServletFileUpload.isMultipartContent(request))
 			{
-				buff.append("No File Upload Detected");
+				response.getWriter().println("No File Upload Detected");
+				return;
 			}
 			
 			
@@ -125,25 +124,27 @@ public class ServerHandler extends AbstractHandler {
 				        //boolean isInMemory = item.isInMemory();
 				        //long sizeInBytes = item.getSize();
 				        
-				    	File uploadedFile = new File(JukeBukkit.instance.getDataFolder(), "music/"+item.getName());
+				    	if (!item.getName().endsWith(".ogg") && !item.getName().endsWith(".wav")) {
+				    		response.getWriter().println("File must be a .ogg or .wave");
+				    		return;
+				    	}
+				    	
+				    	String name = item.getName().replace(" ", "_");
+				    	File uploadedFile = new File(JukeBukkit.instance.getDataFolder(), "music/"+name);
 				        item.write(uploadedFile);
 				        
-				        buff.append( "File successfully uploaded." );
+				        response.getWriter().println("1");
+				        return;
 				    }
 				}
 				
 			} catch (FileUploadException e) {
-				e.printStackTrace();
+				response.getWriter().println(e.getMessage());
+				return;
 			} catch (Exception e) {
-				e.printStackTrace();
+				response.getWriter().println(e.getMessage());
+				return;
 			}
-	 
-	        response.getWriter().write( "<html>" );
-	        response.getWriter().write( "<head><title>JukeBukkit Upload</title></head>" );
-	        response.getWriter().write( "<body>" );
-	        response.getWriter().write( "<h2>" + buff.toString() + "</h2>" );
-	        response.getWriter().write( "</body>" );
-	        response.getWriter().write( "</html>" );
 	        
 	        return;
 		}
