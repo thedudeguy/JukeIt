@@ -129,16 +129,17 @@ public class JukeBukkit extends JavaPlugin {
 	
 	public void onDisable()
 	{
-		try {
-			Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Stopping Web Server...");
-			HTTPserver.stop();
-			HTTPserver.join();
-			Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Web server stopped.");
-		} catch (Exception e) {
-			Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Could not stop server.");
-			e.printStackTrace();
+		if (HTTPserver.isRunning()) {
+			try {
+				Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Stopping Web Server...");
+				HTTPserver.stop();
+				HTTPserver.join();
+				Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Web server stopped.");
+			} catch (Exception e) {
+				Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Could not stop server.");
+				e.printStackTrace();
+			}
 		}
-		
 		Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Disabled.");
 	}
 	
