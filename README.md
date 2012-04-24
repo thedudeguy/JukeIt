@@ -20,6 +20,8 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 
 [JukeBukkit Crafting Recipes](https://github.com/thedudeguy/JukeBukkit/wiki/Recipes)
 
+[Configuration](https://github.com/thedudeguy/JukeBukkit/wiki/Configuration)
+
 ## Features
 
 * Craft discs called Obsidyiscs
