@@ -36,23 +36,9 @@ import cc.thedudeguy.jukebukkit.util.Sound;
 
 public class RecordPlayer extends GenericCustomBlock {
 	
-	public static HashMap<String, RecordPlayer> subBlocks = new HashMap<String, RecordPlayer>();
-	
-	public static class RecordPlayerSubBlock extends RecordPlayer {
-		
-		public RecordPlayerSubBlock(RecordPlayerDesign rpDesign) {
-			super(rpDesign.getDesignTypeId());
-			
-			this.setName("Record Player SubBlock (Do Not Use)");
-			this.setBlockDesign(rpDesign);
-			
-			SpoutItemStack dropItem = new SpoutItemStack(getSubBlock(RecordPlayerDesign.NEEDLE_NONE, RecordPlayerDesign.DISC_NONE, RecordPlayerDesign.INDICATOR_RED), 1);
-			
-			this.setItemDrop(dropItem);
-		}
-	}
-	
 	public static RecordPlayer getSubBlock(int needle, int discColor, int indicator) {
+		
+		Debug.debug("Getting SubBlock");
 		
 		int color = RecordPlayerDesign.DISC_NONE;
 		
@@ -62,9 +48,16 @@ public class RecordPlayer extends GenericCustomBlock {
 		
 		RecordPlayerDesign rpDesign = new RecordPlayerDesign(needle, color, indicator);
 		
-		if (!subBlocks.containsKey(rpDesign.getDesignTypeId())) {
-			subBlocks.put(rpDesign.getDesignTypeId(), new RecordPlayerSubBlock(rpDesign));
+		//if weve already save the block, or its been initialized, send that one, otherwise
+		//we need to create it anew, save it to the db, and add it to the hashmap.
+		if (Blocks.subBlocks.containsKey(rpDesign.getDesignTypeId())) {
 			
+			return Blocks.subBlocks.get(rpDesign.getDesignTypeId());
+			
+		} else {
+			
+			RecordPlayerSubBlock newSubBlock = new RecordPlayerSubBlock(rpDesign);
+			Blocks.subBlocks.put(rpDesign.getDesignTypeId(), newSubBlock);
 			//save the combo to the db if it doesnt already exist.
 			RecordPlayerBlockDesigns rpbd = JukeBukkit.instance.getDatabase().find(RecordPlayerBlockDesigns.class)
 					.where()
@@ -79,12 +72,16 @@ public class RecordPlayer extends GenericCustomBlock {
 				rpbd.setIndicator(rpDesign.getIndicator());
 				JukeBukkit.instance.getDatabase().save(rpbd);
 			}
-		} 
+			
+			return newSubBlock;
+		}
 		
-		return subBlocks.get(rpDesign.getDesignTypeId());
 	}
 	
 	public static void updateBlockDesign(SpoutBlock block, RecordPlayerData data) {
+		
+		Debug.debug("Updating Block Design");
+		
 		int color;
 		if (data.hasDisc()) {
 			//get the disc color.
@@ -110,7 +107,16 @@ public class RecordPlayer extends GenericCustomBlock {
 			indicator = RecordPlayerDesign.INDICATOR_RED;
 		}
 		
-		SpoutManager.getMaterialManager().overrideBlock(block, getSubBlock(data.getNeedleType(), color, indicator));
+		RecordPlayer newBlock = getSubBlock(data.getNeedleType(), color, indicator);
+		
+		if (newBlock != null)
+		{
+			block.setCustomBlock(getSubBlock(data.getNeedleType(), color, indicator));
+			Debug.debug("Block Replaced");
+		} else {
+			Debug.debug("Error :: GetSubBlock is null ??? ");
+		}
+		
 		
 	}
 	
@@ -121,33 +127,14 @@ public class RecordPlayer extends GenericCustomBlock {
 		this.setBlockDesign(rpDesign);
 		
 		//store this into the hashmap since it will always be the defaul
-		subBlocks.put(rpDesign.getDesignTypeId(), this);
+		Blocks.subBlocks.put(rpDesign.getDesignTypeId(), this);
 		
-		//Bukkit.getLogger().log(Level.INFO, rpDesign.getDesignTypeId());
-		
-		initDesigns();
 	}
 	
 	public RecordPlayer(String nameId) {
 		super(JukeBukkit.instance, nameId, 5);
 	}
 	
-	private void initDesigns() {
-		 List<RecordPlayerBlockDesigns> rpbd = JukeBukkit.instance.getDatabase().find(RecordPlayerBlockDesigns.class).findList();
-		 
-		 if (rpbd.isEmpty()) {
-			 Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] No RecordPlayer Designs to load.");
-		 } else {
-			 int count = 0;
-			 for (RecordPlayerBlockDesigns record : rpbd) {
-				 RecordPlayerDesign rpDesign = new RecordPlayerDesign(record.getNeedle(), record.getDisc(), record.getIndicator());
-				 subBlocks.put(rpDesign.getDesignTypeId(), new RecordPlayerSubBlock(rpDesign));
-				 count++;
-	         }
-			 Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Initialized "+ String.valueOf(count) +" RecordPlayer Designs.");
-		 }
-		 
-	}
 	
 	/**
 	 * Event fired when a player right clicks on a block.
@@ -209,6 +196,8 @@ public class RecordPlayer extends GenericCustomBlock {
 			
 			
 			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
+			
+			Debug.debug("BlockDesign updated.");
 			
 			return true;
 			
@@ -574,27 +563,27 @@ public class RecordPlayer extends GenericCustomBlock {
 		//}
 		
 		check = block.getRelative(BlockFace.DOWN);
-		if ( ((SpoutBlock)check).isCustomBlock() && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
+		if ( ((SpoutBlock)check).getCustomBlock() != null && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
 			blocks.put(BlockFace.DOWN, (Speaker)((SpoutBlock)check).getCustomBlock());
 		}
 		
 		check = block.getRelative(BlockFace.NORTH);
-		if ( ((SpoutBlock)check).isCustomBlock() && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
+		if ( ((SpoutBlock)check).getCustomBlock() != null && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
 			blocks.put(BlockFace.NORTH, (Speaker)((SpoutBlock)check).getCustomBlock());
 		}
 		
 		check = block.getRelative(BlockFace.SOUTH);
-		if ( ((SpoutBlock)check).isCustomBlock() && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
+		if ( ((SpoutBlock)check).getCustomBlock() != null && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
 			blocks.put(BlockFace.SOUTH, (Speaker)((SpoutBlock)check).getCustomBlock());
 		}
 		
 		check = block.getRelative(BlockFace.EAST);
-		if ( ((SpoutBlock)check).isCustomBlock() && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
+		if ( ((SpoutBlock)check).getCustomBlock() != null && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
 			blocks.put(BlockFace.EAST, (Speaker)((SpoutBlock)check).getCustomBlock());
 		}
 		
 		check = block.getRelative(BlockFace.WEST);
-		if ( ((SpoutBlock)check).isCustomBlock() && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
+		if ( ((SpoutBlock)check).getCustomBlock() != null && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
 			blocks.put(BlockFace.WEST, (Speaker)((SpoutBlock)check).getCustomBlock());
 		}
 		
