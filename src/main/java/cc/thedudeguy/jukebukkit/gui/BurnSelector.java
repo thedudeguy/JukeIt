@@ -29,8 +29,11 @@ public class BurnSelector extends GenericPopup {
 				!JukeBukkit.instance.getConfig().getBoolean("enableWebServer") || 
 				!JukeBukkit.instance.HTTPserver.isRunning()
 				) {
-			((SpoutPlayer)player).getMainScreen().getActivePopup().close();
+			if (((SpoutPlayer)player).getMainScreen().getActivePopup() != null) {
+				((SpoutPlayer)player).getMainScreen().getActivePopup().close();
+			}
 			((SpoutPlayer)player).getMainScreen().attachPopupScreen(new CustomURLSelecter(((SpoutPlayer)player), block));
+			return;
 		}
 			
 		
