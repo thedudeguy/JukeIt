@@ -10,6 +10,7 @@ import org.getspout.spoutapi.block.design.Texture;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
+import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireEastWest;
 
 
 public class Blocks {
@@ -34,7 +35,8 @@ public class Blocks {
 	
 	public static Speaker speaker;
 	
-	public static SpeakerWireBlock speakerWireBlock;
+	public static SpeakerWireBlock speakerWireBlockEastWest;
+	public static SpeakerWireBlock speakerWireBlockNorthSouth;
 	
 	public Blocks() {
 		
@@ -53,8 +55,8 @@ public class Blocks {
 		
 		speaker = new Speaker();
 		
-		speakerWireBlock = new SpeakerWireBlock(0);
-		
+		speakerWireBlockEastWest = new SpeakerWireEastWest();
+		speakerWireBlockNorthSouth = new SpeakerWireEastWest();
 		
 		//init the subblocks
 		List<RecordPlayerBlockDesigns> rpbd = JukeBukkit.instance.getDatabase().find(RecordPlayerBlockDesigns.class).findList();

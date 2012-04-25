@@ -1,31 +1,61 @@
 package cc.thedudeguy.jukebukkit.materials.blocks;
 
-import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.SpeakerWireDesign;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
 
-public class SpeakerWireBlock extends GenericCustomBlock {
+public abstract class SpeakerWireBlock extends GenericCustomBlock {
 	
-	public SpeakerWireBlock(int degrees) {
-		super(JukeBukkit.instance, "speakerwireblock_"+String.valueOf(degrees), 3);
+	public static final int EASTtoWEST = 0;
+	public static final int NORTHtoSOUTH = 1;
+	
+	protected int type;
+	
+	public SpeakerWireBlock(int type) {
+		super(JukeBukkit.instance, "speakerwireblock_"+String.valueOf(type), 70);
 		
-		this.setBlockDesign(new SpeakerWireDesign(0));
-		this.setName("Speaker Wire Block "+ String.valueOf(degrees) + " (DO NOT USE)");
+		this.type = type;
+		
+		this.setBlockDesign(new SpeakerWireDesign(getRotation(type)));
+		this.setName("Speaker Wire Block "+ String.valueOf(type) + " (DO NOT USE)");
 		this.setItemDrop(new SpoutItemStack(Items.speakerWire));
 	}
 	
-	public boolean onBlockInteract(org.bukkit.World world, int x, int y, int z, SpoutPlayer player) { 
-		
-		
+	public int getRotation(int type) {
+		switch(type) {
+		case EASTtoWEST:
+			return 0;
+		case NORTHtoSOUTH:
+			return 90;
+		default:
+				return 0;
+		}
+	}
+	
+	public int getType() {
+		return type;
+	}
+	
+	/*
+	public boolean hasAvailableConnection(SpoutBlock block) {
+		switch(type) {
+		case EASTtoWEST:
+			if (
+					block.getRelative(BlockFace.EAST) instanceof SpeakerWireBlock &&
+					block.getRelative(BlockFace.WEST) instanceof SpeakerWireBlock) {
+				return false;
+			}
+			break;
+		}
 		
 		return true;
 	}
+	*/
 	
+	/*
 	public void onNeighborBlockChange(org.bukkit.World world, int x, int y, int z, int changedId) {
 		
 		SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
@@ -72,5 +102,5 @@ public class SpeakerWireBlock extends GenericCustomBlock {
 		}
 		
 	}
-	
+	*/
 }
