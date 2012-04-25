@@ -52,6 +52,14 @@
             			<goals>
               				<goal>shade</goal>
             			</goals>
+            			<configuration>
+            				<relocations>
+            					<relocation>
+            						<pattern>org.eclipse.jetty</pattern>
+            						<shadedPattern>cc.thedudeguy.jetty</shadedPattern>
+            					</relocation>
+            				</relocations>
+            			</configuration>
           			</execution>
         		</executions>
       		</plugin>
