@@ -1,5 +1,6 @@
 package cc.thedudeguy.jukebukkit.materials.blocks;
 
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 
@@ -17,7 +18,7 @@ public abstract class SpeakerWireBlock extends GenericCustomBlock {
 	public SpeakerWireBlock(int type) {
 		super(JukeBukkit.instance, "speakerwireblock_"+String.valueOf(type), 70);
 		
-		this.type = type;
+		setType(type);
 		
 		this.setBlockDesign(new SpeakerWireDesign(getRotation(type)));
 		this.setName("Speaker Wire Block "+ String.valueOf(type) + " (DO NOT USE)");
@@ -27,17 +28,23 @@ public abstract class SpeakerWireBlock extends GenericCustomBlock {
 	public int getRotation(int type) {
 		switch(type) {
 		case EASTtoWEST:
-			return 0;
-		case NORTHtoSOUTH:
 			return 90;
+		case NORTHtoSOUTH:
+			return 0;
 		default:
-				return 0;
+				return 90;
 		}
+	}
+	
+	private void setType(int type) {
+		this.type = type;
 	}
 	
 	public int getType() {
 		return type;
 	}
+	
+	public abstract boolean hasOpenEnd(SpoutBlock block);
 	
 	/*
 	public boolean hasAvailableConnection(SpoutBlock block) {

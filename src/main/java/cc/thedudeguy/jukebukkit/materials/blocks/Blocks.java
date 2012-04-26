@@ -11,6 +11,7 @@ import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireEastWest;
+import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireNorthSouth;
 
 
 public class Blocks {
@@ -56,7 +57,7 @@ public class Blocks {
 		speaker = new Speaker();
 		
 		speakerWireBlockEastWest = new SpeakerWireEastWest();
-		speakerWireBlockNorthSouth = new SpeakerWireEastWest();
+		speakerWireBlockNorthSouth = new SpeakerWireNorthSouth();
 		
 		//init the subblocks
 		List<RecordPlayerBlockDesigns> rpbd = JukeBukkit.instance.getDatabase().find(RecordPlayerBlockDesigns.class).findList();
