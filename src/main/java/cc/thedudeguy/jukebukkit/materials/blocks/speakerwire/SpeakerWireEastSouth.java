@@ -5,20 +5,17 @@ import org.getspout.spoutapi.block.SpoutBlock;
 
 import cc.thedudeguy.jukebukkit.materials.blocks.SpeakerWireBlock;
 
-public class SpeakerWireEastWest extends SpeakerWireBlock {
+public class SpeakerWireEastSouth extends SpeakerWireBlock {
 
-	public SpeakerWireEastWest() {
-		super(SpeakerWireBlock.EASTtoWEST);
+	public SpeakerWireEastSouth() {
+		super(SpeakerWireBlock.EASTtoSOUTH);
 	}
 
 	@Override
 	public boolean hasOpenEnd(SpoutBlock block) {
-		
-		if (!this.isFaceConnected(block, BlockFace.WEST)) return true;
+		if (!this.isFaceConnected(block, BlockFace.SOUTH)) return true;
 		if (!this.isFaceConnected(block, BlockFace.EAST)) return true;
 		return false;
-		
 	}
-	
-	
+
 }

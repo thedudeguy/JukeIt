@@ -6,9 +6,9 @@ import org.getspout.spoutapi.block.design.SubTexture;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
 
-public class SpeakerWireDesign extends GenericBlockDesign {
+public class SpeakerWireStraightDesign extends GenericBlockDesign {
 
-	public SpeakerWireDesign(int degrees) {
+	public SpeakerWireStraightDesign(int degrees) {
 
 		setTexture(JukeBukkit.instance, Blocks.speakerwireTexture);
 		setMinBrightness(0F);
@@ -20,7 +20,7 @@ public class SpeakerWireDesign extends GenericBlockDesign {
 		/* apparently setBoundingBox doesn't work with SpoutPlugin ??? */
 		setBoundingBox(0F, 0F, 0F, 1F, 0.0625F, 1F);
 
-		setQuadNumber(17);
+		setQuadNumber(6);
 
 		//main wire
 		///////////////////////////////////////

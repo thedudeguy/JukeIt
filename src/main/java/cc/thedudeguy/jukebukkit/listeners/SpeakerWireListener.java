@@ -1,8 +1,9 @@
 package cc.thedudeguy.jukebukkit.listeners;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
@@ -15,20 +16,19 @@ import cc.thedudeguy.jukebukkit.materials.blocks.SpeakerWireBlock;
 import cc.thedudeguy.jukebukkit.util.Debug;
 
 public class SpeakerWireListener implements Listener {
-
-	@EventHandler
-	public void onPlace(SpeakerWirePlaceEvent event) {
-		Debug.debug(event.getPlayer(), "Placing Speaker Wire");
-		
+	
+	public HashMap<BlockFace, SpoutBlock> getAvailableWires(SpoutBlock block) {
 		List<BlockFace> faceList = Arrays.asList(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST);
 		
-		TreeMap<BlockFace, SpoutBlock> wires = new TreeMap<BlockFace, SpoutBlock>();
+		HashMap<BlockFace, SpoutBlock> wires = new HashMap<BlockFace, SpoutBlock>();
 		
 		//collect a list of surrounding blocks who are also speaker wire, and have atleast one open side.
 		for (BlockFace face : faceList) {
-			SpoutBlock relBlock = (SpoutBlock)event.getBlock().getRelative(face);
+			
+			SpoutBlock relBlock = (SpoutBlock)block.getRelative(face);
+			
 			if (relBlock.getCustomBlock() != null && relBlock.getCustomBlock() instanceof SpeakerWireBlock) {
-				Debug.debug(event.getPlayer(), "Block at ", face, " is speakerwireblock");
+				Debug.debug("Block at ", face, " is speakerwireblock");
 				
 				if ( ((SpeakerWireBlock)relBlock.getCustomBlock()).hasOpenEnd(relBlock) )
 				{
@@ -41,35 +41,105 @@ public class SpeakerWireListener implements Listener {
 			
 		}
 		
-		Debug.debug(event.getPlayer(), "Surrounding Wires with open ends: ", wires.size());
-		Debug.debug(event.getPlayer(), "Placing Wire");
+		return wires;
 		
+	}
+	
+	public BlockFace getConnectedFace(SpoutBlock block, BlockFace ignoreFace) {
 		
-		event.getBlock().setCustomBlock(Blocks.speakerWireBlockEastWest);
+		List<BlockFace> faceList = Arrays.asList(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST);
 		
-		switch(wires.size()) {
+		//collect a list of surrounding blocks who are also speaker wire, and have atleast one open side.
+		for (BlockFace face : faceList) {
+			
+			if (!face.equals(ignoreFace)) {
+				
+				if ( ((SpeakerWireBlock)block.getCustomBlock()).isFaceConnected(block, face) ) return face;
+				
+			}
+		}
+		
+		return null;
+		
+	}
+	
+	public void setBlockType(SpoutBlock wireBlock, HashMap<BlockFace, SpoutBlock> availableWires) {
+		
+		switch(availableWires.size()) {
 		case 0:
 			//do nothing;
 			break;
 		case 1:
 			//only connect to one;
 			if (
-					wires.firstEntry().getKey().equals(BlockFace.EAST) ||
-					wires.firstEntry().getKey().equals(BlockFace.WEST)
+					availableWires.containsKey(BlockFace.EAST) ||
+					availableWires.containsKey(BlockFace.WEST)
 					) {
-				event.getBlock().setCustomBlock(Blocks.speakerWireBlockEastWest);
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockEastWest);
 			} else if (
-					wires.firstEntry().getKey().equals(BlockFace.NORTH) ||
-					wires.firstEntry().getKey().equals(BlockFace.SOUTH)
+					availableWires.containsKey(BlockFace.NORTH) ||
+					availableWires.containsKey(BlockFace.SOUTH)
 					) {
-				event.getBlock().setCustomBlock(Blocks.speakerWireBlockNorthSouth);
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthSouth);
 			}
 			break;
 		case 2:
 			//connecting to 2 wires
+			if (availableWires.containsKey(BlockFace.EAST) && availableWires.containsKey(BlockFace.WEST)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockEastWest);
+				
+			} else if (availableWires.containsKey(BlockFace.NORTH) && availableWires.containsKey(BlockFace.SOUTH)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthSouth);
+				
+			} else if (availableWires.containsKey(BlockFace.NORTH) && availableWires.containsKey(BlockFace.EAST)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthEast);
+				
+			} else if (availableWires.containsKey(BlockFace.EAST) && availableWires.containsKey(BlockFace.SOUTH)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockEastSouth);
+				
+			} else if (availableWires.containsKey(BlockFace.SOUTH) && availableWires.containsKey(BlockFace.WEST)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockSouthWest);
+				
+			} else if (availableWires.containsKey(BlockFace.WEST) && availableWires.containsKey(BlockFace.NORTH)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockWestNorth);
+				
+			}
 			break;
 		}
 		
+	}
+	
+	@EventHandler
+	public void onPlace(SpeakerWirePlaceEvent event) {
+		Debug.debug(event.getPlayer(), "Placing Speaker Wire");
+		
+		HashMap<BlockFace, SpoutBlock> wires = getAvailableWires(event.getBlock());
+		
+		Debug.debug(event.getPlayer(), "Surrounding Wires with open ends: ", wires.size());
+		Debug.debug(event.getPlayer(), "Placing Wire");
+		
+		
+		event.getBlock().setCustomBlock(Blocks.speakerWireBlockEastWest);
+		
+		setBlockType((SpoutBlock)event.getBlock(), wires);
+		
+		//do the same for the wipres we connected to.
+		//we know that every wire in this list has ATLEAST one available connection
+		for ( Entry<BlockFace, SpoutBlock> item : wires.entrySet() ) {
+			
+			HashMap<BlockFace, SpoutBlock> connectTo = new HashMap<BlockFace, SpoutBlock>();
+			//add our block.
+			connectTo.put(item.getKey().getOppositeFace(), event.getBlock());
+			
+			BlockFace existingFace = getConnectedFace(item.getValue(), item.getKey().getOppositeFace());
+			
+			if (existingFace != null) {
+				connectTo.put(existingFace, item.getValue());
+			}
+			
+			setBlockType(item.getValue(), connectTo);
+			
+		}
 		/*
 		SpeakerWireBlock wire = (SpeakerWireBlock) event.getBlock().getCustomBlock();
 		

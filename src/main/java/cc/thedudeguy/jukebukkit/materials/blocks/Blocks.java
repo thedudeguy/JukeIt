@@ -10,8 +10,12 @@ import org.getspout.spoutapi.block.design.Texture;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
+import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireEastSouth;
 import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireEastWest;
+import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireNorthEast;
 import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireNorthSouth;
+import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireSouthWest;
+import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireWestNorth;
 
 
 public class Blocks {
@@ -39,6 +43,11 @@ public class Blocks {
 	public static SpeakerWireBlock speakerWireBlockEastWest;
 	public static SpeakerWireBlock speakerWireBlockNorthSouth;
 	
+	public static SpeakerWireBlock speakerWireBlockNorthEast;
+	public static SpeakerWireBlock speakerWireBlockEastSouth;
+	public static SpeakerWireBlock speakerWireBlockSouthWest;
+	public static SpeakerWireBlock speakerWireBlockWestNorth;
+	
 	public Blocks() {
 		
 		recordPlayer = new RecordPlayer();
@@ -58,6 +67,11 @@ public class Blocks {
 		
 		speakerWireBlockEastWest = new SpeakerWireEastWest();
 		speakerWireBlockNorthSouth = new SpeakerWireNorthSouth();
+		
+		speakerWireBlockNorthEast = new SpeakerWireNorthEast();
+		speakerWireBlockEastSouth = new SpeakerWireEastSouth();
+		speakerWireBlockSouthWest = new SpeakerWireSouthWest();
+		speakerWireBlockWestNorth = new SpeakerWireWestNorth();
 		
 		//init the subblocks
 		List<RecordPlayerBlockDesigns> rpbd = JukeBukkit.instance.getDatabase().find(RecordPlayerBlockDesigns.class).findList();

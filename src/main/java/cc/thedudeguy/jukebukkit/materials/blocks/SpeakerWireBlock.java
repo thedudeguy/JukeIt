@@ -1,17 +1,33 @@
 package cc.thedudeguy.jukebukkit.materials.blocks;
 
+import org.bukkit.block.BlockFace;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.materials.blocks.designs.SpeakerWireDesign;
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.SpeakerWireStraightDesign;
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.SpeakerWireTurnDesign;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
 
 public abstract class SpeakerWireBlock extends GenericCustomBlock {
 	
 	public static final int EASTtoWEST = 0;
+	public static final int WESTtoEAST = 0;
 	public static final int NORTHtoSOUTH = 1;
+	public static final int SOUTHtoNORTH = 1;
+	
+	public static final int NORTHtoEAST = 2;
+	public static final int EASTtoNORTH = 2;
+	
+	public static final int EASTtoSOUTH = 3;
+	public static final int SOUTHtoEAST = 3;
+	
+	public static final int SOUTHtoWEST = 4;
+	public static final int WESTtoSOUTH = 4;
+	
+	public static final int WESTtoNORTH = 5;
+	public static final int NORTHtoWEST = 5;
 	
 	protected int type;
 	
@@ -20,7 +36,11 @@ public abstract class SpeakerWireBlock extends GenericCustomBlock {
 		
 		setType(type);
 		
-		this.setBlockDesign(new SpeakerWireDesign(getRotation(type)));
+		if (type == EASTtoWEST || type == NORTHtoSOUTH) {
+			this.setBlockDesign(new SpeakerWireStraightDesign(getRotation(type)));
+		} else {
+			this.setBlockDesign(new SpeakerWireTurnDesign(getRotation(type)));
+		}
 		this.setName("Speaker Wire Block "+ String.valueOf(type) + " (DO NOT USE)");
 		this.setItemDrop(new SpoutItemStack(Items.speakerWire));
 	}
@@ -31,8 +51,16 @@ public abstract class SpeakerWireBlock extends GenericCustomBlock {
 			return 90;
 		case NORTHtoSOUTH:
 			return 0;
+		case NORTHtoEAST:
+			return 270;
+		case EASTtoSOUTH:
+			return 0;
+		case SOUTHtoWEST:
+			return 90;
+		case WESTtoNORTH:
+			return 180;
 		default:
-				return 90;
+			return 0;
 		}
 	}
 	
@@ -42,6 +70,62 @@ public abstract class SpeakerWireBlock extends GenericCustomBlock {
 	
 	public int getType() {
 		return type;
+	}
+	
+	public boolean isFaceConnected(SpoutBlock block, BlockFace face) {
+		
+		if (
+				((SpeakerWireBlock)((SpoutBlock)block.getRelative(face)).getCustomBlock()) == null
+				) {
+			return false;
+		}
+		
+		if (face.equals(BlockFace.NORTH)) {
+			if (
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.NORTH)).getCustomBlock()).getType() == SpeakerWireBlock.SOUTHtoNORTH ||
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.NORTH)).getCustomBlock()).getType() == SpeakerWireBlock.SOUTHtoEAST ||
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.NORTH)).getCustomBlock()).getType() == SpeakerWireBlock.SOUTHtoWEST
+					) {
+				return true;
+			}
+			
+		}
+		
+		if (face.equals(BlockFace.EAST)) {
+			if (
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.EAST)).getCustomBlock()).getType() == SpeakerWireBlock.WESTtoEAST ||
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.EAST)).getCustomBlock()).getType() == SpeakerWireBlock.WESTtoNORTH ||
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.EAST)).getCustomBlock()).getType() == SpeakerWireBlock.WESTtoSOUTH
+					) {
+				return true;
+			}
+			
+		} 
+		
+		if (face.equals(BlockFace.SOUTH)) {
+			if (
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.SOUTH)).getCustomBlock()).getType() == SpeakerWireBlock.NORTHtoEAST ||
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.SOUTH)).getCustomBlock()).getType() == SpeakerWireBlock.NORTHtoSOUTH ||
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.SOUTH)).getCustomBlock()).getType() == SpeakerWireBlock.NORTHtoWEST
+					) {
+				return true;
+			}
+			
+		} 
+		
+		if (face.equals(BlockFace.WEST)) {
+			if (
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.WEST)).getCustomBlock()).getType() == SpeakerWireBlock.EASTtoNORTH ||
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.WEST)).getCustomBlock()).getType() == SpeakerWireBlock.EASTtoSOUTH ||
+					((SpeakerWireBlock)((SpoutBlock)block.getRelative(BlockFace.WEST)).getCustomBlock()).getType() == SpeakerWireBlock.EASTtoWEST
+					) {
+				return true;
+			}
+			
+		}
+		
+		return false;
+		
 	}
 	
 	public abstract boolean hasOpenEnd(SpoutBlock block);
