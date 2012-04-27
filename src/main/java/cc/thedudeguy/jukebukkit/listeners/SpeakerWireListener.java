@@ -18,7 +18,7 @@ import cc.thedudeguy.jukebukkit.util.Debug;
 public class SpeakerWireListener implements Listener {
 	
 	public HashMap<BlockFace, SpoutBlock> getAvailableWires(SpoutBlock block) {
-		List<BlockFace> faceList = Arrays.asList(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST);
+		List<BlockFace> faceList = Arrays.asList(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST,  BlockFace.UP, BlockFace.DOWN);
 		
 		HashMap<BlockFace, SpoutBlock> wires = new HashMap<BlockFace, SpoutBlock>();
 		
@@ -47,7 +47,7 @@ public class SpeakerWireListener implements Listener {
 	
 	public BlockFace getConnectedFace(SpoutBlock block, BlockFace ignoreFace) {
 		
-		List<BlockFace> faceList = Arrays.asList(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST);
+		List<BlockFace> faceList = Arrays.asList(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST, BlockFace.UP, BlockFace.DOWN);
 		
 		//collect a list of surrounding blocks who are also speaker wire, and have atleast one open side.
 		for (BlockFace face : faceList) {
@@ -82,6 +82,12 @@ public class SpeakerWireListener implements Listener {
 					) {
 				wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthSouth);
 			}
+			else if (
+					availableWires.containsKey(BlockFace.UP) ||
+					availableWires.containsKey(BlockFace.DOWN)
+					) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockUpDown);
+			}
 			break;
 		case 2:
 			//connecting to 2 wires
@@ -102,6 +108,33 @@ public class SpeakerWireListener implements Listener {
 				
 			} else if (availableWires.containsKey(BlockFace.WEST) && availableWires.containsKey(BlockFace.NORTH)) {
 				wireBlock.setCustomBlock(Blocks.speakerWireBlockWestNorth);
+				
+			} else if (availableWires.containsKey(BlockFace.UP) && availableWires.containsKey(BlockFace.DOWN)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockUpDown);
+				
+			} else if (availableWires.containsKey(BlockFace.EAST) && availableWires.containsKey(BlockFace.UP)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockEastUp);
+				
+			} else if (availableWires.containsKey(BlockFace.WEST) && availableWires.containsKey(BlockFace.UP)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockWestUp);
+				
+			} else if (availableWires.containsKey(BlockFace.NORTH) && availableWires.containsKey(BlockFace.UP)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthUp);
+				
+			} else if (availableWires.containsKey(BlockFace.SOUTH) && availableWires.containsKey(BlockFace.UP)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockSouthUp);
+				
+			} else if (availableWires.containsKey(BlockFace.EAST) && availableWires.containsKey(BlockFace.DOWN)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockEastDown);
+				
+			} else if (availableWires.containsKey(BlockFace.WEST) && availableWires.containsKey(BlockFace.DOWN)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockWestDown);
+				
+			} else if (availableWires.containsKey(BlockFace.NORTH) && availableWires.containsKey(BlockFace.DOWN)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthDown);
+				
+			} else if (availableWires.containsKey(BlockFace.SOUTH) && availableWires.containsKey(BlockFace.DOWN)) {
+				wireBlock.setCustomBlock(Blocks.speakerWireBlockSouthDown);
 				
 			}
 			break;
@@ -140,9 +173,5 @@ public class SpeakerWireListener implements Listener {
 			setBlockType(item.getValue(), connectTo);
 			
 		}
-		/*
-		SpeakerWireBlock wire = (SpeakerWireBlock) event.getBlock().getCustomBlock();
-		
-		*/
 	}
 }
