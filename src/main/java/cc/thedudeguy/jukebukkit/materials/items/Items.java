@@ -24,10 +24,12 @@ import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscPurple;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscRed;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscWhite;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscYellow;
+import cc.thedudeguy.jukebukkit.materials.items.needles.BlazeNeedle;
 
 public class Items {
 
 	public static Needle needle;
+	public static BlazeNeedle blazeNeedle;
 	
 	public static BlankDiscBlack blankDiscBlack;
 	public static BlankDiscBlue blankDiscBlue;
@@ -55,6 +57,7 @@ public class Items {
 		
 		//Init custom items.
 		needle = new Needle();
+		blazeNeedle = new BlazeNeedle();
 		
 		speakerWire = new SpeakerWire();
 		

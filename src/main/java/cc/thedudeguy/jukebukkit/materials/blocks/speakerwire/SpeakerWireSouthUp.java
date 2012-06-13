@@ -17,7 +17,7 @@ public class SpeakerWireSouthUp extends SpeakerWireBlock {
 	private float moveZ = 0.46875F;
 	
 	public SpeakerWireSouthUp() {
-		super(SpeakerWireBlock.SOUTHtoUP);
+		super(SpeakerWireBlock.SOUTHtoUP, 85);
 		this.setBlockDesign(new SpeakerWireTurnDesign(rotationX, rotationY, rotationZ, moveX, moveY, moveZ));
 	}
 

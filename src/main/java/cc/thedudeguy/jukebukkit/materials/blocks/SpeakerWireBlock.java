@@ -57,7 +57,11 @@ public abstract class SpeakerWireBlock extends GenericCustomBlock {
 	protected int type;
 	
 	public SpeakerWireBlock(int type) {
-		super(JukeBukkit.instance, "speakerwireblock_"+String.valueOf(type), 70);
+		this(type, 70);
+	}
+	
+	public SpeakerWireBlock(int type, int baseBlock) {
+		super(JukeBukkit.instance, "speakerwireblock_"+String.valueOf(type), baseBlock);
 		
 		setType(type);
 		

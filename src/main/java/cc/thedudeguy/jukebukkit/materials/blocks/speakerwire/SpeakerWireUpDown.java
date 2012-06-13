@@ -17,7 +17,7 @@ public class SpeakerWireUpDown extends SpeakerWireBlock {
 	private float moveZ = 0;
 	
 	public SpeakerWireUpDown() {
-		super(SpeakerWireBlock.UPtoDOWN);
+		super(SpeakerWireBlock.UPtoDOWN, 85);
 		
 		this.setBlockDesign(new SpeakerWireStraightDesign(rotationX, rotationY, rotationZ, moveX, moveY, moveZ));
 		

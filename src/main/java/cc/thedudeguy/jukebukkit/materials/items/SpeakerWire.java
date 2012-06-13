@@ -30,16 +30,16 @@ public class SpeakerWire extends GenericCustomItem {
 				SpeakerWirePlaceEvent event = new SpeakerWirePlaceEvent(player, placeBlock);
 				Bukkit.getServer().getPluginManager().callEvent(event);
 				
-				
-				Debug.debug(player, "Removing item from hand");
 				//remove 1 from hand.
-				ItemStack inHand = player.getItemInHand();
-				if (inHand.getAmount()<2) {
-					player.setItemInHand(new ItemStack(Material.AIR));
-				} else {
-					player.getItemInHand().setAmount(inHand.getAmount()-1);
-				}
-				
+				//if (!player.getGameMode().equals(GameMode.CREATIVE)) {
+					Debug.debug(player, "Removing item from hand");
+					ItemStack inHand = player.getItemInHand();
+					if (inHand.getAmount()<2) {
+						player.setItemInHand(new ItemStack(Material.AIR));
+					} else {
+						player.getItemInHand().setAmount(inHand.getAmount()-1);
+					}
+				//}
 				
 			}
 			

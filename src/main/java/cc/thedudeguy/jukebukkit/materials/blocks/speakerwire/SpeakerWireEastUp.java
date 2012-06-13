@@ -17,7 +17,7 @@ public class SpeakerWireEastUp extends SpeakerWireBlock {
 	private float moveZ = 0;
 	
 	public SpeakerWireEastUp() {
-		super(SpeakerWireBlock.EASTtoUP);
+		super(SpeakerWireBlock.EASTtoUP, 85);
 		this.setBlockDesign(new SpeakerWireTurnDesign(rotationX, rotationY, rotationZ, moveX, moveY, moveZ));
 	}
 

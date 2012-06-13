@@ -46,6 +46,7 @@ public class ResourceManager {
 			"burned_disc_white.png",
 			"burned_disc_yellow.png",
 			"needle_stick-flint.png",
+			"needle_blaze-flint.png",
 			"recordplayer.png",
 			"blocks_deprecated.png",
 			"label.png",

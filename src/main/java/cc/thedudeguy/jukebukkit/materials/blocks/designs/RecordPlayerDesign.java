@@ -34,6 +34,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 	
 	public static final int NEEDLE_NONE 		= 0;
 	public static final int NEEDLE_WOOD_FLINT 	= 32;
+	public static final int NEEDLE_BLAZE_FLINT = 33;
 	
 	public static final int INDICATOR_RED = 7;
 	public static final int INDICATOR_GREEN = 8;

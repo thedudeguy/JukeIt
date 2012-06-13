@@ -34,7 +34,9 @@ import cc.thedudeguy.jukebukkit.materials.items.Needle;
 import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Sound;
 
-public class RecordPlayer extends GenericCustomBlock {
+//TODO This needs to be cleaned up a LOT
+
+public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 	
 	public static RecordPlayer getSubBlock(int needle, int discColor, int indicator) {
 		
