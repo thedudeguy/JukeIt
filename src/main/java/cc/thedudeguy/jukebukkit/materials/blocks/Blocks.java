@@ -42,10 +42,7 @@ public class Blocks {
 	public static JukeboxLongRange jukeboxLongRange;
 	public static JukeboxMaxRange jukeboxMaxRange;
 	
-	public static DiscBurner discBurnerSouth;
-	public static DiscBurner discBurnerNorth;
-	public static DiscBurner discBurnerEast;
-	public static DiscBurner discBurnerWest;
+	public static DiscBurner discBurner;
 	
 	public static Speaker speaker;
 	
@@ -73,10 +70,7 @@ public class Blocks {
 		
 		recordPlayer = new RecordPlayer();
 		
-		discBurnerSouth = new DiscBurner(DiscBurner.SOUTH);
-		discBurnerNorth = new DiscBurner(DiscBurner.NORTH);
-		discBurnerEast = new DiscBurner(DiscBurner.EAST);
-		discBurnerWest = new DiscBurner(DiscBurner.WEST);
+		discBurner = new DiscBurner();
 		
 		jukeboxBasic = new JukeboxBasic();
 		jukeboxLowRange = new JukeboxLowRange();

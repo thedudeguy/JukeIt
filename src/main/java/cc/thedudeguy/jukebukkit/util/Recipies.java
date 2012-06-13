@@ -125,7 +125,7 @@ public class Recipies {
 		// Disc Burner //
 		//////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( new SpoutItemStack(Blocks.discBurnerSouth, 1) )
+			new SpoutShapedRecipe( new SpoutItemStack(Blocks.discBurner, 1) )
 			.shape("jf")
 			.setIngredient('j', MaterialData.jukebox)
 			.setIngredient('f', MaterialData.furnace)

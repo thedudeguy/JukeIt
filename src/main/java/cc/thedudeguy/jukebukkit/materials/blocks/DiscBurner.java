@@ -28,9 +28,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.BurnSelector;
-import cc.thedudeguy.jukebukkit.materials.blocks.designs.DiscBurnerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
-import cc.thedudeguy.jukebukkit.util.Debug;
 
 
 /**
@@ -39,60 +37,16 @@ import cc.thedudeguy.jukebukkit.util.Debug;
  */
 public class DiscBurner extends GenericCustomBlock {
 	
-	public GenericCubeBlockDesign blockDesign;
-	
-	/*
-	public static final int[] SOUTH =;
-	public static final int[] NORTH = ;
-	public static final int[] EAST = ;
-	public static final int[] WEST = ;
-	*/
-	
-	public static final int SOUTH = 0;
-	public static final int NORTH = 1;
-	public static final int EAST = 2;
-	public static final int WEST = 3;
-	
 	/**
 	 * Construct
 	 * @param JukeBukkit plugin - JukeBukkit instance
 	 */
-	public DiscBurner(int direction)
+	public DiscBurner()
 	{
-		super(
-			JukeBukkit.instance,
-			"DiscBurner_"+String.valueOf(direction), 4
-		);
-		this.setBlockDesign(direction);
+		super(JukeBukkit.instance, "Disc Burner", 4);
+		this.setRotate(true);
 		this.setName("Disc Burner");
-		if (direction != SOUTH) {
-			this.setItemDrop(new SpoutItemStack(Blocks.discBurnerSouth, 1));
-		}
-	}
-	
-	public void setBlockDesign(int direction) {
-		
-		if (direction == SOUTH) {
-			int[] t = { 2, 3, 3, 4, 3, 2 };
-			setBlockDesign(new DiscBurnerDesign(t));
-		}
-		else if (direction == NORTH) {
-			int[] t = { 2, 4, 3, 3, 3, 2 };
-			setBlockDesign(new DiscBurnerDesign(t));
-		}
-		else if (direction == EAST) {
-			int[] t = { 2, 3, 4, 3, 3, 2 };
-			setBlockDesign(new DiscBurnerDesign(t));
-		}
-		else if (direction == WEST) {
-			int[] t = { 2, 3, 3, 3, 4, 2 };
-			setBlockDesign(new DiscBurnerDesign(t));
-		}
-		else {
-			int[] t = { 2, 3, 3, 4, 3, 2 };
-			setBlockDesign(new DiscBurnerDesign(t));
-		}
-		
+		this.setBlockDesign(new GenericCubeBlockDesign(JukeBukkit.instance, Blocks.blocksTexture, new int[] {2, 3, 3, 4, 3, 2}));
 	}
 	
 	@Override
@@ -116,45 +70,6 @@ public class DiscBurner extends GenericCustomBlock {
 		
 		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_error.wav", false, location, 8);
 		return true;
-	}
-	
-	public static final DiscBurner getBlockByYaw(double yaw) {
-		
-		Debug.debug("Yaw: ", yaw);
-		
-		//find which way the player is facing...
-		double rot = (yaw -90) % 360;
-		if (rot < 0) {
-            rot += 360.0;
-        }
-		
-		Debug.debug("rot: ", rot);
-		
-		if (0 <= rot && rot < 45) {
-            //WEST, place east
-			Debug.debug("burner east");
-			return Blocks.discBurnerEast;
-        } else if (45 <= rot && rot < 135) {
-        	//NORTH, place south
-        	Debug.debug("burner south");
-        	return Blocks.discBurnerSouth;
-        } else if (135 <= rot && rot < 215) {
-            //EAST, place west
-        	Debug.debug("burner west");
-        	return Blocks.discBurnerWest;
-        } else if (215 <= rot && rot < 305) {
-            //SOUTH, place north
-        	Debug.debug("burner north");
-        	return Blocks.discBurnerNorth;
-        } else if (305 <= rot && rot <= 360) {
-        	//WEST, place east
-        	Debug.debug("burner east");
-        	return Blocks.discBurnerEast;
-        } else {
-        	//unknown
-        	Debug.debug("burner unknown");
-        	return Blocks.discBurnerSouth;
-        }
 	}
 	
 }
