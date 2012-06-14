@@ -1,6 +1,6 @@
 enableWebServer: true
 webServerPort: 8080
-webServerHost: 127.0.0.1
+minecraftServerHostname: change.me.com
 serverName: JukeBukkit
 allowWebServerUploads: true
 allowExternalURLs: true

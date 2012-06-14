@@ -114,14 +114,21 @@ public class JukeBukkit extends JavaPlugin {
 		HTTPserver.setHandler(handlers);
 		
 		if (getConfig().getBoolean("enableWebServer") == true) {
-			
-			try {
-				HTTPserver.start();
-				//HTTPserver.join();
-				Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Web Server started on port: " + getConfig().getString("webServerPort"));
-			} catch (Exception e) {
-				Bukkit.getLogger().log(Level.WARNING, "[JukeBukkit] Unable to start web server");
-				e.printStackTrace();
+			if (
+					getConfig().getString("minecraftServerHostname").isEmpty() ||
+					getConfig().getString("minecraftServerHostname").equalsIgnoreCase("") ||
+					getConfig().getString("minecraftServerHostname").equalsIgnoreCase("change.me.com")
+				) {
+				Bukkit.getLogger().log(Level.SEVERE, "[JukeBukkit] Unable to start web server: minecraftServerHostname not set. Please check JukeBukkit config");
+			} else {
+				try {
+					HTTPserver.start();
+					//HTTPserver.join();
+					Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Web Server started on port: " + getConfig().getString("webServerPort"));
+				} catch (Exception e) {
+					Bukkit.getLogger().log(Level.WARNING, "[JukeBukkit] Unable to start web server");
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -199,7 +206,7 @@ public class JukeBukkit extends JavaPlugin {
 			Debug.debug("URL Failed, probably a server file");
 			String newURL = 
 					"http://" + 
-					JukeBukkit.instance.getConfig().getString("webServerHost") + 
+					JukeBukkit.instance.getConfig().getString("minecraftServerHostname") + 
 					":" + 
 					JukeBukkit.instance.getConfig().getString("webServerPort") +
 					"/music/" +
