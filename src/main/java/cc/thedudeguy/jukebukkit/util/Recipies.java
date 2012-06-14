@@ -6,8 +6,8 @@ import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
 import org.getspout.spoutapi.inventory.SpoutShapelessRecipe;
 import org.getspout.spoutapi.material.MaterialData;
 
-import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
-import cc.thedudeguy.jukebukkit.materials.items.Items;
+import cc.thedudeguy.jukebukkit.materials.Blocks;
+import cc.thedudeguy.jukebukkit.materials.Items;
 
 public class Recipies {
 	

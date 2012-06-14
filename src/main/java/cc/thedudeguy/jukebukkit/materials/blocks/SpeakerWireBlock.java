@@ -6,7 +6,7 @@ import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.materials.items.Items;
+import cc.thedudeguy.jukebukkit.materials.Items;
 
 public abstract class SpeakerWireBlock extends GenericCustomBlock {
 	

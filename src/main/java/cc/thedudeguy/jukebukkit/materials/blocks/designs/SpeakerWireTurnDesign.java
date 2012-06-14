@@ -4,7 +4,7 @@ import org.getspout.spoutapi.block.design.GenericBlockDesign;
 import org.getspout.spoutapi.block.design.SubTexture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
+import cc.thedudeguy.jukebukkit.materials.Blocks;
 
 public class SpeakerWireTurnDesign extends GenericBlockDesign {
 	

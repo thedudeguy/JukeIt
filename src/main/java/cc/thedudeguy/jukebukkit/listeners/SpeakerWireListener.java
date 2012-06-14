@@ -11,7 +11,7 @@ import org.bukkit.event.Listener;
 import org.getspout.spoutapi.block.SpoutBlock;
 
 import cc.thedudeguy.jukebukkit.events.SpeakerWirePlaceEvent;
-import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
+import cc.thedudeguy.jukebukkit.materials.Blocks;
 import cc.thedudeguy.jukebukkit.materials.blocks.SpeakerWireBlock;
 import cc.thedudeguy.jukebukkit.util.Debug;
 

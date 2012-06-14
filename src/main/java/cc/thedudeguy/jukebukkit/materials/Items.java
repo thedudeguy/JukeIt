@@ -1,4 +1,4 @@
-package cc.thedudeguy.jukebukkit.materials.items;
+package cc.thedudeguy.jukebukkit.materials;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -8,6 +8,10 @@ import org.bukkit.Bukkit;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.LabelData;
+import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
+import cc.thedudeguy.jukebukkit.materials.items.DiscLabel;
+import cc.thedudeguy.jukebukkit.materials.items.Needle;
+import cc.thedudeguy.jukebukkit.materials.items.SpeakerWire;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlack;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlue;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBrown;

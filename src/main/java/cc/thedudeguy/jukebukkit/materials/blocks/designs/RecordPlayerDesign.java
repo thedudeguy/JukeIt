@@ -5,7 +5,7 @@ import org.getspout.spoutapi.block.design.Quad;
 import org.getspout.spoutapi.block.design.SubTexture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
+import cc.thedudeguy.jukebukkit.materials.Blocks;
 
 public class RecordPlayerDesign extends GenericBlockDesign {
 	

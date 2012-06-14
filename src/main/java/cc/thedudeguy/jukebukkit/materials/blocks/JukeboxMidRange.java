@@ -3,6 +3,7 @@ package cc.thedudeguy.jukebukkit.materials.blocks;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.materials.Blocks;
 
 public class JukeboxMidRange extends JukeboxBlock {
 	

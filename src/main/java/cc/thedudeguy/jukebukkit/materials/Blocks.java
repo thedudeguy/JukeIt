@@ -1,8 +1,17 @@
-package cc.thedudeguy.jukebukkit.materials.blocks;
+package cc.thedudeguy.jukebukkit.materials;
 
 import org.getspout.spoutapi.block.design.Texture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.materials.blocks.DiscBurner;
+import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxBasic;
+import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxLongRange;
+import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxLowRange;
+import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxMaxRange;
+import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxMidRange;
+import cc.thedudeguy.jukebukkit.materials.blocks.RecordPlayer;
+import cc.thedudeguy.jukebukkit.materials.blocks.Speaker;
+import cc.thedudeguy.jukebukkit.materials.blocks.SpeakerWireBlock;
 import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireEastDown;
 import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireEastSouth;
 import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireEastUp;
