@@ -27,7 +27,7 @@ public class Recipies {
 		// Wood-Flint Record Needle //
 		//////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( new SpoutItemStack(Items.needle, 1) )
+			new SpoutShapedRecipe( new SpoutItemStack(Items.woodflintNeedle, 1) )
 			.shape("ttt", "sss", "  f")
 			.setIngredient('t', Items.speakerWire)
 			.setIngredient('s', MaterialData.stick)
@@ -38,7 +38,7 @@ public class Recipies {
 		// Blaze-Flint Record Needle //
 		//////////////////////////////
 		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( new SpoutItemStack(Items.blazeNeedle, 1) )
+			new SpoutShapedRecipe( new SpoutItemStack(Items.blazeflintNeedle, 1) )
 			.shape("ttt", "sss", "  f")
 			.setIngredient('t', Items.speakerWire)
 			.setIngredient('s', MaterialData.blazeRod)

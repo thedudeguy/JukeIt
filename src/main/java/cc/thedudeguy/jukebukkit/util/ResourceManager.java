@@ -123,13 +123,9 @@ public class ResourceManager {
 		
 		String fileCopyRelPath = new File(pathInJar, filename).getPath();
 		
-		File fileCopy = new File(JukeBukkit.instance.getDataFolder(), fileCopyRelPath);
+		//File fileCopy = new File(JukeBukkit.instance.getDataFolder(), fileCopyRelPath);
 		
-		if (!fileCopy.exists()) {
-			
-			JukeBukkit.instance.saveResource(fileCopyRelPath, true);
-			//fileCopy.setLastModified(new Date().getTime());
-		}
+		JukeBukkit.instance.saveResource(fileCopyRelPath, true);
 	}
 	
 	public static void preLoginCache() {

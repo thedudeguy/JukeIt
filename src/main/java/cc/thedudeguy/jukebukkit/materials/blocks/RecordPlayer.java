@@ -18,6 +18,7 @@ import org.bukkit.util.Vector;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.particle.Particle;
 import org.getspout.spoutapi.particle.Particle.ParticleType;
@@ -33,7 +34,7 @@ import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPIndicator;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
-import cc.thedudeguy.jukebukkit.materials.items.Needle;
+import cc.thedudeguy.jukebukkit.materials.items.needles.Needle;
 import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Sound;
 
@@ -172,11 +173,14 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 		}
 		
 		if ( RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE) && inHand.isCustomItem() && inHand.getMaterial() instanceof Needle ) {
+			Debug.debug("Loading Needle");
 			
-			//Bukkit.getLogger().log(Level.INFO, "Inserting Needle");
+			Needle needle = (Needle) inHand.getMaterial();
 			
-			rpdata.setNeedleType(RPNeedle.WOOD_FLINT.id());
+			rpdata.setNeedleType(needle.getNeedleType());
 			JukeBukkit.instance.getDatabase().save(rpdata);
+			
+			Debug.debug("needleid=",needle.getNeedleType().id(), " dbneedleid=", rpdata.getNeedleType());
 			
 			 //remove 1 from hand
 			if (inHand.getAmount()<2) {
@@ -234,13 +238,15 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 		
 		if ( !RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE)) {
 			
-			//Bukkit.getLogger().log(Level.INFO, "Ejecting Needle");
+			Debug.debug("Ejecting Needle");
 			
-			rpdata.setNeedleType(RPNeedle.NONE.id());
+			CustomItem needle = RPNeedle.getById(rpdata.getNeedleType()).getItem();
+			
+			rpdata.setNeedleType(RPNeedle.NONE);
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			Location spawnLoc = location;
 			spawnLoc.setY(spawnLoc.getY()+1);
-			world.dropItem(spawnLoc, new SpoutItemStack(Items.needle, 1));
+			world.dropItem(spawnLoc, new SpoutItemStack(needle, 1));
 			
 			Sound sound;
 			try {
@@ -272,7 +278,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 		if (rpd == null) {
 			rpd = new RecordPlayerData();
 			rpd.setDiscKey(null);
-			rpd.setNeedleType(0);
+			rpd.setNeedleType(RPNeedle.NONE);
 			rpd.setX((double)x);
 			rpd.setY((double)y);
 			rpd.setZ((double)z);
@@ -352,7 +358,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 		if (rpd == null) {
 			rpd = new RecordPlayerData();
 			rpd.setDiscKey(null);
-			rpd.setNeedleType(0);
+			rpd.setNeedleType(RPNeedle.NONE);
 			rpd.setX((double)x);
 			rpd.setY((double)y);
 			rpd.setZ((double)z);
@@ -386,7 +392,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 				.findUnique();
 		if (rpd != null) {
 			if (!RPNeedle.getById(rpd.getNeedleType()).equals(RPNeedle.NONE)) {
-				world.dropItem(spawnLoc, new SpoutItemStack(Items.needle, 1));
+				world.dropItem(spawnLoc, new SpoutItemStack(Items.woodflintNeedle, 1));
 			}
 			
 			if (rpd.hasDisc()) {

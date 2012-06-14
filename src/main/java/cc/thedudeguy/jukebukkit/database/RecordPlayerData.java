@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
+
 import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 
@@ -74,9 +76,13 @@ public class RecordPlayerData {
 	public int getNeedleType() {
 		return needleType;
 	}
-
+	
 	public void setNeedleType(int needleType) {
 		this.needleType = needleType;
+	}
+	
+	public void setNeedleType(RPNeedle needleType) {
+		this.setNeedleType(needleType.id());
 	}
 
 	public String getDiscKey() {

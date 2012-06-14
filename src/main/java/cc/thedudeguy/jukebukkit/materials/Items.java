@@ -11,7 +11,6 @@ import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.LabelData;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.materials.items.DiscLabel;
-import cc.thedudeguy.jukebukkit.materials.items.Needle;
 import cc.thedudeguy.jukebukkit.materials.items.SpeakerWire;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlack;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlue;
@@ -29,12 +28,13 @@ import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscPurple;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscRed;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscWhite;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscYellow;
-import cc.thedudeguy.jukebukkit.materials.items.needles.BlazeNeedle;
+import cc.thedudeguy.jukebukkit.materials.items.needles.BlazeFlintNeedle;
+import cc.thedudeguy.jukebukkit.materials.items.needles.WoodFlintNeedle;
 
 public class Items {
 
-	public static Needle needle;
-	public static BlazeNeedle blazeNeedle;
+	public static WoodFlintNeedle woodflintNeedle;
+	public static BlazeFlintNeedle blazeflintNeedle;
 	
 	public static BlankDiscBlack blankDiscBlack;
 	public static BlankDiscBlue blankDiscBlue;
@@ -62,8 +62,8 @@ public class Items {
 	public Items() {
 		
 		//Init custom items.
-		needle = new Needle();
-		blazeNeedle = new BlazeNeedle();
+		woodflintNeedle = new WoodFlintNeedle();
+		blazeflintNeedle = new BlazeFlintNeedle();
 		
 		speakerWire = new SpeakerWire();
 		

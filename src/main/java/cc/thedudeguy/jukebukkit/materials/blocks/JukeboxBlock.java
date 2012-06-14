@@ -256,7 +256,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 				.findUnique();
 		if (rpd == null) {
 			rpd = new RecordPlayerData();
-			rpd.setNeedleType(RPNeedle.NONE.id());
+			rpd.setNeedleType(RPNeedle.NONE);
 			rpd.setDiscKey(null);
 			rpd.setX((double)x);
 			rpd.setY((double)y);
