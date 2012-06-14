@@ -149,7 +149,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 			
 			//start the music
 			if (!RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE)) {
-				playMusic(discInHand.getUrl(), location);
+				playMusic(discInHand.getUrl(), location, RPNeedle.getById(rpdata.getNeedleType()));
 			}
 			
 			//Sound sound = new Sound("disc_load.wav");
@@ -218,7 +218,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			
 			if (!RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE)) {
-				stopMusic(location);
+				stopMusic(world.getBlockAt(x, y, z).getLocation(), RPNeedle.getById(rpdata.getNeedleType()));
 			}
 			
 			Sound sound;
@@ -295,7 +295,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 				Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
 			} else {
 				Location location = new Location(world, (double)x, (double)y, (double)z);
-				playMusic(discData.getUrl(), location);
+				playMusic(discData.getUrl(), location, RPNeedle.getById(rpd.getNeedleType()));
 			}
 		}
 	}
@@ -411,7 +411,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 				}
 				
 				//just in case there was a disc
-				stopMusic(location);
+				stopMusic(location, RPNeedle.getById(rpd.getNeedleType()));
 			}
 		}
 		
@@ -432,22 +432,24 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 		return 10;
 	}
 	
-	public int getRange(Location location) {
+	public int getRange(Location location, RPNeedle needle) {
 		
 		int range = getRange();
 		HashMap<BlockFace,Speaker> blocks = getConnectedBlocks(location);
 		
 		if (blocks.size() == 1) {
-			return range + 20;
+			range = range + 20;
+		} else if (blocks.size() > 1) {
+			range = range + 40;
 		}
-		if (blocks.size() > 1) {
-			return range + 40;
-		}
+		
+		Debug.debug("Needle modifier is: ", needle.rangeModifier());
+		range = range + ((int)Math.floor((double)range * needle.rangeModifier()));
 		
 		return range;
 	}
 	
-	public void playMusic(String url, Location location) {
+	public void playMusic(String url, Location location, RPNeedle needle) {
 		
 		url = JukeBukkit.finishIncompleteURL(url);
 		
@@ -456,7 +458,8 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 		particle.setGravity(1F);
 		particle.spawn();
 		
-		int range = getRange(location);
+		int range = getRange(location, needle);
+		Debug.debug("Playing audio with range: ", range);
 		
 		//Bukkit.getLogger().log(Level.INFO, "RANGE: " + String.valueOf(range));
 		
@@ -488,8 +491,9 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 		
 	}
 	
-	public void stopMusic(Location location) {
-		int range = getRange(location);
+	public void stopMusic(Location location, RPNeedle needle) {
+		int range = getRange(location, needle);
+		Debug.debug("Stopping audio with range: ", range);
 		//get players in radius of the jukebox and start it for only those players
 		for(Player p:location.getWorld().getPlayers()) {
 			double distance = location.toVector().distance(p.getLocation().toVector());
