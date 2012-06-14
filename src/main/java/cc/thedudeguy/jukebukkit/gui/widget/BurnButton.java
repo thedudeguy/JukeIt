@@ -16,6 +16,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
+import cc.thedudeguy.jukebukkit.materials.Items;
 import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 
@@ -143,6 +144,7 @@ public class BurnButton extends GenericButton {
       	
       	//create the physical disc for the pplayer
     	BurnedDisc disc = new BurnedDisc(discData);
+    	Items.burnedDiscs.put(key, disc);
     	ItemStack iss = new SpoutItemStack(disc, 1);
     	
     	location.setY(location.getY()+1);

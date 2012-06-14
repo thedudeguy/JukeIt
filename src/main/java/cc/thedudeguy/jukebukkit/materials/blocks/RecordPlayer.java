@@ -203,23 +203,12 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 		
 		if ( rpdata.hasDisc() ) {
 			
-			//Bukkit.getLogger().log(Level.INFO, "Ejecting Disc");
-			
-			//get disc.
-			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
-					.where()
-						.ieq("nameKey", rpdata.getDiscKey())
-					.findUnique();
-			if (discData == null) {
-				Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
-			} else {
-				//create disc to spawn
-				BurnedDisc disc = new BurnedDisc(discData);
-				ItemStack iss = new SpoutItemStack(disc, 1);
-				Location spawnLoc = location;
-				spawnLoc.setY(spawnLoc.getY()+1);
-				spawnLoc.getWorld().dropItem(spawnLoc, iss);
-			}
+			//get and eject disc
+			BurnedDisc b = Items.burnedDiscs.get(rpdata.getDiscKey());
+			ItemStack iss = new SpoutItemStack(b, 1);
+			Location spawnLoc = location;
+			spawnLoc.setY(spawnLoc.getY()+1);
+			spawnLoc.getWorld().dropItem(spawnLoc, iss);
 			
 			rpdata.setDiscKey(null);
 			JukeBukkit.instance.getDatabase().save(rpdata);

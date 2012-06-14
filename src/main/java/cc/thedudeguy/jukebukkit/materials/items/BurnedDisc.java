@@ -11,6 +11,8 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
+import cc.thedudeguy.jukebukkit.util.Debug;
+import cc.thedudeguy.jukebukkit.util.ResourceManager;
 
 public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	
@@ -56,6 +58,8 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 		this.setColor(discData.getColor());
 		this.setLabel(discData.getLabel());
 		
+		Debug.debug("BurnedDisc:Construct - ", "id=", discData.getNameKey());
+		
 		key = discData.getNameKey();
 		url = discData.getUrl();
 	}
@@ -85,11 +89,16 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	public void setColor(int color) {
 		this.color = color;
 		
+		Debug.debug("BurnedDisc:setColor - ", "id=",color," image=",discColorTextureMap.get(color) );
+		
 		if (discColorTextureMap.containsKey(color)) {
 			setTexture(discColorTextureMap.get(color));
 		} else {
 			setTexture(discColorTextureMap.get(DiscColor.WHITE));
 		}
+		
+		//temporary fix for texture issue with spout
+		ResourceManager.cacheSingle("textures", discColorTextureMap.get(color));
 	}
 	
 	public void setLabel(String label) {

@@ -1,5 +1,6 @@
 package cc.thedudeguy.jukebukkit.materials;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -53,6 +54,7 @@ public class Items {
 	public static BlankDiscYellow blankDiscYellow;
 	
 	public static BurnedDisc burnedDisc;
+	public static HashMap<String, BurnedDisc> burnedDiscs;
 	public static DiscLabel discLabel;
 	
 	public static SpeakerWire speakerWire;
@@ -89,13 +91,15 @@ public class Items {
 		discLabel = new DiscLabel();
 		
 		//initialize burned discs
+		burnedDiscs = new HashMap<String, BurnedDisc>();
 		List<DiscData> discDataList = JukeBukkit.instance.getDatabase().find(DiscData.class).findList();
 		if (discDataList.isEmpty()) {
 			 Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] No Burned Discs to load.");
 		} else {
 			int count = 0;
 			for (DiscData discData : discDataList) {
-				new BurnedDisc(discData);
+				BurnedDisc d = new BurnedDisc(discData);
+				burnedDiscs.put(d.getKey(), d);
 				count++;
 			}
 			Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Initialized "+ String.valueOf(count) +" Burned Discs.");

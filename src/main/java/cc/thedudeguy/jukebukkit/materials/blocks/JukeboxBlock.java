@@ -24,6 +24,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
+import cc.thedudeguy.jukebukkit.materials.Items;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.util.Debug;
@@ -182,22 +183,13 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 		}
 		
 		if (rpdata.hasDisc()) {
-			
-			//get disc.
-			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
-					.where()
-						.ieq("nameKey", rpdata.getDiscKey())
-					.findUnique();
-			if (discData == null) {
-				Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
-			} else {
-				//create disc to spawn
-				BurnedDisc disc = new BurnedDisc(discData);
-				ItemStack iss = new SpoutItemStack(disc, 1);
-				Location spawnLoc = location;
-				spawnLoc.setY(spawnLoc.getY()+1);
-				spawnLoc.getWorld().dropItem(spawnLoc, iss);
-			}
+
+			//get and eject disc.
+			BurnedDisc b = Items.burnedDiscs.get(rpdata.getDiscKey());
+			ItemStack iss = new SpoutItemStack(b, 1);
+			Location spawnLoc = location;
+			spawnLoc.setY(spawnLoc.getY()+1);
+			spawnLoc.getWorld().dropItem(spawnLoc, iss);
 			
 			rpdata.setDiscKey(null);
 			JukeBukkit.instance.getDatabase().save(rpdata);

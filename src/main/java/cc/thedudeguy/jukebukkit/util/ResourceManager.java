@@ -154,6 +154,10 @@ public class ResourceManager {
 		}
 	}
 	
+	public static void cacheSingle(String folder, String file) {
+		SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File(folder, file).getPath()));
+	}
+	
 	public static void resetCache() {
 		clearCache();
 		addCache();
