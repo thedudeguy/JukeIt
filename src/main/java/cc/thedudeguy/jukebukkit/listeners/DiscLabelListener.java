@@ -70,7 +70,8 @@ public class DiscLabelListener implements Listener {
 			ItemStack newLabel = new SpoutItemStack(new DiscLabel(labelData));
 			
 			event.getPlayer().openScreen(ScreenType.PLAYER_INVENTORY);
-			event.getPlayer().setItemOnCursor(newLabel);
+			event.getPlayer().getOpenInventory().setCursor(newLabel);
+			
 	    }
 	}
 	
