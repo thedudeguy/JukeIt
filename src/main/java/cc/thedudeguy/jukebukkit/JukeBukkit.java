@@ -34,7 +34,6 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.LabelData;
-import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.listeners.DiscLabelListener;
 import cc.thedudeguy.jukebukkit.listeners.SpeakerWireListener;
@@ -148,7 +147,6 @@ public class JukeBukkit extends JavaPlugin {
 	 */
 	private void setupDatabase() {
 		try {
-            getDatabase().find(RecordPlayerBlockDesigns.class).findRowCount();
             getDatabase().find(RecordPlayerData.class).findRowCount();
             getDatabase().find(DiscData.class).findRowCount();
             getDatabase().find(LabelData.class).findRowCount();
@@ -161,7 +159,6 @@ public class JukeBukkit extends JavaPlugin {
 	@Override	
 	public List<Class<?>> getDatabaseClasses() {
 		List<Class<?>> list = new ArrayList<Class<?>>();
-	    list.add(RecordPlayerBlockDesigns.class);
 	    list.add(RecordPlayerData.class);
 	    list.add(DiscData.class);
 	    list.add(LabelData.class);

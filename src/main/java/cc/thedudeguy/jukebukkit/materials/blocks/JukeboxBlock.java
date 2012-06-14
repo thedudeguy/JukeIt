@@ -24,7 +24,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
-import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Sound;
@@ -264,7 +264,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 				.findUnique();
 		if (rpd == null) {
 			rpd = new RecordPlayerData();
-			rpd.setNeedleType(RecordPlayerDesign.NEEDLE_NONE);
+			rpd.setNeedleType(RPNeedle.NONE.id());
 			rpd.setDiscKey(null);
 			rpd.setX((double)x);
 			rpd.setY((double)y);

@@ -25,8 +25,10 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
-import cc.thedudeguy.jukebukkit.database.RecordPlayerBlockDesigns;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPDisc;
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPIndicator;
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.materials.items.Items;
@@ -38,53 +40,34 @@ import cc.thedudeguy.jukebukkit.util.Sound;
 
 public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 	
-	public static RecordPlayer getSubBlock(int needle, int discColor, int indicator) {
+	public static HashMap<String, Integer> designIds = new HashMap<String, Integer>();
+	
+	public RecordPlayer() {
+		super(JukeBukkit.instance, "Record Player", 5);
 		
-		Debug.debug("Getting SubBlock");
-		
-		int color = RecordPlayerDesign.DISC_NONE;
-		
-		if (RecordPlayerDesign.discColorToTextureMap.containsKey(discColor)) {
-			color = RecordPlayerDesign.discColorToTextureMap.get(discColor);
-		}
-		
-		RecordPlayerDesign rpDesign = new RecordPlayerDesign(needle, color, indicator);
-		
-		//if weve already save the block, or its been initialized, send that one, otherwise
-		//we need to create it anew, save it to the db, and add it to the hashmap.
-		if (Blocks.subBlocks.containsKey(rpDesign.getDesignTypeId())) {
-			
-			return Blocks.subBlocks.get(rpDesign.getDesignTypeId());
-			
-		} else {
-			
-			RecordPlayerSubBlock newSubBlock = new RecordPlayerSubBlock(rpDesign);
-			Blocks.subBlocks.put(rpDesign.getDesignTypeId(), newSubBlock);
-			//save the combo to the db if it doesnt already exist.
-			RecordPlayerBlockDesigns rpbd = JukeBukkit.instance.getDatabase().find(RecordPlayerBlockDesigns.class)
-					.where()
-						.eq("needle", rpDesign.getNeedle())
-						.eq("disc", rpDesign.getDisc())
-						.eq("indicator", rpDesign.getIndicator())
-					.findUnique();
-			if (rpbd == null) {
-				rpbd = new RecordPlayerBlockDesigns();
-				rpbd.setDisc(rpDesign.getDisc());
-				rpbd.setNeedle(rpDesign.getNeedle());
-				rpbd.setIndicator(rpDesign.getIndicator());
-				JukeBukkit.instance.getDatabase().save(rpbd);
+		//load custom designs.
+		int n = 0;
+		for (RPDisc disc : RPDisc.values()) {
+			for (RPNeedle needle : RPNeedle.values()) {
+				for (RPIndicator indicator : RPIndicator.values()) {
+					RecordPlayerDesign d = new RecordPlayerDesign(needle, disc, indicator);
+					designIds.put(d.getDesignTypeId(), n);
+					this.setBlockDesign(d, n);
+					n++;
+				}
 			}
-			
-			return newSubBlock;
 		}
-		
 	}
 	
 	public static void updateBlockDesign(SpoutBlock block, RecordPlayerData data) {
 		
 		Debug.debug("Updating Block Design");
 		
-		int color;
+		RPDisc disc;
+		RPIndicator indicator;
+		RPNeedle needle;
+		
+		//get disc info
 		if (data.hasDisc()) {
 			//get the disc color.
 			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
@@ -93,50 +76,32 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 					.findUnique();
 			if (discData == null) {
 				Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
-				color = RecordPlayerDesign.DISC_NONE;
+				disc = RPDisc.NONE;
 			} else {
-				color = discData.getColor();
+				disc = RPDisc.getByColor(discData.getColor());
 			}
 		} else {
-			color = RecordPlayerDesign.DISC_NONE;
+			disc = RPDisc.NONE;
 		}
 		
-		int indicator;
-		if (data.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE && color != RecordPlayerDesign.DISC_NONE)
+		//get indicator info
+		if (!RPNeedle.getById(data.getNeedleType()).equals(RPNeedle.NONE) && !disc.equals(RPDisc.NONE))
 		{
-			indicator = RecordPlayerDesign.INDICATOR_GREEN;
+			indicator = RPIndicator.GREEN;
 		} else {
-			indicator = RecordPlayerDesign.INDICATOR_RED;
+			indicator = RPIndicator.RED;
 		}
 		
-		RecordPlayer newBlock = getSubBlock(data.getNeedleType(), color, indicator);
+		//get needle info
+		needle = RPNeedle.getById(data.getNeedleType());
 		
-		if (newBlock != null)
-		{
-			block.setCustomBlock(getSubBlock(data.getNeedleType(), color, indicator));
-			Debug.debug("Block Replaced");
-		} else {
-			Debug.debug("Error :: GetSubBlock is null ??? ");
-		}
+		//get design id
+		String designName = RecordPlayerDesign.getDesignTypeId(needle, disc, indicator);
+		int designId = designIds.get(designName);
 		
+		SpoutManager.getMaterialManager().overrideBlock(block, Blocks.recordPlayer, (byte) designId);
 		
 	}
-	
-	public RecordPlayer() {
-		super(JukeBukkit.instance, "Record Player", 5);
-		
-		RecordPlayerDesign rpDesign = new RecordPlayerDesign();
-		this.setBlockDesign(rpDesign);
-		
-		//store this into the hashmap since it will always be the defaul
-		Blocks.subBlocks.put(rpDesign.getDesignTypeId(), this);
-		
-	}
-	
-	public RecordPlayer(String nameId) {
-		super(JukeBukkit.instance, nameId, 5);
-	}
-	
 	
 	/**
 	 * Event fired when a player right clicks on a block.
@@ -181,7 +146,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 			}
 			
 			//start the music
-			if (rpdata.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE) {
+			if (!RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE)) {
 				playMusic(discInHand.getUrl(), location);
 			}
 			
@@ -205,11 +170,11 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 			
 		}
 		
-		if ( rpdata.getNeedleType() == RecordPlayerDesign.NEEDLE_NONE && inHand.isCustomItem() && inHand.getMaterial() instanceof Needle ) {
+		if ( RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE) && inHand.isCustomItem() && inHand.getMaterial() instanceof Needle ) {
 			
 			//Bukkit.getLogger().log(Level.INFO, "Inserting Needle");
 			
-			rpdata.setNeedleType(RecordPlayerDesign.NEEDLE_WOOD_FLINT);
+			rpdata.setNeedleType(RPNeedle.WOOD_FLINT.id());
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			
 			 //remove 1 from hand
@@ -258,7 +223,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 			rpdata.setDiscKey(null);
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			
-			if (rpdata.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE) {
+			if (!RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE)) {
 				stopMusic(location);
 			}
 			
@@ -277,11 +242,11 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 			return true;
 		}
 		
-		if ( rpdata.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE ) {
+		if ( !RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE)) {
 			
 			//Bukkit.getLogger().log(Level.INFO, "Ejecting Needle");
 			
-			rpdata.setNeedleType(RecordPlayerDesign.NEEDLE_NONE);
+			rpdata.setNeedleType(RPNeedle.NONE.id());
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			Location spawnLoc = location;
 			spawnLoc.setY(spawnLoc.getY()+1);
@@ -325,7 +290,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 			JukeBukkit.instance.getDatabase().save(rpd);
 		}
 		
-		if (rpd.hasDisc() && rpd.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE) {
+		if (rpd.hasDisc() && !RPNeedle.getById(rpd.getNeedleType()).equals(RPNeedle.NONE)) {
 			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
 					.where()
 						.ieq("nameKey", rpd.getDiscKey())
@@ -430,7 +395,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 					.ieq("worldName", world.getName())
 				.findUnique();
 		if (rpd != null) {
-			if (rpd.getNeedleType() != RecordPlayerDesign.NEEDLE_NONE) {
+			if (!RPNeedle.getById(rpd.getNeedleType()).equals(RPNeedle.NONE)) {
 				world.dropItem(spawnLoc, new SpoutItemStack(Items.needle, 1));
 			}
 			

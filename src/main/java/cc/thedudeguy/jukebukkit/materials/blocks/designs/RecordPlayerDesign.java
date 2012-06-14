@@ -1,79 +1,25 @@
 package cc.thedudeguy.jukebukkit.materials.blocks.designs;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.getspout.spoutapi.block.design.GenericBlockDesign;
 import org.getspout.spoutapi.block.design.Quad;
 import org.getspout.spoutapi.block.design.SubTexture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.Blocks;
-import cc.thedudeguy.jukebukkit.materials.items.DiscColor;
 
 public class RecordPlayerDesign extends GenericBlockDesign {
 	
-	public static final int DISC_NONE 		= 0;
-	public static final int DISC_WHITE 		= 16;
-	public static final int DISC_RED 		= 17;
-	public static final int DISC_PURPLE 	= 18;
-	public static final int DISC_PINK 		= 19;
-	public static final int DISC_ORANGE 	= 20;
-	public static final int DISC_MAGENTA	= 21;
-	public static final int DISC_LIME 		= 22;
-	public static final int DISC_LGRAY 		= 23;
-	public static final int DISC_LBLUE 		= 24;
-	public static final int DISC_GREEN 		= 25;
-	public static final int DISC_GRAY 		= 26;
-	public static final int DISC_CYAN 		= 27;
-	public static final int DISC_BROWN 		= 28;
-	public static final int DISC_BLUE		= 29;
-	public static final int DISC_BLACK 		= 30;
-	public static final int DISC_YELLOW 	= 31;
-	
-	public static final int NEEDLE_NONE 		= 0;
-	public static final int NEEDLE_WOOD_FLINT 	= 32;
-	public static final int NEEDLE_BLAZE_FLINT = 33;
-	
-	public static final int INDICATOR_RED = 7;
-	public static final int INDICATOR_GREEN = 8;
-	
-	public static final Map<Integer, Integer> discColorToTextureMap;
-	static {
-		Map<Integer, Integer> dcttMap = new HashMap<Integer, Integer>();
-		dcttMap.put(DISC_NONE, 			DISC_NONE);
-		dcttMap.put(DiscColor.BLACK, 	DISC_BLACK);
-		dcttMap.put(DiscColor.RED, 		DISC_RED);
-		dcttMap.put(DiscColor.GREEN, 	DISC_GREEN);
-		dcttMap.put(DiscColor.BROWN, 	DISC_BROWN);
-		dcttMap.put(DiscColor.BLUE, 	DISC_BLUE);
-		dcttMap.put(DiscColor.PURPLE, 	DISC_PURPLE);
-		dcttMap.put(DiscColor.CYAN, 	DISC_CYAN);
-		dcttMap.put(DiscColor.LIGHTGRAY,DISC_LGRAY);
-		dcttMap.put(DiscColor.GRAY, 	DISC_GRAY);
-		dcttMap.put(DiscColor.PINK, 	DISC_PINK);
-		dcttMap.put(DiscColor.LIME, 	DISC_LIME);
-		dcttMap.put(DiscColor.YELLOW, 	DISC_YELLOW);
-		dcttMap.put(DiscColor.LIGHTBLUE,DISC_LBLUE);
-		dcttMap.put(DiscColor.MAGENTA, 	DISC_MAGENTA);
-		dcttMap.put(DiscColor.ORANGE, 	DISC_ORANGE);
-		dcttMap.put(DiscColor.WHITE, 	DISC_WHITE);
-		discColorToTextureMap = Collections.unmodifiableMap(dcttMap);
-	}
-	
-	private int discColor;
-	private int needleType;
-	private int indicatorColor;
+	private RPDisc disc;
+	private RPNeedle needle;
+	private RPIndicator indicator;
 	
 	public RecordPlayerDesign() {
-		this(NEEDLE_NONE, DISC_NONE, INDICATOR_RED);
+		this(RPNeedle.NONE, RPDisc.NONE, RPIndicator.RED);
 	}
-	public RecordPlayerDesign(int needle, int disc, int indicator) {
-		
-		discColor = disc;
-		needleType = needle;
-		indicatorColor = indicator;
+	public RecordPlayerDesign(RPNeedle needle, RPDisc disc, RPIndicator indicator) {
+		this.disc = disc;
+		this.needle = needle;
+		this.indicator = indicator;
 		
 		setTexture(JukeBukkit.instance, Blocks.recordPlayerTexture);
 		setMinBrightness(1.0F);
@@ -87,9 +33,9 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		SubTexture insideEdge2 = getTexture().getSubTexture(5);
 		SubTexture needleBase = getTexture().getSubTexture(6);
 		
-		SubTexture indicatorST = getTexture().getSubTexture(indicatorColor);
-		SubTexture recordST = getTexture().getSubTexture(discColor);
-		SubTexture needleST = getTexture().getSubTexture(needleType);
+		SubTexture indicatorST = getTexture().getSubTexture(indicator.textureId());
+		SubTexture recordST = getTexture().getSubTexture(disc.textureId());
+		SubTexture needleST = getTexture().getSubTexture(needle.textureId());
 		
 		setBoundingBox(0, 0, 0, 1, 1, 1);
 		setQuadNumber(26);
@@ -304,7 +250,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		
 		// RECORD.
 		
-		if (discColor != DISC_NONE) {
+		if (!disc.equals(RPDisc.NONE)) {
 			
 			Quad record = new Quad(25, recordST);
 			record.addVertex(0, 1F, 0.9675F, 0F);
@@ -316,9 +262,9 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		}
 		
 		// NEEDLE
-		if (needleType != NEEDLE_NONE) {
+		if (!needle.equals(RPNeedle.NONE)) {
 			
-			if (discColor == DISC_NONE) {
+			if (disc.equals(RPDisc.NONE)) {
 				Quad needleQuad = new Quad(24, needleST);
 				needleQuad.addVertex(2, 0.8125F, 1F, 0.75F);
 				needleQuad.addVertex(3, 0.3125F, 1F, 0.75F);
@@ -340,21 +286,24 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		}
 	}
 	
-	public int getIndicator() {
-		return indicatorColor;
+	public RPIndicator getIndicator() {
+		return indicator;
 	}
 	
-	public int getDisc() {
-		return discColor;
+	public RPDisc getDisc() {
+		return disc;
 	}
 	
-	public int getNeedle() {
-		return needleType;
+	public RPNeedle getNeedle() {
+		return needle;
 	}
 	
 	public String getDesignTypeId()
 	{
-		return "jb_" + String.valueOf(needleType) + "_" + String.valueOf(discColor) + "_" + String.valueOf(indicatorColor);
+		return String.valueOf(needle.id()) + "_" + String.valueOf(disc.id()) + "_" + String.valueOf(indicator.id());
 	}
 	
+	public static String getDesignTypeId(RPNeedle needle, RPDisc disc, RPIndicator indicator) {
+		return String.valueOf(needle.id()) + "_" + String.valueOf(disc.id()) + "_" + String.valueOf(indicator.id());
+	}
 }
