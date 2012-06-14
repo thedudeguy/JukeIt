@@ -100,7 +100,7 @@
 	</dependencies>
 	<properties>
 		<jettyVersion>7.2.0.v20101020</jettyVersion>
-		<bukkitVersion>1.2.5-R3.0</bukkitVersion>
+		<bukkitVersion>1.2.5-R4.0</bukkitVersion>
 		<spoutVersion>dev-SNAPSHOT</spoutVersion>
 	</properties>
 </project>

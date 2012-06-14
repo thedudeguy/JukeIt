@@ -79,7 +79,7 @@ public class CommandHandler implements CommandExecutor {
 		sender.sendMessage("========");
 		sender.sendMessage("version - Version Info");
 		sender.sendMessage("help    - Show help");
-		sender.sendMessage("recache - Can sometimes fix problems with textures.");
+		sender.sendMessage("resetcache - Can sometimes fix problems with textures.");
 		return true;
 	}
 	
