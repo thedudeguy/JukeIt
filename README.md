@@ -45,8 +45,8 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 *Important If you plan to use the Web Server*
 
 * After restarted, you *must* edit the config.yml for JukeBukkit.
-* Set the serverHost config option to your server's Domain name, or IP Address, that your user's use to connect to your server.
-* Make sure to set the webServerPort to an open port on your server, and the appropriate packet forwarding has been established so that users can connect to the webServer.
+* Set the minecraftServerHostname config option to your server's Domain name, or IP Address, that your user's use to connect to your server.
+* Make sure to set the webServerPort to an open port on your server, and the appropriate port forwarding has been established so that users can connect to the webServer.
 * Restart Server 
 
 ## Support
