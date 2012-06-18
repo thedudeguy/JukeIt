@@ -15,6 +15,7 @@ import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.widget.BurnButton;
 import cc.thedudeguy.jukebukkit.gui.widget.CloseButton;
 import cc.thedudeguy.jukebukkit.gui.widget.CustomURLButton;
+import cc.thedudeguy.jukebukkit.gui.widget.RepoListButton;
 import cc.thedudeguy.jukebukkit.gui.widget.ServerMusicList;
 
 /**
@@ -83,15 +84,13 @@ public class BurnSelector extends GenericPopup {
 		urlbutton.setPriority(RenderPriority.Lowest);
 		
 		//switch to repo mode
-		/*
 		RepoListButton repobutton = new RepoListButton(block);
 		repobutton.setX(275).setY(195);
 		repobutton.setWidth(60).setHeight(20);
 		repobutton.setPriority(RenderPriority.Lowest);
-		*/
 		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, list);
+		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, list, repobutton);
 		
 		if (JukeBukkit.instance.getConfig().getBoolean("allowExternalURLs")) {
 			this.attachWidget(JukeBukkit.instance, urlbutton);
