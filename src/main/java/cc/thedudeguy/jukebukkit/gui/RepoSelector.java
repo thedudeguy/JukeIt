@@ -12,19 +12,18 @@ import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.gui.widget.BurnButton;
 import cc.thedudeguy.jukebukkit.gui.widget.CloseButton;
-import cc.thedudeguy.jukebukkit.gui.widget.CustomURLButton;
-import cc.thedudeguy.jukebukkit.gui.widget.RepoListButton;
-import cc.thedudeguy.jukebukkit.gui.widget.ServerMusicList;
+import cc.thedudeguy.jukebukkit.gui.widget.RepoBurnButton;
+import cc.thedudeguy.jukebukkit.gui.widget.RepoMusicList;
+import cc.thedudeguy.jukebukkit.gui.widget.ServerListButton;
 
 /**
  * This class is based off of WindWakers class in TextureMe.
  *
  */
-public class BurnSelector extends GenericPopup {
+public class RepoSelector extends GenericPopup {
 	
-	public BurnSelector(Player player, Block block) {
+	public RepoSelector(Player player, Block block) {
 		
 		if (
 				!JukeBukkit.instance.getConfig().getBoolean("enableWebServer") || 
@@ -39,7 +38,7 @@ public class BurnSelector extends GenericPopup {
 			
 		
 		// Label
-		GenericLabel label = new GenericLabel("Burn Choices");
+		GenericLabel label = new GenericLabel("Music Repository");
 		label.setX(175).setY(25);
 		label.setPriority(RenderPriority.Lowest);
 		label.setWidth(-1).setHeight(-1);
@@ -59,7 +58,7 @@ public class BurnSelector extends GenericPopup {
 		gradient.setPriority(RenderPriority.Highest);
 		
 		// Texture list
-		GenericListWidget list = new ServerMusicList();
+		GenericListWidget list = new RepoMusicList();
 		list.setX(90).setY(50);
 		list.setWidth(250).setHeight(125);
 		list.setPriority(RenderPriority.Lowest);
@@ -71,26 +70,20 @@ public class BurnSelector extends GenericPopup {
 		close.setPriority(RenderPriority.Lowest);
 		
 		// Select button
-		BurnButton burnButton = new BurnButton(list, block);
+		RepoBurnButton burnButton = new RepoBurnButton(list, block);
 		burnButton.setX(95).setY(195);
 		burnButton.setWidth(60).setHeight(20);
 		burnButton.setPriority(RenderPriority.Lowest);
 		
 		
 		// switch to custom URL
-		CustomURLButton urlbutton = new CustomURLButton(block);
+		ServerListButton urlbutton = new ServerListButton(block);
 		urlbutton.setX(215).setY(195);
 		urlbutton.setWidth(60).setHeight(20);
 		urlbutton.setPriority(RenderPriority.Lowest);
 		
-		//switch to repo mode
-		RepoListButton repobutton = new RepoListButton(block);
-		repobutton.setX(275).setY(195);
-		repobutton.setWidth(60).setHeight(20);
-		repobutton.setPriority(RenderPriority.Lowest);
-		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, list, repobutton);
+		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, list);
 		
 		if (JukeBukkit.instance.getConfig().getBoolean("allowExternalURLs")) {
 			this.attachWidget(JukeBukkit.instance, urlbutton);

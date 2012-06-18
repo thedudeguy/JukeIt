@@ -66,6 +66,10 @@
             						<pattern>freemarker</pattern>
             						<shadedPattern>cc.thedudeguy.freemarker</shadedPattern>
             					</relocation>
+            					<relocation>
+            						<pattern>us.monoid</pattern>
+            						<shadedPattern>cc.thedudeguy.monoid</shadedPattern>
+            					</relocation>
             				</relocations>
             			</configuration>
           			</execution>
@@ -100,10 +104,16 @@
   			<!-- Latest 2.3.x (not 2.4.x), at least 2.3.19 -->
   			<version>[2.3.19,2.4)</version>
 		</dependency>
+		<dependency>
+    		<groupId>us.monoid.web</groupId>
+    		<artifactId>resty</artifactId>
+    		<version>${restyVersion}</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<jettyVersion>7.2.0.v20101020</jettyVersion>
 		<bukkitVersion>1.2.5-R4.0</bukkitVersion>
 		<spoutVersion>dev-SNAPSHOT</spoutVersion>
+		<restyVersion>0.3.1</restyVersion>
 	</properties>
 </project>
