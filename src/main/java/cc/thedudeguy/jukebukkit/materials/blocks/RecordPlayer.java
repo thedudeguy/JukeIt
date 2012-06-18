@@ -392,7 +392,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 				.findUnique();
 		if (rpd != null) {
 			if (!RPNeedle.getById(rpd.getNeedleType()).equals(RPNeedle.NONE)) {
-				world.dropItem(spawnLoc, new SpoutItemStack(Items.woodflintNeedle, 1));
+				world.dropItem(spawnLoc, new SpoutItemStack(RPNeedle.getById(rpd.getNeedleType()).getItem(), 1));
 			}
 			
 			if (rpd.hasDisc()) {
