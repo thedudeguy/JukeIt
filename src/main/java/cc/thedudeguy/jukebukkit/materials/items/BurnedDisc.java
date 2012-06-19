@@ -1,5 +1,6 @@
 package cc.thedudeguy.jukebukkit.materials.items;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,13 +92,10 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 		//Debug.debug("BurnedDisc:setColor - ", "id=",color," image=",discColorTextureMap.get(color) );
 		
 		if (discColorTextureMap.containsKey(color)) {
-			setTexture(discColorTextureMap.get(color));
+			setTexture(new File(JukeBukkit.instance.getDataFolder(), new File("textures", discColorTextureMap.get(color)).getPath()));
 		} else {
-			setTexture(discColorTextureMap.get(DiscColor.WHITE));
+			setTexture(new File(JukeBukkit.instance.getDataFolder(), new File("textures", discColorTextureMap.get(DiscColor.WHITE)).getPath()));
 		}
-		
-		//temporary fix for texture issue with spout
-		ResourceManager.cacheSingle("textures", discColorTextureMap.get(color));
 	}
 	
 	public void setLabel(String label) {

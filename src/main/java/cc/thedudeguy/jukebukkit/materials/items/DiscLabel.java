@@ -1,5 +1,7 @@
 package cc.thedudeguy.jukebukkit.materials.items;
 
+import java.io.File;
+
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
@@ -21,12 +23,9 @@ public class DiscLabel extends GenericCustomItem {
 	
 	public DiscLabel(LabelData labelData) {
 		super(JukeBukkit.instance, labelData.getNameKey());
-		setTexture("label.png");
+		setTexture(new File(JukeBukkit.instance.getDataFolder(), new File("textures", "label.png").getPath()));
 		setLabel(labelData.getLabel());
 		key = labelData.getNameKey();
-		
-		//temporary fix for texture issue with spout
-		ResourceManager.cacheSingle("textures", "label.png");
 	}
 	
 	public String getKey() {

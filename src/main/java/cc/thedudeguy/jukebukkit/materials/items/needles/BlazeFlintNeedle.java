@@ -1,5 +1,7 @@
 package cc.thedudeguy.jukebukkit.materials.items.needles;
 
+import java.io.File;
+
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
@@ -9,7 +11,7 @@ public class BlazeFlintNeedle extends GenericCustomItem implements Needle {
 
 	public BlazeFlintNeedle() {
 		super(JukeBukkit.instance, "Blaze Needle");
-		this.setTexture("needle_blaze-flint.png");
+		setTexture(new File(JukeBukkit.instance.getDataFolder(), new File("textures", "needle_blaze-flint.png").getPath()));
 	}
 
 	@Override

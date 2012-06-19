@@ -1,5 +1,7 @@
 package cc.thedudeguy.jukebukkit.materials.items.needles;
 
+import java.io.File;
+
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
@@ -9,7 +11,7 @@ public class WoodFlintNeedle extends GenericCustomItem implements Needle {
 
 	public WoodFlintNeedle() {
 		super(JukeBukkit.instance, "Simple Needle");
-		this.setTexture("needle_stick-flint.png");
+		setTexture(new File(JukeBukkit.instance.getDataFolder(), new File("textures", "needle_stick-flint.png").getPath()));
 	}
 
 	@Override
