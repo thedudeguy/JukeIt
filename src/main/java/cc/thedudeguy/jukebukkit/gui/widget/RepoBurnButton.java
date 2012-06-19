@@ -34,6 +34,7 @@ public class RepoBurnButton extends GenericButton {
 		Location location = block.getLocation();
 		
 		String url = null;
+		String label = "";
 		
 		if (list.getSelectedItem() == null || list.getSelectedItem().getTitle().isEmpty()) {
 			event.getPlayer().sendMessage("No selection made");
@@ -52,7 +53,7 @@ public class RepoBurnButton extends GenericButton {
 		}
 		*/
 		url = ((RepoSongItem)list.getSelectedItem()).getURL();
-				
+		label = ((RepoSongItem)list.getSelectedItem()).getTitle() + " " + ((RepoSongItem)list.getSelectedItem()).getText();
 		if (url == null || url.equalsIgnoreCase(""))
 		{
 			event.getPlayer().sendMessage("An Error Occurred");
@@ -101,7 +102,7 @@ public class RepoBurnButton extends GenericButton {
       		if (discData == null) discData = new DiscData();
       		discData.setNameKey(key);
       		discData.setUrl(url);
-      		discData.setLabel("");
+      		discData.setLabel(label);
       		discData.setColor(color);
       		JukeBukkit.instance.getDatabase().save(discData);
       	
