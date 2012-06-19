@@ -12,21 +12,6 @@ import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxMidRange;
 import cc.thedudeguy.jukebukkit.materials.blocks.RecordPlayer;
 import cc.thedudeguy.jukebukkit.materials.blocks.Speaker;
 import cc.thedudeguy.jukebukkit.materials.blocks.SpeakerWireBlock;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireEastDown;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireEastSouth;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireEastUp;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireEastWest;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireNorthDown;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireNorthEast;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireNorthSouth;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireNorthUp;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireSouthDown;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireSouthUp;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireSouthWest;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireUpDown;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireWestDown;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireWestNorth;
-import cc.thedudeguy.jukebukkit.materials.blocks.speakerwire.SpeakerWireWestUp;
 
 
 public class Blocks {
@@ -46,25 +31,7 @@ public class Blocks {
 	
 	public static Speaker speaker;
 	
-	public static SpeakerWireBlock speakerWireBlockEastWest;
-	public static SpeakerWireBlock speakerWireBlockNorthSouth;
-	
-	public static SpeakerWireBlock speakerWireBlockNorthEast;
-	public static SpeakerWireBlock speakerWireBlockEastSouth;
-	public static SpeakerWireBlock speakerWireBlockSouthWest;
-	public static SpeakerWireBlock speakerWireBlockWestNorth;
-	
-	public static SpeakerWireBlock speakerWireBlockUpDown;
-	
-	public static SpeakerWireBlock speakerWireBlockEastUp;
-	public static SpeakerWireBlock speakerWireBlockWestUp;
-	public static SpeakerWireBlock speakerWireBlockNorthUp;
-	public static SpeakerWireBlock speakerWireBlockSouthUp;
-	
-	public static SpeakerWireBlock speakerWireBlockEastDown;
-	public static SpeakerWireBlock speakerWireBlockWestDown;
-	public static SpeakerWireBlock speakerWireBlockNorthDown;
-	public static SpeakerWireBlock speakerWireBlockSouthDown;
+	public static SpeakerWireBlock speakerWireBlock;
 	
 	public Blocks() {
 		
@@ -80,26 +47,7 @@ public class Blocks {
 		
 		speaker = new Speaker();
 		
-		speakerWireBlockEastWest = new SpeakerWireEastWest();
-		speakerWireBlockNorthSouth = new SpeakerWireNorthSouth();
-		
-		speakerWireBlockNorthEast = new SpeakerWireNorthEast();
-		speakerWireBlockEastSouth = new SpeakerWireEastSouth();
-		speakerWireBlockSouthWest = new SpeakerWireSouthWest();
-		speakerWireBlockWestNorth = new SpeakerWireWestNorth();
-		
-		speakerWireBlockUpDown = new SpeakerWireUpDown();
-		
-		speakerWireBlockEastUp = new SpeakerWireEastUp();
-		speakerWireBlockWestUp = new SpeakerWireWestUp();
-		speakerWireBlockNorthUp = new SpeakerWireNorthUp();
-		speakerWireBlockSouthUp = new SpeakerWireSouthUp();
-		
-		speakerWireBlockEastDown = new SpeakerWireEastDown();
-		speakerWireBlockWestDown = new SpeakerWireWestDown();
-		speakerWireBlockNorthDown = new SpeakerWireNorthDown();
-		speakerWireBlockSouthDown = new SpeakerWireSouthDown();
-		
+		speakerWireBlock = new SpeakerWireBlock();
 	}
 	
 }

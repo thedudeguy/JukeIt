@@ -12,7 +12,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
-import cc.thedudeguy.jukebukkit.util.ResourceManager;
 
 public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	

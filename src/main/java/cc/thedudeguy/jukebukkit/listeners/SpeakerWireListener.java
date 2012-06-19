@@ -8,11 +8,13 @@ import java.util.Map.Entry;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 
 import cc.thedudeguy.jukebukkit.events.SpeakerWirePlaceEvent;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
 import cc.thedudeguy.jukebukkit.materials.blocks.SpeakerWireBlock;
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.WireData;
 import cc.thedudeguy.jukebukkit.util.Debug;
 
 public class SpeakerWireListener implements Listener {
@@ -28,6 +30,17 @@ public class SpeakerWireListener implements Listener {
 			SpoutBlock relBlock = (SpoutBlock)block.getRelative(face);
 			
 			if (relBlock.getCustomBlock() != null && relBlock.getCustomBlock() instanceof SpeakerWireBlock) {
+				Debug.debug("Block at ", face, " is speakerwireblock-new");
+				if ( ((SpeakerWireBlock)relBlock.getCustomBlock()).hasOpenEnd(relBlock) )
+				{
+					//if there is a maximum of 2, we dont need anymore, so go ahead and skip
+					if (wires.size() < 2) {
+						wires.put(face, relBlock);
+					}
+				}
+			}
+			/*
+			if (relBlock.getCustomBlock() != null && relBlock.getCustomBlock() instanceof SpeakerWireBlock) {
 				Debug.debug("Block at ", face, " is speakerwireblock");
 				
 				if ( ((SpeakerWireBlock)relBlock.getCustomBlock()).hasOpenEnd(relBlock) )
@@ -38,6 +51,7 @@ public class SpeakerWireListener implements Listener {
 					}
 				}
 			}
+			*/
 			
 		}
 		
@@ -75,66 +89,85 @@ public class SpeakerWireListener implements Listener {
 					availableWires.containsKey(BlockFace.EAST) ||
 					availableWires.containsKey(BlockFace.WEST)
 					) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockEastWest);
+				
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockEastWest);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("EASTtoWEST").getTypeId());
 			} else if (
 					availableWires.containsKey(BlockFace.NORTH) ||
 					availableWires.containsKey(BlockFace.SOUTH)
 					) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthSouth);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthSouth);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("NORTHtoSOUTH").getTypeId());
 			}
 			else if (
 					availableWires.containsKey(BlockFace.UP) ||
 					availableWires.containsKey(BlockFace.DOWN)
 					) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockUpDown);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockUpDown);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("UPtoDOWN").getTypeId());
 			}
 			break;
 		case 2:
 			//connecting to 2 wires
 			if (availableWires.containsKey(BlockFace.EAST) && availableWires.containsKey(BlockFace.WEST)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockEastWest);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockEastWest);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("EASTtoWEST").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.NORTH) && availableWires.containsKey(BlockFace.SOUTH)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthSouth);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthSouth);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("NORTHtoSOUTH").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.NORTH) && availableWires.containsKey(BlockFace.EAST)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthEast);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthEast);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("NORTHtoEAST").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.EAST) && availableWires.containsKey(BlockFace.SOUTH)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockEastSouth);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockEastSouth);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("EASTtoSOUTH").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.SOUTH) && availableWires.containsKey(BlockFace.WEST)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockSouthWest);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockSouthWest);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("SOUTHtoWEST").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.WEST) && availableWires.containsKey(BlockFace.NORTH)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockWestNorth);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockWestNorth);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("WESTtoNORTH").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.UP) && availableWires.containsKey(BlockFace.DOWN)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockUpDown);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockUpDown);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("UPtoDOWN").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.EAST) && availableWires.containsKey(BlockFace.UP)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockEastUp);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockEastUp);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("EASTtoUP").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.WEST) && availableWires.containsKey(BlockFace.UP)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockWestUp);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockWestUp);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("WESTtoUP").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.NORTH) && availableWires.containsKey(BlockFace.UP)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthUp);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthUp);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("NORTHtoUP").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.SOUTH) && availableWires.containsKey(BlockFace.UP)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockSouthUp);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockSouthUp);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("SOUTHtoUP").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.EAST) && availableWires.containsKey(BlockFace.DOWN)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockEastDown);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockEastDown);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("EASTtoDOWN").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.WEST) && availableWires.containsKey(BlockFace.DOWN)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockWestDown);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockWestDown);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("WESTtoDOWN").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.NORTH) && availableWires.containsKey(BlockFace.DOWN)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthDown);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockNorthDown);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("NORTHtoDOWN").getTypeId());
 				
 			} else if (availableWires.containsKey(BlockFace.SOUTH) && availableWires.containsKey(BlockFace.DOWN)) {
-				wireBlock.setCustomBlock(Blocks.speakerWireBlockSouthDown);
+				//wireBlock.setCustomBlock(Blocks.speakerWireBlockSouthDown);
+				SpoutManager.getMaterialManager().overrideBlock(wireBlock, Blocks.speakerWireBlock, (byte)WireData.valueOf("SOUTHtoDOWN").getTypeId());
 				
 			}
 			break;
@@ -151,9 +184,7 @@ public class SpeakerWireListener implements Listener {
 		Debug.debug(event.getPlayer(), "Surrounding Wires with open ends: ", wires.size());
 		Debug.debug(event.getPlayer(), "Placing Wire");
 		
-		
-		event.getBlock().setCustomBlock(Blocks.speakerWireBlockEastWest);
-		
+		event.getBlock().setCustomBlock(Blocks.speakerWireBlock);
 		setBlockType((SpoutBlock)event.getBlock(), wires);
 		
 		//do the same for the wipres we connected to.
@@ -173,5 +204,6 @@ public class SpeakerWireListener implements Listener {
 			setBlockType(item.getValue(), connectTo);
 			
 		}
+		
 	}
 }
