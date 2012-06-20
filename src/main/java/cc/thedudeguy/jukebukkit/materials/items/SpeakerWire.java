@@ -1,10 +1,14 @@
 package cc.thedudeguy.jukebukkit.materials.items;
 
+import java.io.File;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
+import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -16,7 +20,7 @@ public class SpeakerWire extends GenericCustomItem {
 	
 	public SpeakerWire() {
 		super(JukeBukkit.instance, "Speaker Wire");
-		this.setTexture("speakerwire.png");
+		setTexture(new File(JukeBukkit.instance.getDataFolder(), new File("textures", "speakerwire.png").getPath()));
 	}
 	
 	@Override
@@ -45,6 +49,12 @@ public class SpeakerWire extends GenericCustomItem {
 			
 		}
 		return false;
+	}
+	
+	public CustomItem setTexture(File texture) {
+		this.texture = texture.getName();
+		SpoutManager.getFileManager().addToCache(JukeBukkit.instance, texture);
+		return this;
 	}
 	
 }

@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -95,6 +97,13 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 		} else {
 			setTexture(new File(JukeBukkit.instance.getDataFolder(), new File("textures", discColorTextureMap.get(DiscColor.WHITE)).getPath()));
 		}
+		
+	}
+	
+	public CustomItem setTexture(File texture) {
+		this.texture = texture.getName();
+		SpoutManager.getFileManager().addToCache(JukeBukkit.instance, texture);
+		return this;
 	}
 	
 	public void setLabel(String label) {

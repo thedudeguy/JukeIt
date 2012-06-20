@@ -2,6 +2,8 @@ package cc.thedudeguy.jukebukkit.materials.items;
 
 import java.io.File;
 
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
@@ -41,4 +43,9 @@ public class DiscLabel extends GenericCustomItem {
 		setName("Disc Label ("+label+")");
 	}
 	
+	public CustomItem setTexture(File texture) {
+		this.texture = texture.getName();
+		SpoutManager.getFileManager().addToCache(JukeBukkit.instance, texture);
+		return this;
+	}
 }
