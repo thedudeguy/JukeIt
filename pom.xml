@@ -3,23 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cc.thedudeguy</groupId>
 	<artifactId>jukebukkit</artifactId>
-	<version>dev</version>
+	<version>dev-SNAPSHOT</version>
 	<name>JukeBukkit</name>
 	<repositories>
-		<repository>
-			<id>bukkit-repo</id>
-			<url>http://repo.bukkit.org/content/groups/public/</url>
-		</repository>
 		<repository>
 			<id>spout-repo</id>
 			<name>Spout API</name>
 			<url>http://repo.spout.org/</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>jetty-repo</id>
-			<name>Jetty</name>
-			<url>http://oss.sonatype.org/content/groups/jetty/</url>
 			<layout>default</layout>
 		</repository>
 	</repositories>
@@ -38,14 +28,6 @@
         		<groupId>org.apache.maven.plugins</groupId>
         		<artifactId>maven-shade-plugin</artifactId>
         		<version>1.6</version>
-        		<configuration>
-          			<artifactSet>
-          				<excludes>
-          					<exclude>org.bukkit:craftbukkit</exclude>
-          					<exclude>org.getspout:spoutplugin</exclude>
-          				</excludes>
-          			</artifactSet>
-        		</configuration>
         		<executions>
           			<execution>
             			<phase>package</phase>
@@ -82,11 +64,13 @@
 			<groupId>org.bukkit</groupId>
 			<artifactId>craftbukkit</artifactId>
 			<version>${bukkitVersion}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.getspout</groupId>
 			<artifactId>spoutplugin</artifactId>
 			<version>${spoutVersion}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
       		<groupId>org.eclipse.jetty</groupId>
