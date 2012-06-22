@@ -31,6 +31,14 @@ public class RepoBurnButton extends GenericButton {
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
 		
+		if (!event.getPlayer().hasPermission("jukebukkit.use.blankdisc")) {
+			event.getPlayer().sendMessage("You do not have permission to perform this action");
+			event.getPlayer().sendMessage("(jukebukkit.use.blankdisc)");
+			event.getPlayer().getMainScreen().getActivePopup().close();
+			event.setCancelled(true);
+			return;
+		}
+		
 		Location location = block.getLocation();
 		
 		String url = null;

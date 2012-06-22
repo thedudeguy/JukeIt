@@ -23,11 +23,6 @@ public class JukeboxMaxRange extends JukeboxBlock {
 	}
 	
 	@Override
-	public String getPermission() {
-		return "jukebukkit.player.max";
-	}
-	
-	@Override
 	public boolean canRedstoneActivate() {
 		return true;
 	}

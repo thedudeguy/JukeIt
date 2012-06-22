@@ -30,13 +30,15 @@ import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.BurnSelector;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
+import cc.thedudeguy.jukebukkit.permission.CraftPermission;
+import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 
 
 /**
  * The Prototype Disc Burner. Basic Custom Block in which I can expand with.
  * @author Chris Churchwell
  */
-public class DiscBurner extends GenericCustomBlock {
+public class DiscBurner extends GenericCustomBlock implements CraftPermissible {
 	
 	/**
 	 * Construct
@@ -64,6 +66,11 @@ public class DiscBurner extends GenericCustomBlock {
 			CustomItem customInHand = (CustomItem)new SpoutItemStack(inHand).getMaterial();
 			if (customInHand instanceof BlankDisc)
 			{
+				if (!player.hasPermission("jukebukkit.use.burner")) {
+					player.sendMessage("You do not have permission to perform this action.");
+					player.sendMessage("(jukebukkit.use.burner)");
+					return false;
+				}
 				player.getMainScreen().attachPopupScreen(new BurnSelector(player, world.getBlockAt(x, y, z)));
 				return true;
 			}
@@ -71,6 +78,11 @@ public class DiscBurner extends GenericCustomBlock {
 		
 		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_error.wav", false, location, 8);
 		return true;
+	}
+
+	@Override
+	public CraftPermission getPermission() {
+		return new CraftPermission("jukebukkit.craft.burner");
 	}
 	
 }

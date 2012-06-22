@@ -19,11 +19,6 @@ public class JukeboxBasic extends JukeboxBlock {
 	}
 	
 	@Override
-	public String getPermission() {
-		return "jukebukkit.player.basic";
-	}
-	
-	@Override
 	public boolean canRedstoneActivate() {
 		return true;
 	}

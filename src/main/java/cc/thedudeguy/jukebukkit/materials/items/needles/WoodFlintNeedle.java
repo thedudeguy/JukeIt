@@ -6,8 +6,10 @@ import org.getspout.spoutapi.material.item.GenericCustomItem;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
+import cc.thedudeguy.jukebukkit.permission.CraftPermission;
+import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 
-public class WoodFlintNeedle extends GenericCustomItem implements Needle {
+public class WoodFlintNeedle extends GenericCustomItem implements Needle, CraftPermissible {
 
 	public WoodFlintNeedle() {
 		super(JukeBukkit.instance, "Simple Needle");
@@ -18,5 +20,9 @@ public class WoodFlintNeedle extends GenericCustomItem implements Needle {
 	public RPNeedle getNeedleType() {
 		return RPNeedle.WOOD_FLINT;
 	}
-
+	
+	@Override
+	public CraftPermission getPermission() {
+		return new CraftPermission("jukebukkit.craft.needle");
+	}
 }

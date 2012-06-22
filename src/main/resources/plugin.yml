@@ -15,3 +15,36 @@ permissions:
   jukebukkit.command.resetcache:
     description: Gives access to the resetcache command
     default: op
+  jukebukkit.craft.needle:
+    description: Access to craft needles
+    default: true
+  jukebukkit.craft.blankdisc:
+    description: Access to craft blank discs
+    default: true
+  jukebukkit.craft.burner:
+    description: Access to craft disc burner
+    default: true
+  jukebukkit.craft.wire:
+    description: Access to craft speaker wire
+    default: true
+  jukebukkit.craft.jukebox:
+    description: Access to craft jukeboxes
+    default: true
+  jukebukkit.craft.speaker:
+    description: Access to craft speakers
+    default: true
+  jukebukkit.craft.recordplayer:
+    description: Access to craft record player
+    default: true
+  jukebukkit.use.needle:
+    description: Ability to attach/detach needles
+    default: true
+  jukebukkit.use.blankdisc:
+    description: Ability to burn discs
+    default: true
+  jukebukkit.use.burneddisc:
+    description: Ability to insert/eject burned discs
+    default: true
+  jukebukkit.use.burner:
+    description: Access to use disc burner
+    default: true

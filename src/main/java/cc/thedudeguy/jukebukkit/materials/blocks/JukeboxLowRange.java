@@ -29,11 +29,6 @@ public class JukeboxLowRange extends JukeboxBlock {
 	}
 	
 	@Override
-	public String getPermission() {
-		return "jukebukkit.player.low";
-	}
-	
-	@Override
 	public boolean canRedstoneActivate() {
 		return true;
 	}

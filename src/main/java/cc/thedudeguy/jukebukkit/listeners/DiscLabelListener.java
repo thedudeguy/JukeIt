@@ -46,10 +46,10 @@ public class DiscLabelListener implements Listener {
 		public void onButtonClick(ButtonClickEvent event) 
 		{
 			// return if the label is blank
-            if(input.getText().equals("")) {
-            	popup.close();
-                return;
-            }
+			if(input.getText().equals("")) {
+				popup.close();
+				return;
+			}
 			
             //delete a paper from the hand.
 			ItemStack inHand = event.getPlayer().getItemInHand();

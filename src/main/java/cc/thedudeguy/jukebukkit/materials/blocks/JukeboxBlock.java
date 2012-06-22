@@ -27,10 +27,12 @@ import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.materials.Items;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
+import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
+import cc.thedudeguy.jukebukkit.permission.CraftPermission;
 import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Sound;
 
-public abstract class JukeboxBlock extends GenericCustomBlock  {
+public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPermissible {
 
 	public JukeboxBlock(String name) {
 		super(JukeBukkit.instance, name);
@@ -39,13 +41,14 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 	
 	public abstract int getRange();
 	
-	public abstract String getPermission();
-	
 	public abstract boolean canRedstoneActivate();
 	
 	public abstract GenericCubeBlockDesign getCustomBlockDesign();
 	
-	
+	@Override
+	public CraftPermission getPermission() {
+		return new CraftPermission("jukebukkit.craft.jukebox");
+	}
 	
 	public boolean canPlaceBlockAt(World arg0, int arg1, int arg2, int arg3) {
 		//block is placeable.
@@ -183,7 +186,13 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 		}
 		
 		if (rpdata.hasDisc()) {
-
+			
+			if (!player.hasPermission("jukebukkit.use.burneddisc")) {
+				player.sendMessage("You do not have permission to perform this action.");
+				player.sendMessage("(jukebukkit.use.burneddisc)");
+				return false;
+			}
+			
 			//get and eject disc.
 			BurnedDisc b = Items.burnedDiscs.get(rpdata.getDiscKey());
 			ItemStack iss = new SpoutItemStack(b, 1);
@@ -202,6 +211,12 @@ public abstract class JukeboxBlock extends GenericCustomBlock  {
 		SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
 		
 		if (inHand.getMaterial() instanceof BurnedDisc) {
+			
+			if (!player.hasPermission("jukebukkit.use.burneddisc")) {
+				player.sendMessage("You do not have permission to perform this action.");
+				player.sendMessage("(jukebukkit.use.burneddisc)");
+				return false;
+			}
 			
 			//we know its a custom item, go ahaed and remove 1 from the hand.
 			if (inHand.getAmount()<2) {

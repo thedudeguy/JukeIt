@@ -29,11 +29,6 @@ public class JukeboxLongRange extends JukeboxBlock {
 	}
 	
 	@Override
-	public String getPermission() {
-		return "jukebukkit.player.long";
-	}
-	
-	@Override
 	public boolean canRedstoneActivate() {
 		return true;
 	}

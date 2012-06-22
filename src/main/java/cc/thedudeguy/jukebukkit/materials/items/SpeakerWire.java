@@ -14,9 +14,11 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.events.SpeakerWirePlaceEvent;
+import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
+import cc.thedudeguy.jukebukkit.permission.CraftPermission;
 import cc.thedudeguy.jukebukkit.util.Debug;
 
-public class SpeakerWire extends GenericCustomItem {
+public class SpeakerWire extends GenericCustomItem implements CraftPermissible {
 	
 	public SpeakerWire() {
 		super(JukeBukkit.instance, "Speaker Wire");
@@ -55,6 +57,11 @@ public class SpeakerWire extends GenericCustomItem {
 		this.texture = texture.getName();
 		SpoutManager.getFileManager().addToCache(JukeBukkit.instance, texture);
 		return this;
+	}
+
+	@Override
+	public CraftPermission getPermission() {
+		return new CraftPermission("jukebukkit.craft.wire");
 	}
 	
 }

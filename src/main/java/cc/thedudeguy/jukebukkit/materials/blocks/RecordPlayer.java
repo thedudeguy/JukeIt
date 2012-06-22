@@ -35,12 +35,14 @@ import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.materials.items.needles.Needle;
+import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
+import cc.thedudeguy.jukebukkit.permission.CraftPermission;
 import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Sound;
 
 //TODO This needs to be cleaned up a LOT
 
-public class RecordPlayer extends GenericCustomBlock implements WireConnector {
+public class RecordPlayer extends GenericCustomBlock implements WireConnector, CraftPermissible {
 	
 	public static HashMap<String, Integer> designIds = new HashMap<String, Integer>();
 	
@@ -131,8 +133,13 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 		
 		SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
 		
+		//the user has a disc in hand, and the record player does not have a disc, insert the disc
 		if ( !rpdata.hasDisc() && inHand.getMaterial() instanceof BurnedDisc) {
-			
+			if (!player.hasPermission("jukebukkit.use.burneddisc")) {
+				player.sendMessage("You do not have permission to perform this action.");
+				player.sendMessage("(jukebukkit.use.burneddisc)");
+				return false;
+			}
 			//Bukkit.getLogger().log(Level.INFO, "Inserting Disc");
 			
 			BurnedDisc discInHand = (BurnedDisc)inHand.getMaterial();
@@ -172,7 +179,15 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 			
 		}
 		
+		//the user has a needle in hand, and the record player does not have a needle already, insert the needle
 		if ( RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE) && inHand.isCustomItem() && inHand.getMaterial() instanceof Needle ) {
+			
+			if (!player.hasPermission("jukebukkit.use.needle")) {
+				player.sendMessage("You do not have permission to perform this action.");
+				player.sendMessage("(jukebukkit.use.needle)");
+				return false;
+			}
+			
 			Debug.debug("Loading Needle");
 			
 			Needle needle = (Needle) inHand.getMaterial();
@@ -205,8 +220,13 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 			return true;
 		}
 		
+		//the record player has a disc, eject it
 		if ( rpdata.hasDisc() ) {
-			
+			if (!player.hasPermission("jukebukkit.use.burneddisc")) {
+				player.sendMessage("You do not have permission to perform this action.");
+				player.sendMessage("(jukebukkit.use.burneddisc)");
+				return false;
+			}
 			//get and eject disc
 			BurnedDisc b = Items.burnedDiscs.get(rpdata.getDiscKey());
 			ItemStack iss = new SpoutItemStack(b, 1);
@@ -236,7 +256,14 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 			return true;
 		}
 		
+		//the record player has a needle eject it.
 		if ( !RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE)) {
+			
+			if (!player.hasPermission("jukebukkit.use.needle")) {
+				player.sendMessage("You do not have permission to perform this action.");
+				player.sendMessage("(jukebukkit.use.needle)");
+				return false;
+			}
 			
 			Debug.debug("Ejecting Needle");
 			
@@ -556,6 +583,11 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector {
 		
 		return blocks;
 		
+	}
+
+	@Override
+	public CraftPermission getPermission() {
+		return new CraftPermission("jukebukkit.craft.recordplayer");
 	}
 	
 }

@@ -36,6 +36,7 @@ import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.LabelData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
 import cc.thedudeguy.jukebukkit.listeners.DiscLabelListener;
+import cc.thedudeguy.jukebukkit.listeners.GeneralListener;
 import cc.thedudeguy.jukebukkit.listeners.SpeakerWireListener;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
 import cc.thedudeguy.jukebukkit.materials.Items;
@@ -89,6 +90,8 @@ public class JukeBukkit extends JavaPlugin {
 		
 		Recipies.load();
 		
+		//load listeners
+		this.getServer().getPluginManager().registerEvents(new GeneralListener(), this);
 		this.getServer().getPluginManager().registerEvents(new DiscLabelListener(), this);
 		this.getServer().getPluginManager().registerEvents(new SpeakerWireListener(), this);
 		

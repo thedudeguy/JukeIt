@@ -23,11 +23,6 @@ public class JukeboxMidRange extends JukeboxBlock {
 	}
 	
 	@Override
-	public String getPermission() {
-		return "jukebukkit.player.mid";
-	}
-	
-	@Override
 	public boolean canRedstoneActivate() {
 		return true;
 	}
