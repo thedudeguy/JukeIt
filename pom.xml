@@ -14,6 +14,13 @@
 		</repository>
 	</repositories>
 	<build>
+		<defaultGoal>clean install</defaultGoal>
+		<resources>
+      		<resource>
+        		<directory>src/main/resources</directory>
+        		<filtering>true</filtering>
+      		</resource>
+      	</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -28,6 +35,9 @@
         		<groupId>org.apache.maven.plugins</groupId>
         		<artifactId>maven-shade-plugin</artifactId>
         		<version>1.6</version>
+        		<configuration>
+          			<minimizeJar>true</minimizeJar>
+        		</configuration>
         		<executions>
           			<execution>
             			<phase>package</phase>
@@ -76,27 +86,32 @@
       		<groupId>org.eclipse.jetty</groupId>
       		<artifactId>jetty-server</artifactId>
       		<version>${jettyVersion}</version>
+      		<scope>compile</scope>
     	</dependency>
     	<dependency>
       		<groupId>commons-fileupload</groupId>
       		<artifactId>commons-fileupload</artifactId>
       		<version>1.2.2</version>
+      		<scope>compile</scope>
     	</dependency>
     	<dependency>
   			<groupId>org.freemarker</groupId>
   			<artifactId>freemarker</artifactId>
   			<!-- Latest 2.3.x (not 2.4.x), at least 2.3.19 -->
   			<version>[2.3.19,2.4)</version>
+  			<scope>compile</scope>
 		</dependency>
 		<dependency>
     		<groupId>us.monoid.web</groupId>
     		<artifactId>resty</artifactId>
     		<version>${restyVersion}</version>
+    		<scope>compile</scope>
 		</dependency>
 		<dependency>
       		<groupId>org.apache.commons</groupId>
       		<artifactId>commons-io</artifactId>
       		<version>1.3.2</version>
+      		<scope>compile</scope>
     	</dependency>
 	</dependencies>
 	<properties>
