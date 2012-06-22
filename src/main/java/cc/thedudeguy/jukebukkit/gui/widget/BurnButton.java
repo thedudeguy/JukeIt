@@ -58,7 +58,7 @@ public class BurnButton extends GenericButton {
 			try {
 				URL parseURL = new URL(url);
 				String fname = parseURL.getFile().toLowerCase();
-				if(!fname.endsWith(".ogg") && !fname.endsWith(".wav")) {
+				if(!fname.endsWith(".ogg") && !fname.endsWith(".wav") &&!fname.endsWith(".mp3")) {
 					event.getPlayer().sendMessage("Currently only .ogg and .wav formats are supported. Please convert the file to one of those.");
 					event.getPlayer().getMainScreen().getActivePopup().close();
 					return;
@@ -80,7 +80,8 @@ public class BurnButton extends GenericButton {
 			
 			if (
 					!list.getSelectedItem().getTitle().toLowerCase().endsWith(".ogg") && 
-					!list.getSelectedItem().getTitle().toLowerCase().endsWith(".wav")
+					!list.getSelectedItem().getTitle().toLowerCase().endsWith(".wav") &&
+					!list.getSelectedItem().getTitle().toLowerCase().endsWith(".mp3")
 					) {
 				event.getPlayer().sendMessage("Invalid Selection");
 				event.getPlayer().getMainScreen().getActivePopup().close();

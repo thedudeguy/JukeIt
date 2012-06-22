@@ -124,7 +124,7 @@ public class ServerHandler extends AbstractHandler {
 				        //boolean isInMemory = item.isInMemory();
 				        //long sizeInBytes = item.getSize();
 				        
-				    	if (!item.getName().endsWith(".ogg") && !item.getName().endsWith(".wav")) {
+				    	if (!item.getName().endsWith(".ogg") && !item.getName().endsWith(".wav") && !item.getName().endsWith(".mp3")) {
 				    		response.getWriter().println("File must be a .ogg or .wave");
 				    		return;
 				    	}
