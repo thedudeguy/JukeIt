@@ -19,6 +19,16 @@
       		<resource>
         		<directory>src/main/resources</directory>
         		<filtering>true</filtering>
+        		<includes>
+          			<include>*.yml</include>
+        		</includes>
+      		</resource>
+      		<resource>
+        		<directory>src/main/resources</directory>
+        		<filtering>false</filtering>
+        		<excludes>
+          			<exclude>*.yml</exclude>
+        		</excludes>
       		</resource>
       	</resources>
 		<plugins>
