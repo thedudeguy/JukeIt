@@ -121,6 +121,17 @@ public class Recipies {
 			.setIngredient('n', MaterialData.noteblock)
 			);
 		
+		///////////////////////
+		// World Range Jukebox //
+		///////////////////////
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+			new SpoutShapedRecipe( new SpoutItemStack(Blocks.jukeboxWorldRange, 1) )
+			.shape("njn", "jdj", "njn")
+			.setIngredient('j', Blocks.jukeboxMaxRange)
+			.setIngredient('n', MaterialData.noteblock)
+			.setIngredient('d', MaterialData.diamondBlock)
+			);
+		
 		//////////////////////
 		// Disc Burner //
 		//////////////////////
