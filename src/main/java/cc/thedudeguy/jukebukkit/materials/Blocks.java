@@ -9,6 +9,7 @@ import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxLongRange;
 import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxLowRange;
 import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxMaxRange;
 import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxMidRange;
+import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxWorldRange;
 import cc.thedudeguy.jukebukkit.materials.blocks.RecordPlayer;
 import cc.thedudeguy.jukebukkit.materials.blocks.Speaker;
 import cc.thedudeguy.jukebukkit.materials.blocks.SpeakerWireBlock;
@@ -26,6 +27,7 @@ public class Blocks {
 	public static JukeboxMidRange jukeboxMidRange;
 	public static JukeboxLongRange jukeboxLongRange;
 	public static JukeboxMaxRange jukeboxMaxRange;
+	public static JukeboxWorldRange jukeboxWorldRange;
 	
 	public static DiscBurner discBurner;
 	
@@ -44,6 +46,7 @@ public class Blocks {
 		jukeboxMidRange = new JukeboxMidRange();
 		jukeboxLongRange = new JukeboxLongRange();
 		jukeboxMaxRange = new JukeboxMaxRange();
+		jukeboxWorldRange = new JukeboxWorldRange();
 		
 		speaker = new Speaker();
 		
