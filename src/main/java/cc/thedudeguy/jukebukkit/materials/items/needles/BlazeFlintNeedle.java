@@ -2,6 +2,8 @@ package cc.thedudeguy.jukebukkit.materials.items.needles;
 
 import java.io.File;
 
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
@@ -24,6 +26,12 @@ public class BlazeFlintNeedle extends GenericCustomItem implements Needle, Craft
 	@Override
 	public CraftPermission getPermission() {
 		return new CraftPermission("jukebukkit.craft.needle");
+	}
+	
+	public CustomItem setTexture(File texture) {
+		this.texture = texture.getName();
+		SpoutManager.getFileManager().addToCache(JukeBukkit.instance, texture);
+		return this;
 	}
 	
 }
