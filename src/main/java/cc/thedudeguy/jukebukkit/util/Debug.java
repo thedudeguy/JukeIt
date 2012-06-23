@@ -24,6 +24,14 @@ public class Debug {
 		debug(allText);
 	}
 	
+	public static void sdebug(Object... debugTexts) {
+		String allText = "";
+		for (Object debugText : debugTexts) {
+			allText = allText + debugText.toString() + " :: ";
+		}
+		debug(allText);
+	}
+	
 	public static void debug(Player player, String debugText) {
 		if (JukeBukkit.instance.getConfig().getBoolean("debug")) {
 			player.sendMessage("&8["+tag + "] &7"+debugText);

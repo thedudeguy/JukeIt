@@ -49,7 +49,7 @@ public class BurnSelector extends GenericPopup {
 		border.setX(65).setY(20);
 		border.setPriority(RenderPriority.High);
 		border.setWidth(300).setHeight(200);
-
+		
 		// Background gradient
 		GenericGradient gradient = new GenericGradient();
 		gradient.setTopColor(new Color(0.25F, 0.25F, 0.25F, 1.0F));
