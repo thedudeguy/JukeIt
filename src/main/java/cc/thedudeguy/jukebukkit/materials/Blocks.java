@@ -25,6 +25,8 @@ public class Blocks {
 	public static final Texture labelerBlockTexture = new Texture(JukeBukkit.instance, "labelerblock.png", 64, 64, 64);
 	
 	public static Model labelerBlockModel;
+	public static Model labelerTopBlockModel;
+	public static Model labelerTopPressedBlockModel;
 	
 	public static RecordPlayer recordPlayer;
 	public static JukeboxBasic jukeboxBasic;
@@ -45,6 +47,8 @@ public class Blocks {
 	public Blocks() {
 		
 		labelerBlockModel = new Model(JukeBukkit.instance.getResource("models/labelerBlock.obj"), labelerBlockTexture);
+		labelerTopBlockModel = new Model(JukeBukkit.instance.getResource("models/labelerBlockTop.obj"), labelerBlockTexture);
+		labelerTopPressedBlockModel = new Model(JukeBukkit.instance.getResource("models/labelerBlockTopPressed.obj"), labelerBlockTexture);
 		
 		recordPlayer = new RecordPlayer();
 		

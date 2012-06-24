@@ -13,9 +13,10 @@ import cc.thedudeguy.jukebukkit.permission.CraftPermission;
 public class LabelerBlock extends GenericCustomBlock implements CraftPermissible {
 
 	public LabelerBlock() {
-		super(JukeBukkit.instance, "Labeler", 4);
-		//this.setBlockDesign(new LabelerBlockDesign());
-		this.setBlockDesign(Blocks.labelerBlockModel.getDesign());
+		super(JukeBukkit.instance, "Labeler", 118);
+		this.setBlockDesign(Blocks.labelerBlockModel.getDesign(), 0);
+		this.setBlockDesign(Blocks.labelerTopBlockModel.getDesign(), 1);
+		this.setBlockDesign(Blocks.labelerTopPressedBlockModel.getDesign(), 2);
 	}
 
 	@Override
@@ -33,6 +34,7 @@ public class LabelerBlock extends GenericCustomBlock implements CraftPermissible
 		}
 		
 		player.getMainScreen().attachPopupScreen(new LabelCreator(player, world.getBlockAt(x, y, z)));
+		
 		return true;
 	}
 }
