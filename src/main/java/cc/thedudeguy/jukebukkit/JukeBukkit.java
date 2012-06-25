@@ -33,11 +33,9 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 
 import cc.thedudeguy.jukebukkit.database.DiscData;
-import cc.thedudeguy.jukebukkit.database.LabelData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
-import cc.thedudeguy.jukebukkit.listeners.DiscLabelListener;
-import cc.thedudeguy.jukebukkit.listeners.DiscLabelerListener;
 import cc.thedudeguy.jukebukkit.listeners.GeneralListener;
+import cc.thedudeguy.jukebukkit.listeners.MachineListener;
 import cc.thedudeguy.jukebukkit.listeners.SpeakerWireListener;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
 import cc.thedudeguy.jukebukkit.materials.Items;
@@ -93,9 +91,8 @@ public class JukeBukkit extends JavaPlugin {
 		
 		//load listeners
 		this.getServer().getPluginManager().registerEvents(new GeneralListener(), this);
-		this.getServer().getPluginManager().registerEvents(new DiscLabelListener(), this);
 		this.getServer().getPluginManager().registerEvents(new SpeakerWireListener(), this);
-		this.getServer().getPluginManager().registerEvents(new DiscLabelerListener(), this);
+		this.getServer().getPluginManager().registerEvents(new MachineListener(), this);
 		
 		this.getCommand("jukebukkit").setExecutor(new CommandHandler());
 		
@@ -167,7 +164,6 @@ public class JukeBukkit extends JavaPlugin {
 		try {
             getDatabase().find(RecordPlayerData.class).findRowCount();
             getDatabase().find(DiscData.class).findRowCount();
-            getDatabase().find(LabelData.class).findRowCount();
         } catch (PersistenceException ex) {
             Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Installing database for " + getDescription().getName() + " due to first time usage");
             installDDL();
@@ -179,7 +175,6 @@ public class JukeBukkit extends JavaPlugin {
 		List<Class<?>> list = new ArrayList<Class<?>>();
 	    list.add(RecordPlayerData.class);
 	    list.add(DiscData.class);
-	    list.add(LabelData.class);
 	    return list;
 	}
 	

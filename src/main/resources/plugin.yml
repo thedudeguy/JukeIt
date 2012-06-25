@@ -36,6 +36,9 @@ permissions:
   jukebukkit.craft.recordplayer:
     description: Access to craft record player
     default: true
+  jukebukkit.craft.machine:
+    description: Access to craft disc machine
+    default: true
   jukebukkit.use.needle:
     description: Ability to attach/detach needles
     default: true
@@ -47,4 +50,7 @@ permissions:
     default: true
   jukebukkit.use.burner:
     description: Access to use disc burner
+    default: true
+  jukebukkit.use.machine:
+    description: Access to use machine
     default: true

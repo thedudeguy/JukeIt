@@ -1,0 +1,256 @@
+package cc.thedudeguy.jukebukkit.listeners;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.getspout.spoutapi.particle.Particle;
+import org.getspout.spoutapi.particle.Particle.ParticleType;
+
+import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.database.DiscData;
+import cc.thedudeguy.jukebukkit.events.MachineCompleteEvent;
+import cc.thedudeguy.jukebukkit.events.MachineEvent;
+import cc.thedudeguy.jukebukkit.events.MachineProcessEvent;
+import cc.thedudeguy.jukebukkit.events.MachineStartEvent;
+import cc.thedudeguy.jukebukkit.materials.Blocks;
+import cc.thedudeguy.jukebukkit.materials.blocks.MachineBlock;
+import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
+import cc.thedudeguy.jukebukkit.util.Debug;
+import cc.thedudeguy.jukebukkit.util.Sound;
+
+public class MachineListener implements Listener {
+
+	public abstract class LabelMachineRunnable implements Runnable {
+		SpoutBlock block;
+		ItemStack primaryItem;
+		ItemStack additionItem;
+		String label;
+		int taskToStop;
+		public LabelMachineRunnable(SpoutBlock block, ItemStack primaryItem, ItemStack additionItem, String label) {
+			this.block = block;
+			this.primaryItem = primaryItem;
+			this.additionItem = additionItem;
+			this.label = label;
+		}
+		public LabelMachineRunnable(SpoutBlock block) {
+			this.block = block;
+		}
+		
+		public LabelMachineRunnable(int taskIdToStop) {
+			this.taskToStop = taskIdToStop;
+		}
+	}
+	
+	@EventHandler
+	public void onPlace(BlockPlaceEvent event) {
+		if (
+				((SpoutBlock)event.getBlock()).getCustomBlock() == null ||
+				!(((SpoutBlock)event.getBlock()).getCustomBlock() instanceof MachineBlock)
+				){
+			return;
+			
+		}
+		
+		if (
+				!event.getBlock().getRelative(BlockFace.UP).getType().equals(Material.AIR)
+			) {
+			event.getBlock().breakNaturally(new SpoutItemStack(Blocks.machineBlock, 1));
+			return;
+		}
+		
+		SpoutManager.getMaterialManager().overrideBlock(event.getBlock().getRelative(BlockFace.UP), Blocks.machineBlock, (byte)1);
+	}
+	
+	@EventHandler
+	public void onStart(MachineStartEvent event) {
+		Debug.debug("LabelMachineStartEvent heard - starting up. ");
+		SpoutManager.getMaterialManager().overrideBlock(event.getBlock().getRelative(BlockFace.UP), Blocks.machineBlock, (byte)2);
+		
+		try {
+			Sound sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/28/192/labelmachine.ogg"));
+			sound.setRange(8);
+			sound.play(event.getBlock().getLocation());
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Particle particle = new Particle(ParticleType.LARGESMOKE, getParticleLocation(event.getBlock()), new Vector(0,0,0));
+		particle.setAmount(50);
+		particle.setMaxAge(20);
+		particle.spawn();
+		
+		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new LabelMachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
+			public void run() {
+				MachineProcessEvent pEvent = new MachineProcessEvent(block, primaryItem, additionItem, label);
+				Bukkit.getServer().getPluginManager().callEvent(pEvent);
+			}
+		}, 10L);
+	}
+	
+	@EventHandler
+	public void onProcess(MachineProcessEvent event) {
+		Debug.debug("LabelMachineProcessEvent heard - processing graphics. bzzrrt! whirr!! chjkchjk ");
+		
+		int taskID = JukeBukkit.instance.getServer().getScheduler().scheduleSyncRepeatingTask(JukeBukkit.instance, new LabelMachineRunnable(event.getBlock()) {
+			public void run() {
+				Particle particle = new Particle(ParticleType.SMOKE, getParticleLocation(block), new Vector(0,0.2,0));
+				particle.setMaxAge(10);
+				particle.setAmount(5);
+				particle.spawn();
+			}
+		}, 0, 5L);
+		
+		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new LabelMachineRunnable(taskID) {
+			public void run() {
+				Bukkit.getScheduler().cancelTask(taskToStop);
+			}
+		}, 100L);
+		
+		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new LabelMachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
+			public void run() {
+				MachineCompleteEvent pEvent = new MachineCompleteEvent(block, primaryItem, additionItem, label);
+				Bukkit.getServer().getPluginManager().callEvent(pEvent);
+			}
+		}, 110L);
+	}
+	
+	@EventHandler
+	public void onComplete(MachineCompleteEvent event) {
+		Debug.debug("LabelMachineCompleteEvent heard - its magic.");
+		SpoutManager.getMaterialManager().overrideBlock(event.getBlock().getRelative(BlockFace.UP), Blocks.machineBlock, (byte)1);
+		
+		Particle particle = new Particle(ParticleType.CLOUD, getParticleLocation(event.getBlock()), new Vector(0,0,0));
+		particle.setGravity(0);
+		particle.setScale(0.5F);
+		particle.setAmount(100);
+		particle.spawn();
+		
+		//if either item is air, transaction is a flop, just abort.
+		Debug.sdebug("values -- ", event.getPrimaryItem(), event.getAdditionItem(), event.hasLabel());
+		if (event.getPrimaryItem().getType().equals(Material.AIR) || event.getAdditionItem().getType().equals(Material.AIR)) {
+			abortEject(event);
+			return;
+		}
+		
+		//checking to see if we had a labeling disc setup.
+		SpoutItemStack sPrimItem = new SpoutItemStack(event.getPrimaryItem());
+		SpoutItemStack sAddItem = new SpoutItemStack(event.getAdditionItem());
+		if (
+				sAddItem.getType().equals(Material.PAPER) &&
+				event.hasLabel() &&
+				sPrimItem.getMaterial() instanceof BurnedDisc &&
+				((BurnedDisc)sPrimItem.getMaterial()).getKey() != null
+				) {
+				BurnedDisc disc = (BurnedDisc)sPrimItem.getMaterial();
+			//label the disc yo!
+			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+					.where()
+						.eq("nameKey", disc.getKey())
+					.findUnique();
+			if (discData == null) {
+				abortEject(event);
+				return;
+			}
+			discData.setLabel(event.getLabel());
+			JukeBukkit.instance.getDatabase().save(discData);
+			disc.setLabel(event.getLabel());
+			eject(event.getBlock(), new SpoutItemStack(disc, 1));
+			if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
+			return;
+			
+		}
+		
+		//if were here, than there was nothing but unmatchable junk.
+		abortEject(event);
+	}
+	
+	@EventHandler
+	public void onPlace(BlockBreakEvent event) {
+		if (
+				((SpoutBlock)event.getBlock()).getCustomBlock() == null ||
+				!(((SpoutBlock)event.getBlock()).getCustomBlock() instanceof MachineBlock)
+				){
+			return;
+			
+		}
+		
+		//possibly broken top block need to destroy bottom block
+		if (
+				((SpoutBlock)event.getBlock()).getCustomBlockData() > 0 &&
+				(
+					((SpoutBlock)event.getBlock().getRelative(BlockFace.DOWN)).getCustomBlock() instanceof MachineBlock &&
+					((SpoutBlock)event.getBlock().getRelative(BlockFace.DOWN)).getCustomBlockData() == 0
+				)
+			) {
+				event.getBlock().getRelative(BlockFace.DOWN).breakNaturally(null);
+				return;
+		}
+		
+		//possibly broke bottom block need to destroy top block
+		if (
+				((SpoutBlock)event.getBlock()).getCustomBlockData() == 0 &&
+				(
+					((SpoutBlock)event.getBlock().getRelative(BlockFace.UP)).getCustomBlock() instanceof MachineBlock &&
+					((SpoutBlock)event.getBlock().getRelative(BlockFace.UP)).getCustomBlockData() > 0
+				)
+			) {
+				event.getBlock().getRelative(BlockFace.UP).breakNaturally(null);
+		}
+	}
+	
+	private ItemStack removeOne(ItemStack item) {
+		item.setAmount(item.getAmount()-1);
+		return item;
+	}
+	
+	private boolean lastOne(ItemStack item) {
+		if (item.getAmount() == 1) return true;
+		return false;
+	}
+	
+	private boolean notAir(ItemStack item) {
+		if (item.getType().equals(Material.AIR)) return false;
+		return true;
+	}
+	
+	private void eject(Block block, ItemStack item) {
+		Location loc = block.getLocation();
+		//loc.setX(loc.getX()+0.5);
+		//loc.setZ(loc.getZ()+0.5);
+		loc.setY(loc.getY()+1.0);
+		block.getWorld().dropItem(loc, item);
+	}
+	
+	private void abortEject(MachineEvent event) {
+		if (notAir(event.getPrimaryItem())) {
+			eject(event.getBlock(), event.getPrimaryItem());
+		}
+		if (notAir(event.getAdditionItem())) {
+			eject(event.getBlock(), event.getAdditionItem());
+		}
+	}
+	
+	private Location getParticleLocation(Block block) {
+		Location loc = block.getLocation();
+		loc.setX(loc.getX()+0.5);
+		loc.setY(loc.getY()+1.0);
+		loc.setZ(loc.getZ()+0.5);
+		
+		return loc;
+	}
+}

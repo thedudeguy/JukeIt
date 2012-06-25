@@ -49,12 +49,13 @@ public class ResourceManager {
 			"needle_blaze-flint.png",
 			"recordplayer.png",
 			"blocks_deprecated.png",
-			"label.png",
 			"speaker.png",
 			"speakerwire.png",
 			"speakerwireblock.png",
 			"borderblue.png",
-			"labelerblock.png"
+			"machineblock.png",
+			"machinegui.png",
+			"paper.png"
 			);
 	
 	public static final List<String> sounds = Arrays.asList(

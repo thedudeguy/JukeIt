@@ -8,9 +8,7 @@ import org.bukkit.Bukkit;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
-import cc.thedudeguy.jukebukkit.database.LabelData;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
-import cc.thedudeguy.jukebukkit.materials.items.DiscLabel;
 import cc.thedudeguy.jukebukkit.materials.items.SpeakerWire;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlack;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlue;
@@ -55,7 +53,6 @@ public class Items {
 	
 	public static BurnedDisc burnedDisc;
 	public static HashMap<String, BurnedDisc> burnedDiscs;
-	public static DiscLabel discLabel;
 	
 	public static SpeakerWire speakerWire;
 	
@@ -88,7 +85,6 @@ public class Items {
 		
 		//reference disc ONLY.
 		burnedDisc = new BurnedDisc();
-		discLabel = new DiscLabel();
 		
 		//initialize burned discs
 		burnedDiscs = new HashMap<String, BurnedDisc>();
@@ -103,19 +99,6 @@ public class Items {
 				count++;
 			}
 			Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Initialized "+ String.valueOf(count) +" Burned Discs.");
-		}
-		
-		//initialize labels that have been created
-		List<LabelData> labelDataList = JukeBukkit.instance.getDatabase().find(LabelData.class).findList();
-		if (labelDataList.isEmpty()) {
-			 Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] No created labels to load.");
-		} else {
-			int count = 0;
-			for (LabelData labelData : labelDataList) {
-				new DiscLabel(labelData);
-				count++;
-			}
-			Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Initialized "+ String.valueOf(count) +" labels.");
 		}
 		
 	}
