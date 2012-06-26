@@ -72,10 +72,19 @@ public class Model {
 			quad.addVertex(2, face.getVertex3().getX(), face.getVertex3().getY(), face.getVertex3().getZ());
 			quad.addVertex(3, face.getVertex4().getX(), face.getVertex4().getY(), face.getVertex4().getZ());
 			
+			/*
+			SubTexture tex = new SubTexture(texture, 0, 0, texture.getWidth(), texture.getHeight());
+			Quad quad = new Quad(counter, tex);
+			quad.addVertex(face.getSpoutVertex1(counter));
+			quad.addVertex(face.getSpoutVertex2(counter));
+			quad.addVertex(face.getSpoutVertex3(counter));
+			quad.addVertex(face.getSpoutVertex4(counter));
+			
 			Debug.sdebug(0, face.getVertex1().getX(), face.getVertex1().getY(), face.getVertex1().getZ());
 			Debug.sdebug(1, face.getVertex2().getX(), face.getVertex2().getY(), face.getVertex2().getZ());
 			Debug.sdebug(2, face.getVertex3().getX(), face.getVertex3().getY(), face.getVertex3().getZ());
 			Debug.sdebug(3, face.getVertex4().getX(), face.getVertex4().getY(), face.getVertex4().getZ());
+			*/
 			
 			//TODO: add light source....
 			//setLightSource(counter, 0, 0, 1);

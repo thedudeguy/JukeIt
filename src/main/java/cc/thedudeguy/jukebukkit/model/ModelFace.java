@@ -1,5 +1,7 @@
 package cc.thedudeguy.jukebukkit.model;
 
+import org.getspout.spoutapi.block.design.Vertex;
+
 public class ModelFace {
 	
 	private ModelVertex vertex1;
@@ -78,6 +80,51 @@ public class ModelFace {
 
 	public void setUv4(ModelUV uv4) {
 		this.uv4 = uv4;
+	}
+	
+	public Vertex getSpoutVertex1(int quadIndex) {
+		
+		float vx = vertex1.getX();
+		float vy = vertex1.getY();
+		float vz = vertex1.getZ();
+		
+		int vu = Math.round(uv1.getU());
+		int vv = Math.round(uv1.getV());
+		
+		return new Vertex(0, quadIndex, vx, vy, vz, vu, vv);
+	}
+	
+	public Vertex getSpoutVertex2(int quadIndex) {
+		float vx = vertex2.getX();
+		float vy = vertex2.getY();
+		float vz = vertex2.getZ();
+		
+		int vu = Math.round(uv2.getU());
+		int vv = Math.round(uv2.getV());
+		
+		return new Vertex(1, quadIndex, vx, vy, vz, vu, vv);
+	}
+	
+	public Vertex getSpoutVertex3(int quadIndex) {
+		float vx = vertex3.getX();
+		float vy = vertex3.getY();
+		float vz = vertex3.getZ();
+		
+		int vu = Math.round(uv3.getU());
+		int vv = Math.round(uv3.getV());
+		
+		return new Vertex(2, quadIndex, vx, vy, vz, vu, vv);
+	}
+
+	public Vertex getSpoutVertex4(int quadIndex) {
+		float vx = vertex4.getX();
+		float vy = vertex4.getY();
+		float vz = vertex4.getZ();
+		
+		int vu = Math.round(uv4.getU());
+		int vv = Math.round(uv4.getV());
+		
+		return new Vertex(3, quadIndex, vx, vy, vz, vu, vv);
 	}
 	
 	public float getLowestU() {
