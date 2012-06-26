@@ -1,5 +1,6 @@
 package cc.thedudeguy.jukebukkit.materials.blocks;
 
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.getspout.spoutapi.block.SpoutBlock;
@@ -15,10 +16,11 @@ import cc.thedudeguy.jukebukkit.permission.CraftPermission;
 public class MachineBlock extends GenericCustomBlock implements CraftPermissible {
 
 	public MachineBlock() {
-		super(JukeBukkit.instance, "Disc Machine", 118);
+		super(JukeBukkit.instance, "Disc Machine", Material.CAULDRON.getId());
 		this.setBlockDesign(Blocks.machineBlockModel.getDesign(), 0);
 		this.setBlockDesign(Blocks.machineTopBlockModel.getDesign(), 1);
 		this.setBlockDesign(Blocks.machineTopPressedBlockModel.getDesign(), 2);
+		this.setItemDrop(null);
 	}
 
 	@Override

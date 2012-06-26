@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -180,13 +181,12 @@ public class MachineListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onPlace(BlockBreakEvent event) {
-		if (
-				((SpoutBlock)event.getBlock()).getCustomBlock() == null ||
-				!(((SpoutBlock)event.getBlock()).getCustomBlock() instanceof MachineBlock)
-				){
+	public void onBreak(BlockBreakEvent event) {
+		
+		
+		
+		if (!(((SpoutBlock)event.getBlock()).getCustomBlock() instanceof MachineBlock)){
 			return;
-			
 		}
 		
 		//possibly broken top block need to destroy bottom block
@@ -197,20 +197,33 @@ public class MachineListener implements Listener {
 					((SpoutBlock)event.getBlock().getRelative(BlockFace.DOWN)).getCustomBlockData() == 0
 				)
 			) {
-				event.getBlock().getRelative(BlockFace.DOWN).breakNaturally(null);
-				return;
+				((SpoutBlock)event.getBlock()).getRelative(BlockFace.DOWN).setCustomBlock(null);
+				((SpoutBlock)event.getBlock()).getRelative(BlockFace.DOWN).setType(Material.AIR);
 		}
 		
 		//possibly broke bottom block need to destroy top block
-		if (
+		else if (
 				((SpoutBlock)event.getBlock()).getCustomBlockData() == 0 &&
 				(
 					((SpoutBlock)event.getBlock().getRelative(BlockFace.UP)).getCustomBlock() instanceof MachineBlock &&
 					((SpoutBlock)event.getBlock().getRelative(BlockFace.UP)).getCustomBlockData() > 0
 				)
 			) {
-				event.getBlock().getRelative(BlockFace.UP).breakNaturally(null);
+				((SpoutBlock)event.getBlock()).getRelative(BlockFace.UP).setCustomBlock(null);
+				((SpoutBlock)event.getBlock()).getRelative(BlockFace.UP).setType(Material.AIR);
 		}
+		
+		((SpoutBlock)event.getBlock()).setCustomBlock(null);
+		((SpoutBlock)event.getBlock()).setType(Material.AIR);
+		
+		if (!event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
+			Location loc = event.getBlock().getLocation();
+			loc.setX(loc.getX() + 0.5);
+			loc.setY(loc.getY() + 0.5);
+			event.getBlock().getWorld().dropItem(loc, new SpoutItemStack(Blocks.machineBlock, 1));
+		}
+		
+		event.setCancelled(true);
 	}
 	
 	private ItemStack removeOne(ItemStack item) {
