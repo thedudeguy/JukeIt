@@ -25,4 +25,12 @@ public class ModelUV {
 	public void setV(float v) {
 		this.v = v;
 	}
+	
+	public int getTx(int textureWidth) {
+		return Math.round(u * (float)textureWidth);
+	}
+	
+	public int getTy(int textureHeight) {
+		return Math.round(v * (float)textureHeight);
+	}
 }

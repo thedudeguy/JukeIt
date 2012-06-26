@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.getspout.spoutapi.block.design.GenericBlockDesign;
-import org.getspout.spoutapi.block.design.Quad;
-import org.getspout.spoutapi.block.design.SubTexture;
 import org.getspout.spoutapi.block.design.Texture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
@@ -56,39 +54,14 @@ public class Model {
 		for(ModelFace face : f) {
 			Debug.debug("Generating quad: ", counter);
 			
-			//to calculate the subtexture need to figure out pixel x,y,w,h from the 0-1 values. value of each u/v
-			//since I expect uv maps snapped to pixels, i assume that the conversions will equal a full int,
-			//but if not, round it off and hopefully its close.
-			//currently uv maps only work properly on rectangular quads. uv's should also be perfectly rectangular.
-			int tx = Math.round(texture.getWidth() * face.getLowestU());
-			int ty = Math.round(texture.getHeight() * face.getLowestV());
-			int tw = Math.round((texture.getWidth() * face.getHighestU()) - tx);
-			int th = Math.round((texture.getHeight() * face.getHighestV()) - ty);
-			SubTexture tex = new SubTexture(texture, tx, ty, tw, th);
+			design.setVertex(counter, 0, face.getVertex1().getX(), face.getVertex1().getY(), face.getVertex1().getZ(), face.getUv1().getTx(texture.getWidth()), face.getUv1().getTy(texture.getHeight()), texture.getWidth(), texture.getHeight());
+			design.setVertex(counter, 1, face.getVertex2().getX(), face.getVertex2().getY(), face.getVertex2().getZ(), face.getUv2().getTx(texture.getWidth()), face.getUv2().getTy(texture.getHeight()), texture.getWidth(), texture.getHeight());
+			design.setVertex(counter, 2, face.getVertex3().getX(), face.getVertex3().getY(), face.getVertex3().getZ(), face.getUv3().getTx(texture.getWidth()), face.getUv3().getTy(texture.getHeight()), texture.getWidth(), texture.getHeight());
+			design.setVertex(counter, 3, face.getVertex4().getX(), face.getVertex4().getY(), face.getVertex4().getZ(), face.getUv4().getTx(texture.getWidth()), face.getUv4().getTy(texture.getHeight()), texture.getWidth(), texture.getHeight());
 			
-			Quad quad = new Quad(counter, tex);
-			quad.addVertex(0, face.getVertex1().getX(), face.getVertex1().getY(), face.getVertex1().getZ());
-			quad.addVertex(1, face.getVertex2().getX(), face.getVertex2().getY(), face.getVertex2().getZ());
-			quad.addVertex(2, face.getVertex3().getX(), face.getVertex3().getY(), face.getVertex3().getZ());
-			quad.addVertex(3, face.getVertex4().getX(), face.getVertex4().getY(), face.getVertex4().getZ());
-			
-			/*
-			SubTexture tex = new SubTexture(texture, 0, 0, texture.getWidth(), texture.getHeight());
-			Quad quad = new Quad(counter, tex);
-			quad.addVertex(face.getSpoutVertex1(counter));
-			quad.addVertex(face.getSpoutVertex2(counter));
-			quad.addVertex(face.getSpoutVertex3(counter));
-			quad.addVertex(face.getSpoutVertex4(counter));
-			
-			Debug.sdebug(0, face.getVertex1().getX(), face.getVertex1().getY(), face.getVertex1().getZ());
-			Debug.sdebug(1, face.getVertex2().getX(), face.getVertex2().getY(), face.getVertex2().getZ());
-			Debug.sdebug(2, face.getVertex3().getX(), face.getVertex3().getY(), face.getVertex3().getZ());
-			Debug.sdebug(3, face.getVertex4().getX(), face.getVertex4().getY(), face.getVertex4().getZ());
-			*/
-			
-			//TODO: add light source....
+			//TODO: add light source.... probably to normals
 			//setLightSource(counter, 0, 0, 1);
-			design.setQuad(quad);
+			
 			counter++;
 		}
 		
