@@ -1,10 +1,15 @@
 package cc.thedudeguy.jukebukkit.gui;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.event.screen.ScreenCloseEvent;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericSlot;
@@ -21,6 +26,7 @@ import cc.thedudeguy.jukebukkit.gui.widget.MachineLabelButton;
 import cc.thedudeguy.jukebukkit.gui.widget.MachineStartButton;
 import cc.thedudeguy.jukebukkit.gui.widget.PlayerInventorySlot;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
+import cc.thedudeguy.jukebukkit.util.Debug;
 
 public class MachineGUI extends GenericPopup {
 	
@@ -145,6 +151,35 @@ public class MachineGUI extends GenericPopup {
 	}
 	
 	@Override
+	public void onScreenClose(ScreenCloseEvent event) {
+		Debug.debug("MachineGUI:onScreenClose");
+		
+		//if any items are in the slots we should give them back to the player.
+		if (
+				this.discSlot.getItem() != null &&
+				!this.discSlot.getItem().getType().equals(Material.AIR)
+				) {
+			tossItem(event.getPlayer(), discSlot.getItem());
+		}
+		if (
+				this.discAddSlot.getItem() != null &&
+				!this.discAddSlot.getItem().getType().equals(Material.AIR)
+				) {
+			tossItem(event.getPlayer(), discAddSlot.getItem());
+		}
+	}
+	
+	@Override
+	public void handleItemOnCursor(org.bukkit.inventory.ItemStack itemOnCursor) {
+		if (
+				itemOnCursor != null &&
+				!itemOnCursor.getType().equals(Material.AIR)
+				) {
+			tossItem((SpoutPlayer) player, itemOnCursor);
+		}
+	}
+	
+	@Override
 	public void onTick() {
 		SpoutItemStack sItem = new SpoutItemStack(this.discSlot.getItem());
 		if (
@@ -161,5 +196,15 @@ public class MachineGUI extends GenericPopup {
 			hideLabelWriter();
 		} 
 		super.onTick();
+	}
+	
+	private void tossItem(SpoutPlayer player, ItemStack dropItem) {
+		Location loc = player.getLocation();
+        loc.setY(loc.getY() + 1);
+        
+        Item item = loc.getWorld().dropItem(loc, dropItem);
+        Vector v = loc.getDirection().multiply(0.2);
+        v.setY(0.2);
+        item.setVelocity(v);
 	}
 }
