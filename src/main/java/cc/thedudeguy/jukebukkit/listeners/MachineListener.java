@@ -12,6 +12,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -35,24 +37,48 @@ import cc.thedudeguy.jukebukkit.util.Sound;
 
 public class MachineListener implements Listener {
 
-	public abstract class LabelMachineRunnable implements Runnable {
+	public abstract class MachineRunnable implements Runnable {
 		SpoutBlock block;
 		ItemStack primaryItem;
 		ItemStack additionItem;
 		String label;
 		int taskToStop;
-		public LabelMachineRunnable(SpoutBlock block, ItemStack primaryItem, ItemStack additionItem, String label) {
+		public MachineRunnable(SpoutBlock block, ItemStack primaryItem, ItemStack additionItem, String label) {
 			this.block = block;
 			this.primaryItem = primaryItem;
 			this.additionItem = additionItem;
 			this.label = label;
 		}
-		public LabelMachineRunnable(SpoutBlock block) {
+		public MachineRunnable(SpoutBlock block) {
 			this.block = block;
 		}
 		
-		public LabelMachineRunnable(int taskIdToStop) {
+		public MachineRunnable(int taskIdToStop) {
 			this.taskToStop = taskIdToStop;
+		}
+	}
+	
+	@EventHandler
+	public void onBlockPistonRetract(BlockPistonRetractEvent event) {
+		Debug.debug("onpistonpull event");
+		if (event.isCancelled() || !event.isSticky() || ((SpoutBlock)event.getBlock()).getCustomBlock() == null) {
+			return;
+		}
+		if (((SpoutBlock)event.getBlock()).getCustomBlock() instanceof MachineBlock) {
+			Debug.debug("canceling piston event");
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onPistonPush(BlockPistonExtendEvent event) {
+		if (event.isCancelled()) return;
+		for(Block block : event.getBlocks()) {
+			if ( ((SpoutBlock)block).getCustomBlock() != null) {
+				if ( ((SpoutBlock)block).getCustomBlock() instanceof MachineBlock ) {
+					event.setCancelled(true);
+				}
+			}
 		}
 	}
 	
@@ -95,7 +121,7 @@ public class MachineListener implements Listener {
 		particle.setMaxAge(20);
 		particle.spawn();
 		
-		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new LabelMachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
+		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new MachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
 			public void run() {
 				MachineProcessEvent pEvent = new MachineProcessEvent(block, primaryItem, additionItem, label);
 				Bukkit.getServer().getPluginManager().callEvent(pEvent);
@@ -107,7 +133,7 @@ public class MachineListener implements Listener {
 	public void onProcess(MachineProcessEvent event) {
 		Debug.debug("LabelMachineProcessEvent heard - processing graphics. bzzrrt! whirr!! chjkchjk ");
 		
-		int taskID = JukeBukkit.instance.getServer().getScheduler().scheduleSyncRepeatingTask(JukeBukkit.instance, new LabelMachineRunnable(event.getBlock()) {
+		int taskID = JukeBukkit.instance.getServer().getScheduler().scheduleSyncRepeatingTask(JukeBukkit.instance, new MachineRunnable(event.getBlock()) {
 			public void run() {
 				Particle particle = new Particle(ParticleType.SMOKE, getParticleLocation(block), new Vector(0,0.2,0));
 				particle.setMaxAge(10);
@@ -116,13 +142,13 @@ public class MachineListener implements Listener {
 			}
 		}, 0, 5L);
 		
-		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new LabelMachineRunnable(taskID) {
+		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new MachineRunnable(taskID) {
 			public void run() {
 				Bukkit.getScheduler().cancelTask(taskToStop);
 			}
 		}, 100L);
 		
-		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new LabelMachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
+		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new MachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
 			public void run() {
 				MachineCompleteEvent pEvent = new MachineCompleteEvent(block, primaryItem, additionItem, label);
 				Bukkit.getServer().getPluginManager().callEvent(pEvent);
@@ -189,29 +215,7 @@ public class MachineListener implements Listener {
 			return;
 		}
 		
-		//possibly broken top block need to destroy bottom block
-		if (
-				((SpoutBlock)event.getBlock()).getCustomBlockData() > 0 &&
-				(
-					((SpoutBlock)event.getBlock().getRelative(BlockFace.DOWN)).getCustomBlock() instanceof MachineBlock &&
-					((SpoutBlock)event.getBlock().getRelative(BlockFace.DOWN)).getCustomBlockData() == 0
-				)
-			) {
-				((SpoutBlock)event.getBlock()).getRelative(BlockFace.DOWN).setCustomBlock(null);
-				((SpoutBlock)event.getBlock()).getRelative(BlockFace.DOWN).setType(Material.AIR);
-		}
-		
-		//possibly broke bottom block need to destroy top block
-		else if (
-				((SpoutBlock)event.getBlock()).getCustomBlockData() == 0 &&
-				(
-					((SpoutBlock)event.getBlock().getRelative(BlockFace.UP)).getCustomBlock() instanceof MachineBlock &&
-					((SpoutBlock)event.getBlock().getRelative(BlockFace.UP)).getCustomBlockData() > 0
-				)
-			) {
-				((SpoutBlock)event.getBlock()).getRelative(BlockFace.UP).setCustomBlock(null);
-				((SpoutBlock)event.getBlock()).getRelative(BlockFace.UP).setType(Material.AIR);
-		}
+		destroyOtherHalf(event.getBlock());
 		
 		((SpoutBlock)event.getBlock()).setCustomBlock(null);
 		((SpoutBlock)event.getBlock()).setType(Material.AIR);
@@ -224,6 +228,32 @@ public class MachineListener implements Listener {
 		}
 		
 		event.setCancelled(true);
+	}
+	
+	private void destroyOtherHalf(Block block) {
+		//possibly broken top block need to destroy bottom block
+		if (
+				((SpoutBlock)block).getCustomBlockData() > 0 &&
+				(
+					((SpoutBlock)block.getRelative(BlockFace.DOWN)).getCustomBlock() instanceof MachineBlock &&
+					((SpoutBlock)block.getRelative(BlockFace.DOWN)).getCustomBlockData() == 0
+				)
+			) {
+				((SpoutBlock)block).getRelative(BlockFace.DOWN).setCustomBlock(null);
+				((SpoutBlock)block).getRelative(BlockFace.DOWN).setType(Material.AIR);
+		}
+		
+		//possibly broke bottom block need to destroy top block
+		else if (
+				((SpoutBlock)block).getCustomBlockData() == 0 &&
+				(
+					((SpoutBlock)block.getRelative(BlockFace.UP)).getCustomBlock() instanceof MachineBlock &&
+					((SpoutBlock)block.getRelative(BlockFace.UP)).getCustomBlockData() > 0
+				)
+			) {
+				((SpoutBlock)block).getRelative(BlockFace.UP).setCustomBlock(null);
+				((SpoutBlock)block).getRelative(BlockFace.UP).setType(Material.AIR);
+		}
 	}
 	
 	private ItemStack removeOne(ItemStack item) {
