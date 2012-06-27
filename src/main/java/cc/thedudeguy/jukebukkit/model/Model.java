@@ -54,10 +54,10 @@ public class Model {
 		for(ModelFace face : f) {
 			Debug.debug("Generating quad: ", counter);
 			
-			design.setVertex(counter, 0, face.getVertex1().getX(), face.getVertex1().getY(), face.getVertex1().getZ(), face.getUv1().getTx(texture.getWidth()), face.getUv1().getTy(texture.getHeight()), texture.getWidth(), texture.getHeight());
-			design.setVertex(counter, 1, face.getVertex2().getX(), face.getVertex2().getY(), face.getVertex2().getZ(), face.getUv2().getTx(texture.getWidth()), face.getUv2().getTy(texture.getHeight()), texture.getWidth(), texture.getHeight());
-			design.setVertex(counter, 2, face.getVertex3().getX(), face.getVertex3().getY(), face.getVertex3().getZ(), face.getUv3().getTx(texture.getWidth()), face.getUv3().getTy(texture.getHeight()), texture.getWidth(), texture.getHeight());
-			design.setVertex(counter, 3, face.getVertex4().getX(), face.getVertex4().getY(), face.getVertex4().getZ(), face.getUv4().getTx(texture.getWidth()), face.getUv4().getTy(texture.getHeight()), texture.getWidth(), texture.getHeight());
+			design.setVertex(counter, 0, face.getVertex1().getX(), face.getVertex1().getY(), face.getVertex1().getZ(), face.getUv1().getU(), face.getUv1().getV());
+			design.setVertex(counter, 1, face.getVertex2().getX(), face.getVertex2().getY(), face.getVertex2().getZ(), face.getUv2().getU(), face.getUv2().getV());
+			design.setVertex(counter, 2, face.getVertex3().getX(), face.getVertex3().getY(), face.getVertex3().getZ(), face.getUv3().getU(), face.getUv3().getV());
+			design.setVertex(counter, 3, face.getVertex4().getX(), face.getVertex4().getY(), face.getVertex4().getZ(), face.getUv4().getU(), face.getUv4().getV());
 			
 			//TODO: add light source.... probably to normals
 			//setLightSource(counter, 0, 0, 1);
