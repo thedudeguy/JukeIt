@@ -59,15 +59,22 @@ public class MachineListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onBlockPistonRetract(BlockPistonRetractEvent event) {
+	public void onPistonPull(BlockPistonRetractEvent event) {
 		Debug.debug("onpistonpull event");
-		if (event.isCancelled() || !event.isSticky() || ((SpoutBlock)event.getBlock()).getCustomBlock() == null) {
+		
+		if (event.isCancelled() || !event.isSticky()) {
 			return;
 		}
-		if (((SpoutBlock)event.getBlock()).getCustomBlock() instanceof MachineBlock) {
+		SpoutBlock block = (SpoutBlock)event.getBlock().getRelative(event.getDirection(), 2);
+		
+		if ( block.getCustomBlock() == null) {
+			return;
+		}
+		if (block.getCustomBlock() instanceof MachineBlock) {
 			Debug.debug("canceling piston event");
 			event.setCancelled(true);
 		}
+		
 	}
 	
 	@EventHandler
