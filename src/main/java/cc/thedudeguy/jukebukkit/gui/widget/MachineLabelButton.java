@@ -20,7 +20,6 @@ public class MachineLabelButton extends MachineStartButton {
 	
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		event.getPlayer().sendMessage("Zomg you started it? with label?");
 		event.getPlayer().getMainScreen().getActivePopup().close();
 		
 		MachineStartEvent startEvent = new MachineStartEvent(block, primarySlot.getItem(), additiveSlot.getItem(), labelInput.getText() );

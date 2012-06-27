@@ -29,7 +29,6 @@ public class MachineStartButton extends GenericButton{
 	
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		event.getPlayer().sendMessage("Zomg you started it?");
 		event.getPlayer().getMainScreen().getActivePopup().close();
 		
 		MachineStartEvent startEvent = new MachineStartEvent(block, primarySlot.getItem(), additiveSlot.getItem(), null);
