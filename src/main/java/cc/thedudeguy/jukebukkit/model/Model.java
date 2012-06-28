@@ -187,10 +187,29 @@ public class Model {
 		//TODO: pretty much everything
 		ModelFace face = new ModelFace();
 		
-		String[] set1 = data[1].split("/");
-		String[] set2 = data[2].split("/");
-		String[] set3 = data[3].split("/");
-		String[] set4 = data[4].split("/");
+		String[] set1;
+		String[] set2;
+		String[] set3;
+		String[] set4;
+		
+		//fake quad
+		if (data.length == 4) {
+			//tri
+			set1 = data[1].split("/");
+			set2 = data[2].split("/");
+			set3 = data[3].split("/");
+			set4 = data[3].split("/");
+		} else if (data.length == 5) {
+			//quad
+			set1 = data[1].split("/");
+			set2 = data[2].split("/");
+			set3 = data[3].split("/");
+			set4 = data[4].split("/");
+		} else {
+			return;
+		}
+		
+		
 		
 		face.setVertex1(v.get(Integer.parseInt(set1[0])));
 		face.setVertex2(v.get(Integer.parseInt(set2[0])));
