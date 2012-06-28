@@ -2,6 +2,7 @@ package cc.thedudeguy.jukebukkit.listeners;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -30,8 +31,11 @@ import cc.thedudeguy.jukebukkit.events.MachineEvent;
 import cc.thedudeguy.jukebukkit.events.MachineProcessEvent;
 import cc.thedudeguy.jukebukkit.events.MachineStartEvent;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
+import cc.thedudeguy.jukebukkit.materials.Items;
 import cc.thedudeguy.jukebukkit.materials.blocks.MachineBlock;
 import cc.thedudeguy.jukebukkit.materials.blocks.MachineRecipe;
+import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
+import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Sound;
@@ -209,6 +213,66 @@ public class MachineListener implements Listener {
 			return;
 			
 		}
+		
+		//check if were cloning a disc.
+		if ( 
+				(sPrimItem.getMaterial() instanceof BlankDisc && sAddItem.getMaterial() instanceof BurnedDisc) ||
+				(sPrimItem.getMaterial() instanceof BurnedDisc && sAddItem.getMaterial() instanceof BlankDisc)
+				) {
+			
+			BurnedDisc master;
+			BlankDisc target;
+			//which one are we making a copy of?
+			if (sPrimItem.getMaterial() instanceof BurnedDisc) {
+				master = (BurnedDisc) sPrimItem.getMaterial();
+				target = (BlankDisc) sAddItem.getMaterial();
+			} else {
+				master = (BurnedDisc) sAddItem.getMaterial();
+				target = (BlankDisc) sPrimItem.getMaterial();
+			}
+			
+			//get burned disc data
+			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+					.where()
+						.ieq("nameKey", master.getKey())
+					.findUnique();
+			if (discData == null) {
+				Bukkit.getLogger().log(Level.WARNING, "Disc Data not found");
+				abortEject(event);
+				return;
+			}
+			
+			//create the disc
+			//create the key
+	      	String key = BurnedDisc.generateNameKey();
+	      	//disc color...
+	      	int color = target.getColor();
+	      	//add the disc into the database
+	      	DiscData newDiscData = new DiscData();
+	      	newDiscData.setNameKey(key);
+	      	newDiscData.setUrl(discData.getUrl());
+	      	newDiscData.setLabel(discData.getLabel());
+	      	newDiscData.setColor(color);
+	      	JukeBukkit.instance.getDatabase().save(newDiscData);
+	      	//create the physical disc for the pplayer
+	    	BurnedDisc disc = new BurnedDisc(newDiscData);
+	    	Items.burnedDiscs.put(key, disc);
+	    	ItemStack iss = new SpoutItemStack(disc, 1);
+	      	//eject the disc.
+	    	this.eject(event.getBlock(), iss);
+	    	//eject leftovers. since were cloning the master disc, should not destroy it.
+	    	if (sPrimItem.getMaterial() instanceof BurnedDisc) {
+	    		eject(event.getBlock(), event.getPrimaryItem());
+		    	if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
+			} else {
+				eject(event.getBlock(), event.getAdditionItem());
+		    	if (!lastOne(event.getPrimaryItem())) eject(event.getBlock(), removeOne(event.getPrimaryItem()));
+			}
+	    	
+			return;
+		}
+		
+		//check if were cloning a disc
 		
 		//set if we have a recipe match
 		ItemStack recipeResult = MachineRecipe.getRecipeMatch(sPrimItem, sAddItem);
