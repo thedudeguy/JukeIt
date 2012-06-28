@@ -3,6 +3,9 @@ package cc.thedudeguy.jukebukkit.materials.blocks;
 import org.bukkit.Location;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
+import org.getspout.spoutapi.material.MaterialData;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
@@ -47,5 +50,16 @@ public class JukeboxWorldRange extends JukeboxBlock {
 	public int getRange() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void setRecipe() {
+		SpoutManager.getMaterialManager().registerSpoutRecipe(
+		new SpoutShapedRecipe( new SpoutItemStack(this, 1) )
+		.shape("njn", "jdj", "njn")
+		.setIngredient('j', Blocks.jukeboxMaxRange)
+		.setIngredient('n', MaterialData.noteblock)
+		.setIngredient('d', MaterialData.diamondBlock)
+		);
 	}
 }

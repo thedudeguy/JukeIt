@@ -50,12 +50,16 @@ public class Blocks {
 		machineTopBlockModel = new Model(JukeBukkit.instance.getResource("models/machineBlockTop.obj"), machineBlockTexture);
 		machineTopPressedBlockModel = new Model(JukeBukkit.instance.getResource("models/machineBlockTopPressed.obj"), machineBlockTexture);
 		
+		//speaker must load before recordPlayer
+		speaker = new Speaker();
+		
 		recordPlayer = new RecordPlayer();
 		
 		discBurner = new DiscBurner();
 		
 		machineBlock = new MachineBlock();
 		
+		//the must be initialized in order
 		jukeboxBasic = new JukeboxBasic();
 		jukeboxLowRange = new JukeboxLowRange();
 		jukeboxMidRange = new JukeboxMidRange();
@@ -63,7 +67,7 @@ public class Blocks {
 		jukeboxMaxRange = new JukeboxMaxRange();
 		jukeboxWorldRange = new JukeboxWorldRange();
 		
-		speaker = new Speaker();
+		
 		
 		speakerWireBlock = new SpeakerWireBlock();
 	}

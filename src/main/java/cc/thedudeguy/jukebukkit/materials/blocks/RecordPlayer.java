@@ -18,7 +18,9 @@ import org.bukkit.util.Vector;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
 import org.getspout.spoutapi.material.CustomItem;
+import org.getspout.spoutapi.material.MaterialData;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.particle.Particle;
 import org.getspout.spoutapi.particle.Particle.ParticleType;
@@ -38,6 +40,7 @@ import cc.thedudeguy.jukebukkit.materials.items.needles.Needle;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 import cc.thedudeguy.jukebukkit.permission.CraftPermission;
 import cc.thedudeguy.jukebukkit.util.Debug;
+import cc.thedudeguy.jukebukkit.util.Recipies;
 import cc.thedudeguy.jukebukkit.util.Sound;
 
 //TODO This needs to be cleaned up a LOT
@@ -61,6 +64,9 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 				}
 			}
 		}
+		
+		//load recipes
+		setRecipe();
 	}
 	
 	public static void updateBlockDesign(SpoutBlock block, RecordPlayerData data) {
@@ -590,4 +596,36 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		return new CraftPermission("jukebukkit.craft.recordplayer");
 	}
 	
+	public void setRecipe() {
+		
+		//for this block, i want to support all the different woods, so ill have to make a recipe for
+		//each combination.
+		List<org.getspout.spoutapi.material.Material> woods = Recipies.getWoods();
+		
+		for (org.getspout.spoutapi.material.Material mat1 : woods) {
+			
+			for (org.getspout.spoutapi.material.Material mat2 : woods) {
+				
+				for (org.getspout.spoutapi.material.Material mat3 : woods) {
+					
+					SpoutShapedRecipe r = new SpoutShapedRecipe( new SpoutItemStack(this, 1) );
+					r.shape("sps", "njn", Recipies.buildWoodRefString(mat1, mat2, mat3));
+					r.setIngredient('s', MaterialData.woodenSlab);
+					r.setIngredient('p', MaterialData.stonePressurePlate);
+					r.setIngredient('n', Blocks.speaker);
+					r.setIngredient('j', MaterialData.jukebox);
+					
+					for (org.getspout.spoutapi.material.Material umat : Recipies.getWoodUniqueMats(mat1, mat2, mat3) ) {
+						r.setIngredient(Recipies.getWoodMatRefLetter(umat), umat);
+					}
+					
+					SpoutManager.getMaterialManager().registerSpoutRecipe(r);
+				}
+				
+			}
+			
+		}
+		
+		
+	}
 }

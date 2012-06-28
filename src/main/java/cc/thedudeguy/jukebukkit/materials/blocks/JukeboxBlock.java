@@ -37,7 +37,10 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 	public JukeboxBlock(String name) {
 		super(JukeBukkit.instance, name);
 		setBlockDesign(getCustomBlockDesign());
+		setRecipe();
 	}
+	
+	public abstract void setRecipe();
 	
 	public abstract int getRange();
 	
