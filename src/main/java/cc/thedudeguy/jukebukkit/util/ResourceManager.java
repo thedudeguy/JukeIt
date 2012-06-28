@@ -55,7 +55,8 @@ public class ResourceManager {
 			"borderblue.png",
 			"machineblock.png",
 			"machinegui.png",
-			"paper.png"
+			"paper.png",
+			"disconastick.png"
 			);
 	
 	public static final List<String> sounds = Arrays.asList(

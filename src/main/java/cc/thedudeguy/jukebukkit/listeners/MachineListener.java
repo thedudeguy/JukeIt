@@ -31,6 +31,7 @@ import cc.thedudeguy.jukebukkit.events.MachineProcessEvent;
 import cc.thedudeguy.jukebukkit.events.MachineStartEvent;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
 import cc.thedudeguy.jukebukkit.materials.blocks.MachineBlock;
+import cc.thedudeguy.jukebukkit.materials.blocks.MachineRecipe;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Sound;
@@ -208,6 +209,15 @@ public class MachineListener implements Listener {
 			return;
 			
 		}
+		
+		//set if we have a recipe match
+		ItemStack recipeResult = MachineRecipe.getRecipeMatch(sPrimItem, sAddItem);
+		if (recipeResult != null) {
+			eject(event.getBlock(), recipeResult);
+			if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
+			return;
+		}
+		
 		
 		//if were here, than there was nothing but unmatchable junk.
 		abortEject(event);
