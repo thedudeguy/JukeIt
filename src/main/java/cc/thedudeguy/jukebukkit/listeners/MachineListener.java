@@ -107,7 +107,15 @@ public class MachineListener implements Listener {
 		if (
 				!event.getBlock().getRelative(BlockFace.UP).getType().equals(Material.AIR)
 			) {
-			event.getBlock().breakNaturally(new SpoutItemStack(Blocks.machineBlock, 1));
+			
+			((SpoutBlock)event.getBlock()).setCustomBlock(null);
+			((SpoutBlock)event.getBlock()).setType(Material.AIR);
+			
+			Location loc = event.getBlock().getLocation();
+			loc.setX(loc.getX()+0.5);
+			loc.setZ(loc.getZ()+0.5);
+			//loc.setY(loc.getY()+1.0);
+			loc.getWorld().dropItem(loc, new SpoutItemStack(Blocks.machineBlock));
 			return;
 		}
 		
