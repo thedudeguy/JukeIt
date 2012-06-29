@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.event.screen.ScreenCloseEvent;
+import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericSlot;
@@ -22,6 +23,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.widget.DiscSlot;
+import cc.thedudeguy.jukebukkit.gui.widget.LabelCloseButton;
 import cc.thedudeguy.jukebukkit.gui.widget.MachineLabelButton;
 import cc.thedudeguy.jukebukkit.gui.widget.MachineStartButton;
 import cc.thedudeguy.jukebukkit.gui.widget.PlayerInventorySlot;
@@ -31,6 +33,9 @@ import cc.thedudeguy.jukebukkit.util.Debug;
 public class MachineGUI extends GenericPopup {
 	
 	protected GenericContainer labelContainer;
+	
+	private GenericTexture paperTexture; 
+	private MachineStartButton startButton;
 	
 	private Player player;
 	private Block block;
@@ -44,36 +49,48 @@ public class MachineGUI extends GenericPopup {
 		this.block = block;
 		
 		GenericTexture border = new GenericTexture("machinegui.png");
-		border.setX(125).setY(20);
+		border.setX(-88).setY(-83);
 		border.setPriority(RenderPriority.Highest);
 		border.setWidth(176).setHeight(166);
 		border.setFixed(true);
-		border.setAnchor(WidgetAnchor.TOP_LEFT);
+		border.setAnchor(WidgetAnchor.CENTER_CENTER);
+		
+		paperTexture = new GenericTexture("paper.png");
+		paperTexture.setPriority(RenderPriority.Low);
+		paperTexture.setWidth(256).setHeight(128);
+		paperTexture.setFixed(true);
+		paperTexture.setAnchor(WidgetAnchor.CENTER_CENTER);
+		paperTexture.setX(-126).setY(-64);
+		paperTexture.setVisible(false);
 		
 		discSlot = new DiscSlot();
-		discSlot.setX(232).setY(69); //teeheehee
+		discSlot.setX(19).setY(-34);
 		discSlot.setWidth(16).setHeight(16);
 		discSlot.setPriority(RenderPriority.Normal);
 		discSlot.setFixed(true);
-		discSlot.setAnchor(WidgetAnchor.TOP_LEFT);
+		discSlot.setAnchor(WidgetAnchor.CENTER_CENTER);
 		
 		discAddSlot = new GenericSlot();
-		discAddSlot.setX(178).setY(40);
+		discAddSlot.setX(-35).setY(-63);
 		discAddSlot.setWidth(16).setHeight(16);
 		discAddSlot.setPriority(RenderPriority.Normal);
 		discAddSlot.setFixed(true);
-		discAddSlot.setAnchor(WidgetAnchor.TOP_LEFT);
+		discAddSlot.setAnchor(WidgetAnchor.CENTER_CENTER);
 		
 		// Select button
-		MachineStartButton startButton = new MachineStartButton((SpoutPlayer)player, (SpoutBlock) block, discSlot, discAddSlot);
-		startButton.setX(95).setY(195);
+		startButton = new MachineStartButton((SpoutPlayer)player, (SpoutBlock) block, discSlot, discAddSlot);
+		startButton.setX(-60).setY(-35);
 		startButton.setWidth(60).setHeight(20);
 		startButton.setPriority(RenderPriority.Normal);
 		startButton.setFixed(true);
-		startButton.setAnchor(WidgetAnchor.TOP_LEFT);
+		startButton.setAnchor(WidgetAnchor.CENTER_CENTER);
+		
+		createLabelWriter();
+		hideLabelWriter();
+		hideStartButton();
 		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, discAddSlot, discSlot, startButton);
+		this.attachWidgets(JukeBukkit.instance, border, paperTexture, discAddSlot, discSlot, startButton);
 		
 		Inventory inventory = player.getInventory();
 		
@@ -89,12 +106,12 @@ public class MachineGUI extends GenericPopup {
 			if (i > 17) yposition = 18;
 			if (i > 26) yposition = 36;
 			
-			slot.setY(104 + yposition);
-			slot.setX(133 + (xposition*18));
+			slot.setY(1 + yposition);
+			slot.setX(-80 + (xposition*18));
 			slot.setWidth(16).setHeight(16);
 			slot.setPriority(RenderPriority.Normal);
 			slot.setFixed(true);
-			slot.setAnchor(WidgetAnchor.TOP_LEFT);
+			slot.setAnchor(WidgetAnchor.CENTER_CENTER);
 			slot.setItem(inventory.getItem(i));
 			this.attachWidget(JukeBukkit.instance, slot);
 			
@@ -110,15 +127,18 @@ public class MachineGUI extends GenericPopup {
 		
 		labelContainer = new GenericContainer();
 		labelContainer.setAnchor(WidgetAnchor.CENTER_CENTER);
-		labelContainer.setPriority(RenderPriority.Low);
+		labelContainer.setPriority(RenderPriority.Lowest);
+		labelContainer.setAlign(WidgetAnchor.CENTER_CENTER);
+		labelContainer.setWidth(256);
+		labelContainer.setHeight(64);
+		labelContainer.setX(-128);
+		labelContainer.setY(-64);
 		
-		GenericTexture paperTexture = new GenericTexture("paper.png");
-		paperTexture.setPriority(RenderPriority.Lowest);
-		paperTexture.setWidth(128).setHeight(64);
-		paperTexture.setFixed(true);
-		//paperTexture.setAnchor(WidgetAnchor.CENTER_CENTER);
-		//paperTexture.setX(125).setY(20);
-		labelContainer.addChild(paperTexture);
+		GenericContainer bContainer = new GenericContainer();
+		bContainer.setLayout(ContainerType.HORIZONTAL);
+		bContainer.setAlign(WidgetAnchor.CENTER_CENTER);
+		bContainer.setWidth(256);
+		bContainer.setHeight(30);
 		
 		GenericTextField labelInput = new GenericTextField();
 		labelInput.setMaximumCharacters(500);
@@ -129,6 +149,7 @@ public class MachineGUI extends GenericPopup {
 		labelInput.setFocus(true);
 		labelInput.setPriority(RenderPriority.Lowest);
 		labelInput.setFixed(true);
+		labelInput.setMarginTop(20);
 		labelContainer.addChild(labelInput);
 		
 		MachineLabelButton button = new MachineLabelButton((SpoutPlayer)player, (SpoutBlock) block, discSlot, discAddSlot, labelInput);
@@ -137,17 +158,49 @@ public class MachineGUI extends GenericPopup {
 		//button.setAnchor(WidgetAnchor.BOTTOM_CENTER);
 		button.setPriority(RenderPriority.Lowest);
 		button.setFixed(true);
-		labelContainer.addChild(button);
+		bContainer.addChild(button);
+		
+		LabelCloseButton cancel = new LabelCloseButton(this);
+		//button.setY(45).setX(5);
+		cancel.setWidth(75).setHeight(20);
+		//button.setAnchor(WidgetAnchor.BOTTOM_CENTER);
+		cancel.setPriority(RenderPriority.Lowest);
+		cancel.setFixed(true);
+		bContainer.addChild(cancel);
+		
+		labelContainer.addChild(bContainer);
+		labelContainer.setVisible(false);
 		
 		this.attachWidget(JukeBukkit.instance, labelContainer);
 		
 	}
 	
-	protected void hideLabelWriter() {
-		if (this.labelContainer != null) {
-			this.removeWidget(this.labelContainer);
-			this.labelContainer = null;
+	public void showStartButton() {
+		startButton.setVisible(true);
+	}
+	
+	public void hideStartButton() {
+		startButton.setVisible(false);
+	}
+	
+	public void showLabelWriter() {
+		if (player.getItemOnCursor() != null && !player.getItemOnCursor().getType().equals(Material.AIR) ) {
+			tossItem((SpoutPlayer) player, player.getItemOnCursor());
+			player.setItemOnCursor(new ItemStack(Material.AIR));
 		}
+		paperTexture.setVisible(true);
+		labelContainer.setVisible(true);
+	}
+	
+	public void cancelLabelWriter() {
+		player.setItemOnCursor(this.discAddSlot.getItem());
+		this.discAddSlot.setItem(new ItemStack(Material.AIR));
+		hideLabelWriter();
+	}
+	
+	public void hideLabelWriter() {
+		paperTexture.setVisible(false);
+		labelContainer.setVisible(false);
 	}
 	
 	@Override
@@ -183,18 +236,21 @@ public class MachineGUI extends GenericPopup {
 	public void onTick() {
 		SpoutItemStack sItem = new SpoutItemStack(this.discSlot.getItem());
 		if (
-				this.labelContainer == null &&
 				this.discAddSlot.getItem().getType().equals(Material.PAPER) &&
 				(sItem.isCustomItem() && sItem.getMaterial() instanceof BurnedDisc)
 				) {
-			createLabelWriter();
+			showLabelWriter();
+			hideStartButton();
 		} else if (
-				this.labelContainer != null &&
-				!this.discAddSlot.getItem().getType().equals(Material.PAPER) ||
-				!(sItem.isCustomItem() && sItem.getMaterial() instanceof BurnedDisc)
+				!this.discSlot.getItem().getType().equals(Material.AIR) &&
+				!this.discAddSlot.getItem().getType().equals(Material.AIR)
 				){
 			hideLabelWriter();
-		} 
+			showStartButton();
+		} else {
+			hideLabelWriter();
+			hideStartButton();
+		}
 		super.onTick();
 	}
 	
