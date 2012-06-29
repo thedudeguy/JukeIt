@@ -34,9 +34,9 @@ import cc.thedudeguy.jukebukkit.materials.Blocks;
 import cc.thedudeguy.jukebukkit.materials.Items;
 import cc.thedudeguy.jukebukkit.materials.blocks.MachineBlock;
 import cc.thedudeguy.jukebukkit.materials.blocks.MachineRecipe;
-import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
 import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
+import cc.thedudeguy.jukebukkit.materials.items.DiscColor;
 import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Sound;
 
@@ -244,35 +244,102 @@ public class MachineListener implements Listener {
 			
 			//create the disc
 			//create the key
-	      	String key = BurnedDisc.generateNameKey();
-	      	//disc color...
-	      	int color = target.getColor();
-	      	//add the disc into the database
-	      	DiscData newDiscData = new DiscData();
-	      	newDiscData.setNameKey(key);
-	      	newDiscData.setUrl(discData.getUrl());
-	      	newDiscData.setLabel(discData.getLabel());
-	      	newDiscData.setColor(color);
-	      	JukeBukkit.instance.getDatabase().save(newDiscData);
-	      	//create the physical disc for the pplayer
-	    	BurnedDisc disc = new BurnedDisc(newDiscData);
-	    	Items.burnedDiscs.put(key, disc);
-	    	ItemStack iss = new SpoutItemStack(disc, 1);
-	      	//eject the disc.
-	    	this.eject(event.getBlock(), iss);
-	    	//eject leftovers. since were cloning the master disc, should not destroy it.
-	    	if (sPrimItem.getMaterial() instanceof BurnedDisc) {
-	    		eject(event.getBlock(), event.getPrimaryItem());
-		    	if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
+			String key = BurnedDisc.generateNameKey();
+			//disc color...
+			int color = target.getColor();
+			//add the disc into the database
+			DiscData newDiscData = new DiscData();
+			newDiscData.setNameKey(key);
+			newDiscData.setUrl(discData.getUrl());
+			newDiscData.setLabel(discData.getLabel());
+			newDiscData.setColor(color);
+			JukeBukkit.instance.getDatabase().save(newDiscData);
+			//create the physical disc for the pplayer
+			BurnedDisc disc = new BurnedDisc(newDiscData);
+			Items.burnedDiscs.put(key, disc);
+			ItemStack iss = new SpoutItemStack(disc, 1);
+			//eject the disc.
+			this.eject(event.getBlock(), iss);
+			//eject leftovers. since were cloning the master disc, should not destroy it.
+			if (sPrimItem.getMaterial() instanceof BurnedDisc) {
+				eject(event.getBlock(), event.getPrimaryItem());
+				if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
 			} else {
 				eject(event.getBlock(), event.getAdditionItem());
-		    	if (!lastOne(event.getPrimaryItem())) eject(event.getBlock(), removeOne(event.getPrimaryItem()));
+				if (!lastOne(event.getPrimaryItem())) eject(event.getBlock(), removeOne(event.getPrimaryItem()));
 			}
-	    	
+			
 			return;
 		}
 		
-		//check if were cloning a disc
+		//check if were coloring a blank disc
+		if ( (sPrimItem.getMaterial() instanceof BlankDisc && sAddItem.getType().equals(Material.INK_SACK)) ) {
+			Debug.debug("attempting to color blank disc");
+			Debug.debug("Dye: ", sAddItem.getData().getData(), " : ", event.getAdditionItem().getData().getData());
+			
+			if (sPrimItem.getAmount() == sAddItem.getAmount()) {
+				//will use all the dye, dont return any.
+				//will use all the discs. dont return any.
+				//return amount of new color discs.
+				eject(event.getBlock(), getBlankDiscByDyeColor(sAddItem.getData().getData(), sPrimItem.getAmount()));
+				return;
+			}
+			if (sPrimItem.getAmount() > sAddItem.getAmount()) {
+				//will use all the die, dont return any.
+				//will use a portion of the discs. return some.
+				int amountLeft = sPrimItem.getAmount() - sAddItem.getAmount();
+				sPrimItem.setAmount(amountLeft);
+				eject(event.getBlock(), sPrimItem);
+				//return equal number of disc in new color.
+				eject(event.getBlock(), getBlankDiscByDyeColor(sAddItem.getData().getData(), sAddItem.getAmount()));
+				return;
+			}
+			if (sAddItem.getAmount() > sPrimItem.getAmount()) {
+				//will use a portion of the dye, return some.
+				int amountLeft = sAddItem.getAmount() - sPrimItem.getAmount();
+				sAddItem.setAmount(amountLeft);
+				eject(event.getBlock(), sAddItem);
+				//will us all the discs. dont return any.
+				//return equal number of discs used.
+				eject(event.getBlock(), getBlankDiscByDyeColor(sAddItem.getData().getData(), sPrimItem.getAmount()));
+				return;
+			}
+			
+			abortEject(event);
+			return;
+		}
+		
+		//check for coloring already burned discs.
+		if ( (sPrimItem.getMaterial() instanceof BurnedDisc && sAddItem.getType().equals(Material.INK_SACK)) ) {
+			Debug.debug("coloring burned disc");
+			//well make burned discs only colorable one at a time.
+			BurnedDisc disc = (BurnedDisc) sPrimItem.getMaterial();
+			// first update the database.
+			//get burned disc data
+			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+					.where()
+						.ieq("nameKey", disc.getKey())
+					.findUnique();
+			if (discData == null) {
+				Bukkit.getLogger().log(Level.WARNING, "Disc Data not found");
+				abortEject(event);
+				return;
+			}
+			
+			int color = getDiscColor(sAddItem.getData().getData());
+			discData.setColor(color);
+			JukeBukkit.instance.getDatabase().save(discData);
+			//change the discs color.
+			//start by resetting the disc.
+			SpoutManager.getMaterialManager().resetName(disc);
+			BurnedDisc newDisc = new BurnedDisc(discData);
+			Items.burnedDiscs.put(discData.getNameKey(), newDisc);
+			//eject left over dye.
+			if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
+			//eject disc (should automatically have new color)
+			eject(event.getBlock(), new SpoutItemStack(newDisc));
+			return;
+		}
 		
 		//set if we have a recipe match
 		ItemStack recipeResult = MachineRecipe.getRecipeMatch(sPrimItem, sAddItem);
@@ -376,5 +443,52 @@ public class MachineListener implements Listener {
 		loc.setZ(loc.getZ()+0.5);
 		
 		return loc;
+	}
+	
+	/**
+	 * Yes. I know. this is absolutely horrible. shame on me. bad!
+	 */
+	private ItemStack getBlankDiscByDyeColor(byte data, int amountOfDiscs) {
+		Debug.debug("MachineListener:getBlankDiscByDyeColr: ", data, amountOfDiscs);
+		
+		if (data == 0) return new SpoutItemStack(Items.blankDiscBlack, amountOfDiscs);
+		if (data == 4) return new SpoutItemStack(Items.blankDiscBlue, amountOfDiscs);
+		if (data == 3) return new SpoutItemStack(Items.blankDiscBrown, amountOfDiscs);
+		if (data == 6) return new SpoutItemStack(Items.blankDiscCyan, amountOfDiscs);
+		if (data == 8) return new SpoutItemStack(Items.blankDiscGray, amountOfDiscs);
+		if (data == 2) return new SpoutItemStack(Items.blankDiscGreen, amountOfDiscs);
+		if (data == 12) return new SpoutItemStack(Items.blankDiscLightBlue, amountOfDiscs);
+		if (data == 10) return new SpoutItemStack(Items.blankDiscLime, amountOfDiscs);
+		if (data == 13) return new SpoutItemStack(Items.blankDiscMagenta, amountOfDiscs);
+		if (data == 14) return new SpoutItemStack(Items.blankDiscOrange, amountOfDiscs);
+		if (data == 9) return new SpoutItemStack(Items.blankDiscPink, amountOfDiscs);
+		if (data == 5) return new SpoutItemStack(Items.blankDiscPurple, amountOfDiscs);
+		if (data == 1) return new SpoutItemStack(Items.blankDiscRed, amountOfDiscs);
+		if (data == 7) return new SpoutItemStack(Items.blankDiscLightGray, amountOfDiscs);
+		if (data == 11) return new SpoutItemStack(Items.blankDiscYellow, amountOfDiscs);
+		return new SpoutItemStack(Items.blankDiscWhite, amountOfDiscs);
+	}
+	
+	/**
+	 * Yes. also horrible. but im feelin really lazy right now
+	 */
+	private int getDiscColor(byte data ) {
+		
+		if (data ==  0) return DiscColor.BLACK;
+		if (data ==  4) return DiscColor.BLUE;
+		if (data ==  3) return DiscColor.BROWN;
+		if (data ==  6) return DiscColor.CYAN;
+		if (data ==  8) return DiscColor.GRAY;
+		if (data ==  2) return DiscColor.GREEN;
+		if (data ==  12) return DiscColor.LIGHTBLUE;
+		if (data ==  10) return DiscColor.LIME;
+		if (data ==  13) return DiscColor.MAGENTA;
+		if (data ==  14) return DiscColor.ORANGE;
+		if (data ==  9) return DiscColor.PINK;
+		if (data ==  5) return DiscColor.PURPLE;
+		if (data ==  1) return DiscColor.RED;
+		if (data ==  7) return DiscColor.LIGHTGRAY;
+		if (data ==  11) return DiscColor.YELLOW;
+		return DiscColor.WHITE;
 	}
 }
