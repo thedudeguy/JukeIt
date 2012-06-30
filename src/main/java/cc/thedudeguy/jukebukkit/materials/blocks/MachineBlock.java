@@ -3,13 +3,18 @@ package cc.thedudeguy.jukebukkit.materials.blocks;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
+import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
+import org.getspout.spoutapi.material.MaterialData;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.MachineGUI;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
+import cc.thedudeguy.jukebukkit.materials.Items;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 import cc.thedudeguy.jukebukkit.permission.UsePermissible;
 
@@ -21,6 +26,7 @@ public class MachineBlock extends GenericCustomBlock implements CraftPermissible
 		this.setBlockDesign(Blocks.machineTopBlockModel.getDesign(), 1);
 		this.setBlockDesign(Blocks.machineTopPressedBlockModel.getDesign(), 2);
 		this.setItemDrop(null);
+		setRecipe();
 	}
 
 	@Override
@@ -67,5 +73,14 @@ public class MachineBlock extends GenericCustomBlock implements CraftPermissible
 		player.getMainScreen().attachPopupScreen(new MachineGUI(player, block));
 		
 		return true;
+	}
+	
+	public void setRecipe() {
+		SpoutShapedRecipe r = new SpoutShapedRecipe( new SpoutItemStack(this, 1) );
+		r.shape("t", "b");
+		r.setIngredient('t', Items.machineTop);
+		r.setIngredient('b', Items.machineBottom);
+		
+		SpoutManager.getMaterialManager().registerSpoutRecipe(r);
 	}
 }

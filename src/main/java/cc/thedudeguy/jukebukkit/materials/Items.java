@@ -10,6 +10,8 @@ import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.materials.items.DiscOnAStick;
+import cc.thedudeguy.jukebukkit.materials.items.MachineBottom;
+import cc.thedudeguy.jukebukkit.materials.items.MachineTop;
 import cc.thedudeguy.jukebukkit.materials.items.SpeakerWire;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlack;
 import cc.thedudeguy.jukebukkit.materials.items.colorblankdisc.BlankDiscBlue;
@@ -32,6 +34,9 @@ import cc.thedudeguy.jukebukkit.materials.items.needles.WoodFlintNeedle;
 
 public class Items {
 
+	public static MachineTop machineTop;
+	public static MachineBottom machineBottom;
+	
 	public static WoodFlintNeedle woodflintNeedle;
 	public static BlazeFlintNeedle blazeflintNeedle;
 	
@@ -59,6 +64,9 @@ public class Items {
 	
 	public static DiscOnAStick discOnAStick;
 	public Items() {
+		
+		machineTop = new MachineTop();
+		machineBottom = new MachineBottom();
 		
 		//Init custom items.
 		woodflintNeedle = new WoodFlintNeedle();

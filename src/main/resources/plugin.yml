@@ -33,6 +33,12 @@ permissions:
   jukebukkit.craft.jukebox.world:
     description: Access to craft world range jukebox
     default: op
+  jukebukkit.craft.machinepart:
+    description: Access to craft machine parts
+    default: true
+  jukebukkit.craft.machine:
+    description: Access to craft machine out of parts
+    default: true
   jukebukkit.craft.speaker:
     description: Access to craft speakers
     default: true

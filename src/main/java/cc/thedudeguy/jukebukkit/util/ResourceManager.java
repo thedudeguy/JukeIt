@@ -1,6 +1,7 @@
 package cc.thedudeguy.jukebukkit.util;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -10,55 +11,9 @@ import org.getspout.spoutapi.SpoutManager;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.sound.SoundEffect;
+import cc.thedudeguy.jukebukkit.texture.TextureFile;
 
 public class ResourceManager {
-
-	public static final List<String> textures = Arrays.asList(
-			"blank_disc_black.png",
-			"blank_disc_blue.png",
-			"blank_disc_brown.png",
-			"blank_disc_cyan.png",
-			"blank_disc_gray.png",
-			"blank_disc_green.png",
-			"blank_disc_lightblue.png",
-			"blank_disc_lightgray.png",
-			"blank_disc_lime.png",
-			"blank_disc_magenta.png",
-			"blank_disc_orange.png",
-			"blank_disc_pink.png",
-			"blank_disc_purple.png",
-			"blank_disc_red.png",
-			"blank_disc_white.png",
-			"blank_disc_yellow.png",
-			"burned_disc_lightgray.png",
-			"burned_disc_black.png",
-			"burned_disc_blue.png",
-			"burned_disc_brown.png",
-			"burned_disc_cyan.png",
-			"burned_disc_gray.png",
-			"burned_disc_green.png",
-			"burned_disc_lightblue.png",
-			"burned_disc_lime.png",
-			"burned_disc_magenta.png",
-			"burned_disc_orange.png",
-			"burned_disc_pink.png",
-			"burned_disc_purple.png",
-			"burned_disc_red.png",
-			"burned_disc_white.png",
-			"burned_disc_yellow.png",
-			"needle_stick-flint.png",
-			"needle_blaze-flint.png",
-			"recordplayer.png",
-			"blocks_deprecated.png",
-			"speaker.png",
-			"speakerwire.png",
-			"speakerwireblock.png",
-			"borderblue.png",
-			"machineblock.png",
-			"machinegui.png",
-			"paper.png",
-			"disconastick.png"
-			);
 	
 	public static final List<String> music = Arrays.asList(
 			"battle_jesus_vs_cyborg_hitlers.ogg"
@@ -90,8 +45,8 @@ public class ResourceManager {
 			);
 	
 	public static void copyResources() {
-		for (String texture : textures) {
-			doCopy(texture, "textures");
+		for (TextureFile texture : TextureFile.values()) {
+			doCopy(texture.getFile(), "textures");
 		}
 		
 		for (SoundEffect sound : SoundEffect.values()) {
@@ -123,8 +78,8 @@ public class ResourceManager {
 	}
 	
 	public static void preLoginCache() {
-		for (String texture : textures) {
-			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures", texture).getPath()));
+		for (TextureFile texture : TextureFile.values()) {
+			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures", texture.getFile()).getPath()));
 		}
 		for (SoundEffect sound : SoundEffect.values()) {
 			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("sounds", sound.getSoundFileName()).getPath()));
@@ -132,12 +87,16 @@ public class ResourceManager {
 	}
 	
 	public static void clearCache() {
+		List<String> textures = new ArrayList<String>();
+		for (TextureFile texture : TextureFile.values()) {
+			textures.add(texture.getFile());
+		}
 		SpoutManager.getFileManager().removeFromCache(JukeBukkit.instance, textures);
 	}
 	
 	public static void addCache() {
-		for (String texture : textures) {
-			SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures", texture).getPath()));
+		for (TextureFile texture : TextureFile.values()) {
+			SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures", texture.getFile()).getPath()));
 		}
 		
 		for (SoundEffect sound : SoundEffect.values()) {
