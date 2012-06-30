@@ -36,7 +36,7 @@ import cc.thedudeguy.jukebukkit.materials.blocks.designs.RecordPlayerDesign;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.materials.items.needles.Needle;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
-import cc.thedudeguy.jukebukkit.permission.CraftPermission;
+import cc.thedudeguy.jukebukkit.permission.UsePermissible;
 import cc.thedudeguy.jukebukkit.sound.Sound;
 import cc.thedudeguy.jukebukkit.sound.SoundEffect;
 import cc.thedudeguy.jukebukkit.util.Debug;
@@ -44,7 +44,7 @@ import cc.thedudeguy.jukebukkit.util.Recipies;
 
 //TODO This needs to be cleaned up a LOT
 
-public class RecordPlayer extends GenericCustomBlock implements WireConnector, CraftPermissible {
+public class RecordPlayer extends GenericCustomBlock implements WireConnector, CraftPermissible, UsePermissible {
 	
 	public static HashMap<String, Integer> designIds = new HashMap<String, Integer>();
 	
@@ -264,6 +264,13 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	}
 	
 	public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {
+		
+		if (!player.hasPermission(getUsePermission())) {
+			player.sendMessage("You do not have permission to perform this action.");
+			player.sendMessage("("+getUsePermission()+")");
+			return;
+		}
+		
 		//when the block is placed we need to make sure to get data set up for it.
 		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
 				.where()
@@ -536,8 +543,13 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	}
 
 	@Override
-	public CraftPermission getPermission() {
-		return new CraftPermission("jukebukkit.craft.recordplayer");
+	public String getCraftPermission() {
+		return "jukebukkit.craft.recordplayer";
+	}
+	
+	@Override
+	public String getUsePermission() {
+		return "jukebukkit.use.recordplayer";
 	}
 	
 	public void setRecipe() {

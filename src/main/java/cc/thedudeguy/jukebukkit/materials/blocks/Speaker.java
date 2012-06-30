@@ -10,7 +10,6 @@ import org.getspout.spoutapi.material.block.GenericCubeCustomBlock;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
-import cc.thedudeguy.jukebukkit.permission.CraftPermission;
 import cc.thedudeguy.jukebukkit.util.Recipies;
 
 public class Speaker extends GenericCubeCustomBlock implements WireConnector, CraftPermissible {
@@ -21,8 +20,8 @@ public class Speaker extends GenericCubeCustomBlock implements WireConnector, Cr
 	}
 
 	@Override
-	public CraftPermission getPermission() {
-		return new CraftPermission("jukebukkit.craft.speaker");
+	public String getCraftPermission() {
+		return "jukebukkit.craft.speaker";
 	}
 	
 	public void setRecipe() {

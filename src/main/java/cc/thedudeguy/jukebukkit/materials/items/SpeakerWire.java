@@ -15,7 +15,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.events.SpeakerWirePlaceEvent;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
-import cc.thedudeguy.jukebukkit.permission.CraftPermission;
 import cc.thedudeguy.jukebukkit.util.Debug;
 
 public class SpeakerWire extends GenericCustomItem implements CraftPermissible {
@@ -60,8 +59,8 @@ public class SpeakerWire extends GenericCustomItem implements CraftPermissible {
 	}
 
 	@Override
-	public CraftPermission getPermission() {
-		return new CraftPermission("jukebukkit.craft.wire");
+	public String getCraftPermission() {
+		return "jukebukkit.craft.wire";
 	}
 	
 }

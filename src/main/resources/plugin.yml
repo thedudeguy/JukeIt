@@ -30,6 +30,9 @@ permissions:
   jukebukkit.craft.jukebox:
     description: Access to craft jukeboxes
     default: true
+  jukebukkit.craft.jukebox.world:
+    description: Access to craft world range jukebox
+    default: op
   jukebukkit.craft.speaker:
     description: Access to craft speakers
     default: true
@@ -51,6 +54,15 @@ permissions:
   jukebukkit.use.burner:
     description: Access to use disc burner
     default: true
+  jukebukkit.use.jukebox:
+    description: Access to craft jukeboxes
+    default: true
+  jukebukkit.use.recordplayer:
+    description: Access to play recordplayers by punching
+    default: true
+  jukebukkit.use.jukebox.word:
+    description: Access to use world range jukeboxes
+    default: op
   jukebukkit.use.machine:
     description: Access to use machine
     default: true

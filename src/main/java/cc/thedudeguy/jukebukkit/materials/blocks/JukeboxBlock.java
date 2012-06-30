@@ -26,12 +26,12 @@ import cc.thedudeguy.jukebukkit.materials.Items;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
-import cc.thedudeguy.jukebukkit.permission.CraftPermission;
+import cc.thedudeguy.jukebukkit.permission.UsePermissible;
 import cc.thedudeguy.jukebukkit.sound.Sound;
 import cc.thedudeguy.jukebukkit.sound.SoundEffect;
 import cc.thedudeguy.jukebukkit.util.Debug;
 
-public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPermissible {
+public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPermissible, UsePermissible {
 
 	public JukeboxBlock(String name) {
 		super(JukeBukkit.instance, name);
@@ -48,8 +48,13 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 	public abstract GenericCubeBlockDesign getCustomBlockDesign();
 	
 	@Override
-	public CraftPermission getPermission() {
-		return new CraftPermission("jukebukkit.craft.jukebox");
+	public String getCraftPermission() {
+		return "jukebukkit.craft.jukebox";
+	}
+	
+	@Override
+	public String getUsePermission() {
+		return "jukebukkit.use.jukebox";
 	}
 	
 	public boolean canPlaceBlockAt(World arg0, int arg1, int arg2, int arg3) {
@@ -74,6 +79,12 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 	}
 
 	public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {
+		
+		if (!player.hasPermission(getUsePermission())) {
+			player.sendMessage("You do not have permission to perform this action.");
+			player.sendMessage("("+getUsePermission()+")");
+			return;
+		}
 		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		
@@ -162,6 +173,12 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 	}
 
 	public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
+		
+		if (!player.hasPermission(getUsePermission())) {
+			player.sendMessage("You do not have permission to perform this action.");
+			player.sendMessage("("+getUsePermission()+")");
+			return true;
+		}
 		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		

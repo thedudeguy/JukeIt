@@ -9,7 +9,6 @@ import org.getspout.spoutapi.material.MaterialData;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
-import cc.thedudeguy.jukebukkit.permission.CraftPermission;
 
 public class JukeboxWorldRange extends JukeboxBlock {
 	
@@ -29,8 +28,13 @@ public class JukeboxWorldRange extends JukeboxBlock {
 	}
 	
 	@Override
-	public CraftPermission getPermission() {
-		return new CraftPermission("jukebukkit.craft.jukebox.world");
+	public String getCraftPermission() {
+		return "jukebukkit.craft.jukebox.world";
+	}
+	
+	@Override
+	public String getUsePermission() {
+		return "jukebukkit.use.jukebox.world";
 	}
 	
 	@Override

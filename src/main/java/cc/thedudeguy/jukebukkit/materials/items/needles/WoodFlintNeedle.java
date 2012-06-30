@@ -8,7 +8,6 @@ import org.getspout.spoutapi.material.item.GenericCustomItem;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
-import cc.thedudeguy.jukebukkit.permission.CraftPermission;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 
 public class WoodFlintNeedle extends GenericCustomItem implements Needle, CraftPermissible {
@@ -24,8 +23,8 @@ public class WoodFlintNeedle extends GenericCustomItem implements Needle, CraftP
 	}
 	
 	@Override
-	public CraftPermission getPermission() {
-		return new CraftPermission("jukebukkit.craft.needle");
+	public String getCraftPermission() {
+		return "jukebukkit.craft.needle";
 	}
 	
 	public CustomItem setTexture(File texture) {

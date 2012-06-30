@@ -11,9 +11,9 @@ import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.MachineGUI;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
-import cc.thedudeguy.jukebukkit.permission.CraftPermission;
+import cc.thedudeguy.jukebukkit.permission.UsePermissible;
 
-public class MachineBlock extends GenericCustomBlock implements CraftPermissible {
+public class MachineBlock extends GenericCustomBlock implements CraftPermissible, UsePermissible {
 
 	public MachineBlock() {
 		super(JukeBukkit.instance, "Disc Machine", Material.CAULDRON.getId());
@@ -24,8 +24,13 @@ public class MachineBlock extends GenericCustomBlock implements CraftPermissible
 	}
 
 	@Override
-	public CraftPermission getPermission() {
-		return new CraftPermission("jukebukkit.craft.machine");
+	public String getCraftPermission() {
+		return "jukebukkit.craft.machine";
+	}
+	
+	@Override
+	public String getUsePermission() {
+		return "jukebukkit.use.machine";
 	}
 	
 	@Override
@@ -53,9 +58,9 @@ public class MachineBlock extends GenericCustomBlock implements CraftPermissible
 				return false;
 		}
 		
-		if (!player.hasPermission("jukebukkit.use.machine")) {
+		if (!player.hasPermission(getUsePermission())) {
 			player.sendMessage("You do not have permission to perform this action.");
-			player.sendMessage("(jukebukkit.use.machine)");
+			player.sendMessage("("+getUsePermission()+")");
 			return false;
 		}
 		

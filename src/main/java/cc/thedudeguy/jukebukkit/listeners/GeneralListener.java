@@ -7,7 +7,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 
-import cc.thedudeguy.jukebukkit.permission.CraftPermission;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 import cc.thedudeguy.jukebukkit.util.Debug;
 
@@ -21,12 +20,12 @@ public class GeneralListener implements Listener {
 		if (craftedStack.getMaterial() != null && craftedStack.getMaterial() instanceof CraftPermissible) {
 			Debug.debug("crafted item has permission attached");
 			
-			CraftPermission permission = ((CraftPermissible)craftedStack.getMaterial()).getPermission();
+			String permission = ((CraftPermissible)craftedStack.getMaterial()).getCraftPermission();
 			
-			if (permission.hasCraftPermission() && !event.getWhoClicked().hasPermission(permission.getCraftPermission())) {
+			if (!event.getWhoClicked().hasPermission(permission)) {
 				event.setResult(Result.DENY);
 				((Player)event.getWhoClicked()).sendMessage("You do not have permission to craft this item.");
-				((Player)event.getWhoClicked()).sendMessage("("+permission.getCraftPermission()+")");
+				((Player)event.getWhoClicked()).sendMessage("("+permission+")");
 				event.setCancelled(true);
 				return;
 			}
