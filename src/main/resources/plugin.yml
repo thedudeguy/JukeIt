@@ -60,7 +60,7 @@ permissions:
   jukebukkit.use.recordplayer:
     description: Access to play recordplayers by punching
     default: true
-  jukebukkit.use.jukebox.word:
+  jukebukkit.use.jukebox.world:
     description: Access to use world range jukeboxes
     default: op
   jukebukkit.use.machine:
