@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.getspout.spoutapi.SpoutManager;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.sound.SoundEffect;
 
 public class ResourceManager {
 
@@ -59,17 +60,6 @@ public class ResourceManager {
 			"disconastick.png"
 			);
 	
-	public static final List<String> sounds = Arrays.asList(
-			"jb_error.wav",
-			"jb_startup.wav",
-			"disc_load.wav",
-			"disc_eject.wav",
-			"disc_start.wav",
-			"disc_stop.wav",
-			"needle_attach.wav",
-			"needle_eject.wav"
-			);
-	
 	public static final List<String> music = Arrays.asList(
 			"battle_jesus_vs_cyborg_hitlers.ogg"
 			);
@@ -103,8 +93,9 @@ public class ResourceManager {
 		for (String texture : textures) {
 			doCopy(texture, "textures");
 		}
-		for (String sound : sounds) {
-			doCopy(sound, "sounds");
+		
+		for (SoundEffect sound : SoundEffect.values()) {
+			doCopy(sound.getSoundFileName(), "sounds");
 		}
 		
 		for (String m : music) {
@@ -135,8 +126,8 @@ public class ResourceManager {
 		for (String texture : textures) {
 			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures", texture).getPath()));
 		}
-		for (String sound : sounds) {
-			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("sounds", sound).getPath()));
+		for (SoundEffect sound : SoundEffect.values()) {
+			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("sounds", sound.getSoundFileName()).getPath()));
 		}
 	}
 	
@@ -148,9 +139,11 @@ public class ResourceManager {
 		for (String texture : textures) {
 			SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures", texture).getPath()));
 		}
-		for (String sound : sounds) {
-			SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("sounds", sound).getPath()));
+		
+		for (SoundEffect sound : SoundEffect.values()) {
+			SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("sounds", sound.getSoundFileName()).getPath()));
 		}
+		
 	}
 	
 	public static void cacheSingle(String folder, String file) {

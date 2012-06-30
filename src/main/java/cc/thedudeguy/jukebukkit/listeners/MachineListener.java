@@ -1,7 +1,5 @@
 package cc.thedudeguy.jukebukkit.listeners;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -37,8 +35,9 @@ import cc.thedudeguy.jukebukkit.materials.blocks.MachineRecipe;
 import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.materials.items.DiscColor;
+import cc.thedudeguy.jukebukkit.sound.Sound;
+import cc.thedudeguy.jukebukkit.sound.SoundEffect;
 import cc.thedudeguy.jukebukkit.util.Debug;
-import cc.thedudeguy.jukebukkit.util.Sound;
 
 public class MachineListener implements Listener {
 
@@ -127,14 +126,7 @@ public class MachineListener implements Listener {
 		Debug.debug("LabelMachineStartEvent heard - starting up. ");
 		SpoutManager.getMaterialManager().overrideBlock(event.getBlock().getRelative(BlockFace.UP), Blocks.machineBlock, (byte)2);
 		
-		try {
-			Sound sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/28/192/labelmachine.ogg"));
-			sound.setRange(8);
-			sound.play(event.getBlock().getLocation());
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		new Sound(SoundEffect.MACHINE_PRESS, event.getBlock(), 8).play();
 		
 		Particle particle = new Particle(ParticleType.LARGESMOKE, getParticleLocation(event.getBlock()), new Vector(0,0,0));
 		particle.setAmount(50);

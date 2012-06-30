@@ -1,7 +1,5 @@
 package cc.thedudeguy.jukebukkit.materials.blocks;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,9 +37,10 @@ import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.materials.items.needles.Needle;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 import cc.thedudeguy.jukebukkit.permission.CraftPermission;
+import cc.thedudeguy.jukebukkit.sound.Sound;
+import cc.thedudeguy.jukebukkit.sound.SoundEffect;
 import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Recipies;
-import cc.thedudeguy.jukebukkit.util.Sound;
 
 //TODO This needs to be cleaned up a LOT
 
@@ -165,17 +164,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 				playMusic(discInHand.getUrl(), location, RPNeedle.getById(rpdata.getNeedleType()));
 			}
 			
-			//Sound sound = new Sound("disc_load.wav");
-			Sound sound;
-			try {
-				sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/700/disc_load.wav"));
-				sound.setRange(8);
-				sound.play(location);
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			new Sound(SoundEffect.RECORD_PLAYER_LOAD, world.getBlockAt(x,y,z), 8).play();
 			
 			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
@@ -211,15 +200,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 				player.setItemInHand(inHand);
 			}
 			
-			Sound sound;
-			try {
-				sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/703/needle_attach.wav"));
-				sound.setRange(8);
-				sound.play(location);
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			new Sound(SoundEffect.NEEDLE_ATTACH, world.getBlockAt(x,y,z), 8).play();
 			
 			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
@@ -246,16 +227,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 			if (!RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE)) {
 				stopMusic(world.getBlockAt(x, y, z).getLocation(), RPNeedle.getById(rpdata.getNeedleType()));
 			}
-			
-			Sound sound;
-			try {
-				sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/701/disc_eject.wav"));
-				sound.setRange(8);
-				sound.play(location);
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			new Sound(SoundEffect.RECORD_PLAYER_EJECT, world.getBlockAt(x,y,z), 8).play();
 			
 			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
@@ -281,15 +253,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 			spawnLoc.setY(spawnLoc.getY()+1);
 			world.dropItem(spawnLoc, new SpoutItemStack(needle, 1));
 			
-			Sound sound;
-			try {
-				sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/704/needle_eject.wav"));
-				sound.setRange(8);
-				sound.play(location);
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			new Sound(SoundEffect.NEEDLE_EJECT, world.getBlockAt(x,y,z), 8).play();
 			
 			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
 			
@@ -494,7 +458,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		int range = getRange(location, needle);
 		Debug.debug("Playing audio with range: ", range);
 		
-		//Bukkit.getLogger().log(Level.INFO, "RANGE: " + String.valueOf(range));
+		new Sound(SoundEffect.RECORD_PLAYER_START, location, 8).play();
 		
 		//get players in radius of the jukebox and start it for only those players
 		for(Player p:location.getWorld().getPlayers()) {
@@ -511,17 +475,6 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 				}
 			}
 		}
-		
-		Sound sound;
-		try {
-			sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/706/disc_start.wav"));
-			sound.setRange(8);
-			sound.play(location);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 	
 	public void stopMusic(Location location, RPNeedle needle) {
@@ -537,16 +490,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 				}
 			}
 		}
-		
-		Sound sound;
-		try {
-			sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/25/707/disc_stop.wav"));
-			sound.setRange(8);
-			sound.play(location);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		new Sound(SoundEffect.RECORD_PLAYER_STOP, location, 8).play();
 	}
 	
 	public HashMap<BlockFace, Speaker> getConnectedBlocks(Location location) {

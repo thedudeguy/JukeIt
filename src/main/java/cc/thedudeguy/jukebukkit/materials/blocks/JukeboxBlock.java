@@ -1,7 +1,5 @@
 package cc.thedudeguy.jukebukkit.materials.blocks;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -29,8 +27,9 @@ import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
 import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 import cc.thedudeguy.jukebukkit.permission.CraftPermission;
+import cc.thedudeguy.jukebukkit.sound.Sound;
+import cc.thedudeguy.jukebukkit.sound.SoundEffect;
 import cc.thedudeguy.jukebukkit.util.Debug;
-import cc.thedudeguy.jukebukkit.util.Sound;
 
 public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPermissible {
 
@@ -107,16 +106,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 		}
 		
 		//Sound sound = new Sound("disc_load.wav");
-		Sound sound;
-		try {
-			sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/21/203/jb_error.wav"));
-			sound.setRange(8);
-			sound.play(location);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		new Sound(SoundEffect.JUKEBOX_STOP, world.getBlockAt(x,y,z), 8).play();
 	}
 	
 	public void onBlockDestroyed(World world, int x, int y, int z) {
@@ -233,15 +223,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			rpdata.setDiscKey(discInHand.getKey());
 			JukeBukkit.instance.getDatabase().save(rpdata);
 			
-			Sound sound;
-			try {
-				sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/21/202/jb_startup.wav"));
-				sound.setRange(8);
-				sound.play(location);
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			new Sound(SoundEffect.JUKEBOX_START, world.getBlockAt(x,y,z), 8).play();
 			
 			//start the music
 			playMusic(discInHand.getUrl(), location);
@@ -249,16 +231,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			return true;
 		}
 		
-		Sound sound;
-		try {
-			sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/21/203/jb_error.wav"));
-			sound.setRange(8);
-			sound.play(location);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		new Sound(SoundEffect.JUKEBOX_STOP, world.getBlockAt(x,y,z), 8).play();
 		return false;
 	}
 
@@ -359,17 +332,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 					try {
 						SpoutManager.getSoundManager().playCustomMusic(JukeBukkit.instance, sp, url, true, location, getRange());
 					} catch (Exception e) {
-						//the disc has an error.
-						Sound sound;
-						try {
-							sound = new Sound(new URL("http://dev.bukkit.org/media/attachments/21/203/jb_error.wav"));
-							sound.setRange(8);
-							sound.play(location);
-						} catch (MalformedURLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						
+						new Sound(SoundEffect.JUKEBOX_STOP, location, 8).play();
 					}
 				}
 			}
