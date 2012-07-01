@@ -265,10 +265,12 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	
 	public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {
 		
-		if (!player.hasPermission(getUsePermission())) {
-			player.sendMessage("You do not have permission to perform this action.");
-			player.sendMessage("("+getUsePermission()+")");
-			return;
+		if (player != null) {
+			if (!player.hasPermission(getUsePermission())) {
+				player.sendMessage("You do not have permission to perform this action.");
+				player.sendMessage("("+getUsePermission()+")");
+				return;
+			}
 		}
 		
 		//when the block is placed we need to make sure to get data set up for it.

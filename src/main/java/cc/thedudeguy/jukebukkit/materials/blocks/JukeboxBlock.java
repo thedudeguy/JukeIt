@@ -80,10 +80,14 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 
 	public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {
 		
-		if (!player.hasPermission(getUsePermission())) {
-			player.sendMessage("You do not have permission to perform this action.");
-			player.sendMessage("("+getUsePermission()+")");
-			return;
+		if (player != null) {
+		
+			if (!player.hasPermission(getUsePermission())) {
+				player.sendMessage("You do not have permission to perform this action.");
+				player.sendMessage("("+getUsePermission()+")");
+				return;
+			}
+			
 		}
 		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
