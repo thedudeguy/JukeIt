@@ -33,6 +33,39 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.10.b1</version>
+				<executions>
+					<execution>
+						<phase>clean</phase>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<quiet>true</quiet>
+					<encoding>UTF-8</encoding>
+					<strictCheck>true</strictCheck>
+					<header>${basedir}/header.txt</header>
+					<keywords>
+						<keyword>${project.name}</keyword>
+						<keyword>license</keyword>
+					</keywords>
+					<mapping>
+						<java>JAVADOC_STYLE</java>
+					</mapping>
+					<properties>
+						<name>${project.name}</name>
+						<copyright>Copyright (C) ${project.inceptionYear}-2012  ${project.organization.name}</copyright>
+					</properties>
+					<includes>
+						<include>src/main/java/**</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.0.2</version>
@@ -130,4 +163,19 @@
 		<spoutVersion>dev-SNAPSHOT</spoutVersion>
 		<restyVersion>0.3.1</restyVersion>
 	</properties>
+	<inceptionYear>2011</inceptionYear>
+	<url>http://dev.bukkit.org/server-mods/jukebukkit/</url>
+	<description>JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn these discs with music of your liking, music that is hosted on the internet somewhere, and play the music on your obsidyiscs in jukeboxes, also crafted by players.</description>
+	<organization>
+		<name>Chris Churchwell</name>
+	</organization>
+	<scm>
+		<url>https://github.com/thedudeguy/JukeBukkit</url>
+		<connection>scm:git:git://github.com/thedudeguy/JukeBukkit.git</connection>
+		<developerConnection>scm:git:git@github.com:thedudeguy/JukeBukkit.git</developerConnection>
+	</scm>
+	<ciManagement>
+		<system>jenkins</system>
+		<url>http://ci.alta189.com/job/JukeBukkit/</url>
+	</ciManagement>
 </project>
