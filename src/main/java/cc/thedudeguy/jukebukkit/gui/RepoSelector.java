@@ -14,6 +14,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.SongRepo;
 import cc.thedudeguy.jukebukkit.gui.widget.CloseButton;
+import cc.thedudeguy.jukebukkit.gui.widget.CustomURLButton;
 import cc.thedudeguy.jukebukkit.gui.widget.RepoBurnButton;
 import cc.thedudeguy.jukebukkit.gui.widget.RepoMusicList;
 import cc.thedudeguy.jukebukkit.gui.widget.ServerListButton;
@@ -65,10 +66,15 @@ public class RepoSelector extends GenericPopup {
 		close.setPriority(RenderPriority.Lowest);
 		
 		// switch to custom URL
-		ServerListButton urlbutton = new ServerListButton(block);
+		CustomURLButton urlbutton = new CustomURLButton(block);
 		urlbutton.setX(215).setY(195);
 		urlbutton.setWidth(60).setHeight(20);
 		urlbutton.setPriority(RenderPriority.Lowest);
+		
+		ServerListButton listButton = new ServerListButton(block);
+		listButton.setX(275).setY(195);
+		listButton.setWidth(60).setHeight(20);
+		listButton.setPriority(RenderPriority.Lowest);
 		
 		this.setTransparent(true);
 		this.attachWidgets(JukeBukkit.instance, border, gradient, close, label);
@@ -94,6 +100,10 @@ public class RepoSelector extends GenericPopup {
 			message.setPriority(RenderPriority.Lowest);
 			message.setText("To activate the song repo on your server,\nhave your server admin subscribe at\nhttp://" + SongRepo.repoAddress);
 			this.attachWidget(JukeBukkit.instance, message);
+		}
+		
+		if (JukeBukkit.instance.getConfig().getBoolean("enableWebServer") && JukeBukkit.instance.HTTPserver.isRunning() ) {
+			this.attachWidget(JukeBukkit.instance, listButton);
 		}
 		
 		if (JukeBukkit.instance.getConfig().getBoolean("allowExternalURLs")) {
