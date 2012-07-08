@@ -12,6 +12,7 @@ import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.SongRepo;
 import cc.thedudeguy.jukebukkit.gui.widget.CloseButton;
 import cc.thedudeguy.jukebukkit.gui.widget.RepoBurnButton;
 import cc.thedudeguy.jukebukkit.gui.widget.RepoMusicList;
@@ -57,24 +58,11 @@ public class RepoSelector extends GenericPopup {
 		gradient.setX(65).setY(20);
 		gradient.setPriority(RenderPriority.Highest);
 		
-		// Texture list
-		GenericListWidget list = new RepoMusicList();
-		list.setX(90).setY(50);
-		list.setWidth(250).setHeight(125);
-		list.setPriority(RenderPriority.Lowest);
-		
 		// Close button
 		CloseButton close = new CloseButton();
 		close.setX(155).setY(195);
 		close.setWidth(60).setHeight(20);
 		close.setPriority(RenderPriority.Lowest);
-		
-		// Select button
-		RepoBurnButton burnButton = new RepoBurnButton(list, block);
-		burnButton.setX(95).setY(195);
-		burnButton.setWidth(60).setHeight(20);
-		burnButton.setPriority(RenderPriority.Lowest);
-		
 		
 		// switch to custom URL
 		ServerListButton urlbutton = new ServerListButton(block);
@@ -83,7 +71,30 @@ public class RepoSelector extends GenericPopup {
 		urlbutton.setPriority(RenderPriority.Lowest);
 		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, list);
+		this.attachWidgets(JukeBukkit.instance, border, gradient, close, label);
+		
+		if (SongRepo.validSubscriber == true) {
+			// Texture list
+			GenericListWidget list = new RepoMusicList();
+			list.setX(90).setY(50);
+			list.setWidth(250).setHeight(125);
+			list.setPriority(RenderPriority.Lowest);
+			
+			// Select button
+			RepoBurnButton burnButton = new RepoBurnButton(list, block);
+			burnButton.setX(95).setY(195);
+			burnButton.setWidth(60).setHeight(20);
+			burnButton.setPriority(RenderPriority.Lowest);
+			
+			this.attachWidgets(JukeBukkit.instance, list, burnButton);
+		} else {
+			GenericLabel message = new GenericLabel();
+			message.setX(90).setY(50);
+			message.setWidth(250).setHeight(125);
+			message.setPriority(RenderPriority.Lowest);
+			message.setText("To activate the song repo on your server,\nhave your server admin subscribe at\nhttp://" + SongRepo.repoAddress);
+			this.attachWidget(JukeBukkit.instance, message);
+		}
 		
 		if (JukeBukkit.instance.getConfig().getBoolean("allowExternalURLs")) {
 			this.attachWidget(JukeBukkit.instance, urlbutton);
