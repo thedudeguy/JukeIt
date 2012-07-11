@@ -22,22 +22,28 @@ import org.getspout.spoutapi.gui.ListWidgetItem;
 
 public class RepoSongItem extends ListWidgetItem {
 
-	private String url;
+	private String title;
+	private String artist;
+	private String songId;
+	private String filename;
 	
-	public RepoSongItem(String title, String artist, String url) {
+	public RepoSongItem(String title, String artist, String songId, String filename) {
 		super();
 		
-		this.setTitle(title);
-		this.setText("by " + artist);
-		this.setURL(url);
+		this.title = title;
+		this.artist = artist;
+		this.songId = songId;
+		this.filename = filename;
+		
+		this.setTitle(this.title);
+		this.setText("by " + this.artist);
 	}
 	
-	public String getURL() {
-		return url;
+	public String getSongId() {
+		return songId;
 	}
 	
-	public void setURL(String url) {
-		this.url = url;
+	public String getFilename() {
+		return filename;
 	}
-	
 }

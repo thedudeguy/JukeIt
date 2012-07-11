@@ -28,6 +28,7 @@ import us.monoid.web.Resty;
 
 public class SongRepo {
 	
+	//no trailing slash
 	public static final String repoAddress = "jukebukkit.chrischurchwell.com";
 	
 	public static JSONArray musicList;
@@ -35,14 +36,18 @@ public class SongRepo {
 	
 	public void refreshList() {
 		
-		if (JukeBukkit.instance.getConfig().getString("subscriberId", "").equalsIgnoreCase("")) {
+		if (
+				JukeBukkit.instance.getConfig().getString("subscriberId", "").equalsIgnoreCase("") ||
+				JukeBukkit.instance.getConfig().getString("subscriberId", "").equalsIgnoreCase("subscribe!")
+				) {
 			validSubscriber = false;
 		}
 		else {
 			Resty r = new Resty();
+			String subscriberId = JukeBukkit.instance.getConfig().getString("subscriberId");
 			try {
-				JSONObject j = r.json("http://"+ repoAddress +"/music/listmusic").object();
-				if (j.getBoolean("donator") == true) {
+				JSONObject j = r.json("http://"+ repoAddress +"/music/listmusic/"+subscriberId).object();
+				if (j.getBoolean("active") == true) {
 					validSubscriber = true;
 					musicList = j.getJSONArray("music");
 				} else {

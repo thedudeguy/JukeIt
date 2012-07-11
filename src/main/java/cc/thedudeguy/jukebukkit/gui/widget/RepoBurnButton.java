@@ -30,6 +30,7 @@ import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.SongRepo;
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.materials.Items;
 import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
@@ -68,24 +69,18 @@ public class RepoBurnButton extends GenericButton {
 			return;
 		}
 		
-		/*
-		if (
-				!list.getSelectedItem().getTitle().toLowerCase().endsWith(".ogg") && 
-				!list.getSelectedItem().getTitle().toLowerCase().endsWith(".wav")
-				) {
-			event.getPlayer().sendMessage("Invalid Selection");
+		String subscr_id = JukeBukkit.instance.getConfig().getString("subscriberId", "");
+		if (subscr_id.equalsIgnoreCase("") || subscr_id.equalsIgnoreCase("subscribe!")) {
+			event.getPlayer().sendMessage("Error: Admin has not set a subscriber-id.");
 			event.getPlayer().getMainScreen().getActivePopup().close();
 			return;
 		}
-		*/
-		url = ((RepoSongItem)list.getSelectedItem()).getURL();
-		label = ((RepoSongItem)list.getSelectedItem()).getTitle() + " " + ((RepoSongItem)list.getSelectedItem()).getText();
-		if (url == null || url.equalsIgnoreCase(""))
-		{
-			event.getPlayer().sendMessage("An Error Occurred");
-			event.getPlayer().getMainScreen().getActivePopup().close();
-		}
 		
+		RepoSongItem selected = (RepoSongItem)list.getSelectedItem();
+		
+		//build url.
+		url = "http://"+ SongRepo.repoAddress +"/music/play/"+selected.getSongId()+"/"+subscr_id+"/"+selected.getFilename();
+		label = ((RepoSongItem)list.getSelectedItem()).getTitle() + " " + ((RepoSongItem)list.getSelectedItem()).getText();
 		
 		if (event.getPlayer().getItemInHand() == null) {
 			event.getPlayer().sendMessage("Invalid Disc in Hand");

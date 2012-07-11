@@ -5,4 +5,4 @@ serverName: JukeBukkit
 allowWebServerUploads: true
 allowExternalURLs: true
 debug: false
-subscriberId:
+subscriberId: subscribe!

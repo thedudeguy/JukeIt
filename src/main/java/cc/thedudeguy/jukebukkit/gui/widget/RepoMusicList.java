@@ -33,7 +33,7 @@ public class RepoMusicList extends GenericListWidget {
 		for (int i=0; i<numItems; i++) {
 			try {
 				JSONObject item = SongRepo.musicList.getJSONObject(i);
-				this.addItem(new RepoSongItem(item.getString("title"), item.getString("artist"), item.getString("url")));
+				this.addItem(new RepoSongItem(item.getString("title"), item.getString("artist"), item.getString("song_id"), item.getString("filename")));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
