@@ -18,7 +18,7 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 
 [![Donate](http://www.pledgie.com/campaigns/17072.png?skin_name=chrome "Donate")](http://pledgie.com/campaigns/17072)
 
-### The Info You Want:
+### The Info You Want: 
 
 [How to use JukeBukkit](https://github.com/thedudeguy/JukeBukkit/wiki/How-to-Use-JukeBukkit)
 
