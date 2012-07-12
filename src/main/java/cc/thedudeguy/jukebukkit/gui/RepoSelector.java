@@ -45,18 +45,6 @@ public class RepoSelector extends GenericPopup {
 	
 	public RepoSelector(Player player, Block block) {
 		
-		if (
-				!JukeBukkit.instance.getConfig().getBoolean("enableWebServer") || 
-				!JukeBukkit.instance.HTTPserver.isRunning()
-				) {
-			if (((SpoutPlayer)player).getMainScreen().getActivePopup() != null) {
-				((SpoutPlayer)player).getMainScreen().getActivePopup().close();
-			}
-			((SpoutPlayer)player).getMainScreen().attachPopupScreen(new CustomURLSelecter(((SpoutPlayer)player), block));
-			return;
-		}
-			
-		
 		// Label
 		GenericLabel label = new GenericLabel("Music Repository");
 		label.setX(175).setY(25);
