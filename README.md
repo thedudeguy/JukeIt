@@ -4,13 +4,17 @@
 
 JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn these discs with music of your liking, music that is hosted on the internet somewhere, and play the music on your obsidyiscs in jukeboxes, also crafted by players.
 
+[Screenshots](https://github.com/thedudeguy/JukeBukkit/wiki/Screenshots)
+
 [Download](http://dev.bukkit.org/server-mods/jukebukkit/files/)
 
 [Wiki](https://github.com/thedudeguy/JukeBukkit/wiki)
 
 [Source](https://github.com/thedudeguy/JukeBukkit)
 
-[Jenkens](http://build.lincomlinux.org/jenkins/job/JukeBukkit/)
+[Jenkins](http://ci.alta189.com/job/JukeBukkit/)
+
+[JukeBukkit Music Repository](http://jukebukkit.chrischurchwell.com)
 
 [![Donate](http://www.pledgie.com/campaigns/17072.png?skin_name=chrome "Donate")](http://pledgie.com/campaigns/17072)
 
@@ -22,10 +26,14 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 
 [Configuration](https://github.com/thedudeguy/JukeBukkit/wiki/Configuration)
 
+[Setting up the Web Server](https://github.com/thedudeguy/JukeBukkit/wiki/Setting-up-the-Web-Server)
+
+[Permissions](https://github.com/thedudeguy/JukeBukkit/wiki/Permissions)
+
 ## Features
 
 * Craft discs called Obsidyiscs
-* Attach url's to remote .ogg's or wav's to an Obsidyisc in which that perticular disc will play.
+* Attach .ogg's, wav's, or mp3's to an Obsidyisc in which that perticular disc will play.
 * All players within range of a jukebox can hear an Obsidyisc playing.
 * Build numerous types of jukeboxes with different ranges.
 * Built in Server to host Audio files on your own server!
@@ -33,7 +41,16 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 * Allow your users to upload their music to the server via the web gui.
 * Craft multiple types of jukeboxes
 * Craft jukebox modifiers such as speakers which increase audible range.
+* Craft Needle modifiers such as Blaze Needle which increase audible range by 30%.
 * Activate jukeboxes via redstone.
+
+## Requirements
+
+JukeBukkit is built and tested against
+
+* SpoutPlugin atleast build 1244
+* SpoutCraft atleast build  1548
+* CraftBukkit 1.2.5-R4.0
 
 ## Installation
 
@@ -57,7 +74,4 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 
 ## Credits
 
-* Song "Battle Jesus vs Cyborg Hitlers": FFIII Talon Remix by John England from Leander, TX
-* Blue GUI Background: Michael Gaffney
-* Windwaker's TextureMe
-* Spout and Spout Team
+[Credits](https://github.com/thedudeguy/JukeBukkit/wiki/Credits)
