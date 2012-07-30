@@ -51,7 +51,7 @@ public class BurnSelector extends GenericPopup {
 			if (((SpoutPlayer)player).getMainScreen().getActivePopup() != null) {
 				((SpoutPlayer)player).getMainScreen().getActivePopup().close();
 			}
-			((SpoutPlayer)player).getMainScreen().attachPopupScreen(new CustomURLSelecter(((SpoutPlayer)player), block));
+			((SpoutPlayer)player).getMainScreen().attachPopupScreen(new RepoSelector(((SpoutPlayer)player), block));
 			return;
 		}
 			

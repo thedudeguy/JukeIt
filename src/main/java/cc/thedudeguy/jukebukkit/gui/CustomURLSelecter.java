@@ -27,6 +27,7 @@ import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.widget.BurnButton;
@@ -42,6 +43,13 @@ public class CustomURLSelecter extends GenericPopup {
 	
 	public CustomURLSelecter(Player player, Block block) {
 		
+		if (!JukeBukkit.instance.getConfig().getBoolean("allowExternalURLs")) {
+			if (((SpoutPlayer)player).getMainScreen().getActivePopup() != null) {
+				((SpoutPlayer)player).getMainScreen().getActivePopup().close();
+			}
+			((SpoutPlayer)player).getMainScreen().attachPopupScreen(new RepoSelector(((SpoutPlayer)player), block));
+			return;
+		}
 		
 		// Label
 		GenericLabel label = new GenericLabel("Custom Burn URL");
