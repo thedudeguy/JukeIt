@@ -96,6 +96,16 @@ public class ServerHandler extends AbstractHandler {
 			return;
 		}
 		
+		if (target.equalsIgnoreCase("/robots.txt")) {
+			response.setContentType("text/plain;charset=utf-8");
+			response.setStatus(HttpServletResponse.SC_OK);
+			baseRequest.setHandled(true);
+			
+			response.getWriter().println("User-agent: *");
+			response.getWriter().println("Disallow: /");
+			
+			return;
+		}
 		
 		if ( target.equalsIgnoreCase("/upload") ) {
 			
