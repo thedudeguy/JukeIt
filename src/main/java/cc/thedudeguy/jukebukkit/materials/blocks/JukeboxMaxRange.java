@@ -26,6 +26,7 @@ import org.getspout.spoutapi.material.MaterialData;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
+import cc.thedudeguy.jukebukkit.texture.TextureFile;
 
 public class JukeboxMaxRange extends JukeboxBlock {
 	
@@ -39,8 +40,8 @@ public class JukeboxMaxRange extends JukeboxBlock {
 		
 		return new GenericCubeBlockDesign(
 				JukeBukkit.instance, 
-				Blocks.blocksTexture, 
-				new int[] { 0, 8, 8, 8, 8, 1 }
+				TextureFile.BLOCK_JUKEBOX_MAX.getTexture(),
+				new int[] { 0, 2, 2, 2, 2, 1 }
 			);
 	}
 	

@@ -64,7 +64,7 @@ public class ResourceManager {
 	
 	public static void copyResources() {
 		for (TextureFile texture : TextureFile.values()) {
-			doCopy(texture.getFile(), "textures");
+			doCopy(texture.getFile(), "textures/default");
 		}
 		
 		for (SoundEffect sound : SoundEffect.values()) {
@@ -97,7 +97,13 @@ public class ResourceManager {
 	
 	public static void preLoginCache() {
 		for (TextureFile texture : TextureFile.values()) {
-			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures", texture.getFile()).getPath()));
+			String pack = JukeBukkit.instance.getConfig().getString("texturePack", "default");
+			File toCache = new File(JukeBukkit.instance.getDataFolder(), new File("textures/"+pack, texture.getFile()).getPath());
+			if (toCache.exists()) {
+				SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, toCache);
+			} else {
+				SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures/default", texture.getFile()).getPath()));
+			}
 		}
 		for (SoundEffect sound : SoundEffect.values()) {
 			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("sounds", sound.getSoundFileName()).getPath()));
@@ -114,17 +120,19 @@ public class ResourceManager {
 	
 	public static void addCache() {
 		for (TextureFile texture : TextureFile.values()) {
-			SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures", texture.getFile()).getPath()));
+			String pack = JukeBukkit.instance.getConfig().getString("texturePack", "default");
+			File toCache = new File(JukeBukkit.instance.getDataFolder(), new File("textures/"+pack, texture.getFile()).getPath());
+			if (toCache.exists()) {
+				SpoutManager.getFileManager().addToCache(JukeBukkit.instance, toCache);
+			} else {
+				SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures/default", texture.getFile()).getPath()));
+			}
 		}
 		
 		for (SoundEffect sound : SoundEffect.values()) {
 			SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("sounds", sound.getSoundFileName()).getPath()));
 		}
 		
-	}
-	
-	public static void cacheSingle(String folder, String file) {
-		SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File(folder, file).getPath()));
 	}
 	
 	public static void resetCache() {

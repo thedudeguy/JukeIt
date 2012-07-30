@@ -18,8 +18,6 @@
  */
 package cc.thedudeguy.jukebukkit.materials;
 
-import org.getspout.spoutapi.block.design.Texture;
-
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.DiscBurner;
 import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxBasic;
@@ -27,20 +25,16 @@ import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxLongRange;
 import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxLowRange;
 import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxMaxRange;
 import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxMidRange;
-import cc.thedudeguy.jukebukkit.materials.blocks.MachineBlock;
 import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxWorldRange;
+import cc.thedudeguy.jukebukkit.materials.blocks.MachineBlock;
 import cc.thedudeguy.jukebukkit.materials.blocks.RecordPlayer;
 import cc.thedudeguy.jukebukkit.materials.blocks.Speaker;
 import cc.thedudeguy.jukebukkit.materials.blocks.SpeakerWireBlock;
 import cc.thedudeguy.jukebukkit.model.Model;
+import cc.thedudeguy.jukebukkit.texture.TextureFile;
 
 
 public class Blocks {
-	
-	public static final Texture recordPlayerTexture = new Texture(JukeBukkit.instance, "recordplayer.png", 256, 256, 16);
-	public static final Texture blocksTexture = new Texture(JukeBukkit.instance, "blocks_deprecated.png", 256, 256, 16);
-	public static final Texture speakerwireTexture = new Texture(JukeBukkit.instance, "speakerwireblock.png", 256, 256, 16);
-	public static final Texture machineBlockTexture = new Texture(JukeBukkit.instance, "machineblock.png", 64, 64, 64);
 	
 	public static Model machineBlockModel;
 	public static Model machineTopBlockModel;
@@ -64,9 +58,9 @@ public class Blocks {
 	
 	public Blocks() {
 		
-		machineBlockModel = new Model(JukeBukkit.instance.getResource("models/machineBlock.obj"), machineBlockTexture);
-		machineTopBlockModel = new Model(JukeBukkit.instance.getResource("models/machineBlockTop.obj"), machineBlockTexture);
-		machineTopPressedBlockModel = new Model(JukeBukkit.instance.getResource("models/machineBlockTopPressed.obj"), machineBlockTexture);
+		machineBlockModel = new Model(JukeBukkit.instance.getResource("models/machineBlock.obj"), TextureFile.BLOCK_MACHINE.getTexture());
+		machineTopBlockModel = new Model(JukeBukkit.instance.getResource("models/machineBlockTop.obj"), TextureFile.BLOCK_MACHINE.getTexture());
+		machineTopPressedBlockModel = new Model(JukeBukkit.instance.getResource("models/machineBlockTopPressed.obj"), TextureFile.BLOCK_MACHINE.getTexture());
 		
 		//speaker must load before recordPlayer
 		speaker = new Speaker();

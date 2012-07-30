@@ -28,6 +28,7 @@ import org.getspout.spoutapi.material.MaterialData;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.Blocks;
+import cc.thedudeguy.jukebukkit.texture.TextureFile;
 import cc.thedudeguy.jukebukkit.util.Recipies;
 
 public class JukeboxMidRange extends JukeboxBlock {
@@ -42,8 +43,8 @@ public class JukeboxMidRange extends JukeboxBlock {
 		
 		return new GenericCubeBlockDesign(
 				JukeBukkit.instance, 
-				Blocks.blocksTexture, 
-				new int[] { 0, 6, 6, 6, 6, 1 }
+				TextureFile.BLOCK_JUKEBOX_MID.getTexture(), 
+				new int[] { 0, 2, 2, 2, 2, 1 }
 			);
 	}
 	

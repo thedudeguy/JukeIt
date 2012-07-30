@@ -22,7 +22,7 @@ import org.getspout.spoutapi.block.design.GenericBlockDesign;
 import org.getspout.spoutapi.block.design.SubTexture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.materials.Blocks;
+import cc.thedudeguy.jukebukkit.texture.TextureFile;
 
 public class SpeakerWireTurnDesign extends GenericBlockDesign {
 	
@@ -32,7 +32,7 @@ public class SpeakerWireTurnDesign extends GenericBlockDesign {
 	
 	public SpeakerWireTurnDesign(int degreesX, int degreesY, int degreesZ, float moveX, float moveY, float moveZ) {
 		
-		setTexture(JukeBukkit.instance, Blocks.speakerwireTexture);
+		setTexture(JukeBukkit.instance, TextureFile.BLOCK_SPEAKER_WIRE.getTexture());
 		setMinBrightness(0F);
 		setMaxBrightness(1F);
 		

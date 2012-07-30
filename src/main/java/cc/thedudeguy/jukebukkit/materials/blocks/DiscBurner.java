@@ -30,10 +30,10 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.BurnSelector;
-import cc.thedudeguy.jukebukkit.materials.Blocks;
 import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 import cc.thedudeguy.jukebukkit.permission.UsePermissible;
+import cc.thedudeguy.jukebukkit.texture.TextureFile;
 
 
 /**
@@ -51,7 +51,8 @@ public class DiscBurner extends GenericCustomBlock implements CraftPermissible, 
 		super(JukeBukkit.instance, "Disc Burner", 4);
 		this.setRotate(true);
 		this.setName("Disc Burner");
-		this.setBlockDesign(new GenericCubeBlockDesign(JukeBukkit.instance, Blocks.blocksTexture, new int[] {2, 3, 3, 4, 3, 2}));
+		
+		this.setBlockDesign(new GenericCubeBlockDesign(JukeBukkit.instance, TextureFile.BLOCK_BURNER.getTexture(), new int[] {0, 1, 1, 2, 1, 0}));
 	}
 	
 	@Override

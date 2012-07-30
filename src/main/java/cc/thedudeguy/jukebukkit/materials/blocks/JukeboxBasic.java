@@ -25,7 +25,7 @@ import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
 import org.getspout.spoutapi.material.MaterialData;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.materials.Blocks;
+import cc.thedudeguy.jukebukkit.texture.TextureFile;
 
 public class JukeboxBasic extends JukeboxBlock {
 	
@@ -50,7 +50,7 @@ public class JukeboxBasic extends JukeboxBlock {
 		
 		return new GenericCubeBlockDesign(
 				JukeBukkit.instance, 
-				Blocks.blocksTexture, 
+				TextureFile.BLOCK_JUKEBOX_BASIC.getTexture(), 
 				new int[] { 0, 0, 0, 0, 0, 1 }
 			);
 	}

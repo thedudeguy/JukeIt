@@ -23,7 +23,7 @@ import org.getspout.spoutapi.block.design.Quad;
 import org.getspout.spoutapi.block.design.SubTexture;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.materials.Blocks;
+import cc.thedudeguy.jukebukkit.texture.TextureFile;
 
 public class RecordPlayerDesign extends GenericBlockDesign {
 	
@@ -39,7 +39,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		this.needle = needle;
 		this.indicator = indicator;
 		
-		setTexture(JukeBukkit.instance, Blocks.recordPlayerTexture);
+		setTexture(JukeBukkit.instance, TextureFile.BLOCK_RECORD_PLAYER.getTexture());
 		setMinBrightness(1.0F);
 		setMaxBrightness(1.0F);
 		
