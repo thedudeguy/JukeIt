@@ -18,7 +18,6 @@
  */
 package cc.thedudeguy.jukebukkit.materials;
 
-import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.materials.blocks.DiscBurner;
 import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxBasic;
 import cc.thedudeguy.jukebukkit.materials.blocks.JukeboxLongRange;
@@ -30,15 +29,9 @@ import cc.thedudeguy.jukebukkit.materials.blocks.MachineBlock;
 import cc.thedudeguy.jukebukkit.materials.blocks.RecordPlayer;
 import cc.thedudeguy.jukebukkit.materials.blocks.Speaker;
 import cc.thedudeguy.jukebukkit.materials.blocks.SpeakerWireBlock;
-import cc.thedudeguy.jukebukkit.model.Model;
-import cc.thedudeguy.jukebukkit.texture.TextureFile;
 
 
 public class Blocks {
-	
-	public static Model machineBlockModel;
-	public static Model machineTopBlockModel;
-	public static Model machineTopPressedBlockModel;
 	
 	public static RecordPlayer recordPlayer;
 	public static JukeboxBasic jukeboxBasic;
@@ -57,10 +50,6 @@ public class Blocks {
 	public static SpeakerWireBlock speakerWireBlock;
 	
 	public Blocks() {
-		
-		machineBlockModel = new Model(JukeBukkit.instance.getResource("models/machineBlock.obj"), TextureFile.BLOCK_MACHINE.getTexture());
-		machineTopBlockModel = new Model(JukeBukkit.instance.getResource("models/machineBlockTop.obj"), TextureFile.BLOCK_MACHINE.getTexture());
-		machineTopPressedBlockModel = new Model(JukeBukkit.instance.getResource("models/machineBlockTopPressed.obj"), TextureFile.BLOCK_MACHINE.getTexture());
 		
 		//speaker must load before recordPlayer
 		speaker = new Speaker();

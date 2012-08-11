@@ -30,18 +30,31 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.MachineGUI;
-import cc.thedudeguy.jukebukkit.materials.Blocks;
 import cc.thedudeguy.jukebukkit.materials.Items;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 import cc.thedudeguy.jukebukkit.permission.UsePermissible;
+import cc.thedudeguy.jukebukkit.texture.TextureFile;
+
+import com.chrischurchwell.meshit.Model;
 
 public class MachineBlock extends GenericCustomBlock implements CraftPermissible, UsePermissible {
 
 	public MachineBlock() {
 		super(JukeBukkit.instance, "Disc Machine", Material.CAULDRON.getId());
-		this.setBlockDesign(Blocks.machineBlockModel.getDesign(), 0);
-		this.setBlockDesign(Blocks.machineTopBlockModel.getDesign(), 1);
-		this.setBlockDesign(Blocks.machineTopPressedBlockModel.getDesign(), 2);
+		
+		this.setBlockDesign(
+				new Model(JukeBukkit.instance.getResource("models/machineBlock.obj")).getDesign().setTexture(JukeBukkit.instance, TextureFile.BLOCK_MACHINE.getTexture()), 
+				0
+			);
+		this.setBlockDesign(
+				new Model(JukeBukkit.instance.getResource("models/machineBlockTop.obj")).getDesign().setTexture(JukeBukkit.instance, TextureFile.BLOCK_MACHINE.getTexture()), 
+				1
+			);
+		this.setBlockDesign(
+				new Model(JukeBukkit.instance.getResource("models/machineBlockTopPressed.obj")).getDesign().setTexture(JukeBukkit.instance, TextureFile.BLOCK_MACHINE.getTexture()), 
+				2
+			);
+		
 		this.setItemDrop(null);
 		setRecipe();
 	}
