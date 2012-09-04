@@ -18,28 +18,25 @@
  */
 package cc.thedudeguy.jukebukkit.materials.items;
 
-import java.io.File;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.events.SpeakerWirePlaceEvent;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
+import cc.thedudeguy.jukebukkit.texture.TextureFile;
 import cc.thedudeguy.jukebukkit.util.Debug;
 
 public class SpeakerWire extends GenericCustomItem implements CraftPermissible {
 	
 	public SpeakerWire() {
 		super(JukeBukkit.instance, "Speaker Wire");
-		setTexture(new File(JukeBukkit.instance.getDataFolder(), new File("textures", "speakerwire.png").getPath()));
+		setTexture(TextureFile.ITEM_SPEAKER_WIRE.getFile());
 	}
 	
 	@Override
@@ -68,12 +65,6 @@ public class SpeakerWire extends GenericCustomItem implements CraftPermissible {
 			
 		}
 		return false;
-	}
-	
-	public CustomItem setTexture(File texture) {
-		this.texture = texture.getName();
-		SpoutManager.getFileManager().addToCache(JukeBukkit.instance, texture);
-		return this;
 	}
 
 	@Override

@@ -18,15 +18,12 @@
  */
 package cc.thedudeguy.jukebukkit.materials.items;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.material.CustomItem;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -77,8 +74,6 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 		this.setColor(discData.getColor());
 		this.setLabel(discData.getLabel());
 		
-		//Debug.debug("BurnedDisc:Construct - ", "id=", discData.getNameKey());
-		
 		key = discData.getNameKey();
 		url = discData.getUrl();
 	}
@@ -108,20 +103,12 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	public void setColor(int color) {
 		this.color = color;
 		
-		//Debug.debug("BurnedDisc:setColor - ", "id=",color," image=",discColorTextureMap.get(color) );
-		
 		if (discColorTextureMap.containsKey(color)) {
-			setTexture(new File(JukeBukkit.instance.getDataFolder(), new File("textures", discColorTextureMap.get(color)).getPath()));
+			setTexture(discColorTextureMap.get(color));
 		} else {
-			setTexture(new File(JukeBukkit.instance.getDataFolder(), new File("textures", discColorTextureMap.get(DiscColor.WHITE)).getPath()));
+			setTexture(discColorTextureMap.get(DiscColor.WHITE));
 		}
 		
-	}
-	
-	public CustomItem setTexture(File texture) {
-		this.texture = texture.getName();
-		SpoutManager.getFileManager().addToCache(JukeBukkit.instance, texture);
-		return this;
 	}
 	
 	public void setLabel(String label) {
