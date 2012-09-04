@@ -31,7 +31,7 @@ import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericSlot;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import cc.thedudeguy.jukebukkit.events.MachineStartEvent;
+import cc.thedudeguy.jukebukkit.event.MachineStartEvent;
 
 public class MachineStartButton extends GenericButton{
 	

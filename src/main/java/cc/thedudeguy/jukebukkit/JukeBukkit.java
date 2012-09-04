@@ -36,11 +36,11 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
-import cc.thedudeguy.jukebukkit.listeners.GeneralListener;
-import cc.thedudeguy.jukebukkit.listeners.MachineListener;
-import cc.thedudeguy.jukebukkit.listeners.SpeakerWireListener;
-import cc.thedudeguy.jukebukkit.materials.Blocks;
-import cc.thedudeguy.jukebukkit.materials.Items;
+import cc.thedudeguy.jukebukkit.listener.GeneralListener;
+import cc.thedudeguy.jukebukkit.listener.MachineListener;
+import cc.thedudeguy.jukebukkit.listener.SpeakerWireListener;
+import cc.thedudeguy.jukebukkit.material.Blocks;
+import cc.thedudeguy.jukebukkit.material.Items;
 import cc.thedudeguy.jukebukkit.server.MusicHandler;
 import cc.thedudeguy.jukebukkit.server.ServerHandler;
 import cc.thedudeguy.jukebukkit.util.Debug;

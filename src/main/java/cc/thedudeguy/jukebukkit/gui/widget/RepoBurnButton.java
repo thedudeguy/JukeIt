@@ -32,9 +32,9 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.SongRepo;
 import cc.thedudeguy.jukebukkit.database.DiscData;
-import cc.thedudeguy.jukebukkit.materials.Items;
-import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
-import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
+import cc.thedudeguy.jukebukkit.material.Items;
+import cc.thedudeguy.jukebukkit.material.items.BlankDisc;
+import cc.thedudeguy.jukebukkit.material.items.BurnedDisc;
 
 public class RepoBurnButton extends GenericButton {
 	
