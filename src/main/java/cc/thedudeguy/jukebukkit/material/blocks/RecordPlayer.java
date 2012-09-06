@@ -58,7 +58,6 @@ import cc.thedudeguy.jukebukkit.permission.UsePermissible;
 import cc.thedudeguy.jukebukkit.sound.Sound;
 import cc.thedudeguy.jukebukkit.sound.SoundEffect;
 import cc.thedudeguy.jukebukkit.util.Debug;
-import cc.thedudeguy.jukebukkit.util.Recipies;
 
 //TODO This needs to be cleaned up a LOT
 
@@ -574,33 +573,16 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	
 	public void setRecipe() {
 		
-		//for this block, i want to support all the different woods, so ill have to make a recipe for
-		//each combination.
-		List<org.getspout.spoutapi.material.Material> woods = Recipies.getWoods();
+		SpoutShapedRecipe r = new SpoutShapedRecipe( new SpoutItemStack(this, 1) );
+		r.shape("sps", "njn", "www");
+		r.setIngredient('s', MaterialData.oakWoodSlab);
+		r.setIngredient('p', MaterialData.stonePressurePlate);
+		r.setIngredient('n', Blocks.speaker);
+		r.setIngredient('j', MaterialData.jukebox);
 		
-		for (org.getspout.spoutapi.material.Material mat1 : woods) {
-			
-			for (org.getspout.spoutapi.material.Material mat2 : woods) {
-				
-				for (org.getspout.spoutapi.material.Material mat3 : woods) {
-					
-					SpoutShapedRecipe r = new SpoutShapedRecipe( new SpoutItemStack(this, 1) );
-					r.shape("sps", "njn", Recipies.buildWoodRefString(mat1, mat2, mat3));
-					r.setIngredient('s', MaterialData.woodenSlab);
-					r.setIngredient('p', MaterialData.stonePressurePlate);
-					r.setIngredient('n', Blocks.speaker);
-					r.setIngredient('j', MaterialData.jukebox);
-					
-					for (org.getspout.spoutapi.material.Material umat : Recipies.getWoodUniqueMats(mat1, mat2, mat3) ) {
-						r.setIngredient(Recipies.getWoodMatRefLetter(umat), umat);
-					}
-					
-					SpoutManager.getMaterialManager().registerSpoutRecipe(r);
-				}
-				
-			}
-			
-		}
+		r.setIngredient('w', MaterialData.wood);
+		SpoutManager.getMaterialManager().registerSpoutRecipe(r);
+		
 		
 		
 	}
