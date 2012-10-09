@@ -29,7 +29,7 @@ import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.gui.BurnSelector;
+import cc.thedudeguy.jukebukkit.gui.BurnOptionsGUI;
 import cc.thedudeguy.jukebukkit.material.items.BlankDisc;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 import cc.thedudeguy.jukebukkit.permission.UsePermissible;
@@ -74,7 +74,7 @@ public class DiscBurner extends GenericCustomBlock implements CraftPermissible, 
 					player.sendMessage("("+getUsePermission()+")");
 					return false;
 				}
-				player.getMainScreen().attachPopupScreen(new BurnSelector(player, world.getBlockAt(x, y, z)));
+				BurnOptionsGUI.openBurnGUI(player, world.getBlockAt(x, y, z));
 				return true;
 			}
 		}

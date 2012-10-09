@@ -57,8 +57,6 @@ public class JukeBukkit extends JavaPlugin {
 	public Server HTTPserver;
 	SelectChannelConnector HTTPconnector;
 	
-	SongRepo songRepo;
-	
 	Blocks blocks;
 	Items items;
 	
@@ -95,10 +93,6 @@ public class JukeBukkit extends JavaPlugin {
 		this.getCommand("jukebukkit").setExecutor(new CommandHandler());
 		
 		ResourceManager.resetCache();
-		
-		//refresh the song repo
-		songRepo = new SongRepo();
-		songRepo.refreshList();
 		
 		//start the web server up
 		

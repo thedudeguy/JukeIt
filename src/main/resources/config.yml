@@ -5,6 +5,5 @@ serverName: JukeBukkit
 allowWebServerUploads: true
 allowExternalURLs: true
 texturePack: default
-subscriberId: subscribe!
 debug: false
 

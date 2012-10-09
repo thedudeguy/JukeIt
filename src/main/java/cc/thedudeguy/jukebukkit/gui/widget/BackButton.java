@@ -18,32 +18,25 @@
  */
 package cc.thedudeguy.jukebukkit.gui.widget;
 
-import org.getspout.spoutapi.gui.ListWidgetItem;
+import org.bukkit.block.Block;
+import org.getspout.spoutapi.event.screen.ButtonClickEvent;
+import org.getspout.spoutapi.gui.GenericButton;
 
-public class RepoSongItem extends ListWidgetItem {
+import cc.thedudeguy.jukebukkit.gui.BurnOptionsGUI;
 
-	private String title;
-	private String artist;
-	private String songId;
-	private String filename;
+public class BackButton extends GenericButton{
 	
-	public RepoSongItem(String title, String artist, String songId, String filename) {
-		super();
-		
-		this.title = title;
-		this.artist = artist;
-		this.songId = songId;
-		this.filename = filename;
-		
-		this.setTitle(this.title);
-		this.setText("by " + this.artist);
+	Block block;
+	
+	public BackButton(Block block) {
+		super("Back");
+		this.block = block;
+	}
+
+	@Override
+	public void onButtonClick(ButtonClickEvent event) {
+		event.getPlayer().getMainScreen().getActivePopup().close();
+		event.getPlayer().getMainScreen().attachPopupScreen(new BurnOptionsGUI(block));
 	}
 	
-	public String getSongId() {
-		return songId;
-	}
-	
-	public String getFilename() {
-		return filename;
-	}
 }
