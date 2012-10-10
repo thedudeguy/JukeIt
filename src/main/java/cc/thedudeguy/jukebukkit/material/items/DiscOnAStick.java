@@ -18,20 +18,86 @@
  */
 package cc.thedudeguy.jukebukkit.material.items;
 
+import java.util.Random;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.inventory.ItemStack;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
-import org.getspout.spoutapi.material.item.GenericCustomItem;
+import org.getspout.spoutapi.material.item.GenericCustomTool;
+import org.getspout.spoutapi.player.SpoutPlayer;
+import org.getspout.spoutapi.sound.SoundEffect;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.material.blocks.MachineRecipe;
 import cc.thedudeguy.jukebukkit.material.blocks.MachineRecipe.RecipeDiscType;
+import cc.thedudeguy.jukebukkit.util.Debug;
 
-public class DiscOnAStick extends GenericCustomItem {
-
-	/* maybe one day this will be a crappy weapon, but for now its just a useless item */
+public class DiscOnAStick extends GenericCustomTool implements Listener {
+	
 	public DiscOnAStick() {
 		super(JukeBukkit.instance, "Disc on a Stick", "disconastick.png");
-		MachineRecipe.addMachineRecipe(new MachineRecipe(RecipeDiscType.ANY, Material.STICK, new SpoutItemStack(this)));
+		this.setMaxDurability((short)100);
+		this.setStackable(false);
 		
+		MachineRecipe.addMachineRecipe(new MachineRecipe(RecipeDiscType.ANY, Material.STICK, new SpoutItemStack(this)));
+		Bukkit.getServer().getPluginManager().registerEvents(this, JukeBukkit.instance);
+	}
+	
+	public boolean onItemInteract(SpoutPlayer player, SpoutBlock block, org.bukkit.block.BlockFace face) {
+		
+		Debug.debug(player, "DOAS - Durability: ", getDurability(player.getItemInHand()));
+		
+		return true;
+	}
+	
+	@EventHandler
+	public void onDamage(EntityDamageByEntityEvent event) {
+		if (
+				!event.getCause().equals(DamageCause.ENTITY_ATTACK) ||
+				!(event.getDamager() instanceof Player)
+			) {
+			return;
+		}
+		ItemStack is = ((Player)event.getDamager()).getItemInHand();
+		if ((new SpoutItemStack(is)).getMaterial() instanceof DiscOnAStick) {
+			Random rGen = new Random();
+			
+			//random durability hit from 0 - 100
+			int duraDmg = rGen.nextInt(101);
+			//random damage from 0 - 5
+			int healDmg = rGen.nextInt(6);
+			
+			int newDura = getDurability(is) + duraDmg;
+			
+			//item breakage
+			if (newDura > this.getMaxDurability()) {
+				if (((Player)event.getDamager()).getItemInHand().getAmount() > 1) {
+					((Player)event.getDamager()).getItemInHand().setAmount(((Player)event.getDamager()).getItemInHand().getAmount() -1);
+					setDurability(is, (short)0);
+				} else {
+					((Player)event.getDamager()).setItemInHand(null);
+				}
+				SpoutManager.getSoundManager().playGlobalSoundEffect(SoundEffect.BREAK, ((Player)event.getDamager()).getLocation(), 8, 100);
+				event.setCancelled(true);
+				return;
+			}
+			
+			setDurability(is, (short)newDura);
+			event.setDamage(healDmg);
+			
+			Debug.debug("-- Tool Hit --");
+			Debug.debug("Damage: ", event.getDamage());
+			Debug.debug("Dura Damage: ", duraDmg);
+			Debug.debug("New Dura: ", getDurability(is));
+			
+		}
 	}
 }
