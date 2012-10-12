@@ -4,6 +4,8 @@
 
 JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn these discs with music of your liking, music that is hosted on the internet somewhere, and play the music on your obsidyiscs in jukeboxes, also crafted by players.
 
+[![Download](http://i.minus.com/i0xywzd0kbM7K.png "Download")](http://chrischurchwell.com/products-page/bukkit-plugins/jukebukkit/)
+
 [Screenshots](https://github.com/thedudeguy/JukeBukkit/wiki/Screenshots)
 
 [Download](http://dev.bukkit.org/server-mods/jukebukkit/files/)
@@ -12,13 +14,7 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 
 [Source](https://github.com/thedudeguy/JukeBukkit)
 
-[Jenkins](http://ci.alta189.com/job/JukeBukkit/)
-
-[JukeBukkit Music Repository](http://jukebukkit.chrischurchwell.com)
-
-[![Donate](http://www.pledgie.com/campaigns/17072.png?skin_name=chrome "Donate")](http://pledgie.com/campaigns/17072)
-
-### The Info You Want:
+### The Info You Want: 
 
 [How to use JukeBukkit](https://github.com/thedudeguy/JukeBukkit/wiki/How-to-Use-JukeBukkit)
 
@@ -48,9 +44,9 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 
 JukeBukkit is built and tested against
 
-* SpoutPlugin atleast build 1244
-* SpoutCraft atleast build  1548
-* CraftBukkit 1.2.5-R4.0
+* SpoutPlugin atleast build 1369
+* SpoutCraft atleast build  1833
+* CraftBukkit 1.3.2-R1.0
 
 ## Installation
 
@@ -75,3 +71,17 @@ JukeBukkit is built and tested against
 ## Credits
 
 [Credits](https://github.com/thedudeguy/JukeBukkit/wiki/Credits)
+
+## Change Log
+
+### Version 2.1.0
+
+* Updates for 1.3.2
+* No longer supporting crafting with all wood types, allthough many still work.
+* Added custom texture support (WIP)
+* Re-encoded the provided music to a lower bitrate.
+* Added robots.txt to the web server (to prevent indexing)
+* now using my MeshIt obj loader libary
+* removed the old disc yml importer.
+* Improved Burn GUI Navigation.
+* Disc on a Stick is now a weapon that deals random damage and takes random durability hits.

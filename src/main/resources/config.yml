@@ -4,5 +4,6 @@ minecraftServerHostname: change.me.com
 serverName: JukeBukkit
 allowWebServerUploads: true
 allowExternalURLs: true
+texturePack: default
 debug: false
-subscriberId: subscribe!
+

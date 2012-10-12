@@ -21,8 +21,8 @@ package cc.thedudeguy.jukebukkit.gui.widget;
 import org.getspout.spoutapi.gui.GenericSlot;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 
-import cc.thedudeguy.jukebukkit.materials.items.BlankDisc;
-import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
+import cc.thedudeguy.jukebukkit.material.items.BlankDisc;
+import cc.thedudeguy.jukebukkit.material.items.BurnedDisc;
 
 public class DiscSlot extends GenericSlot {
 

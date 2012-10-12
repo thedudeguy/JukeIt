@@ -29,10 +29,9 @@ import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.gui.widget.BackButton;
 import cc.thedudeguy.jukebukkit.gui.widget.BurnButton;
 import cc.thedudeguy.jukebukkit.gui.widget.CloseButton;
-import cc.thedudeguy.jukebukkit.gui.widget.RepoListButton;
-import cc.thedudeguy.jukebukkit.gui.widget.ServerListButton;
 
 /**
  * This class is based off of WindWakers class in TextureMe.
@@ -41,10 +40,13 @@ import cc.thedudeguy.jukebukkit.gui.widget.ServerListButton;
 public class CustomURLSelecter extends GenericPopup {
 	
 	public CustomURLSelecter(Player player, Block block) {
-		
+		this(player, block, false);
+	}
+	
+	public CustomURLSelecter(Player player, Block block, boolean primary) {
 		
 		// Label
-		GenericLabel label = new GenericLabel("Custom Burn URL");
+		GenericLabel label = new GenericLabel("Burn Custom URL");
 		label.setX(175).setY(25);
 		label.setPriority(RenderPriority.Lowest);
 		label.setWidth(-1).setHeight(-1);
@@ -72,36 +74,30 @@ public class CustomURLSelecter extends GenericPopup {
 		urlInput.setFocus(true);
 		//burnPopup.attachWidget(JukeBukkit.instance, urlInput);
 		
-		// Close button
-		CloseButton close = new CloseButton();
-		close.setX(155).setY(195);
-		close.setWidth(60).setHeight(20);
-		close.setPriority(RenderPriority.Lowest);
+		if (primary == true) {
+			// Back button
+			CloseButton close = new CloseButton();
+			close.setX(95).setY(195);
+			close.setWidth(60).setHeight(20);
+			close.setPriority(RenderPriority.Lowest);
+			this.attachWidget(JukeBukkit.instance, close);
+		} else {
+			// Back button
+			BackButton back = new BackButton(block);
+			back.setX(95).setY(195);
+			back.setWidth(60).setHeight(20);
+			back.setPriority(RenderPriority.Lowest);
+			this.attachWidget(JukeBukkit.instance, back);
+		}
 		
 		// Select button
 		BurnButton burnButton = new BurnButton(urlInput, block);
-		burnButton.setX(95).setY(195);
+		burnButton.setX(275).setY(195);
 		burnButton.setWidth(60).setHeight(20);
 		burnButton.setPriority(RenderPriority.Lowest);
 		
-		//switch to server list.
-		ServerListButton serverlist = new ServerListButton(block);
-		serverlist.setX(215).setY(195);
-		serverlist.setWidth(60).setHeight(20);
-		serverlist.setPriority(RenderPriority.Lowest);
-		
-		//switch to repo mode
-		RepoListButton repobutton = new RepoListButton(block);
-		repobutton.setX(275).setY(195);
-		repobutton.setWidth(60).setHeight(20);
-		repobutton.setPriority(RenderPriority.Lowest);
-		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, close, label, urlInput, repobutton);
-		
-		if (JukeBukkit.instance.getConfig().getBoolean("enableWebServer") && JukeBukkit.instance.HTTPserver.isRunning() ) {
-			this.attachWidget(JukeBukkit.instance, serverlist);
-		}
+		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, label, urlInput);
 		
 	}
 	

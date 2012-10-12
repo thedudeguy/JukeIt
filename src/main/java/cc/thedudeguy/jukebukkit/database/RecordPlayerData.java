@@ -22,7 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import cc.thedudeguy.jukebukkit.materials.blocks.designs.RPNeedle;
+import cc.thedudeguy.jukebukkit.material.blocks.designs.RPNeedle;
 
 import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;

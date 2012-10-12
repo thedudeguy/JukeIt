@@ -45,7 +45,7 @@ import cc.thedudeguy.jukebukkit.gui.widget.LabelCloseButton;
 import cc.thedudeguy.jukebukkit.gui.widget.MachineLabelButton;
 import cc.thedudeguy.jukebukkit.gui.widget.MachineStartButton;
 import cc.thedudeguy.jukebukkit.gui.widget.PlayerInventorySlot;
-import cc.thedudeguy.jukebukkit.materials.items.BurnedDisc;
+import cc.thedudeguy.jukebukkit.material.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.util.Debug;
 
 public class MachineGUI extends GenericPopup {

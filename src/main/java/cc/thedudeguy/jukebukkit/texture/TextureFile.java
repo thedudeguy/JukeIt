@@ -18,7 +18,12 @@
  */
 package cc.thedudeguy.jukebukkit.texture;
 
+import org.getspout.spoutapi.block.design.Texture;
+
+import cc.thedudeguy.jukebukkit.JukeBukkit;
+
 public enum TextureFile {
+	/* items */
 	BLANK_DISC_BLACK(		"blank_disc_black.png"),
 	BLANK_DISC_BLUE(		"blank_disc_blue.png"),
 	BLANK_DISC_BROWN(		"blank_disc_brown.png"),
@@ -61,23 +66,51 @@ public enum TextureFile {
 	ITEM_MACHINE_TOP(		"machineitemtop.png"),
 	ITEM_MACHINE_BOTTOM(	"machineitembot.png"),
 	
+	/* gui */
 	GUI_BG_BLUE(			"borderblue.png"),
 	GUI_BG_MACHINE(			"machinegui.png"),
 	GUI_BG_LABEL_WRITER(	"paper.png"),
 	
-	BLOCKS_DEPRECATED(		"blocks_deprecated.png"),
-	BLOCK_MACHINE(			"machineblock.png"),
-	BLOCK_RECORD_PLAYER(	"recordplayer.png"),
-	BLOCK_SPEAKER(			"speaker.png"),
-	BLOCK_SPEAKER_WIRE(		"speakerwireblock.png");
+	/* blocks */
+	BLOCK_MACHINE(			"machineblock.png", 64, 64, 64),
+	BLOCK_RECORD_PLAYER(	"recordplayer.png", 128, 128, 16),
+	BLOCK_SPEAKER(			"speaker.png", 16, 16, 16),
+	BLOCK_SPEAKER_WIRE(		"speakerwireblock.png", 32, 16, 16),
+	BLOCK_BURNER(			"discburner.png", 64, 16, 16),
+	
+	BLOCK_JUKEBOX_BASIC(	"jukebox_basic.png", 32, 16, 16),
+	BLOCK_JUKEBOX_LOW(		"jukebox_low.png", 64, 16, 16),
+	BLOCK_JUKEBOX_MID(		"jukebox_mid.png", 64, 16, 16),
+	BLOCK_JUKEBOX_LONG(		"jukebox_long.png", 64, 16, 16),
+	BLOCK_JUKEBOX_MAX(		"jukebox_max.png", 64, 16, 16),
+	BLOCK_JUKEBOX_WORLD(	"jukebox_world.png", 64, 16, 16);
 	
 	private String file;
+	private int width;
+	private int height;
+	private int size;
 	
 	TextureFile(String file) {
+		this(file, 16, 16, 16);
+	}
+	
+	TextureFile(String file, int width, int height, int size) {
 		this.file = file;
+		this.width = width;
+		this.height = height;
+		this.size = size;
 	}
 	
 	public String getFile() {
 		return file;
+	}
+	
+	public Texture getTexture() {
+		
+		// since the texture class actually uses the width/height/size parameters to calculate u-v coordinates
+		// its safe to just use the default texture size, and any custom textures with higher resolutions
+		// will still work fine assuming the custom texture was scaled properly. (in powers of 2 and maintains size ratio)
+		return new Texture(JukeBukkit.instance, this.file, this.width, this.height, this.size);
+		
 	}
 }

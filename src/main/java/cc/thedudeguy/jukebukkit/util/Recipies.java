@@ -27,8 +27,8 @@ import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
 import org.getspout.spoutapi.material.Material;
 import org.getspout.spoutapi.material.MaterialData;
 
-import cc.thedudeguy.jukebukkit.materials.Blocks;
-import cc.thedudeguy.jukebukkit.materials.Items;
+import cc.thedudeguy.jukebukkit.material.Blocks;
+import cc.thedudeguy.jukebukkit.material.Items;
 
 public class Recipies {
 	

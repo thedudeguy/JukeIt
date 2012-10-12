@@ -36,15 +36,14 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
-import cc.thedudeguy.jukebukkit.listeners.GeneralListener;
-import cc.thedudeguy.jukebukkit.listeners.MachineListener;
-import cc.thedudeguy.jukebukkit.listeners.SpeakerWireListener;
-import cc.thedudeguy.jukebukkit.materials.Blocks;
-import cc.thedudeguy.jukebukkit.materials.Items;
+import cc.thedudeguy.jukebukkit.listener.GeneralListener;
+import cc.thedudeguy.jukebukkit.listener.MachineListener;
+import cc.thedudeguy.jukebukkit.listener.SpeakerWireListener;
+import cc.thedudeguy.jukebukkit.material.Blocks;
+import cc.thedudeguy.jukebukkit.material.Items;
 import cc.thedudeguy.jukebukkit.server.MusicHandler;
 import cc.thedudeguy.jukebukkit.server.ServerHandler;
 import cc.thedudeguy.jukebukkit.util.Debug;
-import cc.thedudeguy.jukebukkit.util.DiscImporter;
 import cc.thedudeguy.jukebukkit.util.Recipies;
 import cc.thedudeguy.jukebukkit.util.ResourceManager;
 
@@ -57,8 +56,6 @@ public class JukeBukkit extends JavaPlugin {
 	public static JukeBukkit instance;
 	public Server HTTPserver;
 	SelectChannelConnector HTTPconnector;
-	
-	SongRepo songRepo;
 	
 	Blocks blocks;
 	Items items;
@@ -83,9 +80,6 @@ public class JukeBukkit extends JavaPlugin {
 		
 		setupDatabase();
 		
-		//incase the old discs.yml exists, we should import the old discs.
-		DiscImporter.checkForOldDiscsImport();
-		
 		items = new Items();
 		blocks = new Blocks();
 		
@@ -99,10 +93,6 @@ public class JukeBukkit extends JavaPlugin {
 		this.getCommand("jukebukkit").setExecutor(new CommandHandler());
 		
 		ResourceManager.resetCache();
-		
-		//refresh the song repo
-		songRepo = new SongRepo();
-		songRepo.refreshList();
 		
 		//start the web server up
 		
