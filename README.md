@@ -71,3 +71,17 @@ JukeBukkit is built and tested against
 ## Credits
 
 [Credits](https://github.com/thedudeguy/JukeBukkit/wiki/Credits)
+
+## Change Log
+
+### Version 2.1.0
+
+* Updates for 1.3.2
+* No longer supporting crafting with all wood types, allthough many still work.
+* Added custom texture support (WIP)
+* Re-encoded the provided music to a lower bitrate.
+* Added robots.txt to the web server (to prevent indexing)
+* now using my MeshIt obj loader libary
+* removed the old disc yml importer.
+* Improved Burn GUI Navigation.
+* Disc on a Stick is now a weapon that deals random damage and takes random durability hits.
