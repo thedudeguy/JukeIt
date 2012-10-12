@@ -44,9 +44,9 @@ JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn th
 
 JukeBukkit is built and tested against
 
-* SpoutPlugin atleast build 1244
-* SpoutCraft atleast build  1548
-* CraftBukkit 1.2.5-R4.0
+* SpoutPlugin atleast build 1369
+* SpoutCraft atleast build  1833
+* CraftBukkit 1.3.2-R1.0
 
 ## Installation
 
