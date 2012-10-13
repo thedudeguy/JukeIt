@@ -21,11 +21,15 @@ package cc.thedudeguy.jukebukkit;
 import java.io.File;
 import java.lang.reflect.Method;
 
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.getspout.spoutapi.block.SpoutBlock;
 
+import cc.thedudeguy.jukebukkit.material.blocks.JukeboxBlock;
+import cc.thedudeguy.jukebukkit.material.blocks.RecordPlayer;
 import cc.thedudeguy.jukebukkit.util.ResourceManager;
 
 
@@ -82,6 +86,42 @@ public class CommandHandler implements CommandExecutor {
 		sender.sendMessage("version - Version Info");
 		sender.sendMessage("help    - Show help");
 		sender.sendMessage("resetcache - Can sometimes fix problems with textures.");
+		
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("playjuke [world] [x] [y] [z] - Play a JukeBox at this location");
+		}
+		return true;
+	}
+	
+	public Boolean playjuke(CommandSender sender, String[] args) {
+		
+		if (sender instanceof Player) {
+			return false;
+		}
+		
+		if (args.length != 4) {
+			sender.sendMessage("Invalid Usage");
+			return true;
+		}
+		
+		World world = JukeBukkit.instance.getServer().getWorld(args[0]);
+		int x = Integer.valueOf(args[1]);
+		int y = Integer.valueOf(args[2]);
+		int z = Integer.valueOf(args[3]);
+		
+		if (world == null) {
+			sender.sendMessage("World does not exist.");
+			return true;
+		}
+		
+		SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
+		
+		if (block.getCustomBlock() instanceof JukeboxBlock) {
+			((JukeboxBlock)block.getCustomBlock()).onBlockClicked(world, x, y, z, null);
+		} else if (block.getCustomBlock() instanceof RecordPlayer) {
+			((RecordPlayer)block.getCustomBlock()).onBlockClicked(world, x, y, z, null);
+		}
+		
 		return true;
 	}
 	
