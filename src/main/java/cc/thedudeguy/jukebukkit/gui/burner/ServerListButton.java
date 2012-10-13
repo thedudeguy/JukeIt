@@ -16,13 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cc.thedudeguy.jukebukkit.gui.widget;
+package cc.thedudeguy.jukebukkit.gui.burner;
 
 import org.bukkit.block.Block;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 
-import cc.thedudeguy.jukebukkit.gui.BurnSelector;
 
 public class ServerListButton extends GenericButton {
 

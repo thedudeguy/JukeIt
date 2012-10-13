@@ -16,38 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cc.thedudeguy.jukebukkit.gui;
+package cc.thedudeguy.jukebukkit.gui.burner;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericGradient;
 import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericListWidget;
 import org.getspout.spoutapi.gui.GenericPopup;
+import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.gui.widget.BackButton;
-import cc.thedudeguy.jukebukkit.gui.widget.BurnButton;
-import cc.thedudeguy.jukebukkit.gui.widget.CloseButton;
-import cc.thedudeguy.jukebukkit.gui.widget.ServerMusicList;
+import cc.thedudeguy.jukebukkit.gui.CloseButton;
 
 /**
  * This class is based off of WindWakers class in TextureMe.
  *
  */
-public class BurnSelector extends GenericPopup {
+public class CustomURLSelecter extends GenericPopup {
 	
-	public BurnSelector(Player player, Block block) {
+	public CustomURLSelecter(Player player, Block block) {
 		this(player, block, false);
 	}
 	
-	public BurnSelector(Player player, Block block, boolean primary) {
+	public CustomURLSelecter(Player player, Block block, boolean primary) {
 		
 		// Label
-		GenericLabel label = new GenericLabel("Server Music");
+		GenericLabel label = new GenericLabel("Burn Custom URL");
 		label.setX(175).setY(25);
 		label.setPriority(RenderPriority.Lowest);
 		label.setWidth(-1).setHeight(-1);
@@ -57,7 +54,7 @@ public class BurnSelector extends GenericPopup {
 		border.setX(65).setY(20);
 		border.setPriority(RenderPriority.High);
 		border.setWidth(300).setHeight(200);
-		
+
 		// Background gradient
 		GenericGradient gradient = new GenericGradient();
 		gradient.setTopColor(new Color(0.25F, 0.25F, 0.25F, 1.0F));
@@ -66,11 +63,14 @@ public class BurnSelector extends GenericPopup {
 		gradient.setX(65).setY(20);
 		gradient.setPriority(RenderPriority.Highest);
 		
-		// Music list
-		GenericListWidget list = new ServerMusicList();
-		list.setX(90).setY(50);
-		list.setWidth(250).setHeight(125);
-		list.setPriority(RenderPriority.Lowest);
+		GenericTextField urlInput = new GenericTextField();
+		urlInput.setMaximumCharacters(500);
+		urlInput.setHeight(100).setWidth(200);
+		urlInput.setY(45);
+		urlInput.setX(110);
+		urlInput.setMaximumLines(0);
+		urlInput.setFocus(true);
+		//burnPopup.attachWidget(JukeBukkit.instance, urlInput);
 		
 		if (primary == true) {
 			// Back button
@@ -88,16 +88,15 @@ public class BurnSelector extends GenericPopup {
 			this.attachWidget(JukeBukkit.instance, back);
 		}
 		
-		
 		// Select button
-		BurnButton burnButton = new BurnButton(list, block);
+		BurnButton burnButton = new BurnButton(urlInput, block);
 		burnButton.setX(275).setY(195);
 		burnButton.setWidth(60).setHeight(20);
 		burnButton.setPriority(RenderPriority.Lowest);
 		
-		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, label, list);
+		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, label, urlInput);
+		
 	}
 	
 }

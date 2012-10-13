@@ -16,21 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cc.thedudeguy.jukebukkit.gui.widget;
+package cc.thedudeguy.jukebukkit.gui.machine;
 
-import org.getspout.spoutapi.gui.GenericListWidget;
-import org.getspout.spoutapi.gui.ListWidgetItem;
+import org.getspout.spoutapi.event.screen.ButtonClickEvent;
+import org.getspout.spoutapi.gui.GenericButton;
 
-import cc.thedudeguy.jukebukkit.JukeBukkit;
 
-public class ServerMusicList extends GenericListWidget {
+public class LabelCloseButton  extends GenericButton{
 	
-	public ServerMusicList() {
-		for ( String name : JukeBukkit.getServerFileList()) {
-			this.addItem(new ListWidgetItem(name, ""));
-		}
-		
+	MachineGUI popup;
+	
+	public LabelCloseButton(MachineGUI p) {
+		super("Cancel");
+		this.popup = p;
 	}
 	
+	@Override
+	public void onButtonClick(ButtonClickEvent event) {
+		popup.cancelLabelWriter();
+	}
 	
 }

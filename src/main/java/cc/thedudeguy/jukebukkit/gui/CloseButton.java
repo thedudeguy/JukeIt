@@ -16,25 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cc.thedudeguy.jukebukkit.gui.widget;
+package cc.thedudeguy.jukebukkit.gui;
 
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 
-import cc.thedudeguy.jukebukkit.gui.MachineGUI;
-
-public class LabelCloseButton  extends GenericButton{
+public class CloseButton extends GenericButton{
 	
-	MachineGUI popup;
-	
-	public LabelCloseButton(MachineGUI p) {
-		super("Cancel");
-		this.popup = p;
+	public CloseButton() {
+		super("Close");
 	}
-	
+
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		popup.cancelLabelWriter();
+		event.getPlayer().getMainScreen().getActivePopup().close();
 	}
 	
 }

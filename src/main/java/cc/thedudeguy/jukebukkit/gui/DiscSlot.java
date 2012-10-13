@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cc.thedudeguy.jukebukkit.gui.widget;
+package cc.thedudeguy.jukebukkit.gui;
 
 import org.getspout.spoutapi.gui.GenericSlot;
 import org.getspout.spoutapi.inventory.SpoutItemStack;

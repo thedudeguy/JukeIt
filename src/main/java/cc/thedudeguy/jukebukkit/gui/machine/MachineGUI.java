@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cc.thedudeguy.jukebukkit.gui;
+package cc.thedudeguy.jukebukkit.gui.machine;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,11 +40,8 @@ import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.gui.widget.DiscSlot;
-import cc.thedudeguy.jukebukkit.gui.widget.LabelCloseButton;
-import cc.thedudeguy.jukebukkit.gui.widget.MachineLabelButton;
-import cc.thedudeguy.jukebukkit.gui.widget.MachineStartButton;
-import cc.thedudeguy.jukebukkit.gui.widget.PlayerInventorySlot;
+import cc.thedudeguy.jukebukkit.gui.DiscSlot;
+import cc.thedudeguy.jukebukkit.gui.PlayerInventorySlot;
 import cc.thedudeguy.jukebukkit.material.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.util.Debug;
 

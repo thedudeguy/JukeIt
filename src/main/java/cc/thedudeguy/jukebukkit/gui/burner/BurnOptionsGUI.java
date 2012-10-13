@@ -1,4 +1,4 @@
-package cc.thedudeguy.jukebukkit.gui;
+package cc.thedudeguy.jukebukkit.gui.burner;
 
 import org.bukkit.block.Block;
 import org.getspout.spoutapi.gui.Color;
@@ -10,9 +10,7 @@ import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.gui.widget.CloseButton;
-import cc.thedudeguy.jukebukkit.gui.widget.CustomURLButton;
-import cc.thedudeguy.jukebukkit.gui.widget.ServerListButton;
+import cc.thedudeguy.jukebukkit.gui.CloseButton;
 
 public class BurnOptionsGUI extends GenericPopup {
 

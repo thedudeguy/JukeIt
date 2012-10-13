@@ -29,7 +29,7 @@ import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.gui.MachineGUI;
+import cc.thedudeguy.jukebukkit.gui.machine.MachineGUI;
 import cc.thedudeguy.jukebukkit.material.Items;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 import cc.thedudeguy.jukebukkit.permission.UsePermissible;

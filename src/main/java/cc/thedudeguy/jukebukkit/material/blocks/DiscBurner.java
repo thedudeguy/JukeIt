@@ -29,7 +29,7 @@ import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
-import cc.thedudeguy.jukebukkit.gui.BurnOptionsGUI;
+import cc.thedudeguy.jukebukkit.gui.burner.BurnOptionsGUI;
 import cc.thedudeguy.jukebukkit.material.items.BlankDisc;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 import cc.thedudeguy.jukebukkit.permission.UsePermissible;
