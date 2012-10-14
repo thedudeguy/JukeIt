@@ -135,7 +135,7 @@ public class JukeBukkit extends JavaPlugin {
 	
 	public void onDisable()
 	{
-		if (HTTPserver.isRunning()) {
+		if (HTTPserver != null && HTTPserver.isRunning()) {
 			try {
 				Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Stopping Web Server...");
 				HTTPserver.stop();
