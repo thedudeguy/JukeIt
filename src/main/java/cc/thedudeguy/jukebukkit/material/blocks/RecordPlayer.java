@@ -45,6 +45,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
+import cc.thedudeguy.jukebukkit.gui.recordplayer.RecordPlayerGUI;
 import cc.thedudeguy.jukebukkit.material.Blocks;
 import cc.thedudeguy.jukebukkit.material.Items;
 import cc.thedudeguy.jukebukkit.material.blocks.designs.RPDisc;
@@ -136,146 +137,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	 */
 	public boolean onBlockInteract(org.bukkit.World world, int x, int y, int z, SpoutPlayer player) {
 		
-		//Bukkit.getLogger().log(Level.INFO, "Interacting...");
-		
-		Location location = new Location(world, (double)x, (double)y, (double)z);
-		
-		//get data from the db
-		RecordPlayerData rpdata = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
-				.where()
-					.eq("x", (double)x)
-					.eq("y", (double)y)
-					.eq("z", (double)z)
-					.ieq("worldName", world.getName())
-				.findUnique();
-		if (rpdata == null) {
-			Bukkit.getLogger().log(Level.WARNING, "[JukeBukkit] Missing Record Player Data, this data should have been created when the block was placed.");
-			return false;
-		}
-		
-		SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
-		
-		//the user has a disc in hand, and the record player does not have a disc, insert the disc
-		if ( !rpdata.hasDisc() && inHand.getMaterial() instanceof BurnedDisc) {
-			if (!player.hasPermission("jukebukkit.use.burneddisc")) {
-				player.sendMessage("You do not have permission to perform this action.");
-				player.sendMessage("(jukebukkit.use.burneddisc)");
-				return false;
-			}
-			//Bukkit.getLogger().log(Level.INFO, "Inserting Disc");
-			
-			BurnedDisc discInHand = (BurnedDisc)inHand.getMaterial();
-			
-			rpdata.setDiscKey(discInHand.getKey());
-			JukeBukkit.instance.getDatabase().save(rpdata);
-			
-			//we know its a custom item, go ahaed and remove 1 from the hand.
-			if (inHand.getAmount()<2) {
-				player.setItemInHand(new ItemStack(Material.AIR));
-			} else {
-				player.getInventory().getItemInHand().setAmount(player.getInventory().getItemInHand().getAmount()-1);
-			}
-			
-			//start the music
-			if (!RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE)) {
-				playMusic(discInHand.getUrl(), location, RPNeedle.getById(rpdata.getNeedleType()));
-			}
-			
-			new Sound(SoundEffect.RECORD_PLAYER_LOAD, world.getBlockAt(x,y,z), 8).play();
-			
-			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
-			
-			Debug.debug("BlockDesign updated.");
-			
-			return true;
-			
-		}
-		
-		//the user has a needle in hand, and the record player does not have a needle already, insert the needle
-		if ( RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE) && inHand.isCustomItem() && inHand.getMaterial() instanceof Needle ) {
-			
-			if (!player.hasPermission("jukebukkit.use.needle")) {
-				player.sendMessage("You do not have permission to perform this action.");
-				player.sendMessage("(jukebukkit.use.needle)");
-				return false;
-			}
-			
-			Debug.debug("Loading Needle");
-			
-			Needle needle = (Needle) inHand.getMaterial();
-			
-			rpdata.setNeedleType(needle.getNeedleType());
-			JukeBukkit.instance.getDatabase().save(rpdata);
-			
-			Debug.debug("needleid=",needle.getNeedleType().id(), " dbneedleid=", rpdata.getNeedleType());
-			
-			 //remove 1 from hand
-			if (inHand.getAmount()<2) {
-				player.setItemInHand(new ItemStack(Material.AIR));
-			} else {
-				inHand.setAmount(inHand.getAmount()-1);
-				player.setItemInHand(inHand);
-			}
-			
-			new Sound(SoundEffect.NEEDLE_ATTACH, world.getBlockAt(x,y,z), 8).play();
-			
-			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
-			
-			return true;
-		}
-		
-		//the record player has a disc, eject it
-		if ( rpdata.hasDisc() ) {
-			if (!player.hasPermission("jukebukkit.use.burneddisc")) {
-				player.sendMessage("You do not have permission to perform this action.");
-				player.sendMessage("(jukebukkit.use.burneddisc)");
-				return false;
-			}
-			//get and eject disc
-			BurnedDisc b = Items.burnedDiscs.get(rpdata.getDiscKey());
-			ItemStack iss = new SpoutItemStack(b, 1);
-			Location spawnLoc = location;
-			spawnLoc.setY(spawnLoc.getY()+1);
-			spawnLoc.getWorld().dropItem(spawnLoc, iss);
-			
-			rpdata.setDiscKey(null);
-			JukeBukkit.instance.getDatabase().save(rpdata);
-			
-			if (!RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE)) {
-				stopMusic(world.getBlockAt(x, y, z).getLocation(), RPNeedle.getById(rpdata.getNeedleType()));
-			}
-			new Sound(SoundEffect.RECORD_PLAYER_EJECT, world.getBlockAt(x,y,z), 8).play();
-			
-			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
-			
-			return true;
-		}
-		
-		//the record player has a needle eject it.
-		if ( !RPNeedle.getById(rpdata.getNeedleType()).equals(RPNeedle.NONE)) {
-			
-			if (!player.hasPermission("jukebukkit.use.needle")) {
-				player.sendMessage("You do not have permission to perform this action.");
-				player.sendMessage("(jukebukkit.use.needle)");
-				return false;
-			}
-			
-			Debug.debug("Ejecting Needle");
-			
-			CustomItem needle = RPNeedle.getById(rpdata.getNeedleType()).getItem();
-			
-			rpdata.setNeedleType(RPNeedle.NONE);
-			JukeBukkit.instance.getDatabase().save(rpdata);
-			Location spawnLoc = location;
-			spawnLoc.setY(spawnLoc.getY()+1);
-			world.dropItem(spawnLoc, new SpoutItemStack(needle, 1));
-			
-			new Sound(SoundEffect.NEEDLE_EJECT, world.getBlockAt(x,y,z), 8).play();
-			
-			updateBlockDesign((SpoutBlock)world.getBlockAt(x, y, z), rpdata);
-			
-			return true;
-		}
+		player.getMainScreen().attachPopupScreen(new RecordPlayerGUI(player, (SpoutBlock)world.getBlockAt(x, y, z)));
 		
 		return false;
 	}

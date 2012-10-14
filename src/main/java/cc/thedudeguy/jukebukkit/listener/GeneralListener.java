@@ -23,12 +23,27 @@ import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
+import cc.thedudeguy.jukebukkit.gui.recordplayer.RecordPlayerGUI;
 import cc.thedudeguy.jukebukkit.permission.CraftPermissible;
 import cc.thedudeguy.jukebukkit.util.Debug;
 
 public class GeneralListener implements Listener {
+	
+	/**
+	 * Refreshes a players record player gui on item pickup.
+	 * @param event
+	 */
+	@EventHandler
+	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+		Debug.debug("Player Pickup Item");
+		if (((SpoutPlayer)event.getPlayer()).getMainScreen().getActivePopup() instanceof RecordPlayerGUI) {
+			((RecordPlayerGUI)((SpoutPlayer)event.getPlayer()).getMainScreen().getActivePopup()).setDirtySlots();
+		}
+	}
 	
 	@EventHandler
 	public void onCraftItem(CraftItemEvent event) {
