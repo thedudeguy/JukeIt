@@ -58,7 +58,7 @@ public class SpeakerWireBlock extends GenericCustomBlock {
 	public boolean isFaceConnected(SpoutBlock block, BlockFace face) {
 		
 		if (
-				((SpeakerWireBlock)((SpoutBlock)block.getRelative(face)).getCustomBlock()) == null
+				!(((SpoutBlock)block.getRelative(face)).getCustomBlock() instanceof SpeakerWireBlock)
 				) {
 			return false;
 		}
