@@ -82,6 +82,18 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		setRecipe();
 	}
 	
+	/**
+	 * updates a block design in the world by grabbing the rp data
+	 * @param block
+	 */
+	public static void updateBlockDesign(SpoutBlock block) {
+		updateBlockDesign(block, getRPData(block));
+	}
+	
+	/**
+	 * updates a block design in the world with manual rp data
+	 * @param block
+	 */
 	public static void updateBlockDesign(SpoutBlock block, RecordPlayerData data) {
 		
 		Debug.debug("Updating Block Design");
@@ -108,7 +120,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		}
 		
 		//get indicator info
-		if (!RPNeedle.getById(data.getNeedleType()).equals(RPNeedle.NONE) && !disc.equals(RPDisc.NONE))
+		if (isPoweredUp(block))
 		{
 			indicator = RPIndicator.GREEN;
 		} else {
@@ -182,6 +194,55 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	}
 	
 	/**
+	 * Gets record player data for a RP block at the provided block
+	 * @param block
+	 * @return
+	 */
+	private static RecordPlayerData getRPData(SpoutBlock block) {
+		return getRPData(block.getWorld(), block.getX(), block.getY(), block.getZ());
+	}
+	
+	/**
+	 * Gets record player data for a RP block at the provided location
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	private static RecordPlayerData getRPData(World world, int x, int y, int z) {
+		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+				.where()
+					.eq("x", (double)x)
+					.eq("y", (double)y)
+					.eq("z", (double)z)
+					.ieq("worldName", world.getName())
+				.findUnique();
+		if (rpd == null) {
+			rpd = new RecordPlayerData();
+			rpd.setDiscKey(null);
+			rpd.setNeedleType(RPNeedle.NONE);
+			rpd.setX((double)x);
+			rpd.setY((double)y);
+			rpd.setZ((double)z);
+			rpd.setWorldName(world.getName());
+		}
+		
+		return rpd;
+	}
+	
+	public static boolean isPoweredUp(SpoutBlock block) {
+		
+		if (
+				block.getData("recordplayer.powered") != null &&
+				((Integer)block.getData("recordplayer.powered")) == 1
+				) {
+			return true;
+		 }
+		return false;
+	}
+	
+	/**
 	 * Event fires when a neighboring block updates, like a Neighboring redstone becomes powered.
 	 * We can use this to detemind if this block is now powered.
 	 */
@@ -199,6 +260,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 			block.setData("recordplayer.powered", 1);
 			Debug.debug("RecordPlayer: Redstone Activated");
 			
+			updateBlockDesign(block);
 			onBlockClicked(world, x, y, z, null);
 			
 		} else if (
@@ -215,7 +277,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 				) {
 			block.setData("recordplayer.powered", 0);
 			Debug.debug("RecordPlayer: Lost Redstone Power.");
-			
+			updateBlockDesign(block);
 		} else {
 			block.setData("recordplayer.powered", 0);
 			Debug.debug("RecordPlayer: Not Powered, and not powering");
