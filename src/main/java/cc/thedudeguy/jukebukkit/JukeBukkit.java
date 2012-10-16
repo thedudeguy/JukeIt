@@ -76,7 +76,7 @@ public class JukeBukkit extends JavaPlugin {
 		instance = this;
 		
 		ResourceManager.copyResources();
-		//ResourceManager.preLoginCache();
+		ResourceManager.preLoginCache();
 		
 		setupDatabase();
 		
@@ -92,10 +92,7 @@ public class JukeBukkit extends JavaPlugin {
 		
 		this.getCommand("jukebukkit").setExecutor(new CommandHandler());
 		
-		ResourceManager.resetCache();
-		
 		//start the web server up
-		
 		HTTPserver = new Server();
 		HTTPconnector = new SelectChannelConnector();
 		HTTPconnector.setPort(getConfig().getInt("webServerPort"));
