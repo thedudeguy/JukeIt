@@ -128,6 +128,7 @@ public class BurnOptionsGUI extends GenericPopup {
 	public static boolean canUseServer() {
 		if (
 				JukeBukkit.instance.getConfig().getBoolean("enableWebServer") &&
+				JukeBukkit.instance.HTTPserver != null &&
 				JukeBukkit.instance.HTTPserver.isRunning()
 				) {
 			return true;
