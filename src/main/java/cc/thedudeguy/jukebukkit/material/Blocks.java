@@ -27,6 +27,7 @@ import cc.thedudeguy.jukebukkit.material.blocks.JukeboxMidRange;
 import cc.thedudeguy.jukebukkit.material.blocks.JukeboxWorldRange;
 import cc.thedudeguy.jukebukkit.material.blocks.MachineBlock;
 import cc.thedudeguy.jukebukkit.material.blocks.RecordPlayer;
+import cc.thedudeguy.jukebukkit.material.blocks.RepeaterChipBlock;
 import cc.thedudeguy.jukebukkit.material.blocks.Speaker;
 import cc.thedudeguy.jukebukkit.material.blocks.SpeakerWireBlock;
 
@@ -49,6 +50,8 @@ public class Blocks {
 	
 	public static SpeakerWireBlock speakerWireBlock;
 	
+	public static RepeaterChipBlock repeaterChipBlock;
+	
 	public Blocks() {
 		
 		//speaker must load before recordPlayer
@@ -68,9 +71,9 @@ public class Blocks {
 		jukeboxMaxRange = new JukeboxMaxRange();
 		jukeboxWorldRange = new JukeboxWorldRange();
 		
-		
-		
 		speakerWireBlock = new SpeakerWireBlock();
+		
+		repeaterChipBlock = new RepeaterChipBlock();
 	}
 	
 }

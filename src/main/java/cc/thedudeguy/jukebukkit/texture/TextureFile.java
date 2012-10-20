@@ -83,7 +83,9 @@ public enum TextureFile {
 	BLOCK_JUKEBOX_MID(		"jukebox_mid.png", 64, 16, 16),
 	BLOCK_JUKEBOX_LONG(		"jukebox_long.png", 64, 16, 16),
 	BLOCK_JUKEBOX_MAX(		"jukebox_max.png", 64, 16, 16),
-	BLOCK_JUKEBOX_WORLD(	"jukebox_world.png", 64, 16, 16);
+	BLOCK_JUKEBOX_WORLD(	"jukebox_world.png", 64, 16, 16),
+	
+	BLOCK_REPEATER_CHIP(	"repeater.png", 32, 32, 32);
 	
 	private String file;
 	private int width;
