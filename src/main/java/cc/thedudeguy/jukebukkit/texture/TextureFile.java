@@ -66,6 +66,8 @@ public enum TextureFile {
 	ITEM_MACHINE_TOP(		"machineitemtop.png"),
 	ITEM_MACHINE_BOTTOM(	"machineitembot.png"),
 	
+	ITEM_REPEATER_CHIP(		"repeater_item.png"),
+	
 	/* gui */
 	GUI_BG_BLUE(			"borderblue.png"),
 	GUI_BG_MACHINE(			"machinegui.png"),

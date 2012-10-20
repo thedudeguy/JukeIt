@@ -30,6 +30,7 @@ import cc.thedudeguy.jukebukkit.material.items.BurnedDisc;
 import cc.thedudeguy.jukebukkit.material.items.DiscOnAStick;
 import cc.thedudeguy.jukebukkit.material.items.MachineBottom;
 import cc.thedudeguy.jukebukkit.material.items.MachineTop;
+import cc.thedudeguy.jukebukkit.material.items.RepeaterChipItem;
 import cc.thedudeguy.jukebukkit.material.items.SpeakerWire;
 import cc.thedudeguy.jukebukkit.material.items.colorblankdisc.BlankDiscBlack;
 import cc.thedudeguy.jukebukkit.material.items.colorblankdisc.BlankDiscBlue;
@@ -81,6 +82,9 @@ public class Items {
 	public static SpeakerWire speakerWire;
 	
 	public static DiscOnAStick discOnAStick;
+	
+	public static RepeaterChipItem repeaterChipItem;
+	
 	public Items() {
 		
 		machineTop = new MachineTop();
@@ -110,6 +114,8 @@ public class Items {
 		blankDiscYellow = new BlankDiscYellow();
 		
 		discOnAStick = new DiscOnAStick();
+		
+		repeaterChipItem = new RepeaterChipItem();
 		
 		//TODO: Detect if any burned disc does NOT exist in the world anymore, and remove them from the DB
 		
