@@ -18,6 +18,7 @@
  */
 package cc.thedudeguy.jukebukkit.material.blocks;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,6 +44,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
+import cc.thedudeguy.jukebukkit.database.RepeaterChipData;
 import cc.thedudeguy.jukebukkit.gui.recordplayer.RecordPlayerGUI;
 import cc.thedudeguy.jukebukkit.material.Blocks;
 import cc.thedudeguy.jukebukkit.material.blocks.designs.RPDisc;
@@ -152,6 +154,8 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	
 	public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {
 		
+		SpoutBlock block = (SpoutBlock)world.getBlockAt(x, y, z);
+		
 		if (player != null) {
 			if (!player.hasPermission(getUsePermission())) {
 				player.sendMessage("You do not have permission to perform this action.");
@@ -189,6 +193,11 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 			} else {
 				Location location = new Location(world, (double)x, (double)y, (double)z);
 				playMusic(discData.getUrl(), location, RPNeedle.getById(rpd.getNeedleType()));
+				long repeat = getRepeatChipTime(block);
+				if (repeat > 0) {
+					Debug.debug("Set to repeat in: ", repeat);
+					RepeaterChipBlock.addRepeatToQueue(block, repeat);
+				}
 			}
 		}
 	}
@@ -437,6 +446,19 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 			}
 		}
 		new Sound(SoundEffect.RECORD_PLAYER_STOP, location, 8).play();
+	}
+	
+	public static long getRepeatChipTime(SpoutBlock block) {
+		List<BlockFace> toCheck = Arrays.asList(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST);
+		
+		for (BlockFace face : toCheck) {
+			if (((SpoutBlock)block.getRelative(face)).getCustomBlock() instanceof RepeaterChipBlock) {
+				RepeaterChipData data = RepeaterChipData.getData((SpoutBlock)block.getRelative(face));
+				return data.getTime();
+			}
+		}
+		
+		return 0;
 	}
 	
 	public HashMap<BlockFace, Speaker> getConnectedBlocks(Location location) {

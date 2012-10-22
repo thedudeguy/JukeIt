@@ -18,6 +18,9 @@
  */
 package cc.thedudeguy.jukebukkit.material.blocks;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import org.bukkit.World;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.Axis;
@@ -27,12 +30,19 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import cc.thedudeguy.jukebukkit.JukeBukkit;
 import cc.thedudeguy.jukebukkit.gui.repeater.RepeaterChipGUI;
+import cc.thedudeguy.jukebukkit.material.Blocks;
 import cc.thedudeguy.jukebukkit.texture.TextureFile;
 
 import com.chrischurchwell.meshit.Model;
 
 public class RepeaterChipBlock extends GenericCustomBlock {
-
+	
+	public static HashMap<SpoutBlock, Long> repeatQueue = new HashMap<SpoutBlock, Long>();
+	
+	public static void addRepeatToQueue(SpoutBlock block, long repeatIn) {
+		repeatQueue.put(block, System.currentTimeMillis() + repeatIn);
+	}
+	
 	public RepeaterChipBlock() {
 		super(JukeBukkit.getInstance(), "Repeater Chip", 36);
 		
@@ -44,6 +54,28 @@ public class RepeaterChipBlock extends GenericCustomBlock {
 		setBlockDesign(design.rotate(90, Axis.Y), 1);
 		setBlockDesign(design.rotate(180, Axis.Y), 2);
 		setBlockDesign(design.rotate(270, Axis.Y), 3);
+		
+		//set up the tick thread.
+		JukeBukkit.getInstance().getServer().getScheduler().scheduleSyncRepeatingTask(JukeBukkit.getInstance(), new Runnable() {
+			public void run() {
+				for(Entry<SpoutBlock, Long> entry : repeatQueue.entrySet()) {
+					if (entry.getValue() > System.currentTimeMillis()) {
+						continue;
+					}
+					if (entry.getKey().getCustomBlock() instanceof RecordPlayer) {
+						if (RecordPlayer.isPoweredUp(entry.getKey())) {
+							repeatQueue.remove(entry.getKey());
+							Blocks.recordPlayer.onBlockClicked(entry.getKey().getWorld(), entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getZ(), null);
+						} else {
+							repeatQueue.remove(entry.getKey());
+						}
+					} else {
+						repeatQueue.remove(entry.getKey());
+					}
+				}
+			}
+		}, 0, 5L);
+		
 	}
 	
 	public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {

@@ -57,7 +57,6 @@ public class RepeaterChipGUI extends GenericPopup {
 		slider.setAnchor(WidgetAnchor.CENTER_CENTER);
 		slider.setWidth(160).setHeight(20);
 		slider.setX(-80).setY(-16);
-		
 		attachWidget(JukeBukkit.getInstance(), slider);
 		
 		//close button
