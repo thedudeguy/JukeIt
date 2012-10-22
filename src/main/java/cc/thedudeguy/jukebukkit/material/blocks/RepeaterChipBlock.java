@@ -19,6 +19,7 @@
 package cc.thedudeguy.jukebukkit.material.blocks;
 
 import org.bukkit.World;
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.Axis;
 import org.getspout.spoutapi.block.design.GenericBlockDesign;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
@@ -47,7 +48,7 @@ public class RepeaterChipBlock extends GenericCustomBlock {
 	
 	public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
 		
-		player.getMainScreen().attachPopupScreen(new RepeaterChipGUI());
+		player.getMainScreen().attachPopupScreen(new RepeaterChipGUI((SpoutBlock)world.getBlockAt(x, y, z)));
 		
 		return true;
 	}

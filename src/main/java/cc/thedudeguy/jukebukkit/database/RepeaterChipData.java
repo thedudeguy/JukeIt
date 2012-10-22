@@ -22,12 +22,41 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.getspout.spoutapi.block.SpoutBlock;
+
+import cc.thedudeguy.jukebukkit.JukeBukkit;
+import cc.thedudeguy.jukebukkit.util.Debug;
+
 import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 
 @Entity()
 @Table(name="jb_rc_data")
 public class RepeaterChipData {
+	
+	public static RepeaterChipData getData(SpoutBlock block) {
+		RepeaterChipData data = JukeBukkit.getInstance().getDatabase().find(RepeaterChipData.class)
+				.where()
+					.eq("x", block.getX())
+					.eq("y", block.getY())
+					.eq("z", block.getZ())
+					.ieq("world", block.getWorld().getName())
+				.findUnique();
+		if (data == null) {
+			data = new RepeaterChipData();
+			data.setX(block.getX());
+			data.setY(block.getY());
+			data.setZ(block.getZ());
+			data.setWorld(block.getWorld().getName());
+			data.setTime(0);
+		}
+		
+		return data;
+	}
+	
+	public static void saveData(RepeaterChipData data) {
+		JukeBukkit.getInstance().getDatabase().save(data);
+	}
 	
 	@Id
 	private int id;

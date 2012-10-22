@@ -18,6 +18,7 @@
  */
 package cc.thedudeguy.jukebukkit.gui.repeater;
 
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
@@ -31,7 +32,7 @@ import cc.thedudeguy.jukebukkit.texture.TextureFile;
 
 public class RepeaterChipGUI extends GenericPopup {
 	
-	public RepeaterChipGUI() {
+	public RepeaterChipGUI(SpoutBlock block) {
 		
 		//background
 		GenericTexture border = new GenericTexture(TextureFile.GUI_BG_REPEATER.getFile());
@@ -51,12 +52,11 @@ public class RepeaterChipGUI extends GenericPopup {
 		attachWidget(JukeBukkit.getInstance(), label);
 		
 		//slider
-		TimeSlider slider = new TimeSlider();
+		TimeSlider slider = new TimeSlider(block);
 		slider.setAlign(WidgetAnchor.CENTER_CENTER);
 		slider.setAnchor(WidgetAnchor.CENTER_CENTER);
 		slider.setWidth(160).setHeight(20);
 		slider.setX(-80).setY(-16);
-		slider.setText("00:00");
 		
 		attachWidget(JukeBukkit.getInstance(), slider);
 		

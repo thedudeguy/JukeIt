@@ -20,19 +20,34 @@ package cc.thedudeguy.jukebukkit.gui.repeater;
 
 import java.util.concurrent.TimeUnit;
 
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.event.screen.SliderDragEvent;
 import org.getspout.spoutapi.gui.GenericSlider;
 
+import cc.thedudeguy.jukebukkit.database.RepeaterChipData;
 import cc.thedudeguy.jukebukkit.util.Debug;
 
 public class TimeSlider extends GenericSlider {
 
 	long minTime = 60000;	//1 minute
 	long maxTime = 5400000;	//90 minutes
-	long timeFrame = maxTime - minTime;
 	
-	public TimeSlider() {
+	private SpoutBlock block;
+	private RepeaterChipData data;
+	
+	public TimeSlider(SpoutBlock block) {
+		this.block = block;
 		
+		//get the data.
+		data = RepeaterChipData.getData(block);
+		
+		Debug.debug("Current time set: ", data.getTime());
+		Debug.debug("Formated time: ", formatTime(data.getTime()));
+		Debug.debug("Position: ", getPositionFromTime(data.getTime()));
+		
+		//set current position.
+		setSliderPosition(getPositionFromTime(data.getTime()));
+		setText(formatTime(data.getTime()));
 	}
 	
 	private long getTimeFromPosition(float position) {
@@ -49,7 +64,7 @@ public class TimeSlider extends GenericSlider {
 		if (time >= maxTime) return 1;
 		
 		long timeFrame = maxTime - minTime;
-		float t = (time - minTime)/timeFrame;
+		float t = ((float)time - (float)minTime)/(float)timeFrame;
 		
 		return t;
 	}
@@ -70,5 +85,7 @@ public class TimeSlider extends GenericSlider {
 	public void onSliderDrag(SliderDragEvent event) {
 		setSliderPosition(event.getNewPosition());
 		update();
+		data.setTime(getTimeFromPosition(event.getNewPosition()));
+		RepeaterChipData.saveData(data);
 	}
 }
