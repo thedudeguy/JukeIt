@@ -72,6 +72,7 @@ public enum TextureFile {
 	GUI_BG_BLUE(			"borderblue.png"),
 	GUI_BG_MACHINE(			"machinegui.png"),
 	GUI_BG_LABEL_WRITER(	"paper.png"),
+	GUI_BG_REPEATER(		"repeater_bg.png"),
 	
 	/* blocks */
 	BLOCK_MACHINE(			"machineblock.png", 64, 64, 64),
