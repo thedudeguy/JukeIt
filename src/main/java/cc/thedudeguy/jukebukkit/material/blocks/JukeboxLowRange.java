@@ -41,7 +41,7 @@ public class JukeboxLowRange extends JukeboxBlock {
 	public GenericCubeBlockDesign getCustomBlockDesign() {
 		
 		return new GenericCubeBlockDesign(
-				JukeBukkit.instance, 
+				JukeBukkit.getInstance(), 
 				TextureFile.BLOCK_JUKEBOX_LOW.getTexture(),
 				new int[] { 0, 2, 2, 2, 2, 1 }
 			);

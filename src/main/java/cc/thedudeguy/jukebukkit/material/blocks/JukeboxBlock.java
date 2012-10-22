@@ -52,7 +52,7 @@ import cc.thedudeguy.jukebukkit.util.Debug;
 public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPermissible, UsePermissible {
 
 	public JukeboxBlock(String name) {
-		super(JukeBukkit.instance, name);
+		super(JukeBukkit.getInstance(), name);
 		setBlockDesign(getCustomBlockDesign());
 		setRecipe();
 	}
@@ -112,7 +112,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 		
 		//get data from the db
 		//TODO: create a join so dont have to make a second query for disc data
-		RecordPlayerData rpdata = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		RecordPlayerData rpdata = JukeBukkit.getInstance().getDatabase().find(RecordPlayerData.class)
 				.where()
 					.eq("x", (double)x)
 					.eq("y", (double)y)
@@ -123,7 +123,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			Bukkit.getLogger().log(Level.WARNING, "[JukeBukkit] Missing Record Player Data, this data should have been created when the block was placed.");
 		} else {
 			if (rpdata.hasDisc()) {
-				DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+				DiscData discData = JukeBukkit.getInstance().getDatabase().find(DiscData.class)
 						.where()
 							.ieq("nameKey", rpdata.getDiscKey())
 						.findUnique();
@@ -147,7 +147,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		
 		//get data from the db
-		RecordPlayerData rpdata = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		RecordPlayerData rpdata = JukeBukkit.getInstance().getDatabase().find(RecordPlayerData.class)
 				.where()
 					.eq("x", (double)x)
 					.eq("y", (double)y)
@@ -160,7 +160,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			
 			if (rpdata.hasDisc()) {
 				//get disc.
-				DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+				DiscData discData = JukeBukkit.getInstance().getDatabase().find(DiscData.class)
 						.where()
 							.ieq("nameKey", rpdata.getDiscKey())
 						.findUnique();
@@ -182,7 +182,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 		}
 		
 		//delete ALL data associated to this location, just incase somehow multiples got into the database this will take care of that.
-		List<RecordPlayerData> rpdall = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		List<RecordPlayerData> rpdall = JukeBukkit.getInstance().getDatabase().find(RecordPlayerData.class)
 				.where()
 					.eq("x", (double)x)
 					.eq("y", (double)y)
@@ -190,7 +190,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 					.ieq("worldName", world.getName())
 				.findList();
 		if (!rpdall.isEmpty()) {
-			JukeBukkit.instance.getDatabase().delete(rpdall);
+			JukeBukkit.getInstance().getDatabase().delete(rpdall);
 		}
 	}
 
@@ -205,7 +205,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		
 		//get data from the db
-		RecordPlayerData rpdata = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		RecordPlayerData rpdata = JukeBukkit.getInstance().getDatabase().find(RecordPlayerData.class)
 				.where()
 					.eq("x", (double)x)
 					.eq("y", (double)y)
@@ -233,7 +233,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			spawnLoc.getWorld().dropItem(spawnLoc, iss);
 			
 			rpdata.setDiscKey(null);
-			JukeBukkit.instance.getDatabase().save(rpdata);
+			JukeBukkit.getInstance().getDatabase().save(rpdata);
 			
 			stopMusic(location);
 			
@@ -260,7 +260,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			BurnedDisc discInHand = (BurnedDisc)inHand.getMaterial();
 			
 			rpdata.setDiscKey(discInHand.getKey());
-			JukeBukkit.instance.getDatabase().save(rpdata);
+			JukeBukkit.getInstance().getDatabase().save(rpdata);
 			
 			new Sound(SoundEffect.JUKEBOX_START, world.getBlockAt(x,y,z), 8).play();
 			
@@ -277,7 +277,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 	@Override
 	public void onBlockPlace(World world, int x, int y, int z) {
 		//when the block is placed we need to make sure to get data set up for it.
-		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		RecordPlayerData rpd = JukeBukkit.getInstance().getDatabase().find(RecordPlayerData.class)
 				.where()
 					.eq("x", (double)x)
 					.eq("y", (double)y)
@@ -292,7 +292,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			rpd.setY((double)y);
 			rpd.setZ((double)z);
 			rpd.setWorldName(world.getName());
-			JukeBukkit.instance.getDatabase().save(rpd);
+			JukeBukkit.getInstance().getDatabase().save(rpd);
 		}
 		/* If its still set, well go ahead and leave it, because it could be an blockplace even from setting the custom block to a different subblock for this location */
 	}
@@ -369,7 +369,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 				SpoutPlayer sp = SpoutManager.getPlayer(p);
 				if (sp.isSpoutCraftEnabled()) {
 					try {
-						SpoutManager.getSoundManager().playCustomMusic(JukeBukkit.instance, sp, url, true, location, getRange());
+						SpoutManager.getSoundManager().playCustomMusic(JukeBukkit.getInstance(), sp, url, true, location, getRange());
 					} catch (Exception e) {
 						new Sound(SoundEffect.JUKEBOX_STOP, location, 8).play();
 					}

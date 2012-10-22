@@ -151,7 +151,7 @@ public class MachineListener implements Listener {
 		particle.setMaxAge(20);
 		particle.spawn();
 		
-		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new MachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
+		JukeBukkit.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.getInstance(), new MachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
 			public void run() {
 				MachineProcessEvent pEvent = new MachineProcessEvent(block, primaryItem, additionItem, label);
 				Bukkit.getServer().getPluginManager().callEvent(pEvent);
@@ -163,7 +163,7 @@ public class MachineListener implements Listener {
 	public void onProcess(MachineProcessEvent event) {
 		Debug.debug("LabelMachineProcessEvent heard - processing graphics. bzzrrt! whirr!! chjkchjk ");
 		
-		int taskID = JukeBukkit.instance.getServer().getScheduler().scheduleSyncRepeatingTask(JukeBukkit.instance, new MachineRunnable(event.getBlock()) {
+		int taskID = JukeBukkit.getInstance().getServer().getScheduler().scheduleSyncRepeatingTask(JukeBukkit.getInstance(), new MachineRunnable(event.getBlock()) {
 			public void run() {
 				Particle particle = new Particle(ParticleType.SMOKE, getParticleLocation(block), new Vector(0,0.2,0));
 				particle.setMaxAge(10);
@@ -172,13 +172,13 @@ public class MachineListener implements Listener {
 			}
 		}, 0, 5L);
 		
-		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new MachineRunnable(taskID) {
+		JukeBukkit.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.getInstance(), new MachineRunnable(taskID) {
 			public void run() {
 				Bukkit.getScheduler().cancelTask(taskToStop);
 			}
 		}, 100L);
 		
-		JukeBukkit.instance.getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.instance, new MachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
+		JukeBukkit.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(JukeBukkit.getInstance(), new MachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
 			public void run() {
 				MachineCompleteEvent pEvent = new MachineCompleteEvent(block, primaryItem, additionItem, label);
 				Bukkit.getServer().getPluginManager().callEvent(pEvent);
@@ -215,7 +215,7 @@ public class MachineListener implements Listener {
 				) {
 				BurnedDisc disc = (BurnedDisc)sPrimItem.getMaterial();
 			//label the disc yo!
-			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+			DiscData discData = JukeBukkit.getInstance().getDatabase().find(DiscData.class)
 					.where()
 						.eq("nameKey", disc.getKey())
 					.findUnique();
@@ -224,7 +224,7 @@ public class MachineListener implements Listener {
 				return;
 			}
 			discData.setLabel(event.getLabel());
-			JukeBukkit.instance.getDatabase().save(discData);
+			JukeBukkit.getInstance().getDatabase().save(discData);
 			disc.setLabel(event.getLabel());
 			eject(event.getBlock(), new SpoutItemStack(disc, 1));
 			if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
@@ -250,7 +250,7 @@ public class MachineListener implements Listener {
 			}
 			
 			//get burned disc data
-			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+			DiscData discData = JukeBukkit.getInstance().getDatabase().find(DiscData.class)
 					.where()
 						.ieq("nameKey", master.getKey())
 					.findUnique();
@@ -271,7 +271,7 @@ public class MachineListener implements Listener {
 			newDiscData.setUrl(discData.getUrl());
 			newDiscData.setLabel(discData.getLabel());
 			newDiscData.setColor(color);
-			JukeBukkit.instance.getDatabase().save(newDiscData);
+			JukeBukkit.getInstance().getDatabase().save(newDiscData);
 			//create the physical disc for the pplayer
 			BurnedDisc disc = new BurnedDisc(newDiscData);
 			Items.burnedDiscs.put(key, disc);
@@ -334,7 +334,7 @@ public class MachineListener implements Listener {
 			BurnedDisc disc = (BurnedDisc) sPrimItem.getMaterial();
 			// first update the database.
 			//get burned disc data
-			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+			DiscData discData = JukeBukkit.getInstance().getDatabase().find(DiscData.class)
 					.where()
 						.ieq("nameKey", disc.getKey())
 					.findUnique();
@@ -346,7 +346,7 @@ public class MachineListener implements Listener {
 			
 			int color = getDiscColor(sAddItem.getData().getData());
 			discData.setColor(color);
-			JukeBukkit.instance.getDatabase().save(discData);
+			JukeBukkit.getInstance().getDatabase().save(discData);
 			//change the discs color.
 			//start by resetting the disc.
 			SpoutManager.getMaterialManager().resetName(disc);

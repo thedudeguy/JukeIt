@@ -15,11 +15,11 @@ import com.chrischurchwell.meshit.Model;
 public class RepeaterChipBlock extends GenericCustomBlock {
 
 	public RepeaterChipBlock() {
-		super(JukeBukkit.instance, "Repeater Chip", 36);
+		super(JukeBukkit.getInstance(), "Repeater Chip", 36);
 		
-		Model model = new Model(JukeBukkit.instance.getResource("models/repeater.obj"));
+		Model model = new Model(JukeBukkit.getInstance().getResource("models/repeater.obj"));
 		GenericBlockDesign design = model.getDesign();
-		design.setTexture(JukeBukkit.instance, TextureFile.BLOCK_REPEATER_CHIP.getTexture());
+		design.setTexture(JukeBukkit.getInstance(), TextureFile.BLOCK_REPEATER_CHIP.getTexture());
 		
 		setBlockDesign(design, 0);
 		setBlockDesign(design.rotate(90, Axis.Y), 1);

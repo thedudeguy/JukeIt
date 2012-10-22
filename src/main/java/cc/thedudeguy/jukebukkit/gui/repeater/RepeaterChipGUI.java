@@ -22,7 +22,7 @@ public class RepeaterChipGUI extends GenericPopup {
 		border.setWidth(176).setHeight(59);
 		border.setFixed(true);
 		border.setAnchor(WidgetAnchor.CENTER_CENTER);
-		attachWidget(JukeBukkit.instance, border);
+		attachWidget(JukeBukkit.getInstance(), border);
 		
 		//label
 		GenericLabel label = new GenericLabel("Set Repeat Time:");
@@ -30,7 +30,7 @@ public class RepeaterChipGUI extends GenericPopup {
 		label.setAlign(WidgetAnchor.CENTER_CENTER);
 		label.setX(0).setY(-21);
 		label.setTextColor(new Color(255, 255, 255));
-		attachWidget(JukeBukkit.instance, label);
+		attachWidget(JukeBukkit.getInstance(), label);
 		
 		//slider
 		TimeSlider slider = new TimeSlider();
@@ -40,7 +40,7 @@ public class RepeaterChipGUI extends GenericPopup {
 		slider.setX(-80).setY(-16);
 		slider.setText("00:00");
 		
-		attachWidget(JukeBukkit.instance, slider);
+		attachWidget(JukeBukkit.getInstance(), slider);
 		
 		//close button
 		CloseButton closeButton = new CloseButton();
@@ -48,6 +48,6 @@ public class RepeaterChipGUI extends GenericPopup {
 		closeButton.setX(-25).setY(6);
 		closeButton.setFixed(true);
 		closeButton.setAnchor(WidgetAnchor.CENTER_CENTER);
-		attachWidget(JukeBukkit.instance, closeButton);
+		attachWidget(JukeBukkit.getInstance(), closeButton);
 	}
 }

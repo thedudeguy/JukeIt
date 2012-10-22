@@ -28,7 +28,7 @@ public abstract class BlankDisc extends GenericCustomItem implements DiscColor, 
 	private int color = DiscColor.WHITE; //white is the default
 	
 	public BlankDisc(String name) {
-		super(JukeBukkit.instance, name);
+		super(JukeBukkit.getInstance(), name);
 		setTexture(getTextureFileName());
 	}
 

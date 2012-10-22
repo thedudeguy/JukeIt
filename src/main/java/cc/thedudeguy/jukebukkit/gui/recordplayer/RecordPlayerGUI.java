@@ -86,7 +86,7 @@ public class RecordPlayerGUI extends GenericPopup {
 		playButton.setAnchor(WidgetAnchor.CENTER_CENTER);
 		
 		setTransparent(true);
-		attachWidgets(JukeBukkit.instance, border, recordSlot, needleSlot, playButton);
+		attachWidgets(JukeBukkit.getInstance(), border, recordSlot, needleSlot, playButton);
 		
 		
 		
@@ -110,7 +110,7 @@ public class RecordPlayerGUI extends GenericPopup {
 			slot.setAnchor(WidgetAnchor.CENTER_CENTER);
 			
 			playerSlots[i] = slot;
-			this.attachWidget(JukeBukkit.instance, playerSlots[i]);
+			this.attachWidget(JukeBukkit.getInstance(), playerSlots[i]);
 			
 			xposition++;
 		}
@@ -129,7 +129,7 @@ public class RecordPlayerGUI extends GenericPopup {
 			data.setDiscKey(d.getKey());
 		}
 		
-		JukeBukkit.instance.getDatabase().save(data);
+		JukeBukkit.getInstance().getDatabase().save(data);
 		RecordPlayer.updateBlockDesign(block, data);
 	}
 	
@@ -144,13 +144,13 @@ public class RecordPlayerGUI extends GenericPopup {
 			data.setNeedleType(n.getNeedleType());
 		}
 		
-		JukeBukkit.instance.getDatabase().save(data);
+		JukeBukkit.getInstance().getDatabase().save(data);
 		RecordPlayer.updateBlockDesign(block, data);
 	}
 	
 	private RecordPlayerData getData() {
 		//get data from the db
-		RecordPlayerData rpdata = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		RecordPlayerData rpdata = JukeBukkit.getInstance().getDatabase().find(RecordPlayerData.class)
 			.where()
 				.eq("x", (double)block.getX())
 				.eq("y", (double)block.getY())

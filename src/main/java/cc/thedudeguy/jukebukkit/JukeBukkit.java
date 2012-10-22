@@ -57,12 +57,28 @@ import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
  */
 public class JukeBukkit extends JavaPlugin {
 	
-	public static JukeBukkit instance;
+	private static JukeBukkit instance;
 	public Server HTTPserver;
 	SelectChannelConnector HTTPconnector;
 	
 	Blocks blocks;
 	Items items;
+	
+	public static JukeBukkit getInstance() {
+		return instance;
+	}
+	
+	public static void log(String message) {
+		Bukkit.getLogger().info("["+getInstance().getDescription().getName()+"] " + message);
+	}
+	
+	public JukeBukkit() {
+		instance = this;
+		
+		//load the web server
+		HTTPserver = new Server();
+		HTTPconnector = new SelectChannelConnector();
+	}
 	
 	public void onEnable()
 	{	
@@ -76,8 +92,6 @@ public class JukeBukkit extends JavaPlugin {
 			setEnabled(false);
 			return;
 		}
-		
-		instance = this;
 		
 		ResourceManager.copyResources();
 		ResourceManager.preLoginCache();
@@ -95,23 +109,21 @@ public class JukeBukkit extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new MachineListener(), this);
 		
 		//start the web server up
-		HTTPserver = new Server();
-		HTTPconnector = new SelectChannelConnector();
-		HTTPconnector.setPort(getConfig().getInt("webServerPort"));
-		HTTPserver.addConnector(HTTPconnector);
-		
-		ResourceHandler resourceHandler = new ResourceHandler();
-		resourceHandler.setDirectoriesListed(false);
-		resourceHandler.setResourceBase(new File(this.getDataFolder(), "web").getAbsolutePath());
- 
-		HandlerList handlers = new HandlerList();
-		handlers.addHandler(new ServerHandler());
-		handlers.addHandler(new MusicHandler());
-		handlers.addHandler(resourceHandler);
-		
-		HTTPserver.setHandler(handlers);
-		
 		if (getConfig().getBoolean("enableWebServer") == true) {
+			HTTPconnector.setPort(getConfig().getInt("webServerPort"));
+			HTTPserver.addConnector(HTTPconnector);
+			
+			ResourceHandler resourceHandler = new ResourceHandler();
+			resourceHandler.setDirectoriesListed(false);
+			resourceHandler.setResourceBase(new File(this.getDataFolder(), "web").getAbsolutePath());
+	 
+			HandlerList handlers = new HandlerList();
+			handlers.addHandler(new ServerHandler());
+			handlers.addHandler(new MusicHandler());
+			handlers.addHandler(resourceHandler);
+			
+			HTTPserver.setHandler(handlers);
+			
 			if (
 					getConfig().getString("minecraftServerHostname").isEmpty() ||
 					getConfig().getString("minecraftServerHostname").equalsIgnoreCase("") ||

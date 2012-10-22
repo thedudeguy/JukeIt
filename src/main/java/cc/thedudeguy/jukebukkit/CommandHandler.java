@@ -43,7 +43,7 @@ public class CommandHandler implements CommandExecutor {
 	public JukeBukkit plugin;
 	
 	public CommandHandler() {
-		this.plugin = JukeBukkit.instance;
+		this.plugin = JukeBukkit.getInstance();
 	}
 	
 	@Override
@@ -104,7 +104,7 @@ public class CommandHandler implements CommandExecutor {
 			return true;
 		}
 		
-		World world = JukeBukkit.instance.getServer().getWorld(args[0]);
+		World world = JukeBukkit.getInstance().getServer().getWorld(args[0]);
 		int x = Integer.valueOf(args[1]);
 		int y = Integer.valueOf(args[2]);
 		int z = Integer.valueOf(args[3]);
@@ -151,11 +151,11 @@ public class CommandHandler implements CommandExecutor {
 	public Boolean listmusic(CommandSender sender, String[] args) {
 		sender.sendMessage("-- Server Music List --");
 		
-		if (!JukeBukkit.instance.HTTPserver.isRunning()) {
+		if (!JukeBukkit.getInstance().HTTPserver.isRunning()) {
 			sender.sendMessage("Server is not running");
 			return true;
 		}
-		File musicFolder = new File(JukeBukkit.instance.getDataFolder(), "music");
+		File musicFolder = new File(JukeBukkit.getInstance().getDataFolder(), "music");
 		if (!musicFolder.exists()) {
 			sender.sendMessage("No music files on server");
 			return true;

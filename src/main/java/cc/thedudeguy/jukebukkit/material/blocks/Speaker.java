@@ -33,7 +33,7 @@ import cc.thedudeguy.jukebukkit.util.Recipies;
 public class Speaker extends GenericCubeCustomBlock implements WireConnector, CraftPermissible {
 
 	public Speaker() {
-		super(JukeBukkit.instance, "Universal Speaker", 5, "speaker.png", 16);		
+		super(JukeBukkit.getInstance(), "Universal Speaker", 5, "speaker.png", 16);		
 		setRecipe();
 	}
 

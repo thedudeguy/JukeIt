@@ -49,7 +49,7 @@ public class JukeboxBasic extends JukeboxBlock {
 	public GenericCubeBlockDesign getCustomBlockDesign() {
 		
 		return new GenericCubeBlockDesign(
-				JukeBukkit.instance, 
+				JukeBukkit.getInstance(), 
 				TextureFile.BLOCK_JUKEBOX_BASIC.getTexture(), 
 				new int[] { 0, 0, 0, 0, 0, 1 }
 			);

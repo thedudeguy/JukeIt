@@ -58,7 +58,7 @@ public class Sound {
 	
 	public void play() {
 		if ( location == null || range <= 0) {
-			SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, sound.getSoundFileName(), notify);
+			SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.getInstance(), sound.getSoundFileName(), notify);
 		} else {
 			play(location);
 		}
@@ -69,7 +69,7 @@ public class Sound {
 		//Bukkit.getLogger().log(Level.INFO, "Playing Sound");
 		//Bukkit.getLogger().log(Level.INFO, getFileName());
 		
-		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, sound.getSoundFileName(), notify, location, range, volume);
+		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.getInstance(), sound.getSoundFileName(), notify, location, range, volume);
 		
 	}
 	

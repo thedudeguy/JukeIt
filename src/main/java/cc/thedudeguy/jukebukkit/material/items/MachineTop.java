@@ -34,7 +34,7 @@ import cc.thedudeguy.jukebukkit.util.Recipies;
 public class MachineTop extends GenericCustomItem implements CraftPermissible {
 	
 	public MachineTop() {
-		super(JukeBukkit.instance, "Machine Top Half", TextureFile.ITEM_MACHINE_TOP.getFile());
+		super(JukeBukkit.getInstance(), "Machine Top Half", TextureFile.ITEM_MACHINE_TOP.getFile());
 		this.setName("Machine Part");
 		setRecipe();
 	}

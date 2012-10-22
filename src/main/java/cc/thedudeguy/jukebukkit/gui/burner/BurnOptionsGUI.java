@@ -60,7 +60,7 @@ public class BurnOptionsGUI extends GenericPopup {
 		close.setWidth(60).setHeight(20);
 		close.setPriority(RenderPriority.Lowest);
 		
-		this.attachWidgets(JukeBukkit.instance, border, gradient, label, close);
+		this.attachWidgets(JukeBukkit.getInstance(), border, gradient, label, close);
 		
 		if (!canUseURL() && !canUseServer()) {
 			//no options available.
@@ -69,7 +69,7 @@ public class BurnOptionsGUI extends GenericPopup {
 			message.setWidth(250).setHeight(125);
 			message.setPriority(RenderPriority.Lowest);
 			message.setText("No burn options available.");
-			this.attachWidget(JukeBukkit.instance, message);
+			this.attachWidget(JukeBukkit.getInstance(), message);
 			return;
 		}
 		
@@ -79,7 +79,7 @@ public class BurnOptionsGUI extends GenericPopup {
 		info.setWidth(250).setHeight(20);
 		info.setPriority(RenderPriority.Lowest);
 		info.setText("Select Burn Method");
-		this.attachWidget(JukeBukkit.instance, info);
+		this.attachWidget(JukeBukkit.getInstance(), info);
 		
 		int y = 80;
 		
@@ -89,7 +89,7 @@ public class BurnOptionsGUI extends GenericPopup {
 			serverlist.setX(150).setY(y);
 			serverlist.setWidth(120).setHeight(20);
 			serverlist.setPriority(RenderPriority.Lowest);
-			this.attachWidget(JukeBukkit.instance, serverlist);
+			this.attachWidget(JukeBukkit.getInstance(), serverlist);
 			y = y + 30;
 		}
 		
@@ -100,7 +100,7 @@ public class BurnOptionsGUI extends GenericPopup {
 			urlbutton.setX(150).setY(y);
 			urlbutton.setWidth(120).setHeight(20);
 			urlbutton.setPriority(RenderPriority.Lowest);
-			this.attachWidget(JukeBukkit.instance, urlbutton);
+			this.attachWidget(JukeBukkit.getInstance(), urlbutton);
 			y = y+30;
 		}
 		
@@ -119,7 +119,7 @@ public class BurnOptionsGUI extends GenericPopup {
 	}
 	
 	public static boolean canUseURL() {
-		if (JukeBukkit.instance.getConfig().getBoolean("allowExternalURLs")) {
+		if (JukeBukkit.getInstance().getConfig().getBoolean("allowExternalURLs")) {
 			return true;
 		}
 		return false;
@@ -127,9 +127,9 @@ public class BurnOptionsGUI extends GenericPopup {
 	
 	public static boolean canUseServer() {
 		if (
-				JukeBukkit.instance.getConfig().getBoolean("enableWebServer") &&
-				JukeBukkit.instance.HTTPserver != null &&
-				JukeBukkit.instance.HTTPserver.isRunning()
+				JukeBukkit.getInstance().getConfig().getBoolean("enableWebServer") &&
+				JukeBukkit.getInstance().HTTPserver != null &&
+				JukeBukkit.getInstance().HTTPserver.isRunning()
 				) {
 			return true;
 		}

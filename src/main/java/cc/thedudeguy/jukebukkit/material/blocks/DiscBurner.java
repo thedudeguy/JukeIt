@@ -48,11 +48,11 @@ public class DiscBurner extends GenericCustomBlock implements CraftPermissible, 
 	 */
 	public DiscBurner()
 	{
-		super(JukeBukkit.instance, "Disc Burner", 4);
+		super(JukeBukkit.getInstance(), "Disc Burner", 4);
 		this.setRotate(true);
 		this.setName("Disc Burner");
 		
-		this.setBlockDesign(new GenericCubeBlockDesign(JukeBukkit.instance, TextureFile.BLOCK_BURNER.getTexture(), new int[] {0, 1, 1, 2, 1, 0}));
+		this.setBlockDesign(new GenericCubeBlockDesign(JukeBukkit.getInstance(), TextureFile.BLOCK_BURNER.getTexture(), new int[] {0, 1, 1, 2, 1, 0}));
 	}
 	
 	@Override
@@ -79,7 +79,7 @@ public class DiscBurner extends GenericCustomBlock implements CraftPermissible, 
 			}
 		}
 		
-		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_error.wav", false, location, 8);
+		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.getInstance(), "jb_error.wav", false, location, 8);
 		return true;
 	}
 

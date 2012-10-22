@@ -37,7 +37,7 @@ public class SpeakerWireStraightDesign extends GenericBlockDesign {
 	 */
 	public SpeakerWireStraightDesign(int degreesX, int degreesY, int degreesZ, float moveX, float moveY, float moveZ) {
 
-		setTexture(JukeBukkit.instance, TextureFile.BLOCK_SPEAKER_WIRE.getTexture());
+		setTexture(JukeBukkit.getInstance(), TextureFile.BLOCK_SPEAKER_WIRE.getTexture());
 		setMinBrightness(0F);
 		setMaxBrightness(1F);
 

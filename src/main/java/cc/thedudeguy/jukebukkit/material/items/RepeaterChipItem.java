@@ -16,7 +16,7 @@ import cc.thedudeguy.jukebukkit.util.Debug;
 public class RepeaterChipItem extends GenericCustomItem {
 	
 	public RepeaterChipItem() {
-		super(JukeBukkit.instance, "Repeater Chip Item", TextureFile.ITEM_REPEATER_CHIP.getFile());
+		super(JukeBukkit.getInstance(), "Repeater Chip Item", TextureFile.ITEM_REPEATER_CHIP.getFile());
 		this.setName("Repeater Chip");
 	}
 	

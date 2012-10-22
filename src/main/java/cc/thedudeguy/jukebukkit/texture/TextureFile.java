@@ -115,7 +115,7 @@ public enum TextureFile {
 		// since the texture class actually uses the width/height/size parameters to calculate u-v coordinates
 		// its safe to just use the default texture size, and any custom textures with higher resolutions
 		// will still work fine assuming the custom texture was scaled properly. (in powers of 2 and maintains size ratio)
-		return new Texture(JukeBukkit.instance, this.file, this.width, this.height, this.size);
+		return new Texture(JukeBukkit.getInstance(), this.file, this.width, this.height, this.size);
 		
 	}
 }

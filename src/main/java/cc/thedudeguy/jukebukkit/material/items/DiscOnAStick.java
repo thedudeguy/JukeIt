@@ -43,12 +43,12 @@ import cc.thedudeguy.jukebukkit.util.Debug;
 public class DiscOnAStick extends GenericCustomTool implements Listener {
 	
 	public DiscOnAStick() {
-		super(JukeBukkit.instance, "Disc on a Stick", "disconastick.png");
+		super(JukeBukkit.getInstance(), "Disc on a Stick", "disconastick.png");
 		this.setMaxDurability((short)100);
 		this.setStackable(false);
 		
 		MachineRecipe.addMachineRecipe(new MachineRecipe(RecipeDiscType.ANY, Material.STICK, new SpoutItemStack(this)));
-		Bukkit.getServer().getPluginManager().registerEvents(this, JukeBukkit.instance);
+		Bukkit.getServer().getPluginManager().registerEvents(this, JukeBukkit.getInstance());
 	}
 	
 	public boolean onItemInteract(SpoutPlayer player, SpoutBlock block, org.bukkit.block.BlockFace face) {

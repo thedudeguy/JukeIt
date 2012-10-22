@@ -158,7 +158,7 @@ public class BurnButton extends GenericButton {
       	String key = BurnedDisc.generateNameKey();
       	
       	//add the disc into the database
-      	DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+      	DiscData discData = JukeBukkit.getInstance().getDatabase().find(DiscData.class)
       			.where()
       				.ieq("nameKey", key)
       				.findUnique();
@@ -167,7 +167,7 @@ public class BurnButton extends GenericButton {
       		discData.setUrl(url);
       		discData.setLabel("");
       		discData.setColor(color);
-      		JukeBukkit.instance.getDatabase().save(discData);
+      		JukeBukkit.getInstance().getDatabase().save(discData);
       	
       	//create the physical disc for the pplayer
     	BurnedDisc disc = new BurnedDisc(discData);
@@ -179,7 +179,7 @@ public class BurnButton extends GenericButton {
     	
     	event.getPlayer().getMainScreen().getActivePopup().close();
     	
-    	SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_startup.wav", false, location, 8);
+    	SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.getInstance(), "jb_startup.wav", false, location, 8);
     	
 	}
 }

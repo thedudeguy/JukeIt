@@ -35,7 +35,7 @@ import cc.thedudeguy.jukebukkit.util.Debug;
 public class SpeakerWire extends GenericCustomItem implements CraftPermissible {
 	
 	public SpeakerWire() {
-		super(JukeBukkit.instance, "Speaker Wire");
+		super(JukeBukkit.getInstance(), "Speaker Wire");
 		setTexture(TextureFile.ITEM_SPEAKER_WIRE.getFile());
 	}
 	

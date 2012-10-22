@@ -29,7 +29,7 @@ public class Debug {
 	public static final String tag = "JukeBukkit";
 	
 	public static void debug(String debugText) {
-		if (JukeBukkit.instance.getConfig().getBoolean("debug")) {
+		if (JukeBukkit.getInstance().getConfig().getBoolean("debug")) {
 			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GOLD +"["+tag+"] " + debugText);
 		}
 	}
@@ -51,7 +51,7 @@ public class Debug {
 	}
 	
 	public static void debug(Player player, String debugText) {
-		if (JukeBukkit.instance.getConfig().getBoolean("debug")) {
+		if (JukeBukkit.getInstance().getConfig().getBoolean("debug")) {
 			player.sendMessage("&8["+tag + "] &7"+debugText);
 			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GOLD +"["+tag+"] " + player.getName() + ": " + debugText);
 		}

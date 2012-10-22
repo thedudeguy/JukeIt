@@ -28,7 +28,7 @@ import cc.thedudeguy.jukebukkit.texture.TextureFile;
 public class WoodFlintNeedle extends GenericCustomItem implements Needle, CraftPermissible {
 
 	public WoodFlintNeedle() {
-		super(JukeBukkit.instance, "Simple Needle");
+		super(JukeBukkit.getInstance(), "Simple Needle");
 		setTexture(TextureFile.NEEDLE_STICK_FLINT.getFile());
 	}
 

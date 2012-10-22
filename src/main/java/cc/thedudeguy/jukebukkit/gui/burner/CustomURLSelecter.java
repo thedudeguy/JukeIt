@@ -78,14 +78,14 @@ public class CustomURLSelecter extends GenericPopup {
 			close.setX(95).setY(195);
 			close.setWidth(60).setHeight(20);
 			close.setPriority(RenderPriority.Lowest);
-			this.attachWidget(JukeBukkit.instance, close);
+			this.attachWidget(JukeBukkit.getInstance(), close);
 		} else {
 			// Back button
 			BackButton back = new BackButton(block);
 			back.setX(95).setY(195);
 			back.setWidth(60).setHeight(20);
 			back.setPriority(RenderPriority.Lowest);
-			this.attachWidget(JukeBukkit.instance, back);
+			this.attachWidget(JukeBukkit.getInstance(), back);
 		}
 		
 		// Select button
@@ -95,7 +95,7 @@ public class CustomURLSelecter extends GenericPopup {
 		burnButton.setPriority(RenderPriority.Lowest);
 		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, label, urlInput);
+		this.attachWidgets(JukeBukkit.getInstance(), border, gradient, burnButton, label, urlInput);
 		
 	}
 	

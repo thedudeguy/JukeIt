@@ -124,7 +124,7 @@ public class Items {
 		
 		//initialize burned discs
 		burnedDiscs = new HashMap<String, BurnedDisc>();
-		List<DiscData> discDataList = JukeBukkit.instance.getDatabase().find(DiscData.class).findList();
+		List<DiscData> discDataList = JukeBukkit.getInstance().getDatabase().find(DiscData.class).findList();
 		if (discDataList.isEmpty()) {
 			 Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] No Burned Discs to load.");
 		} else {

@@ -75,14 +75,14 @@ public class BurnSelector extends GenericPopup {
 			close.setX(95).setY(195);
 			close.setWidth(60).setHeight(20);
 			close.setPriority(RenderPriority.Lowest);
-			this.attachWidget(JukeBukkit.instance, close);
+			this.attachWidget(JukeBukkit.getInstance(), close);
 		} else {
 			// Back button
 			BackButton back = new BackButton(block);
 			back.setX(95).setY(195);
 			back.setWidth(60).setHeight(20);
 			back.setPriority(RenderPriority.Lowest);
-			this.attachWidget(JukeBukkit.instance, back);
+			this.attachWidget(JukeBukkit.getInstance(), back);
 		}
 		
 		
@@ -94,7 +94,7 @@ public class BurnSelector extends GenericPopup {
 		
 		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, gradient, burnButton, label, list);
+		this.attachWidgets(JukeBukkit.getInstance(), border, gradient, burnButton, label, list);
 	}
 	
 }

@@ -63,7 +63,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	public static HashMap<String, Integer> designIds = new HashMap<String, Integer>();
 	
 	public RecordPlayer() {
-		super(JukeBukkit.instance, "Record Player", 5);
+		super(JukeBukkit.getInstance(), "Record Player", 5);
 		
 		//load custom designs.
 		int n = 0;
@@ -105,7 +105,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		//get disc info
 		if (data.hasDisc()) {
 			//get the disc color.
-			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+			DiscData discData = JukeBukkit.getInstance().getDatabase().find(DiscData.class)
 					.where()
 						.ieq("nameKey", data.getDiscKey())
 					.findUnique();
@@ -161,7 +161,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		}
 		
 		//when the block is placed we need to make sure to get data set up for it.
-		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		RecordPlayerData rpd = JukeBukkit.getInstance().getDatabase().find(RecordPlayerData.class)
 				.where()
 					.eq("x", (double)x)
 					.eq("y", (double)y)
@@ -176,11 +176,11 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 			rpd.setY((double)y);
 			rpd.setZ((double)z);
 			rpd.setWorldName(world.getName());
-			JukeBukkit.instance.getDatabase().save(rpd);
+			JukeBukkit.getInstance().getDatabase().save(rpd);
 		}
 		
 		if (rpd.hasDisc() && !RPNeedle.getById(rpd.getNeedleType()).equals(RPNeedle.NONE)) {
-			DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+			DiscData discData = JukeBukkit.getInstance().getDatabase().find(DiscData.class)
 					.where()
 						.ieq("nameKey", rpd.getDiscKey())
 					.findUnique();
@@ -211,7 +211,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	 * @return
 	 */
 	private static RecordPlayerData getRPData(World world, int x, int y, int z) {
-		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		RecordPlayerData rpd = JukeBukkit.getInstance().getDatabase().find(RecordPlayerData.class)
 				.where()
 					.eq("x", (double)x)
 					.eq("y", (double)y)
@@ -291,7 +291,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	 */
 	public void onBlockPlace(org.bukkit.World world, int x, int y, int z) {
 		//when the block is placed we need to make sure to get data set up for it.
-		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		RecordPlayerData rpd = JukeBukkit.getInstance().getDatabase().find(RecordPlayerData.class)
 				.where()
 					.eq("x", (double)x)
 					.eq("y", (double)y)
@@ -306,7 +306,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 			rpd.setY((double)y);
 			rpd.setZ((double)z);
 			rpd.setWorldName(world.getName());
-			JukeBukkit.instance.getDatabase().save(rpd);
+			JukeBukkit.getInstance().getDatabase().save(rpd);
 		}
 		/* If its still set, well go ahead and leave it, because it could be an blockplace even from setting the custom block to a different subblock for this location */
 	}
@@ -326,7 +326,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		spawnLoc.setY(spawnLoc.getY()+1);
 		
 		//if theres junk in this block we need to make sure it drops too
-		RecordPlayerData rpd = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		RecordPlayerData rpd = JukeBukkit.getInstance().getDatabase().find(RecordPlayerData.class)
 				.where()
 					.eq("x", (double)x)
 					.eq("y", (double)y)
@@ -340,7 +340,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 			
 			if (rpd.hasDisc()) {
 				//get disc.
-				DiscData discData = JukeBukkit.instance.getDatabase().find(DiscData.class)
+				DiscData discData = JukeBukkit.getInstance().getDatabase().find(DiscData.class)
 						.where()
 							.ieq("nameKey", rpd.getDiscKey())
 						.findUnique();
@@ -359,7 +359,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		}
 		
 		//delete ALL data associated to this location, just incase somehow multiples got into the database this will take care of that.
-		List<RecordPlayerData> rpdall = JukeBukkit.instance.getDatabase().find(RecordPlayerData.class)
+		List<RecordPlayerData> rpdall = JukeBukkit.getInstance().getDatabase().find(RecordPlayerData.class)
 				.where()
 					.eq("x", (double)x)
 					.eq("y", (double)y)
@@ -367,7 +367,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 					.ieq("worldName", world.getName())
 				.findList();
 		if (!rpdall.isEmpty()) {
-			JukeBukkit.instance.getDatabase().delete(rpdall);
+			JukeBukkit.getInstance().getDatabase().delete(rpdall);
 		}
 	}
 	
@@ -413,10 +413,10 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 				SpoutPlayer sp = SpoutManager.getPlayer(p);
 				if (sp.isSpoutCraftEnabled()) {
 					try {
-						SpoutManager.getSoundManager().playCustomMusic(JukeBukkit.instance, sp, url, true, location, range);
+						SpoutManager.getSoundManager().playCustomMusic(JukeBukkit.getInstance(), sp, url, true, location, range);
 					} catch (Exception e) {
 						//the disc has an error.
-						SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.instance, "jb_error.wav", false, location, 8);
+						SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeBukkit.getInstance(), "jb_error.wav", false, location, 8);
 					}
 				}
 			}

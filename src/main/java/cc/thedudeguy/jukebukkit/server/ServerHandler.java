@@ -54,7 +54,7 @@ public class ServerHandler extends AbstractHandler {
 	public ServerHandler() {
 		cfg = new Configuration();
 		try {
-			cfg.setDirectoryForTemplateLoading( new File(JukeBukkit.instance.getDataFolder(), "web") );
+			cfg.setDirectoryForTemplateLoading( new File(JukeBukkit.getInstance().getDataFolder(), "web") );
 			cfg.setObjectWrapper(new DefaultObjectWrapper());  
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -81,8 +81,8 @@ public class ServerHandler extends AbstractHandler {
 			Template template = cfg.getTemplate("index.html");
 			
 			Map<String, Object> dataRoot = new HashMap<String, Object>();
-			dataRoot.put("serverName", JukeBukkit.instance.getConfig().getString("serverName"));
-			dataRoot.put("allowUpload", JukeBukkit.instance.getConfig().getBoolean("allowWebServerUploads"));
+			dataRoot.put("serverName", JukeBukkit.getInstance().getConfig().getString("serverName"));
+			dataRoot.put("allowUpload", JukeBukkit.getInstance().getConfig().getBoolean("allowWebServerUploads"));
 			
 			dataRoot.put("files", JukeBukkit.getServerFileList());
 			
@@ -109,7 +109,7 @@ public class ServerHandler extends AbstractHandler {
 		
 		if ( target.equalsIgnoreCase("/upload") ) {
 			
-			if (!JukeBukkit.instance.getConfig().getBoolean("allowWebServerUploads")) {
+			if (!JukeBukkit.getInstance().getConfig().getBoolean("allowWebServerUploads")) {
 				return;
 			}
 			
@@ -158,7 +158,7 @@ public class ServerHandler extends AbstractHandler {
 				    	}
 				    	
 				    	String name = item.getName().replace(" ", "_");
-				    	File uploadedFile = new File(JukeBukkit.instance.getDataFolder(), "music/"+name);
+				    	File uploadedFile = new File(JukeBukkit.getInstance().getDataFolder(), "music/"+name);
 				        item.write(uploadedFile);
 				        
 				        response.getWriter().println("1");

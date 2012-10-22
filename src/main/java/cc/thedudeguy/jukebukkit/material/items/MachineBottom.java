@@ -31,7 +31,7 @@ import cc.thedudeguy.jukebukkit.texture.TextureFile;
 public class MachineBottom extends GenericCustomItem implements CraftPermissible {
 
 	public MachineBottom() {
-		super(JukeBukkit.instance, "Machine Bottom Half", TextureFile.ITEM_MACHINE_BOTTOM.getFile());
+		super(JukeBukkit.getInstance(), "Machine Bottom Half", TextureFile.ITEM_MACHINE_BOTTOM.getFile());
 		this.setName("Machine Part");
 		setRecipe();
 	}

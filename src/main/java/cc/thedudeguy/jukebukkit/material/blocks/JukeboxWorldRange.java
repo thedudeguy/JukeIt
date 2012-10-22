@@ -40,7 +40,7 @@ public class JukeboxWorldRange extends JukeboxBlock {
 	public GenericCubeBlockDesign getCustomBlockDesign() {
 		
 		return new GenericCubeBlockDesign(
-				JukeBukkit.instance, 
+				JukeBukkit.getInstance(), 
 				TextureFile.BLOCK_JUKEBOX_WORLD.getTexture(), 
 				new int[] { 0, 2, 2, 2, 2, 1 }
 			);
@@ -66,7 +66,7 @@ public class JukeboxWorldRange extends JukeboxBlock {
 	
 	{
 		 url = JukeBukkit.finishIncompleteURL(url);
-	SpoutManager.getSoundManager().playGlobalCustomMusic(JukeBukkit.instance, url, true);
+	SpoutManager.getSoundManager().playGlobalCustomMusic(JukeBukkit.getInstance(), url, true);
 	}
 
 	@Override

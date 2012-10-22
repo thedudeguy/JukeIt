@@ -40,18 +40,18 @@ import com.chrischurchwell.meshit.Model;
 public class MachineBlock extends GenericCustomBlock implements CraftPermissible, UsePermissible {
 
 	public MachineBlock() {
-		super(JukeBukkit.instance, "Disc Machine", Material.CAULDRON.getId());
+		super(JukeBukkit.getInstance(), "Disc Machine", Material.CAULDRON.getId());
 		
 		this.setBlockDesign(
-				new Model(JukeBukkit.instance.getResource("models/machineBlock.obj")).getDesign().setTexture(JukeBukkit.instance, TextureFile.BLOCK_MACHINE.getTexture()), 
+				new Model(JukeBukkit.getInstance().getResource("models/machineBlock.obj")).getDesign().setTexture(JukeBukkit.getInstance(), TextureFile.BLOCK_MACHINE.getTexture()), 
 				0
 			);
 		this.setBlockDesign(
-				new Model(JukeBukkit.instance.getResource("models/machineBlockTop.obj")).getDesign().setTexture(JukeBukkit.instance, TextureFile.BLOCK_MACHINE.getTexture()), 
+				new Model(JukeBukkit.getInstance().getResource("models/machineBlockTop.obj")).getDesign().setTexture(JukeBukkit.getInstance(), TextureFile.BLOCK_MACHINE.getTexture()), 
 				1
 			);
 		this.setBlockDesign(
-				new Model(JukeBukkit.instance.getResource("models/machineBlockTopPressed.obj")).getDesign().setTexture(JukeBukkit.instance, TextureFile.BLOCK_MACHINE.getTexture()), 
+				new Model(JukeBukkit.getInstance().getResource("models/machineBlockTopPressed.obj")).getDesign().setTexture(JukeBukkit.getInstance(), TextureFile.BLOCK_MACHINE.getTexture()), 
 				2
 			);
 		

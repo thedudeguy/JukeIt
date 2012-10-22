@@ -82,7 +82,7 @@ public class ResourceManager {
 	
 	private static void doCopy(String filename, String pathInJar) {
 		
-		File dir = new File(JukeBukkit.instance.getDataFolder(), pathInJar);
+		File dir = new File(JukeBukkit.getInstance().getDataFolder(), pathInJar);
 		
 		if (!dir.exists()) dir.mkdirs();
 		if (!dir.canWrite()) Bukkit.getLogger().log(Level.WARNING, "The path "+ dir.getPath() +" is not writable");
@@ -92,21 +92,21 @@ public class ResourceManager {
 		
 		//File fileCopy = new File(JukeBukkit.instance.getDataFolder(), fileCopyRelPath);
 		
-		JukeBukkit.instance.saveResource(fileCopyRelPath, true);
+		JukeBukkit.getInstance().saveResource(fileCopyRelPath, true);
 	}
 	
 	public static void preLoginCache() {
 		for (TextureFile texture : TextureFile.values()) {
-			String pack = JukeBukkit.instance.getConfig().getString("texturePack", "default");
-			File toCache = new File(JukeBukkit.instance.getDataFolder(), new File("textures/"+pack, texture.getFile()).getPath());
+			String pack = JukeBukkit.getInstance().getConfig().getString("texturePack", "default");
+			File toCache = new File(JukeBukkit.getInstance().getDataFolder(), new File("textures/"+pack, texture.getFile()).getPath());
 			if (toCache.exists()) {
-				SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, toCache);
+				SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.getInstance(), toCache);
 			} else {
-				SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures/default", texture.getFile()).getPath()));
+				SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.getInstance(), new File(JukeBukkit.getInstance().getDataFolder(), new File("textures/default", texture.getFile()).getPath()));
 			}
 		}
 		for (SoundEffect sound : SoundEffect.values()) {
-			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("sounds", sound.getSoundFileName()).getPath()));
+			SpoutManager.getFileManager().addToPreLoginCache(JukeBukkit.getInstance(), new File(JukeBukkit.getInstance().getDataFolder(), new File("sounds", sound.getSoundFileName()).getPath()));
 		}
 	}
 	
@@ -115,22 +115,22 @@ public class ResourceManager {
 		for (TextureFile texture : TextureFile.values()) {
 			textures.add(texture.getFile());
 		}
-		SpoutManager.getFileManager().removeFromCache(JukeBukkit.instance, textures);
+		SpoutManager.getFileManager().removeFromCache(JukeBukkit.getInstance(), textures);
 	}
 	
 	public static void addCache() {
 		for (TextureFile texture : TextureFile.values()) {
-			String pack = JukeBukkit.instance.getConfig().getString("texturePack", "default");
-			File toCache = new File(JukeBukkit.instance.getDataFolder(), new File("textures/"+pack, texture.getFile()).getPath());
+			String pack = JukeBukkit.getInstance().getConfig().getString("texturePack", "default");
+			File toCache = new File(JukeBukkit.getInstance().getDataFolder(), new File("textures/"+pack, texture.getFile()).getPath());
 			if (toCache.exists()) {
-				SpoutManager.getFileManager().addToCache(JukeBukkit.instance, toCache);
+				SpoutManager.getFileManager().addToCache(JukeBukkit.getInstance(), toCache);
 			} else {
-				SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("textures/default", texture.getFile()).getPath()));
+				SpoutManager.getFileManager().addToCache(JukeBukkit.getInstance(), new File(JukeBukkit.getInstance().getDataFolder(), new File("textures/default", texture.getFile()).getPath()));
 			}
 		}
 		
 		for (SoundEffect sound : SoundEffect.values()) {
-			SpoutManager.getFileManager().addToCache(JukeBukkit.instance, new File(JukeBukkit.instance.getDataFolder(), new File("sounds", sound.getSoundFileName()).getPath()));
+			SpoutManager.getFileManager().addToCache(JukeBukkit.getInstance(), new File(JukeBukkit.getInstance().getDataFolder(), new File("sounds", sound.getSoundFileName()).getPath()));
 		}
 		
 	}

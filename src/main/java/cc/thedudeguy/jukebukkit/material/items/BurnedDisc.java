@@ -63,13 +63,13 @@ public class BurnedDisc extends GenericCustomItem implements DiscColor {
 	private String url;
 	
 	public BurnedDisc() {
-		super(JukeBukkit.instance, "Reference Burn Disc");
+		super(JukeBukkit.getInstance(), "Reference Burn Disc");
 		setName("Reference Burn Disc (Do Not Use)");
 		setColor(DiscColor.WHITE);
 	}
 	
 	public BurnedDisc(DiscData discData) {
-		super(JukeBukkit.instance, discData.getNameKey());
+		super(JukeBukkit.getInstance(), discData.getNameKey());
 		
 		this.setColor(discData.getColor());
 		this.setLabel(discData.getLabel());

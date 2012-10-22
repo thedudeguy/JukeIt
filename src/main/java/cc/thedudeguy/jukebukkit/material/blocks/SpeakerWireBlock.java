@@ -31,7 +31,7 @@ import cc.thedudeguy.jukebukkit.util.Debug;
 public class SpeakerWireBlock extends GenericCustomBlock {
 	
 	public SpeakerWireBlock() {
-		super(JukeBukkit.instance, "Speaker Wire Block", 36);
+		super(JukeBukkit.getInstance(), "Speaker Wire Block", 36);
 		this.setName("Speaker Wire Block");
 		this.setItemDrop(new SpoutItemStack(Items.speakerWire));
 		this.setHardness(0.1F);

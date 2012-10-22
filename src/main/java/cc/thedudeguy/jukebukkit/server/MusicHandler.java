@@ -35,7 +35,7 @@ public class MusicHandler extends ResourceHandler {
 
 	public MusicHandler() {
 		this.setDirectoriesListed(false);
-		this.setResourceBase(new File(JukeBukkit.instance.getDataFolder(), "").getAbsolutePath());
+		this.setResourceBase(new File(JukeBukkit.getInstance().getDataFolder(), "").getAbsolutePath());
 	}
 	
 	@Override

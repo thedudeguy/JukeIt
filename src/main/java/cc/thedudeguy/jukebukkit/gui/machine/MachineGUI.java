@@ -105,7 +105,7 @@ public class MachineGUI extends GenericPopup {
 		hideStartButton();
 		
 		this.setTransparent(true);
-		this.attachWidgets(JukeBukkit.instance, border, paperTexture, discAddSlot, discSlot, startButton);
+		this.attachWidgets(JukeBukkit.getInstance(), border, paperTexture, discAddSlot, discSlot, startButton);
 		
 		Inventory inventory = player.getInventory();
 		
@@ -128,7 +128,7 @@ public class MachineGUI extends GenericPopup {
 			slot.setFixed(true);
 			slot.setAnchor(WidgetAnchor.CENTER_CENTER);
 			slot.setItem(inventory.getItem(i));
-			this.attachWidget(JukeBukkit.instance, slot);
+			this.attachWidget(JukeBukkit.getInstance(), slot);
 			
 			xposition++;
 		}
@@ -186,7 +186,7 @@ public class MachineGUI extends GenericPopup {
 		labelContainer.addChild(bContainer);
 		labelContainer.setVisible(false);
 		
-		this.attachWidget(JukeBukkit.instance, labelContainer);
+		this.attachWidget(JukeBukkit.getInstance(), labelContainer);
 		
 	}
 	
