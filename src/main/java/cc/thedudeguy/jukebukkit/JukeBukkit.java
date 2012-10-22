@@ -103,7 +103,6 @@ public class JukeBukkit extends JavaPlugin {
 		ResourceHandler resourceHandler = new ResourceHandler();
 		resourceHandler.setDirectoriesListed(false);
 		resourceHandler.setResourceBase(new File(this.getDataFolder(), "web").getAbsolutePath());
-        //resource_handler.setWelcomeFiles(new String[]{ "index.html" });
  
 		HandlerList handlers = new HandlerList();
 		handlers.addHandler(new ServerHandler());
@@ -260,7 +259,6 @@ public class JukeBukkit extends JavaPlugin {
 				return serverURL.toString();
 				
 			} catch (MalformedURLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 				Debug.debug("New URL Failed, returning Original URL: ", url);
 				return url;
@@ -268,39 +266,4 @@ public class JukeBukkit extends JavaPlugin {
 		}
 		
 	}
-	
-	 /*
-		@EventHandler
-		public void onBlockPlaced(BlockPlaceEvent event) {
-			event.setBuild(true); //MEW!
-
-			final Player ply = event.getPlayer();
-			final Block block = ((SpoutBlock)event.getBlock()).getCustomBlock();
-			if(!(block instanceof JukeboxBlock)) return;
-			final JukeboxBlock jukeboxBlock = (JukeboxBlock)block;
-			String permission = jukeboxBlock.getPermission();
-			if(permission == null) return;
-			if(!ply.hasPermission(permission)) {
-				event.setBuild(false);
-				event.setCancelled(true);
-			}
-		}
-		
-		
-		@EventHandler
-		public void onPlayerCraft(CraftItemEvent event) {
-			final Player ply = event.getPlayer();
-	                final ItemStack st = event.getResult();
-	                if (st==null) return;
-			final org.getspout.spoutapi.material.Material block = new SpoutItemStack(st).getMaterial();
-			if(!(block instanceof JukeboxBlock)) return;
-			final JukeboxBlock jukeboxBlock = (JukeboxBlock)block;
-			String permission = jukeboxBlock.getPermission();
-			if(permission == null) return;
-			if(!ply.hasPermission(permission)) {
-				event.setResult(null);
-				event.setCancelled(true);
-			}
-		}
-		*/
 }
