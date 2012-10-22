@@ -94,8 +94,6 @@ public class JukeBukkit extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new SpeakerWireListener(), this);
 		this.getServer().getPluginManager().registerEvents(new MachineListener(), this);
 		
-		this.getCommand("jukebukkit").setExecutor(new CommandHandler());
-		
 		//start the web server up
 		HTTPserver = new Server();
 		HTTPconnector = new SelectChannelConnector();
@@ -131,6 +129,12 @@ public class JukeBukkit extends JavaPlugin {
 					e.printStackTrace();
 				}
 			}
+		}
+		
+		try {
+			this.getCommand("jukebukkit").setExecutor(new CommandHandler());
+		} catch (Exception e) {
+			Bukkit.getLogger().warning("[JukeBukkit] An Error Occurred: Unable to load Commands");
 		}
 	}
 	
