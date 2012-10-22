@@ -107,10 +107,6 @@
 									<pattern>freemarker</pattern>
 									<shadedPattern>cc.thedudeguy.freemarker</shadedPattern>
 								</relocation>
-								<relocation>
-									<pattern>us.monoid</pattern>
-									<shadedPattern>cc.thedudeguy.monoid</shadedPattern>
-								</relocation>
 							</relocations>
 						</configuration>
 					</execution>
@@ -151,12 +147,6 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>us.monoid.web</groupId>
-			<artifactId>resty</artifactId>
-			<version>${restyVersion}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>1.3.2</version>
@@ -174,7 +164,6 @@
 		<jettyVersion>7.2.0.v20101020</jettyVersion>
 		<bukkitVersion>1.3.2-R2.0</bukkitVersion>
 		<spoutVersion>1.3.2-R1.0-SNAPSHOT</spoutVersion>
-		<restyVersion>0.3.1</restyVersion>
 	</properties>
 	<inceptionYear>2011</inceptionYear>
 	<url>http://dev.bukkit.org/server-mods/jukebukkit/</url>
