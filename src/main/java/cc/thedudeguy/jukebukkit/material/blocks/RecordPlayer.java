@@ -413,7 +413,9 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		int range = getRange(location, needle);
 		Debug.debug("Playing audio with range: ", range);
 		
-		new Sound(SoundEffect.RECORD_PLAYER_START, location, 8).play();
+		if (!isPoweredUp((SpoutBlock)location.getBlock())) {
+			new Sound(SoundEffect.RECORD_PLAYER_START, location, 8).play();
+		}
 		
 		//get players in radius of the jukebox and start it for only those players
 		for(Player p:location.getWorld().getPlayers()) {
