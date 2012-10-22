@@ -172,7 +172,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jettyVersion>7.2.0.v20101020</jettyVersion>
-		<bukkitVersion>1.3.2-R1.0</bukkitVersion>
+		<bukkitVersion>1.3.2-R2.0</bukkitVersion>
 		<spoutVersion>1.3.2-R1.0-SNAPSHOT</spoutVersion>
 		<restyVersion>0.3.1</restyVersion>
 	</properties>
