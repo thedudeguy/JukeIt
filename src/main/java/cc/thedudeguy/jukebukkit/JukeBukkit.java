@@ -36,6 +36,7 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 
 import cc.thedudeguy.jukebukkit.database.DiscData;
 import cc.thedudeguy.jukebukkit.database.RecordPlayerData;
+import cc.thedudeguy.jukebukkit.database.RepeaterChipData;
 import cc.thedudeguy.jukebukkit.listener.GeneralListener;
 import cc.thedudeguy.jukebukkit.listener.MachineListener;
 import cc.thedudeguy.jukebukkit.listener.SpeakerWireListener;
@@ -46,6 +47,9 @@ import cc.thedudeguy.jukebukkit.server.ServerHandler;
 import cc.thedudeguy.jukebukkit.util.Debug;
 import cc.thedudeguy.jukebukkit.util.Recipies;
 import cc.thedudeguy.jukebukkit.util.ResourceManager;
+
+import com.avaje.ebeaninternal.api.SpiEbeanServer;
+import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
 
 /**
  * The main class for the Jukebukkit Plugin
@@ -150,13 +154,50 @@ public class JukeBukkit extends JavaPlugin {
 	 * Sets up the ebean database if needed
 	 */
 	private void setupDatabase() {
+		String createSQL = "";
 		try {
-            getDatabase().find(RecordPlayerData.class).findRowCount();
-            getDatabase().find(DiscData.class).findRowCount();
-        } catch (PersistenceException ex) {
-            Bukkit.getLogger().log(Level.INFO, "[JukeBukkit] Installing database for " + getDescription().getName() + " due to first time usage");
-            installDDL();
-        }
+			getDatabase().find(RecordPlayerData.class).findRowCount();
+		} catch (PersistenceException ex) {
+			createSQL = createSQL +
+					"create table jb_rp_data (" +
+					"id integer primary key," +
+					"x double not null," +
+					"y double not null," +
+					"z double not null," +
+					"world_name varchar(255)," +
+					"needle_type integer not null," +
+					"disc_key varchar(255));";
+		}
+		try {
+			getDatabase().find(DiscData.class).findRowCount();
+		} catch (PersistenceException ex) {
+			createSQL = createSQL +
+					"create table burned_discs (" +
+					"id integer primary key," +
+					"name_key varchar(255)," +
+					"color integer not null," +
+					"url varchar(255)," +
+					"label varchar(255));";
+		}
+		try {
+			getDatabase().find(RepeaterChipData.class).findRowCount();
+		} catch (PersistenceException ex) {
+			createSQL = createSQL +
+					"create table jb_rc_data ( " +
+					"id integer primary key," +
+					"x integer not null," +
+					"y integer not null," +
+					"z integer not null," +
+					"world varchar(255)," +
+					"time bigint not null);";
+		}
+		
+		if (!createSQL.equalsIgnoreCase("")) {
+			Bukkit.getLogger().info("[JukeBukkit] Installing Databases");
+			SpiEbeanServer serv = (SpiEbeanServer) getDatabase();
+			DdlGenerator gen = serv.getDdlGenerator();
+			gen.runScript(false, createSQL);
+		}
 	}
 	
 	@Override	
@@ -164,6 +205,7 @@ public class JukeBukkit extends JavaPlugin {
 		List<Class<?>> list = new ArrayList<Class<?>>();
 	    list.add(RecordPlayerData.class);
 	    list.add(DiscData.class);
+	    list.add(RepeaterChipData.class);
 	    return list;
 	}
 	
