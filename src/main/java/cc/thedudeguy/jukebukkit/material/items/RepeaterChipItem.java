@@ -22,6 +22,9 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
+import org.getspout.spoutapi.material.MaterialData;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -36,6 +39,14 @@ public class RepeaterChipItem extends GenericCustomItem {
 	public RepeaterChipItem() {
 		super(JukeBukkit.getInstance(), "Repeater Chip Item", TextureFile.ITEM_REPEATER_CHIP.getFile());
 		this.setName("Repeater Chip");
+		
+		//recipe
+		SpoutShapedRecipe r = new SpoutShapedRecipe( new SpoutItemStack(this, 1) );
+		r.shape("oio", "iri","oio");
+		r.setIngredient('o', MaterialData.obsidian);
+		r.setIngredient('i', MaterialData.ironIngot);
+		r.setIngredient('r', MaterialData.redstone);
+		SpoutManager.getMaterialManager().registerSpoutRecipe(r);
 	}
 	
 	@Override
