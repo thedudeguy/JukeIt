@@ -23,7 +23,7 @@ JukeIt (formerly JukeBukkit) allows users to craft blank discs, called Obsidyisc
 ## Features
 
 * Craft discs called Obsidyiscs
-* Attach .ogg's, wav's, or mp3's to an Obsidyisc in which that perticular disc will play.
+* Attach .ogg's, wav's, or mp3's to an Obsidyisc in which that particular disc will play.
 * All players within range of a jukebox can hear an Obsidyisc playing.
 * Build numerous types of jukeboxes with different ranges.
 * Built in Server to host Audio files on your own server!
@@ -38,8 +38,8 @@ JukeIt (formerly JukeBukkit) allows users to craft blank discs, called Obsidyisc
 
 JukeIt is built and tested against
 
-* SpoutPlugin atleast build 1369
-* SpoutCraft atleast build  1833
+* SpoutPlugin at least build 1369
+* SpoutCraft at least build  1833
 * CraftBukkit 1.3.2-R2.0
 
 ## Installation
@@ -65,7 +65,7 @@ JukeIt is built and tested against
 * If you use permissions, you will need to adjust any permissions set for JukeIt. All permission nodes have been renamed from jukebukkit to jukeit.
 * Start server.
 
-Previously placed JukeBukkit blocks will all dissapear, and become stone and such. You will need to re-place the blocks manually. I apologize if this inconveniences you.
+Previously placed JukeBukkit blocks will all disappear, and become stone and such. You will need to re-place the blocks manually. I apologize if this inconveniences you.
 
 
 ## Support
@@ -100,7 +100,7 @@ Previously placed JukeBukkit blocks will all dissapear, and become stone and suc
 #### Version 2.1.0
 
 * Updates for 1.3.2
-* No longer supporting crafting with all wood types, allthough many still work.
+* No longer supporting crafting with all wood types, although many still work.
 * Added custom texture support (WIP)
 * Re-encoded the provided music to a lower bitrate.
 * Added robots.txt to the web server (to prevent indexing)
