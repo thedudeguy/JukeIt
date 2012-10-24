@@ -1,7 +1,7 @@
 enableWebServer: true
 webServerPort: 8080
 minecraftServerHostname: change.me.com
-serverName: JukeBukkit
+serverName: JukeIt
 allowWebServerUploads: true
 allowExternalURLs: true
 texturePack: default
