@@ -61,6 +61,7 @@ JukeIt is built and tested against
 * As always, back up everything.
 * Shut down your Minecraft Server
 * Rename the "JukeBukkit" data folder to "JukeIt"
+* Rename JukeIt/JukeBukkit.db to JukeIt/JukeIt.db
 * Download and place the JukeIt plugin jar into your servers plugins folder.
 * If you use permissions, you will need to adjust any permissions set for JukeIt. All permission nodes have been renamed from jukebukkit to jukeit.
 * Start server.
