@@ -1,74 +1,74 @@
-name: JukeBukkit
-main: cc.thedudeguy.jukebukkit.JukeBukkit
+name: JukeIt
+main: com.chrischurchwell.jukeit.JukeIt
 version: ${version}
 description: Burn music on disc (Obsidyiscs) and play them in many different types of jukeboxes.
 author: Chris Churchwell (thedudeguy)
-website: http://dev.bukkit.org/server-mods/jukebukkit/
+website: http://chrischurchwell.com
 depend: [Spout]
 database: true
 commands:
-  jukebukkit:
-    description: All commands are subsidized from the main command /jukebukkit
-    aliases: jb
-    usage: Use "/jukebukkit help" for more information
+  jukeit:
+    description: All commands are subsidized from the main command /jukeit
+    aliases: juke
+    usage: Use "/jukeit help" for more information
 permissions:
-  jukebukkit.command.resetcache:
+  jukeit.command.resetcache:
     description: Gives access to the resetcache command
     default: op
-  jukebukkit.craft.needle:
+  jukeit.craft.needle:
     description: Access to craft needles
     default: true
-  jukebukkit.craft.blankdisc:
+  jukeit.craft.blankdisc:
     description: Access to craft blank discs
     default: true
-  jukebukkit.craft.burner:
+  jukeit.craft.burner:
     description: Access to craft disc burner
     default: true
-  jukebukkit.craft.wire:
+  jukeit.craft.wire:
     description: Access to craft speaker wire
     default: true
-  jukebukkit.craft.jukebox:
+  jukeit.craft.jukebox:
     description: Access to craft jukeboxes
     default: true
-  jukebukkit.craft.jukebox.world:
+  jukeit.craft.jukebox.world:
     description: Access to craft world range jukebox
     default: op
-  jukebukkit.craft.machinepart:
+  jukeit.craft.machinepart:
     description: Access to craft machine parts
     default: true
-  jukebukkit.craft.machine:
+  jukeit.craft.machine:
     description: Access to craft machine out of parts
     default: true
-  jukebukkit.craft.speaker:
+  jukeit.craft.speaker:
     description: Access to craft speakers
     default: true
-  jukebukkit.craft.recordplayer:
+  jukeit.craft.recordplayer:
     description: Access to craft record player
     default: true
-  jukebukkit.craft.machine:
+  jukeit.craft.machine:
     description: Access to craft disc machine
     default: true
-  jukebukkit.use.needle:
+  jukeit.use.needle:
     description: Ability to attach/detach needles
     default: true
-  jukebukkit.use.blankdisc:
+  jukeit.use.blankdisc:
     description: Ability to burn discs
     default: true
-  jukebukkit.use.burneddisc:
+  jukeit.use.burneddisc:
     description: Ability to insert/eject burned discs
     default: true
-  jukebukkit.use.burner:
+  jukeit.use.burner:
     description: Access to use disc burner
     default: true
-  jukebukkit.use.jukebox:
+  jukeit.use.jukebox:
     description: Access to craft jukeboxes
     default: true
-  jukebukkit.use.recordplayer:
+  jukeit.use.recordplayer:
     description: Access to play recordplayers by punching
     default: true
-  jukebukkit.use.jukebox.world:
+  jukeit.use.jukebox.world:
     description: Access to use world range jukeboxes
     default: op
-  jukebukkit.use.machine:
+  jukeit.use.machine:
     description: Access to use machine
     default: true

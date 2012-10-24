@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>cc.thedudeguy</groupId>
-	<artifactId>jukebukkit</artifactId>
+	<groupId>com.chrischurchwell</groupId>
+	<artifactId>jukeit</artifactId>
 	<version>dev-SNAPSHOT</version>
-	<name>JukeBukkit</name>
+	<name>JukeIt</name>
 	<repositories>
 		<repository>
 			<id>spout-repo</id>
@@ -166,18 +166,9 @@
 		<spoutVersion>1.3.2-R1.0-SNAPSHOT</spoutVersion>
 	</properties>
 	<inceptionYear>2011</inceptionYear>
-	<url>http://dev.bukkit.org/server-mods/jukebukkit/</url>
-	<description>JukeBukkit allows users to craft blank discs, called Obsidyiscs. You can burn these discs with music of your liking, music that is hosted on the internet somewhere, and play the music on your obsidyiscs in jukeboxes, also crafted by players.</description>
+	<url>http://chrischurchwell.com</url>
+	<description>JukeIt (fomerly known as JukeBukkit) allows users to craft blank discs, called Obsidyiscs. You can burn these discs with music of your liking, music that is hosted on the internet somewhere, and play the music on your obsidyiscs in jukeboxes, also crafted by players.</description>
 	<organization>
 		<name>Chris Churchwell</name>
 	</organization>
-	<scm>
-		<url>https://github.com/thedudeguy/JukeBukkit</url>
-		<connection>scm:git:git://github.com/thedudeguy/JukeBukkit.git</connection>
-		<developerConnection>scm:git:git@github.com:thedudeguy/JukeBukkit.git</developerConnection>
-	</scm>
-	<ciManagement>
-		<system>jenkins</system>
-		<url>http://ci.alta189.com/job/JukeBukkit/</url>
-	</ciManagement>
 </project>
