@@ -20,6 +20,7 @@ package cc.thedudeguy.jukebukkit.material.items;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
@@ -82,6 +83,16 @@ public class RepeaterChipItem extends GenericCustomItem {
 			Debug.debug(player, face, rotationDesign);
 			
 			SpoutManager.getMaterialManager().overrideBlock(target, Blocks.repeaterChipBlock, (byte)rotationDesign);
+			
+			//remove 1 from hand.
+			//if (!player.getGameMode().equals(GameMode.CREATIVE)) {
+				ItemStack inHand = player.getItemInHand();
+				if (inHand.getAmount()<2) {
+					player.setItemInHand(new ItemStack(Material.AIR));
+				} else {
+					player.getItemInHand().setAmount(inHand.getAmount()-1);
+				}
+			//}
 			
 			return false;
 		}
