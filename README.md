@@ -10,9 +10,9 @@ JukeIt (formerly JukeBukkit) allows users to craft blank discs, called Obsidyisc
 
 ### The Info You Want: 
 
-[How to use JukeBukkit](https://github.com/thedudeguy/JukeIt/wiki/How-to-Use-JukeBukkit)
+[How to use JukeIt](https://github.com/thedudeguy/JukeIt/wiki/How-to-Use-JukeIt)
 
-[JukeBukkit Crafting Recipes](https://github.com/thedudeguy/JukeIt/wiki/Recipes)
+[JukeIt Crafting Recipes](https://github.com/thedudeguy/JukeIt/wiki/Recipes)
 
 [Configuration](https://github.com/thedudeguy/JukeIt/wiki/Configuration)
 
