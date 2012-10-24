@@ -20,9 +20,8 @@ package com.chrischurchwell.jukeit.material;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
+import javax.persistence.PersistenceException;
 
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.database.DiscData;
@@ -125,17 +124,24 @@ public class Items {
 		
 		//initialize burned discs
 		burnedDiscs = new HashMap<String, BurnedDisc>();
-		List<DiscData> discDataList = JukeIt.getInstance().getDatabase().find(DiscData.class).findList();
-		if (discDataList.isEmpty()) {
-			 JukeIt.info("No Burned Discs to load.");
-		} else {
-			int count = 0;
-			for (DiscData discData : discDataList) {
-				BurnedDisc d = new BurnedDisc(discData);
-				burnedDiscs.put(d.getKey(), d);
-				count++;
+		List<DiscData> discDataList;
+		
+		try {
+			discDataList = JukeIt.getInstance().getDatabase().find(DiscData.class).findList();
+			
+			if (discDataList.isEmpty()) {
+				 JukeIt.info("No Burned Discs to load.");
+			} else {
+				int count = 0;
+				for (DiscData discData : discDataList) {
+					BurnedDisc d = new BurnedDisc(discData);
+					burnedDiscs.put(d.getKey(), d);
+					count++;
+				}
+				JukeIt.info("Initialized "+ String.valueOf(count) +" Burned Discs.");
 			}
-			JukeIt.info("Initialized "+ String.valueOf(count) +" Burned Discs.");
+		} catch (PersistenceException e) {
+			JukeIt.warn("Unable to load discs. (Either the database hasnt been created yet or it hasnt been loaded yet)");
 		}
 		
 	}
