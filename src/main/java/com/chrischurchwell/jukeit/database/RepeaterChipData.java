@@ -24,11 +24,9 @@ import javax.persistence.Table;
 
 import org.getspout.spoutapi.block.SpoutBlock;
 
-
 import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 import com.chrischurchwell.jukeit.JukeIt;
-import com.chrischurchwell.jukeit.util.Debug;
 
 @Entity()
 @Table(name="jb_rc_data")

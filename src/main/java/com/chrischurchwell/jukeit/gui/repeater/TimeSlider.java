@@ -33,12 +33,9 @@ public class TimeSlider extends GenericSlider {
 	long minTime = 60000;	//1 minute
 	long maxTime = 5400000;	//90 minutes
 	
-	private SpoutBlock block;
 	private RepeaterChipData data;
 	
 	public TimeSlider(SpoutBlock block) {
-		this.block = block;
-		
 		//get the data.
 		data = RepeaterChipData.getData(block);
 		

@@ -23,11 +23,9 @@ import java.util.Map.Entry;
 
 import org.bukkit.World;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.block.design.Axis;
 import org.getspout.spoutapi.block.design.GenericBlockDesign;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
-
 
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.gui.repeater.RepeaterChipGUI;
