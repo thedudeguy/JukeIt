@@ -19,6 +19,7 @@
 package com.chrischurchwell.jukeit;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
-
+import org.mcstats.Metrics;
 
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
@@ -94,6 +95,14 @@ public class JukeIt extends JavaPlugin {
 	
 	public void onEnable()
 	{	
+		//load mc-stats
+		try {
+			Metrics metrics = new Metrics(this);
+			metrics.start();
+		} catch (IOException e1) {
+			Debug.debug("Unable to submit mcstats");
+		}
+		
 		//copy the config
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
