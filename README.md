@@ -80,6 +80,11 @@ Previously placed JukeBukkit blocks will all disappear, and become stone and suc
 
 ### Change Log
 
+#### Version 2.2.1
+
+* Fixed Axis Errors with the Repeater Chip Block.
+* Added Plugin Metrics
+
 #### Version 2.2.0
 
 * Name Changed to JukeIt
