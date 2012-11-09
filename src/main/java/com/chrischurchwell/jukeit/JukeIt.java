@@ -190,51 +190,19 @@ public class JukeIt extends JavaPlugin {
 	 * Sets up the ebean database if needed
 	 */
 	private void setupDatabase() {
-		String createSQL = "";
-		SpiEbeanServer serv = (SpiEbeanServer) getDatabase();
-		DdlGenerator gen = serv.getDdlGenerator();
 		
 		try {
 			getDatabase().find(RecordPlayerData.class).findRowCount();
-		} catch (PersistenceException ex) {
-			info("Installing Record Player Data Table");
-			createSQL =
-					"create table jb_rp_data (" +
-					"id integer primary key," +
-					"x double not null," +
-					"y double not null," +
-					"z double not null," +
-					"world_name varchar(255)," +
-					"needle_type integer not null," +
-					"disc_key varchar(255));";
-			gen.runScript(false, createSQL);
-		}
-		try {
 			getDatabase().find(DiscData.class).findRowCount();
-		} catch (PersistenceException ex) {
-			info("Installing Disc Data Table");
-			createSQL = 
-					"create table burned_discs (" +
-					"id integer primary key," +
-					"name_key varchar(255)," +
-					"color integer not null," +
-					"url varchar(255)," +
-					"label varchar(255));";
-			gen.runScript(false, createSQL);
-		}
-		try {
 			getDatabase().find(RepeaterChipData.class).findRowCount();
 		} catch (PersistenceException ex) {
-			info("Installing Repeater Chip Data Table");
-			createSQL = 
-					"create table jb_rc_data ( " +
-					"id integer primary key," +
-					"x integer not null," +
-					"y integer not null," +
-					"z integer not null," +
-					"world varchar(255)," +
-					"time bigint not null);";
-			gen.runScript(false, createSQL);
+			info("Attempting to install db tables");
+			
+			SpiEbeanServer serv = (SpiEbeanServer) getDatabase();
+			DdlGenerator gen = serv.getDdlGenerator();
+			String ddl = gen.generateCreateDdl();
+			
+			gen.runScript(true, ddl);
 		}
 	}
 	
