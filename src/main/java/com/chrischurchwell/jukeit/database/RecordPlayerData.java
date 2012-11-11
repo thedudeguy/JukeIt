@@ -19,9 +19,10 @@
 package com.chrischurchwell.jukeit.database;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 
 import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
@@ -32,6 +33,7 @@ import com.chrischurchwell.jukeit.material.blocks.designs.RPNeedle;
 public class RecordPlayerData {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 	
 	@NotNull

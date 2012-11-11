@@ -19,6 +19,8 @@
 package com.chrischurchwell.jukeit.database;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -30,6 +32,7 @@ import com.avaje.ebean.validation.NotNull;
 public class DiscData {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	@NotEmpty
