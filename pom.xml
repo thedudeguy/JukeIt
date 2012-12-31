@@ -172,8 +172,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jettyVersion>7.2.0.v20101020</jettyVersion>
-		<bukkitVersion>1.4.5-R0.2</bukkitVersion>
-		<spoutVersion>1.4.5-R0.2-SNAPSHOT</spoutVersion>
+		<bukkitVersion>1.4.6-R0.3</bukkitVersion>
+		<spoutVersion>1.4.6-R0.2-SNAPSHOT</spoutVersion>
 	</properties>
 	<inceptionYear>2011</inceptionYear>
 	<url>http://chrischurchwell.com</url>
