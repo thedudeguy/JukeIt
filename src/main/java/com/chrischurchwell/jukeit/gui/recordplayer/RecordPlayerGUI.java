@@ -33,7 +33,7 @@ import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
-import com.chrischurchwell.jukeit.database.RecordPlayerData;
+import com.chrischurchwell.jukeit.database.RPStorageData;
 import com.chrischurchwell.jukeit.gui.PlayerInventorySlot;
 import com.chrischurchwell.jukeit.material.Items;
 import com.chrischurchwell.jukeit.material.blocks.RecordPlayer;
@@ -121,63 +121,40 @@ public class RecordPlayerGUI extends GenericPopup {
 	
 	public void saveRecord(ItemStack record) {
 		Debug.debug("Saving Record Data");
-		RecordPlayerData data = getData();
+		RPStorageData data = getData();
 		
 		if (record == null || record.getType().equals(Material.AIR)) {
-			data.setDiscKey(null);
+			data = RPStorageData.removeDisc(block);
 		} else {
-			BurnedDisc d = (BurnedDisc)(new SpoutItemStack(record)).getMaterial();
-			data.setDiscKey(d.getKey());
+			data = RPStorageData.setDisc(block, record);
 		}
-		
-		JukeIt.getInstance().getDatabase().save(data);
 		RecordPlayer.updateBlockDesign(block, data);
 	}
 	
 	public void saveNeedle(ItemStack needle) {
 		Debug.debug("Saving Needle Data");
-		RecordPlayerData data = getData();
+		RPStorageData data = getData();
 		
 		if (needle == null || needle.getType().equals(Material.AIR)) {
-			data.setNeedleType(RPNeedle.NONE);
+			data.setNeedle(RPNeedle.NONE.id());
 		} else {
 			Needle n = (Needle)(new SpoutItemStack(needle)).getMaterial();
-			data.setNeedleType(n.getNeedleType());
+			data.setNeedle(n.getNeedleType().id());
 		}
 		
 		JukeIt.getInstance().getDatabase().save(data);
 		RecordPlayer.updateBlockDesign(block, data);
 	}
 	
-	private RecordPlayerData getData() {
-		//get data from the db
-		RecordPlayerData rpdata = JukeIt.getInstance().getDatabase().find(RecordPlayerData.class)
-			.where()
-				.eq("x", (double)block.getX())
-				.eq("y", (double)block.getY())
-				.eq("z", (double)block.getZ())
-				.ieq("worldName", block.getWorld().getName())
-			.findUnique();
-		if (rpdata == null) {
-			Debug.debug("RecordPlayerGUI:getData null rpdata");
-			rpdata = new RecordPlayerData();
-			rpdata.setDiscKey(null);
-			rpdata.setNeedleType(RPNeedle.NONE);
-			rpdata.setX((double)block.getX());
-			rpdata.setY((double)block.getY());
-			rpdata.setZ((double)block.getZ());
-			rpdata.setWorldName(block.getWorld().getName());
-		}
-		
-		return rpdata;
+	private RPStorageData getData() {
+		return RPStorageData.getOrCreateEntry(block);
 	}
 	
 	private void syncDataSlots() {
-		RecordPlayerData data = getData();
+		RPStorageData data = getData();
 		
 		if(data.hasDisc()) {
-			BurnedDisc b = Items.burnedDiscs.get(data.getDiscKey());
-			ItemStack i = new SpoutItemStack(b, 1);
+			ItemStack i = BurnedDisc.createDisc(data);
 			if (!recordSlot.getItem().equals(i)) {
 				recordSlot.setItem(i);
 			}
@@ -185,9 +162,9 @@ public class RecordPlayerGUI extends GenericPopup {
 			recordSlot.setItem(new ItemStack(Material.AIR));
 		}
 		
-		if (!RPNeedle.getById(data.getNeedleType()).equals(RPNeedle.NONE)) {
-			if (!recordSlot.getItem().equals(RPNeedle.getById(data.getNeedleType()).getItem())) {
-				needleSlot.setItem(new SpoutItemStack(RPNeedle.getById(data.getNeedleType()).getItem(), 1));
+		if (!RPNeedle.getById(data.getNeedle()).equals(RPNeedle.NONE)) {
+			if (!recordSlot.getItem().equals(RPNeedle.getById(data.getNeedle()).getItem())) {
+				needleSlot.setItem(new SpoutItemStack(RPNeedle.getById(data.getNeedle()).getItem(), 1));
 			}
 		} else {
 			needleSlot.setItem(new ItemStack(Material.AIR));

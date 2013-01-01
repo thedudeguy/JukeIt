@@ -34,6 +34,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.database.DiscData;
+import com.chrischurchwell.jukeit.material.DiscColor;
 import com.chrischurchwell.jukeit.material.Items;
 import com.chrischurchwell.jukeit.material.items.BlankDisc;
 import com.chrischurchwell.jukeit.material.items.BurnedDisc;
@@ -128,59 +129,42 @@ public class BurnButton extends GenericButton {
 		if (event.getPlayer().getItemInHand() == null) {
 			event.getPlayer().sendMessage("Invalid Disc in Hand");
 			event.getPlayer().getMainScreen().getActivePopup().close();
-        	return;
-        }
+			return;
+		}
 		
-        SpoutPlayer player = (SpoutPlayer)event.getPlayer();
-        
-        
-        SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
-        
-        if (!(inHand.getMaterial() instanceof BlankDisc)) {
-        	event.getPlayer().sendMessage("Invalid Disc in Hand");
-        	event.getPlayer().getMainScreen().getActivePopup().close();
-        	return;
-        }
-        
-        BlankDisc disk = (BlankDisc)inHand.getMaterial();
-        
-        //whats the color of the disc in hand?
-        int color = disk.getColor();
-        
-        //remove 1 from hand
-      	if (inHand.getAmount()<2) {
-      		event.getPlayer().setItemInHand(new ItemStack(Material.AIR));
-      	} else {
-      		inHand.setAmount(inHand.getAmount()-1);
-      		player.setItemInHand(inHand);
-      	}
-        
-      	//create the key
-      	String key = BurnedDisc.generateNameKey();
-      	
-      	//add the disc into the database
-      	DiscData discData = JukeIt.getInstance().getDatabase().find(DiscData.class)
-      			.where()
-      				.ieq("nameKey", key)
-      				.findUnique();
-      		if (discData == null) discData = new DiscData();
-      		discData.setNameKey(key);
-      		discData.setUrl(url);
-      		discData.setLabel("");
-      		discData.setColor(color);
-      		JukeIt.getInstance().getDatabase().save(discData);
-      	
-      	//create the physical disc for the pplayer
-    	BurnedDisc disc = new BurnedDisc(discData);
-    	Items.burnedDiscs.put(key, disc);
-    	ItemStack iss = new SpoutItemStack(disc, 1);
-    	
-    	location.setY(location.getY()+1);
-    	location.getWorld().dropItem(location, iss);
-    	
-    	event.getPlayer().getMainScreen().getActivePopup().close();
-    	
-    	SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeIt.getInstance(), "jb_startup.wav", false, location, 8);
-    	
+		SpoutPlayer player = (SpoutPlayer)event.getPlayer();
+		
+		
+		SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
+		
+		if (!(inHand.getMaterial() instanceof BlankDisc)) {
+			event.getPlayer().sendMessage("Invalid Disc in Hand");
+			event.getPlayer().getMainScreen().getActivePopup().close();
+			return;
+		}
+		
+		BlankDisc disk = (BlankDisc)inHand.getMaterial();
+		
+		//whats the color of the disc in hand?
+		DiscColor discColor = disk.getColor();
+		
+		//remove 1 from hand
+		if (inHand.getAmount()<2) {
+			event.getPlayer().setItemInHand(new ItemStack(Material.AIR));
+		} else {
+			inHand.setAmount(inHand.getAmount()-1);
+			player.setItemInHand(inHand);
+		}
+		
+		//create a new disc.
+		ItemStack newDisc = BurnedDisc.createDisc(discColor, url);
+		
+		location.setY(location.getY()+1);
+		location.getWorld().dropItem(location, newDisc);
+		
+		event.getPlayer().getMainScreen().getActivePopup().close();
+		
+		SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeIt.getInstance(), "jb_startup.wav", false, location, 8);
+		
 	}
 }

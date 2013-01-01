@@ -57,9 +57,9 @@ public class Blocks {
 		//speaker must load before recordPlayer
 		speaker = new Speaker();
 		
-		recordPlayer = new RecordPlayer();
-		
 		discBurner = new DiscBurner();
+		
+		recordPlayer = new RecordPlayer();
 		
 		machineBlock = new MachineBlock();
 		

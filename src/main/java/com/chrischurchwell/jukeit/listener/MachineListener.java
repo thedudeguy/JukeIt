@@ -47,12 +47,12 @@ import com.chrischurchwell.jukeit.event.MachineEvent;
 import com.chrischurchwell.jukeit.event.MachineProcessEvent;
 import com.chrischurchwell.jukeit.event.MachineStartEvent;
 import com.chrischurchwell.jukeit.material.Blocks;
+import com.chrischurchwell.jukeit.material.DiscColor;
 import com.chrischurchwell.jukeit.material.Items;
 import com.chrischurchwell.jukeit.material.blocks.MachineBlock;
 import com.chrischurchwell.jukeit.material.blocks.MachineRecipe;
 import com.chrischurchwell.jukeit.material.items.BlankDisc;
 import com.chrischurchwell.jukeit.material.items.BurnedDisc;
-import com.chrischurchwell.jukeit.material.items.DiscColor;
 import com.chrischurchwell.jukeit.sound.Sound;
 import com.chrischurchwell.jukeit.sound.SoundEffect;
 import com.chrischurchwell.jukeit.util.Debug;
@@ -83,8 +83,6 @@ public class MachineListener implements Listener {
 	
 	@EventHandler
 	public void onPistonPull(BlockPistonRetractEvent event) {
-		Debug.debug("onpistonpull event");
-		
 		if (event.isCancelled() || !event.isSticky()) {
 			return;
 		}
@@ -206,31 +204,23 @@ public class MachineListener implements Listener {
 		}
 		
 		//checking to see if we had a labeling disc setup.
-		SpoutItemStack sPrimItem = new SpoutItemStack(event.getPrimaryItem());
-		SpoutItemStack sAddItem = new SpoutItemStack(event.getAdditionItem());
+		ItemStack cPrimItem = event.getPrimaryItem();
+		ItemStack cAddItem = event.getAdditionItem();
+		SpoutItemStack sPrimItem = new SpoutItemStack(cPrimItem);
+		SpoutItemStack sAddItem = new SpoutItemStack(cAddItem);
+		
 		if (
-				sAddItem.getType().equals(Material.PAPER) &&
+				cAddItem.getType().equals(Material.PAPER) &&
 				event.hasLabel() &&
-				sPrimItem.getMaterial() instanceof BurnedDisc &&
-				((BurnedDisc)sPrimItem.getMaterial()).getKey() != null
+				(new SpoutItemStack(cPrimItem)).getMaterial() instanceof BurnedDisc &&
+				!BurnedDisc.decodeDisc(cPrimItem).isEmpty()
 				) {
-				BurnedDisc disc = (BurnedDisc)sPrimItem.getMaterial();
-			//label the disc yo!
-			DiscData discData = JukeIt.getInstance().getDatabase().find(DiscData.class)
-					.where()
-						.eq("nameKey", disc.getKey())
-					.findUnique();
-			if (discData == null) {
-				abortEject(event);
-				return;
-			}
-			discData.setLabel(event.getLabel());
-			JukeIt.getInstance().getDatabase().save(discData);
-			disc.setLabel(event.getLabel());
-			eject(event.getBlock(), new SpoutItemStack(disc, 1));
+			
+			ItemStack newDisc = BurnedDisc.labelDisc(cPrimItem, event.getLabel());
+			
+			eject(event.getBlock(), newDisc);
 			if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
 			return;
-			
 		}
 		
 		//check if were cloning a disc.
@@ -239,46 +229,26 @@ public class MachineListener implements Listener {
 				(sPrimItem.getMaterial() instanceof BurnedDisc && sAddItem.getMaterial() instanceof BlankDisc)
 				) {
 			
-			BurnedDisc master;
-			BlankDisc target;
+			ItemStack master;
+			ItemStack target;
 			//which one are we making a copy of?
 			if (sPrimItem.getMaterial() instanceof BurnedDisc) {
-				master = (BurnedDisc) sPrimItem.getMaterial();
-				target = (BlankDisc) sAddItem.getMaterial();
+				master =  cPrimItem;
+				target =  cAddItem;
 			} else {
-				master = (BurnedDisc) sAddItem.getMaterial();
-				target = (BlankDisc) sPrimItem.getMaterial();
+				master = cAddItem;
+				target = cPrimItem;
 			}
 			
-			//get burned disc data
-			DiscData discData = JukeIt.getInstance().getDatabase().find(DiscData.class)
-					.where()
-						.ieq("nameKey", master.getKey())
-					.findUnique();
-			if (discData == null) {
-				Bukkit.getLogger().log(Level.WARNING, "Disc Data not found");
-				abortEject(event);
-				return;
-			}
 			
-			//create the disc
-			//create the key
-			String key = BurnedDisc.generateNameKey();
-			//disc color...
-			int color = target.getColor();
-			//add the disc into the database
-			DiscData newDiscData = new DiscData();
-			newDiscData.setNameKey(key);
-			newDiscData.setUrl(discData.getUrl());
-			newDiscData.setLabel(discData.getLabel());
-			newDiscData.setColor(color);
-			JukeIt.getInstance().getDatabase().save(newDiscData);
-			//create the physical disc for the pplayer
-			BurnedDisc disc = new BurnedDisc(newDiscData);
-			Items.burnedDiscs.put(key, disc);
-			ItemStack iss = new SpoutItemStack(disc, 1);
-			//eject the disc.
-			this.eject(event.getBlock(), iss);
+			ItemStack newDisc = BurnedDisc.createDisc(
+					((BlankDisc)(new SpoutItemStack(target)).getMaterial()).getColor(), 
+					BurnedDisc.decodeDisc(master), 
+					BurnedDisc.getDiscLabel(master)
+					);
+			
+			this.eject(event.getBlock(), newDisc);
+			
 			//eject leftovers. since were cloning the master disc, should not destroy it.
 			if (sPrimItem.getMaterial() instanceof BurnedDisc) {
 				eject(event.getBlock(), event.getPrimaryItem());
@@ -331,32 +301,15 @@ public class MachineListener implements Listener {
 		//check for coloring already burned discs.
 		if ( (sPrimItem.getMaterial() instanceof BurnedDisc && sAddItem.getType().equals(Material.INK_SACK)) ) {
 			Debug.debug("coloring burned disc");
-			//well make burned discs only colorable one at a time.
-			BurnedDisc disc = (BurnedDisc) sPrimItem.getMaterial();
-			// first update the database.
-			//get burned disc data
-			DiscData discData = JukeIt.getInstance().getDatabase().find(DiscData.class)
-					.where()
-						.ieq("nameKey", disc.getKey())
-					.findUnique();
-			if (discData == null) {
-				Bukkit.getLogger().log(Level.WARNING, "Disc Data not found");
-				abortEject(event);
-				return;
-			}
 			
-			int color = getDiscColor(sAddItem.getData().getData());
-			discData.setColor(color);
-			JukeIt.getInstance().getDatabase().save(discData);
-			//change the discs color.
-			//start by resetting the disc.
-			SpoutManager.getMaterialManager().resetName(disc);
-			BurnedDisc newDisc = new BurnedDisc(discData);
-			Items.burnedDiscs.put(discData.getNameKey(), newDisc);
+			ItemStack disc = sPrimItem;
+			
+			ItemStack newDisc = BurnedDisc.createDisc(getDiscColor(sAddItem.getData().getData()), BurnedDisc.decodeDisc(disc), BurnedDisc.getDiscLabel(disc));
+			
 			//eject left over dye.
 			if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
 			//eject disc (should automatically have new color)
-			eject(event.getBlock(), new SpoutItemStack(newDisc));
+			eject(event.getBlock(), newDisc);
 			return;
 		}
 		
@@ -491,7 +444,7 @@ public class MachineListener implements Listener {
 	/**
 	 * Yes. also horrible. but im feelin really lazy right now
 	 */
-	private int getDiscColor(byte data ) {
+	private DiscColor getDiscColor(byte data ) {
 		
 		if (data ==  0) return DiscColor.BLACK;
 		if (data ==  4) return DiscColor.BLUE;

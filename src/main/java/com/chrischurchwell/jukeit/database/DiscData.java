@@ -27,6 +27,11 @@ import javax.persistence.Table;
 import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 
+/**
+ * 
+ * @deprecated
+ *
+ */
 @Entity()
 @Table(name="burned_discs")
 public class DiscData {

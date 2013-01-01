@@ -39,7 +39,7 @@ import org.mcstats.Metrics;
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
 import com.chrischurchwell.jukeit.database.DiscData;
-import com.chrischurchwell.jukeit.database.RecordPlayerData;
+import com.chrischurchwell.jukeit.database.RPStorageData;
 import com.chrischurchwell.jukeit.database.RepeaterChipData;
 import com.chrischurchwell.jukeit.listener.GeneralListener;
 import com.chrischurchwell.jukeit.listener.MachineListener;
@@ -192,8 +192,8 @@ public class JukeIt extends JavaPlugin {
 	private void setupDatabase() {
 		
 		try {
-			getDatabase().find(RecordPlayerData.class).findRowCount();
-			getDatabase().find(DiscData.class).findRowCount();
+			getDatabase().find(RPStorageData.class).findRowCount();
+			//getDatabase().find(DiscData.class).findRowCount();
 			getDatabase().find(RepeaterChipData.class).findRowCount();
 		} catch (PersistenceException ex) {
 			info("Attempting to install db tables");
@@ -209,7 +209,7 @@ public class JukeIt extends JavaPlugin {
 	@Override	
 	public List<Class<?>> getDatabaseClasses() {
 		List<Class<?>> list = new ArrayList<Class<?>>();
-	    list.add(RecordPlayerData.class);
+	    list.add(RPStorageData.class);
 	    list.add(DiscData.class);
 	    list.add(RepeaterChipData.class);
 	    return list;

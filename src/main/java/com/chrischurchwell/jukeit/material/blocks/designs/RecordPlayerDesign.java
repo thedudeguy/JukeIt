@@ -23,19 +23,20 @@ import org.getspout.spoutapi.block.design.Quad;
 import org.getspout.spoutapi.block.design.SubTexture;
 
 import com.chrischurchwell.jukeit.JukeIt;
+import com.chrischurchwell.jukeit.material.DiscColor;
 import com.chrischurchwell.jukeit.texture.TextureFile;
 
 
 public class RecordPlayerDesign extends GenericBlockDesign {
 	
-	private RPDisc disc;
+	private DiscColor disc;
 	private RPNeedle needle;
 	private RPIndicator indicator;
 	
 	public RecordPlayerDesign() {
-		this(RPNeedle.NONE, RPDisc.NONE, RPIndicator.RED);
+		this(RPNeedle.NONE, DiscColor.NONE, RPIndicator.RED);
 	}
-	public RecordPlayerDesign(RPNeedle needle, RPDisc disc, RPIndicator indicator) {
+	public RecordPlayerDesign(RPNeedle needle, DiscColor disc, RPIndicator indicator) {
 		this.disc = disc;
 		this.needle = needle;
 		this.indicator = indicator;
@@ -53,7 +54,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		SubTexture needleBase = getTexture().getSubTexture(6);
 		
 		SubTexture indicatorST = getTexture().getSubTexture(indicator.textureId());
-		SubTexture recordST = getTexture().getSubTexture(disc.textureId());
+		SubTexture recordST = getTexture().getSubTexture(disc.rpTextureId());
 		SubTexture needleST = getTexture().getSubTexture(needle.textureId());
 		
 		setBoundingBox(0, 0, 0, 1, 1, 1);
@@ -269,7 +270,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		
 		// RECORD.
 		
-		if (!disc.equals(RPDisc.NONE)) {
+		if (!disc.equals(DiscColor.NONE)) {
 			
 			Quad record = new Quad(25, recordST);
 			record.addVertex(0, 1F, 0.9675F, 0F);
@@ -283,7 +284,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		// NEEDLE
 		if (!needle.equals(RPNeedle.NONE)) {
 			
-			if (disc.equals(RPDisc.NONE)) {
+			if (disc.equals(DiscColor.NONE)) {
 				Quad needleQuad = new Quad(24, needleST);
 				needleQuad.addVertex(2, 0.8125F, 1F, 0.75F);
 				needleQuad.addVertex(3, 0.3125F, 1F, 0.75F);
@@ -309,7 +310,7 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 		return indicator;
 	}
 	
-	public RPDisc getDisc() {
+	public DiscColor getDisc() {
 		return disc;
 	}
 	
@@ -319,10 +320,10 @@ public class RecordPlayerDesign extends GenericBlockDesign {
 	
 	public String getDesignTypeId()
 	{
-		return String.valueOf(needle.id()) + "_" + String.valueOf(disc.id()) + "_" + String.valueOf(indicator.id());
+		return String.valueOf(needle.id()) + "_" + String.valueOf(disc.identifier()) + "_" + String.valueOf(indicator.id());
 	}
 	
-	public static String getDesignTypeId(RPNeedle needle, RPDisc disc, RPIndicator indicator) {
-		return String.valueOf(needle.id()) + "_" + String.valueOf(disc.id()) + "_" + String.valueOf(indicator.id());
+	public static String getDesignTypeId(RPNeedle needle, DiscColor disc, RPIndicator indicator) {
+		return String.valueOf(needle.id()) + "_" + String.valueOf(disc.identifier()) + "_" + String.valueOf(indicator.id());
 	}
 }

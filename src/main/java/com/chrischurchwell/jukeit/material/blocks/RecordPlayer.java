@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -43,11 +44,11 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.database.DiscData;
-import com.chrischurchwell.jukeit.database.RecordPlayerData;
+import com.chrischurchwell.jukeit.database.RPStorageData;
 import com.chrischurchwell.jukeit.database.RepeaterChipData;
 import com.chrischurchwell.jukeit.gui.recordplayer.RecordPlayerGUI;
 import com.chrischurchwell.jukeit.material.Blocks;
-import com.chrischurchwell.jukeit.material.blocks.designs.RPDisc;
+import com.chrischurchwell.jukeit.material.DiscColor;
 import com.chrischurchwell.jukeit.material.blocks.designs.RPIndicator;
 import com.chrischurchwell.jukeit.material.blocks.designs.RPNeedle;
 import com.chrischurchwell.jukeit.material.blocks.designs.RecordPlayerDesign;
@@ -70,7 +71,12 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		
 		//load custom designs.
 		int n = 0;
-		for (RPDisc disc : RPDisc.values()) {
+		
+		//reverse the disc color values so that NONE is the first in the array
+		DiscColor[] discs = DiscColor.values();
+		ArrayUtils.reverse(discs);
+		
+		for (DiscColor disc : discs) {
 			for (RPNeedle needle : RPNeedle.values()) {
 				for (RPIndicator indicator : RPIndicator.values()) {
 					RecordPlayerDesign d = new RecordPlayerDesign(needle, disc, indicator);
@@ -90,36 +96,25 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	 * @param block
 	 */
 	public static void updateBlockDesign(SpoutBlock block) {
-		updateBlockDesign(block, getRPData(block));
+		updateBlockDesign(block, RPStorageData.getOrCreateEntry(block));
 	}
 	
 	/**
 	 * updates a block design in the world with manual rp data
 	 * @param block
 	 */
-	public static void updateBlockDesign(SpoutBlock block, RecordPlayerData data) {
+	public static void updateBlockDesign(SpoutBlock block, RPStorageData data) {
 		
 		Debug.debug("Updating Block Design");
 		
-		RPDisc disc;
+		DiscColor disc;
 		RPIndicator indicator;
 		RPNeedle needle;
 		
-		//get disc info
 		if (data.hasDisc()) {
-			//get the disc color.
-			DiscData discData = JukeIt.getInstance().getDatabase().find(DiscData.class)
-					.where()
-						.ieq("nameKey", data.getDiscKey())
-					.findUnique();
-			if (discData == null) {
-				Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
-				disc = RPDisc.NONE;
-			} else {
-				disc = RPDisc.getByColor(discData.getColor());
-			}
+			disc = DiscColor.getByIdentifier(data.getColor());
 		} else {
-			disc = RPDisc.NONE;
+			disc = DiscColor.NONE;
 		}
 		
 		//get indicator info
@@ -131,7 +126,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		}
 		
 		//get needle info
-		needle = RPNeedle.getById(data.getNeedleType());
+		needle = RPNeedle.getById(data.getNeedle());
 		
 		//get design id
 		String designName = RecordPlayerDesign.getDesignTypeId(needle, disc, indicator);
@@ -165,80 +160,20 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 			}
 		}
 		
-		//when the block is placed we need to make sure to get data set up for it.
-		RecordPlayerData rpd = JukeIt.getInstance().getDatabase().find(RecordPlayerData.class)
-				.where()
-					.eq("x", (double)x)
-					.eq("y", (double)y)
-					.eq("z", (double)z)
-					.ieq("worldName", world.getName())
-				.findUnique();
-		if (rpd == null) {
-			rpd = new RecordPlayerData();
-			rpd.setDiscKey(null);
-			rpd.setNeedleType(RPNeedle.NONE);
-			rpd.setX((double)x);
-			rpd.setY((double)y);
-			rpd.setZ((double)z);
-			rpd.setWorldName(world.getName());
-			JukeIt.getInstance().getDatabase().save(rpd);
-		}
+		RPStorageData rpdata = RPStorageData.getOrCreateEntry(block);
 		
-		if (rpd.hasDisc() && !RPNeedle.getById(rpd.getNeedleType()).equals(RPNeedle.NONE)) {
-			DiscData discData = JukeIt.getInstance().getDatabase().find(DiscData.class)
-					.where()
-						.ieq("nameKey", rpd.getDiscKey())
-					.findUnique();
-			if (discData == null) {
-				Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
-			} else {
+		if (rpdata.hasDisc() && !RPNeedle.getById(rpdata.getNeedle()).equals(RPNeedle.NONE)) {
+			
+			playMusic(rpdata.getUrl(), block.getLocation(), RPNeedle.getById(rpdata.getNeedle()));
+			
 				Location location = new Location(world, (double)x, (double)y, (double)z);
-				playMusic(discData.getUrl(), location, RPNeedle.getById(rpd.getNeedleType()));
+				
 				long repeat = getRepeatChipTime(block);
 				if (repeat > 0) {
 					Debug.debug("Set to repeat in: ", repeat);
 					RepeaterChipBlock.addRepeatToQueue(block, repeat);
 				}
-			}
 		}
-	}
-	
-	/**
-	 * Gets record player data for a RP block at the provided block
-	 * @param block
-	 * @return
-	 */
-	private static RecordPlayerData getRPData(SpoutBlock block) {
-		return getRPData(block.getWorld(), block.getX(), block.getY(), block.getZ());
-	}
-	
-	/**
-	 * Gets record player data for a RP block at the provided location
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
-	 */
-	private static RecordPlayerData getRPData(World world, int x, int y, int z) {
-		RecordPlayerData rpd = JukeIt.getInstance().getDatabase().find(RecordPlayerData.class)
-				.where()
-					.eq("x", (double)x)
-					.eq("y", (double)y)
-					.eq("z", (double)z)
-					.ieq("worldName", world.getName())
-				.findUnique();
-		if (rpd == null) {
-			rpd = new RecordPlayerData();
-			rpd.setDiscKey(null);
-			rpd.setNeedleType(RPNeedle.NONE);
-			rpd.setX((double)x);
-			rpd.setY((double)y);
-			rpd.setZ((double)z);
-			rpd.setWorldName(world.getName());
-		}
-		
-		return rpd;
 	}
 	
 	public static boolean isPoweredUp(SpoutBlock block) {
@@ -296,32 +231,6 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	}
 	
 	/**
-	 * Event Fired when this block is placed.
-	 * Update/Insert the data into the DB for this block, so we can keep an eye on it.
-	 */
-	public void onBlockPlace(org.bukkit.World world, int x, int y, int z) {
-		//when the block is placed we need to make sure to get data set up for it.
-		RecordPlayerData rpd = JukeIt.getInstance().getDatabase().find(RecordPlayerData.class)
-				.where()
-					.eq("x", (double)x)
-					.eq("y", (double)y)
-					.eq("z", (double)z)
-					.ieq("worldName", world.getName())
-				.findUnique();
-		if (rpd == null) {
-			rpd = new RecordPlayerData();
-			rpd.setDiscKey(null);
-			rpd.setNeedleType(RPNeedle.NONE);
-			rpd.setX((double)x);
-			rpd.setY((double)y);
-			rpd.setZ((double)z);
-			rpd.setWorldName(world.getName());
-			JukeIt.getInstance().getDatabase().save(rpd);
-		}
-		/* If its still set, well go ahead and leave it, because it could be an blockplace even from setting the custom block to a different subblock for this location */
-	}
-	
-	/**
 	 * Event Fired when this block is destroyed.
 	 * Firstly, if this player has any items in it, like a record, or a needle, then those items need
 	 * to be spawned into the world.
@@ -329,56 +238,27 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	 */
 	public void onBlockDestroyed(org.bukkit.World world, int x, int y, int z) {
 		
-		//Bukkit.getLogger().log(Level.INFO, "Block Destroyed.");
-		
-		Location location = new Location(world, (double)x, (double)y, (double)z);
-		Location spawnLoc = location;
+		Block block = world.getBlockAt(x, y, z);
+		Location spawnLoc = block.getLocation();
 		spawnLoc.setY(spawnLoc.getY()+1);
 		
-		//if theres junk in this block we need to make sure it drops too
-		RecordPlayerData rpd = JukeIt.getInstance().getDatabase().find(RecordPlayerData.class)
-				.where()
-					.eq("x", (double)x)
-					.eq("y", (double)y)
-					.eq("z", (double)z)
-					.ieq("worldName", world.getName())
-				.findUnique();
-		if (rpd != null) {
-			if (!RPNeedle.getById(rpd.getNeedleType()).equals(RPNeedle.NONE)) {
-				world.dropItem(spawnLoc, new SpoutItemStack(RPNeedle.getById(rpd.getNeedleType()).getItem(), 1));
-			}
-			
-			if (rpd.hasDisc()) {
-				//get disc.
-				DiscData discData = JukeIt.getInstance().getDatabase().find(DiscData.class)
-						.where()
-							.ieq("nameKey", rpd.getDiscKey())
-						.findUnique();
-				if (discData == null) {
-					Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
-				} else {
-					//create disc to spawn
-					BurnedDisc disc = new BurnedDisc(discData);
-					ItemStack iss = new SpoutItemStack(disc, 1);
-					spawnLoc.getWorld().dropItem(spawnLoc, iss);
-				}
-				
-				//just in case there was a disc
-				stopMusic(location, RPNeedle.getById(rpd.getNeedleType()));
-			}
+		//get data
+		RPStorageData rpdata = RPStorageData.getOrCreateEntry(block);
+		
+		//drop needle if there is one
+		if (!RPNeedle.getById(rpdata.getNeedle()).equals(RPNeedle.NONE)) {
+			world.dropItem(spawnLoc, new SpoutItemStack(RPNeedle.getById(rpdata.getNeedle()).getItem(), 1));
 		}
 		
-		//delete ALL data associated to this location, just incase somehow multiples got into the database this will take care of that.
-		List<RecordPlayerData> rpdall = JukeIt.getInstance().getDatabase().find(RecordPlayerData.class)
-				.where()
-					.eq("x", (double)x)
-					.eq("y", (double)y)
-					.eq("z", (double)z)
-					.ieq("worldName", world.getName())
-				.findList();
-		if (!rpdall.isEmpty()) {
-			JukeIt.getInstance().getDatabase().delete(rpdall);
+		//drop disc if there is a disc.
+		if (rpdata.hasDisc()) {
+			ItemStack disc = BurnedDisc.createDisc(rpdata);
+			spawnLoc.getWorld().dropItem(spawnLoc, disc);
+			
+			stopMusic(block.getLocation(), RPNeedle.getById(rpdata.getNeedle()));
 		}
+		
+		RPStorageData.deleteEntries(block);
 	}
 	
 	public int getRange() {

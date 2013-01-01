@@ -21,25 +21,21 @@ package com.chrischurchwell.jukeit.material.items;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
 
 import com.chrischurchwell.jukeit.JukeIt;
+import com.chrischurchwell.jukeit.material.DiscColor;
 import com.chrischurchwell.jukeit.permission.CraftPermissible;
 
 
-public abstract class BlankDisc extends GenericCustomItem implements DiscColor, CraftPermissible {
+public class BlankDisc extends GenericCustomItem implements DiscColorable, CraftPermissible {
 
-	private int color = DiscColor.WHITE; //white is the default
+	private DiscColor color = DiscColor.WHITE; //white is the default
 	
-	public BlankDisc(String name) {
+	public BlankDisc(String name, DiscColor color) {
 		super(JukeIt.getInstance(), name);
-		setTexture(getTextureFileName());
-	}
-
-	public abstract String getTextureFileName();
-	
-	public void setColor(int color) {
 		this.color = color;
+		setTexture(this.color.blankTexture().getFile());
 	}
 	
-	public int getColor() {
+	public DiscColor getColor() {
 		return color;
 	}
 	

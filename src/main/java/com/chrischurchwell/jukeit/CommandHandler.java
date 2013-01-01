@@ -26,10 +26,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.block.SpoutBlock;
 
 import com.chrischurchwell.jukeit.material.blocks.JukeboxBlock;
 import com.chrischurchwell.jukeit.material.blocks.RecordPlayer;
+import com.chrischurchwell.jukeit.material.items.BurnedDisc;
 import com.chrischurchwell.jukeit.util.ResourceManager;
 
 
@@ -74,6 +76,15 @@ public class CommandHandler implements CommandExecutor {
 		System.arraycopy(args, 1, shifted, 0, shifted.length);
 		
 		return shifted;
+	}
+	
+	public Boolean test(CommandSender sender, String[] args){
+		
+		Player player = (Player)sender;
+		ItemStack item = player.getItemInHand();
+		sender.sendMessage("Data: " + BurnedDisc.decodeDisc(item));
+		
+		return true;
 	}
 	
 	public Boolean help(CommandSender sender, String[] args)

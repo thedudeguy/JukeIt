@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -39,7 +40,8 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.database.DiscData;
-import com.chrischurchwell.jukeit.database.RecordPlayerData;
+import com.chrischurchwell.jukeit.database.RPStorageData;
+import com.chrischurchwell.jukeit.material.DiscColor;
 import com.chrischurchwell.jukeit.material.Items;
 import com.chrischurchwell.jukeit.material.blocks.designs.RPNeedle;
 import com.chrischurchwell.jukeit.material.items.BurnedDisc;
@@ -109,90 +111,33 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			
 		}
 		
-		Location location = new Location(world, (double)x, (double)y, (double)z);
+		Block block = world.getBlockAt(x, y, z);
 		
-		//get data from the db
-		//TODO: create a join so dont have to make a second query for disc data
-		RecordPlayerData rpdata = JukeIt.getInstance().getDatabase().find(RecordPlayerData.class)
-				.where()
-					.eq("x", (double)x)
-					.eq("y", (double)y)
-					.eq("z", (double)z)
-					.ieq("worldName", world.getName())
-				.findUnique();
-		if (rpdata == null) {
-			JukeIt.warn("Missing Record Player Data, this data should have been created when the block was placed.");
-		} else {
-			if (rpdata.hasDisc()) {
-				DiscData discData = JukeIt.getInstance().getDatabase().find(DiscData.class)
-						.where()
-							.ieq("nameKey", rpdata.getDiscKey())
-						.findUnique();
-				if (discData == null) {
-					Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
-				} else {
-					//replay
-					this.playMusic(discData.getUrl(), location);
-					
-					return;
-				}
-			}
+		RPStorageData rpdata = RPStorageData.getOrCreateEntry(block);
+		
+		if (rpdata.hasDisc() && !rpdata.getUrl().isEmpty()) {
+			this.playMusic(rpdata.getUrl(), block.getLocation());
+			
 		}
-		
-		//Sound sound = new Sound("disc_load.wav");
-		new Sound(SoundEffect.JUKEBOX_STOP, world.getBlockAt(x,y,z), 8).play();
 	}
 	
 	public void onBlockDestroyed(World world, int x, int y, int z) {
 		
-		Location location = new Location(world, (double)x, (double)y, (double)z);
+		Block block = world.getBlockAt(x, y, z);
 		
-		//get data from the db
-		RecordPlayerData rpdata = JukeIt.getInstance().getDatabase().find(RecordPlayerData.class)
-				.where()
-					.eq("x", (double)x)
-					.eq("y", (double)y)
-					.eq("z", (double)z)
-					.ieq("worldName", world.getName())
-				.findUnique();
-		if (rpdata == null) {
-			JukeIt.warn("Missing Record Player Data, this data should have been created when the block was placed.");
-		} else {
+		RPStorageData rpdata = RPStorageData.getOrCreateEntry(block);
+		
+		if (rpdata.hasDisc()) {
+			//create disc to spawn
+			ItemStack disc = BurnedDisc.createDisc(rpdata);
+			Location spawnLoc = block.getLocation();
+			spawnLoc.setY(spawnLoc.getY()+1);
+			spawnLoc.getWorld().dropItem(spawnLoc, disc);
 			
-			if (rpdata.hasDisc()) {
-				//get disc.
-				DiscData discData = JukeIt.getInstance().getDatabase().find(DiscData.class)
-						.where()
-							.ieq("nameKey", rpdata.getDiscKey())
-						.findUnique();
-				if (discData == null) {
-					Bukkit.getLogger().log(Level.WARNING, "Disc Key is missing from discs table");
-				} else {
-					//create disc to spawn
-					BurnedDisc disc = new BurnedDisc(discData);
-					ItemStack iss = new SpoutItemStack(disc, 1);
-					Location spawnLoc = location;
-					spawnLoc.setY(spawnLoc.getY()+1);
-					spawnLoc.getWorld().dropItem(spawnLoc, iss);
-				}
-				
-				//just in case there was a disc
-				stopMusic(location);
-			}
-			
+			stopMusic(block.getLocation());
 		}
 		
-		//delete ALL data associated to this location, just incase somehow multiples got into the database this will take care of that.
-		List<RecordPlayerData> rpdall = JukeIt.getInstance().getDatabase().find(RecordPlayerData.class)
-				.where()
-					.eq("x", (double)x)
-					.eq("y", (double)y)
-					.eq("z", (double)z)
-					.ieq("worldName", world.getName())
-				.findList();
-		if (!rpdall.isEmpty()) {
-			JukeIt.getInstance().getDatabase().delete(rpdall);
-		}
+		RPStorageData.deleteEntries(block);
 	}
 
 	public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
@@ -203,20 +148,9 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			return true;
 		}
 		
-		Location location = new Location(world, (double)x, (double)y, (double)z);
+		Block block = world.getBlockAt(x, y, z);
 		
-		//get data from the db
-		RecordPlayerData rpdata = JukeIt.getInstance().getDatabase().find(RecordPlayerData.class)
-				.where()
-					.eq("x", (double)x)
-					.eq("y", (double)y)
-					.eq("z", (double)z)
-					.ieq("worldName", world.getName())
-				.findUnique();
-		if (rpdata == null) {
-			JukeIt.warn("Missing Record Player Data, this data should have been created when the block was placed.");
-			return false;
-		}
+		RPStorageData rpdata = RPStorageData.getOrCreateEntry(block);
 		
 		if (rpdata.hasDisc()) {
 			
@@ -227,23 +161,22 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			}
 			
 			//get and eject disc.
-			BurnedDisc b = Items.burnedDiscs.get(rpdata.getDiscKey());
-			ItemStack iss = new SpoutItemStack(b, 1);
-			Location spawnLoc = location;
+			//create disc to spawn
+			ItemStack disc = BurnedDisc.createDisc(rpdata);
+			Location spawnLoc = block.getLocation();
 			spawnLoc.setY(spawnLoc.getY()+1);
-			spawnLoc.getWorld().dropItem(spawnLoc, iss);
+			spawnLoc.getWorld().dropItem(spawnLoc, disc);
 			
-			rpdata.setDiscKey(null);
-			JukeIt.getInstance().getDatabase().save(rpdata);
+			RPStorageData.removeDisc(block);
 			
-			stopMusic(location);
+			stopMusic(block.getLocation());
 			
 			return true;
 		}
 		
-		SpoutItemStack inHand = new SpoutItemStack(player.getItemInHand());
+		ItemStack inHand = player.getItemInHand().clone();
 		
-		if (inHand.getMaterial() instanceof BurnedDisc) {
+		if ((new SpoutItemStack(inHand)).getMaterial() instanceof BurnedDisc) {
 			
 			if (!player.hasPermission("jukeit.use.burneddisc")) {
 				player.sendMessage("You do not have permission to perform this action.");
@@ -258,15 +191,14 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 				player.getInventory().getItemInHand().setAmount(player.getInventory().getItemInHand().getAmount()-1);
 			}
 			
-			BurnedDisc discInHand = (BurnedDisc)inHand.getMaterial();
-			
-			rpdata.setDiscKey(discInHand.getKey());
-			JukeIt.getInstance().getDatabase().save(rpdata);
+			RPStorageData.setDisc(block, inHand);
 			
 			new Sound(SoundEffect.JUKEBOX_START, world.getBlockAt(x,y,z), 8).play();
 			
 			//start the music
-			playMusic(discInHand.getUrl(), location);
+			playMusic(BurnedDisc.decodeDisc(inHand), block.getLocation());
+			
+			Debug.debug("Attempting to start jukebox with url ", BurnedDisc.decodeDisc(inHand));
 			
 			return true;
 		}
@@ -274,53 +206,12 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 		new Sound(SoundEffect.JUKEBOX_STOP, world.getBlockAt(x,y,z), 8).play();
 		return false;
 	}
-
-	@Override
-	public void onBlockPlace(World world, int x, int y, int z) {
-		//when the block is placed we need to make sure to get data set up for it.
-		RecordPlayerData rpd = JukeIt.getInstance().getDatabase().find(RecordPlayerData.class)
-				.where()
-					.eq("x", (double)x)
-					.eq("y", (double)y)
-					.eq("z", (double)z)
-					.ieq("worldName", world.getName())
-				.findUnique();
-		if (rpd == null) {
-			rpd = new RecordPlayerData();
-			rpd.setNeedleType(RPNeedle.NONE);
-			rpd.setDiscKey(null);
-			rpd.setX((double)x);
-			rpd.setY((double)y);
-			rpd.setZ((double)z);
-			rpd.setWorldName(world.getName());
-			JukeIt.getInstance().getDatabase().save(rpd);
-		}
-		/* If its still set, well go ahead and leave it, because it could be an blockplace even from setting the custom block to a different subblock for this location */
-	}
-
-	@Override
-	public void onBlockPlace(World arg0, int arg1, int arg2, int arg3, LivingEntity arg4) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onEntityMoveAt(World arg0, int arg1, int arg2, int arg3, Entity arg4) {
-		// TODO Auto-generated method stub
-
-	}
 	
-	@Override
-	public boolean isIndirectlyProvidingPowerTo(World arg0, int arg1, int arg2, int arg3, BlockFace arg4) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	@Override
 	/**
 	 * Event fires when a neighboring block updates, like a Neighboring redstone becomes powered.
 	 * We can use this to detemind if this block is now powered.
 	 */
+	@Override
 	public void onNeighborBlockChange(org.bukkit.World world, int x, int y, int z, int changedId) {
 		Debug.debug("JukeboxBlock: Neighboring Block Change Event. changedId=", changedId);
 		

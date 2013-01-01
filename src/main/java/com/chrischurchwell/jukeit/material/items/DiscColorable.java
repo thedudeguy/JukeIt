@@ -16,22 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.chrischurchwell.jukeit.material.items.colorblankdisc;
+package com.chrischurchwell.jukeit.material.items;
 
-import com.chrischurchwell.jukeit.material.items.BlankDisc;
-import com.chrischurchwell.jukeit.material.items.DiscColor;
+import com.chrischurchwell.jukeit.material.DiscColor;
 
 
-public class BlankDiscBrown extends BlankDisc {
-
-	public BlankDiscBrown() {
-		super("Blank Brown Obsidyisc");
-		setColor(DiscColor.BROWN);
-	}
+public interface DiscColorable {
 	
-	@Override
-	public String getTextureFileName() {
-		return "blank_disc_brown.png";
-	}
-
+	public DiscColor getColor();
+	
 }
