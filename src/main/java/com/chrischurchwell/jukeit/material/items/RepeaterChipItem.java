@@ -70,13 +70,13 @@ public class RepeaterChipItem extends GenericCustomItem {
 			int rotationDesign = 0;
 			
 			if (face.equals(BlockFace.NORTH)) {
-				rotationDesign = 3;
-			} else if (face.equals(BlockFace.EAST)) {
 				rotationDesign = 2;
-			} else if (face.equals(BlockFace.SOUTH)) {
+			} else if (face.equals(BlockFace.EAST)) {
 				rotationDesign = 1;
-			} else if (face.equals(BlockFace.WEST)) {
+			} else if (face.equals(BlockFace.SOUTH)) {
 				rotationDesign = 0;
+			} else if (face.equals(BlockFace.WEST)) {
+				rotationDesign = 3;
 			} else {
 				rotationDesign = 0;
 			}
