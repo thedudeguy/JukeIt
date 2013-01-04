@@ -33,11 +33,14 @@ public class TimeSlider extends GenericSlider {
 	long minTime = 60000;	//1 minute
 	long maxTime = 5400000;	//90 minutes
 	
-	private RepeaterChipData data;
+	SpoutBlock block;
 	
 	public TimeSlider(SpoutBlock block) {
+		
+		this.block = block;
+		
 		//get the data.
-		data = RepeaterChipData.getData(block);
+		RepeaterChipData data = RepeaterChipData.getData(block);
 		
 		Debug.debug("Current time set: ", data.getTime());
 		Debug.debug("Formated time: ", formatTime(data.getTime()));
@@ -83,6 +86,9 @@ public class TimeSlider extends GenericSlider {
 	public void onSliderDrag(SliderDragEvent event) {
 		setSliderPosition(event.getNewPosition());
 		update();
+		
+		RepeaterChipData data = RepeaterChipData.getData(block);
+		
 		data.setTime(getTimeFromPosition(event.getNewPosition()));
 		RepeaterChipData.saveData(data);
 	}
