@@ -194,7 +194,6 @@ public class JukeIt extends JavaPlugin {
 		
 		try {
 			getDatabase().find(RPStorageData.class).findRowCount();
-			//getDatabase().find(DiscData.class).findRowCount();
 			getDatabase().find(RepeaterChipData.class).findRowCount();
 		} catch (PersistenceException ex) {
 			info("Attempting to install db tables");
