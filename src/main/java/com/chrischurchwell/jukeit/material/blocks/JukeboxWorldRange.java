@@ -24,6 +24,7 @@ import org.getspout.spoutapi.block.design.GenericCubeBlockDesign;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.inventory.SpoutShapedRecipe;
 import org.getspout.spoutapi.material.MaterialData;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.material.Blocks;
@@ -63,11 +64,18 @@ public class JukeboxWorldRange extends JukeboxBlock {
 	}
 	
 	@Override
-	public void playMusic(String url, Location location)
-	
-	{
+	public void playMusic(String url, Location location) {
 		 url = JukeIt.finishIncompleteURL(url);
-	SpoutManager.getSoundManager().playGlobalCustomMusic(JukeIt.getInstance(), url, true);
+		 SpoutManager.getSoundManager().playGlobalCustomMusic(JukeIt.getInstance(), url, true);
+	}
+	
+	@Override
+	public void stopMusic(Location location) {
+		for(SpoutPlayer p:SpoutManager.getOnlinePlayers()) {
+			if (p.isSpoutCraftEnabled()) {
+				SpoutManager.getSoundManager().stopMusic(p);
+			}
+		}
 	}
 
 	@Override
