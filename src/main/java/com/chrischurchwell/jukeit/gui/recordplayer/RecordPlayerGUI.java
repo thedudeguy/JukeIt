@@ -128,6 +128,7 @@ public class RecordPlayerGUI extends GenericPopup {
 		} else {
 			data = RPStorageData.setDisc(block, record);
 		}
+		RecordPlayer.stopMusic(block.getLocation(), RPNeedle.getById(data.getNeedle()), false);
 		RecordPlayer.updateBlockDesign(block, data);
 	}
 	
@@ -143,6 +144,7 @@ public class RecordPlayerGUI extends GenericPopup {
 		}
 		
 		JukeIt.getInstance().getDatabase().save(data);
+		RecordPlayer.stopMusic(block.getLocation(), RPNeedle.getById(data.getNeedle()), false);
 		RecordPlayer.updateBlockDesign(block, data);
 	}
 	

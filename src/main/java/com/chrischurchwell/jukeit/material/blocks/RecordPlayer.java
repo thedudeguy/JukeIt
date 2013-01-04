@@ -261,11 +261,11 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		RPStorageData.deleteEntries(block);
 	}
 	
-	public int getRange() {
+	public static int getRange() {
 		return 10;
 	}
 	
-	public int getRange(Location location, RPNeedle needle) {
+	public static int getRange(Location location, RPNeedle needle) {
 		
 		int range = getRange();
 		HashMap<BlockFace,Speaker> blocks = getConnectedBlocks(location);
@@ -315,7 +315,11 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		}
 	}
 	
-	public void stopMusic(Location location, RPNeedle needle) {
+	public static void stopMusic(Location location, RPNeedle needle) {
+		stopMusic(location, needle, true);
+	}
+	
+	public static void stopMusic(Location location, RPNeedle needle, boolean playSoundEffect) {
 		int range = getRange(location, needle);
 		Debug.debug("Stopping audio with range: ", range);
 		//get players in radius of the jukebox and start it for only those players
@@ -328,7 +332,9 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 				}
 			}
 		}
-		new Sound(SoundEffect.RECORD_PLAYER_STOP, location, 8).play();
+		if(playSoundEffect) {
+			new Sound(SoundEffect.RECORD_PLAYER_STOP, location, 8).play();
+		}
 	}
 	
 	public static long getRepeatChipTime(SpoutBlock block) {
@@ -344,7 +350,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		return 0;
 	}
 	
-	public HashMap<BlockFace, Speaker> getConnectedBlocks(Location location) {
+	public static HashMap<BlockFace, Speaker> getConnectedBlocks(Location location) {
 		
 		HashMap<BlockFace, Speaker> blocks = new HashMap<BlockFace, Speaker>();
 		
