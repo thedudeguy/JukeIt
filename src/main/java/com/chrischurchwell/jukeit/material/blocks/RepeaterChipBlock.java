@@ -24,14 +24,15 @@ import java.util.Map.Entry;
 import org.bukkit.World;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.design.GenericBlockDesign;
+import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.gui.repeater.RepeaterChipGUI;
 import com.chrischurchwell.jukeit.material.Blocks;
+import com.chrischurchwell.jukeit.material.Items;
 import com.chrischurchwell.jukeit.texture.TextureFile;
-import com.chrischurchwell.jukeit.util.Debug;
 import com.chrischurchwell.meshit.Model;
 
 public class RepeaterChipBlock extends GenericCustomBlock {
@@ -44,6 +45,8 @@ public class RepeaterChipBlock extends GenericCustomBlock {
 	
 	public RepeaterChipBlock() {
 		super(JukeIt.getInstance(), "(Do Not Use)Reapeter Chip Block Reference", 36);
+		
+		setItemDrop(new SpoutItemStack(Items.repeaterChipItem));
 		
 		Model model = new Model(JukeIt.getInstance().getResource("models/repeater.obj"));
 		GenericBlockDesign design = model.getDesign();
