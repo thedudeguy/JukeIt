@@ -31,6 +31,7 @@ import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.gui.repeater.RepeaterChipGUI;
 import com.chrischurchwell.jukeit.material.Blocks;
 import com.chrischurchwell.jukeit.texture.TextureFile;
+import com.chrischurchwell.jukeit.util.Debug;
 import com.chrischurchwell.meshit.Model;
 
 public class RepeaterChipBlock extends GenericCustomBlock {
@@ -42,7 +43,7 @@ public class RepeaterChipBlock extends GenericCustomBlock {
 	}
 	
 	public RepeaterChipBlock() {
-		super(JukeIt.getInstance(), "Repeater Chip", 36);
+		super(JukeIt.getInstance(), "(Do Not Use)Reapeter Chip Block Reference", 36);
 		
 		Model model = new Model(JukeIt.getInstance().getResource("models/repeater.obj"));
 		GenericBlockDesign design = model.getDesign();
@@ -82,4 +83,5 @@ public class RepeaterChipBlock extends GenericCustomBlock {
 		
 		return true;
 	}
+	
 }
