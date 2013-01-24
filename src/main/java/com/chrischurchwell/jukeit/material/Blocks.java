@@ -20,11 +20,7 @@ package com.chrischurchwell.jukeit.material;
 
 import com.chrischurchwell.jukeit.material.blocks.DiscBurner;
 import com.chrischurchwell.jukeit.material.blocks.JukeboxBasic;
-import com.chrischurchwell.jukeit.material.blocks.JukeboxLongRange;
 import com.chrischurchwell.jukeit.material.blocks.JukeboxLowRange;
-import com.chrischurchwell.jukeit.material.blocks.JukeboxMaxRange;
-import com.chrischurchwell.jukeit.material.blocks.JukeboxMidRange;
-import com.chrischurchwell.jukeit.material.blocks.JukeboxWorldRange;
 import com.chrischurchwell.jukeit.material.blocks.MachineBlock;
 import com.chrischurchwell.jukeit.material.blocks.RecordPlayer;
 import com.chrischurchwell.jukeit.material.blocks.Speaker;
@@ -36,10 +32,6 @@ public class Blocks {
 	public static RecordPlayer recordPlayer;
 	public static JukeboxBasic jukeboxBasic;
 	public static JukeboxLowRange jukeboxLowRange;
-	public static JukeboxMidRange jukeboxMidRange;
-	public static JukeboxLongRange jukeboxLongRange;
-	public static JukeboxMaxRange jukeboxMaxRange;
-	public static JukeboxWorldRange jukeboxWorldRange;
 	
 	public static MachineBlock machineBlock;
 	
@@ -63,10 +55,6 @@ public class Blocks {
 		//the must be initialized in order
 		jukeboxBasic = new JukeboxBasic();
 		jukeboxLowRange = new JukeboxLowRange();
-		jukeboxMidRange = new JukeboxMidRange();
-		jukeboxLongRange = new JukeboxLongRange();
-		jukeboxMaxRange = new JukeboxMaxRange();
-		jukeboxWorldRange = new JukeboxWorldRange();
 		
 		speakerWireBlock = new SpeakerWireBlock();
 	}
