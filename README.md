@@ -8,19 +8,19 @@ JukeIt (formerly JukeBukkit) allows users to craft blank discs, called Obsidyisc
 
 Go [Here](http://chrischurchwell.com) to download the Pro version of JukeIt.
 
-[Screenshots](https://github.com/thedudeguy/JukeIt/wiki/Screenshots) | [Wiki](https://github.com/thedudeguy/JukeIt/wiki) | [Source](https://github.com/thedudeguy/JukeIt)
+[Screenshots](https://github.com/thedudeguy/JukeIt-Free/wiki/Screenshots) | [Wiki](https://github.com/thedudeguy/JukeIt-Free/wiki) | [Source](https://github.com/thedudeguy/JukeIt-Free)
 
 ### The Info You Want: 
 
-[How to use JukeIt](https://github.com/thedudeguy/JukeIt/wiki/How-to-Use-JukeIt)
+[How to use JukeIt](https://github.com/thedudeguy/JukeIt-Free/wiki/How-to-Use-JukeIt)
 
-[JukeIt Crafting Recipes](https://github.com/thedudeguy/JukeIt/wiki/Recipes)
+[JukeIt Crafting Recipes](https://github.com/thedudeguy/JukeIt-Free/wiki/Recipes)
 
-[Configuration](https://github.com/thedudeguy/JukeIt/wiki/Configuration)
+[Configuration](https://github.com/thedudeguy/JukeIt-Free/wiki/Configuration)
 
-[Setting up the Web Server](https://github.com/thedudeguy/JukeIt/wiki/Setting-up-the-Web-Server)
+[Setting up the Web Server](https://github.com/thedudeguy/JukeIt-Free/wiki/Setting-up-the-Web-Server)
 
-[Permissions](https://github.com/thedudeguy/JukeIt/wiki/Permissions)
+[Permissions](https://github.com/thedudeguy/JukeIt-Free/wiki/Permissions)
 
 ## Features
 
@@ -75,12 +75,12 @@ JukeIt 3.0 Has a new disc system. You will need to transfer the discs to the new
 
 ## Support
 
-* [Wiki](https://github.com/thedudeguy/JukeIt/wiki)
-* [Issues](https://github.com/thedudeguy/JukeIt/issues)
+* [Wiki](https://github.com/thedudeguy/JukeIt-Free/wiki)
+* [Issues](https://github.com/thedudeguy/JukeIt-Free/issues)
 
 ## Credits
 
-[Credits](https://github.com/thedudeguy/JukeIt/wiki/Credits)
+[Credits](https://github.com/thedudeguy/JukeIt-Free/wiki/Credits)
 
 ### Change Log
 
