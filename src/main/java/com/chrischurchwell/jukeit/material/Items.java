@@ -26,7 +26,6 @@ import com.chrischurchwell.jukeit.material.items.DiscOnAStick;
 import com.chrischurchwell.jukeit.material.items.MachineBottom;
 import com.chrischurchwell.jukeit.material.items.MachineTop;
 import com.chrischurchwell.jukeit.material.items.SpeakerWire;
-import com.chrischurchwell.jukeit.material.items.needles.BlazeFlintNeedle;
 import com.chrischurchwell.jukeit.material.items.needles.WoodFlintNeedle;
 
 
@@ -36,7 +35,6 @@ public class Items {
 	public static MachineBottom machineBottom;
 	
 	public static WoodFlintNeedle woodflintNeedle;
-	public static BlazeFlintNeedle blazeflintNeedle;
 	
 	public static BlankDisc blankDiscBlack;
 	public static BlankDisc blankDiscBlue;
@@ -136,7 +134,6 @@ public class Items {
 		
 		//Init custom items.
 		woodflintNeedle = new WoodFlintNeedle();
-		blazeflintNeedle = new BlazeFlintNeedle();
 		
 		speakerWire = new SpeakerWire();
 		

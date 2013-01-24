@@ -98,17 +98,6 @@ public class Recipies {
 			.setIngredient('f', MaterialData.flint)
 			);
 		
-		//////////////////////////////
-		// Blaze-Flint Record Needle //
-		//////////////////////////////
-		SpoutManager.getMaterialManager().registerSpoutRecipe(
-			new SpoutShapedRecipe( new SpoutItemStack(Items.blazeflintNeedle, 1) )
-			.shape("ttt", "sss", "  f")
-			.setIngredient('t', Items.speakerWire)
-			.setIngredient('s', MaterialData.blazeRod)
-			.setIngredient('f', MaterialData.flint)
-			);
-		
 		//////////////////////
 		// Disc Burner //
 		//////////////////////

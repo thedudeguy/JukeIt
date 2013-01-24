@@ -25,8 +25,7 @@ import com.chrischurchwell.jukeit.material.Items;
 
 public enum RPNeedle {
 	NONE		(0,		0, null),
-	WOOD_FLINT	(32,	0, Items.woodflintNeedle),
-	BLAZE_FLINT	(33,	.30, Items.blazeflintNeedle);
+	WOOD_FLINT	(32,	0, Items.woodflintNeedle);
 	
 	private final int textureId;
 	private final double rangeModifier;
