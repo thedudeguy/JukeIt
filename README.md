@@ -2,9 +2,11 @@
 
 ------------------------------------
 
+## Free Version
+
 JukeIt (formerly JukeBukkit) allows users to craft blank discs, called Obsidyiscs. You can burn these discs with music of your liking, music that is hosted on the internet somewhere, and play the music on your obsidyiscs in jukeboxes, also crafted by players.
 
-[![Download](http://i.minus.com/i0xywzd0kbM7K.png "Download")](http://chrischurchwell.com/products/jukeit/)
+Go [Here](http://chrischurchwell.com) to download the Pro version of JukeIt.
 
 [Screenshots](https://github.com/thedudeguy/JukeIt/wiki/Screenshots) | [Wiki](https://github.com/thedudeguy/JukeIt/wiki) | [Source](https://github.com/thedudeguy/JukeIt)
 
@@ -26,21 +28,24 @@ JukeIt (formerly JukeBukkit) allows users to craft blank discs, called Obsidyisc
 * Attach .ogg's, wav's, or mp3's to an Obsidyisc in which that particular disc will play.
 * All players within range of a jukebox can hear an Obsidyisc playing.
 * Build numerous types of jukeboxes with different ranges.
-* Built in Server to host Audio files on your own server!
-* Nice GUI to allow for users to choose from the server music list when creating their burned discs.
-* Allow your users to upload their music to the server via the web gui.
-* Craft multiple types of jukeboxes
-* Craft jukebox modifiers such as speakers which increase audible range.
-* Craft Needle modifiers such as Blaze Needle which increase audible range by 30%.
 * Activate jukeboxes via redstone.
+
+### Upgrade to Pro for even more features, such as:
+* Event more jukeboxes with even greater ranges!
+* Built in Server to host Audio files on your own server!
+* Allow your users to upload their music to the server via the web gui.
+* Craft jukebox modifiers such as speakers which increase audible range.
+* Craft Needle modifiers such as Blaze Needle which increases audible range by 30%.
+* Use Custom Texture Packs
+* Loopable Music with the Repeater block!
 
 ## Requirements
 
 JukeIt is built and tested against
 
-* SpoutPlugin at least build 1369
-* SpoutCraft at least build  1833
-* CraftBukkit 1.3.2-R2.0
+* SpoutPlugin at least build 1414
+* SpoutCraft at least build  1938
+* CraftBukkit 1.4.7-R0.1
 
 ## Installation
 
@@ -49,25 +54,24 @@ JukeIt is built and tested against
 * Install by placing jukeit.jar into your bukkit server's plugin folder.
 * Restart Server
 
-*Important If you plan to use the Web Server*
+*Important If you plan to use the Web Server* (Pro Version Only)
 
 * After restarted, you *must* edit the config.yml for JukeIt.
 * Set the minecraftServerHostname config option to your server's Domain name, or IP Address, that your user's use to connect to your server.
 * Make sure to set the webServerPort to an open port on your server, and the appropriate port forwarding has been established so that users can connect to the webServer.
 * Restart Server 
 
-## Upgrading from version 2.1.0
+## Upgrading from JukeIt 2 to JukeIt 3
 
 * As always, back up everything.
 * Shut down your Minecraft Server
-* Rename the "JukeBukkit" data folder to "JukeIt"
-* Rename JukeIt/JukeBukkit.db to JukeIt/JukeIt.db
 * Download and place the JukeIt plugin jar into your servers plugins folder.
-* If you use permissions, you will need to adjust any permissions set for JukeIt. All permission nodes have been renamed from jukebukkit to jukeit.
 * Start server.
 
-Previously placed JukeBukkit blocks will all disappear, and become stone and such. You will need to re-place the blocks manually. I apologize if this inconveniences you.
-
+JukeIt 3.0 Has a new disc system. You will need to transfer the discs to the new system. I tried to make this as easy as possible:
+* Log in to your server as OP.
+* user the command: '/jukeit upgradediscs'. The old disc data will be converted and spawned in the world in front of you. You may need to have some storage space ready if you have a lot of discs!
+* When you are satisfied, you can optionally use the command '/jukeit removeolddiscs' to clean up the old disc data from the server. The old disc data will be permanantly deleted, so be careful.
 
 ## Support
 
@@ -79,6 +83,14 @@ Previously placed JukeBukkit blocks will all disappear, and become stone and suc
 [Credits](https://github.com/thedudeguy/JukeIt/wiki/Credits)
 
 ### Change Log
+
+#### Version 3.0.0
+
+* Fixed the repeater chip orientation.
+* Fixed client crash when changing the time on the repeater chip
+* Repeater Chip drops the correct item.
+* Can no longer place the repeater chip block form, must use the item form.
+* Revamped the disc system. Burned discs no longer display in the creative menu.
 
 #### Version 2.2.2
 
