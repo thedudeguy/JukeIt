@@ -53,7 +53,7 @@ public class Debug {
 	
 	public static void debug(Player player, String debugText) {
 		if (JukeIt.getInstance().getConfig().getBoolean("debug")) {
-			player.sendMessage("&8["+tag + "] &7"+debugText);
+			player.sendMessage(ChatColor.DARK_GRAY + "["+ ChatColor.GRAY + tag + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY +debugText);
 			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GOLD +"["+tag+"] " + player.getName() + ": " + debugText);
 		}
 	}
