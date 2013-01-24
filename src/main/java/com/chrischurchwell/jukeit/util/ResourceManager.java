@@ -81,7 +81,7 @@ public class ResourceManager {
 	
 	public static void addCache() {
 		for (TextureFile texture : TextureFile.values()) {
-			String pack = JukeIt.getInstance().getConfig().getString("texturePack", "default");
+			String pack = "default";
 			File toCache = new File(JukeIt.getInstance().getDataFolder(), new File("textures/"+pack, texture.getFile()).getPath());
 			if (toCache.exists()) {
 				SpoutManager.getFileManager().addToCache(JukeIt.getInstance(), toCache);
