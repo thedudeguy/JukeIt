@@ -59,7 +59,6 @@ public enum TextureFile {
 	BURNED_DISC_WHITE(		"burned_disc_white.png"),
 	BURNED_DISC_YELLOW(		"burned_disc_yellow.png"),
 	
-	NEEDLE_BLAZE_FLINT(		"needle_blaze-flint.png"),
 	NEEDLE_STICK_FLINT(		"needle_stick-flint.png"),
 	
 	ITEM_DISC_ON_A_STICK(	"disconastick.png"),
@@ -67,13 +66,10 @@ public enum TextureFile {
 	ITEM_MACHINE_TOP(		"machineitemtop.png"),
 	ITEM_MACHINE_BOTTOM(	"machineitembot.png"),
 	
-	ITEM_REPEATER_CHIP(		"repeater_item.png"),
-	
 	/* gui */
 	GUI_BG_BLUE(			"borderblue.png"),
 	GUI_BG_MACHINE(			"machinegui.png"),
 	GUI_BG_LABEL_WRITER(	"paper.png"),
-	GUI_BG_REPEATER(		"repeater_bg.png"),
 	
 	/* blocks */
 	BLOCK_MACHINE(			"machineblock.png", 64, 64, 64),
@@ -83,13 +79,7 @@ public enum TextureFile {
 	BLOCK_BURNER(			"discburner.png", 64, 16, 16),
 	
 	BLOCK_JUKEBOX_BASIC(	"jukebox_basic.png", 32, 16, 16),
-	BLOCK_JUKEBOX_LOW(		"jukebox_low.png", 64, 16, 16),
-	BLOCK_JUKEBOX_MID(		"jukebox_mid.png", 64, 16, 16),
-	BLOCK_JUKEBOX_LONG(		"jukebox_long.png", 64, 16, 16),
-	BLOCK_JUKEBOX_MAX(		"jukebox_max.png", 64, 16, 16),
-	BLOCK_JUKEBOX_WORLD(	"jukebox_world.png", 64, 16, 16),
-	
-	BLOCK_REPEATER_CHIP(	"repeater.png", 32, 32, 32);
+	BLOCK_JUKEBOX_LOW(		"jukebox_low.png", 64, 16, 16);
 	
 	private String file;
 	private int width;
