@@ -18,8 +18,6 @@
  */
 package com.chrischurchwell.jukeit.listener;
 
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -41,7 +39,6 @@ import org.getspout.spoutapi.particle.Particle;
 import org.getspout.spoutapi.particle.Particle.ParticleType;
 
 import com.chrischurchwell.jukeit.JukeIt;
-import com.chrischurchwell.jukeit.database.DiscData;
 import com.chrischurchwell.jukeit.event.MachineCompleteEvent;
 import com.chrischurchwell.jukeit.event.MachineEvent;
 import com.chrischurchwell.jukeit.event.MachineProcessEvent;

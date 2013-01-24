@@ -21,10 +21,8 @@ package com.chrischurchwell.jukeit.material.blocks;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -43,7 +41,6 @@ import org.getspout.spoutapi.particle.Particle.ParticleType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
-import com.chrischurchwell.jukeit.database.DiscData;
 import com.chrischurchwell.jukeit.database.RPStorageData;
 import com.chrischurchwell.jukeit.database.RepeaterChipData;
 import com.chrischurchwell.jukeit.gui.recordplayer.RecordPlayerGUI;
@@ -165,8 +162,6 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		if (rpdata.hasDisc() && !RPNeedle.getById(rpdata.getNeedle()).equals(RPNeedle.NONE)) {
 			
 			playMusic(rpdata.getUrl(), block.getLocation(), RPNeedle.getById(rpdata.getNeedle()));
-			
-				Location location = new Location(world, (double)x, (double)y, (double)z);
 				
 				long repeat = getRepeatChipTime(block);
 				if (repeat > 0) {

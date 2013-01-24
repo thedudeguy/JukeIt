@@ -35,7 +35,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.database.RPStorageData;
 import com.chrischurchwell.jukeit.gui.PlayerInventorySlot;
-import com.chrischurchwell.jukeit.material.Items;
 import com.chrischurchwell.jukeit.material.blocks.RecordPlayer;
 import com.chrischurchwell.jukeit.material.blocks.designs.RPNeedle;
 import com.chrischurchwell.jukeit.material.items.BurnedDisc;

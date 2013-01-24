@@ -19,12 +19,7 @@
 package com.chrischurchwell.jukeit.material;
 
 import java.util.HashMap;
-import java.util.List;
 
-import javax.persistence.PersistenceException;
-
-import com.chrischurchwell.jukeit.JukeIt;
-import com.chrischurchwell.jukeit.database.DiscData;
 import com.chrischurchwell.jukeit.material.items.BlankDisc;
 import com.chrischurchwell.jukeit.material.items.BurnedDisc;
 import com.chrischurchwell.jukeit.material.items.DiscOnAStick;
@@ -34,7 +29,6 @@ import com.chrischurchwell.jukeit.material.items.RepeaterChipItem;
 import com.chrischurchwell.jukeit.material.items.SpeakerWire;
 import com.chrischurchwell.jukeit.material.items.needles.BlazeFlintNeedle;
 import com.chrischurchwell.jukeit.material.items.needles.WoodFlintNeedle;
-import com.chrischurchwell.jukeit.texture.TextureFile;
 
 
 public class Items {

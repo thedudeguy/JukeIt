@@ -33,9 +33,7 @@ import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
-import com.chrischurchwell.jukeit.database.DiscData;
 import com.chrischurchwell.jukeit.material.DiscColor;
-import com.chrischurchwell.jukeit.material.Items;
 import com.chrischurchwell.jukeit.material.items.BlankDisc;
 import com.chrischurchwell.jukeit.material.items.BurnedDisc;
 

@@ -18,17 +18,11 @@
  */
 package com.chrischurchwell.jukeit.material.blocks;
 
-import java.util.List;
-import java.util.logging.Level;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
@@ -39,11 +33,7 @@ import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
-import com.chrischurchwell.jukeit.database.DiscData;
 import com.chrischurchwell.jukeit.database.RPStorageData;
-import com.chrischurchwell.jukeit.material.DiscColor;
-import com.chrischurchwell.jukeit.material.Items;
-import com.chrischurchwell.jukeit.material.blocks.designs.RPNeedle;
 import com.chrischurchwell.jukeit.material.items.BurnedDisc;
 import com.chrischurchwell.jukeit.permission.CraftPermissible;
 import com.chrischurchwell.jukeit.permission.UsePermissible;

@@ -8,8 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import net.minecraft.server.v1_4_6.Item;
-
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
@@ -18,7 +16,6 @@ import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.material.items.BurnedDisc;
-import com.chrischurchwell.jukeit.util.Debug;
 
 @Entity()
 @Table(name="jb_rp_storage")
