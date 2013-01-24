@@ -20,7 +20,6 @@ package com.chrischurchwell.jukeit.util;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -34,35 +33,6 @@ import com.chrischurchwell.jukeit.texture.TextureFile;
 
 public class ResourceManager {
 	
-	public static final List<String> music = Arrays.asList(
-			"battle_jesus_vs_cyborg_hitlers.ogg"
-			);
-	
-	public static final List<String> web = Arrays.asList(
-			"index.html",
-			"favicon.png",
-			
-			"css/bootstrap.css",
-			"css/bootstrap.min.css",
-			"css/bootstrap-responsive.css",
-			"css/bootstrap-responsive.min.css",
-			"css/uploadify.css",
-			
-			"img/glyphicons-halflings.png",
-			"img/glyphicons-halflings-white.png",
-			"img/uploadify-cancel.png",
-			"img/jb32logo.png",
-			
-			"js/bootstrap.js",
-			"js/bootstrap.min.js",
-			"js/bootstrap-collapse.js",
-			"js/bootstrap-tooltip.js",
-			"js/bootstrap-popover.js",
-			"js/jquery.js",
-			"js/jquery.uploadify.min.js",
-			"js/uploadify.swf"
-			);
-	
 	public static void copyResources() {
 		for (TextureFile texture : TextureFile.values()) {
 			doCopy(texture.getFile(), "textures/default");
@@ -70,14 +40,6 @@ public class ResourceManager {
 		
 		for (SoundEffect sound : SoundEffect.values()) {
 			doCopy(sound.getSoundFileName(), "sounds");
-		}
-		
-		for (String m : music) {
-			doCopy(m, "music");
-		}
-		
-		for (String w : web) {
-			doCopy(w, "web");
 		}
 	}
 	

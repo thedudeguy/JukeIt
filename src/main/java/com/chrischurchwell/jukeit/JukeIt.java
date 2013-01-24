@@ -31,10 +31,6 @@ import javax.persistence.PersistenceException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.mcstats.Metrics;
 
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
@@ -47,8 +43,6 @@ import com.chrischurchwell.jukeit.listener.MachineListener;
 import com.chrischurchwell.jukeit.listener.SpeakerWireListener;
 import com.chrischurchwell.jukeit.material.Blocks;
 import com.chrischurchwell.jukeit.material.Items;
-import com.chrischurchwell.jukeit.server.MusicHandler;
-import com.chrischurchwell.jukeit.server.ServerHandler;
 import com.chrischurchwell.jukeit.util.Debug;
 import com.chrischurchwell.jukeit.util.Recipies;
 import com.chrischurchwell.jukeit.util.ResourceManager;
@@ -60,8 +54,6 @@ import com.chrischurchwell.jukeit.util.ResourceManager;
 public class JukeIt extends JavaPlugin {
 	
 	private static JukeIt instance;
-	public Server HTTPserver;
-	SelectChannelConnector HTTPconnector;
 	
 	Blocks blocks;
 	Items items;
@@ -88,10 +80,6 @@ public class JukeIt extends JavaPlugin {
 	
 	public JukeIt() {
 		instance = this;
-		
-		//load the web server
-		HTTPserver = new Server();
-		HTTPconnector = new SelectChannelConnector();
 	}
 	
 	public void onEnable()
@@ -130,40 +118,6 @@ public class JukeIt extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new SpeakerWireListener(), this);
 		this.getServer().getPluginManager().registerEvents(new MachineListener(), this);
 		
-		//start the web server up
-		if (getConfig().getBoolean("enableWebServer") == true) {
-			HTTPconnector.setPort(getConfig().getInt("webServerPort"));
-			HTTPserver.addConnector(HTTPconnector);
-			
-			ResourceHandler resourceHandler = new ResourceHandler();
-			resourceHandler.setDirectoriesListed(false);
-			resourceHandler.setResourceBase(new File(this.getDataFolder(), "web").getAbsolutePath());
-	 
-			HandlerList handlers = new HandlerList();
-			handlers.addHandler(new ServerHandler());
-			handlers.addHandler(new MusicHandler());
-			handlers.addHandler(resourceHandler);
-			
-			HTTPserver.setHandler(handlers);
-			
-			if (
-					getConfig().getString("minecraftServerHostname").isEmpty() ||
-					getConfig().getString("minecraftServerHostname").equalsIgnoreCase("") ||
-					getConfig().getString("minecraftServerHostname").equalsIgnoreCase("change.me.com")
-				) {
-				severe("Unable to start web server: minecraftServerHostname not set. Please check JukeIt config");
-			} else {
-				try {
-					HTTPserver.start();
-					//HTTPserver.join();
-					info("Web Server started on port: " + getConfig().getString("webServerPort"));
-				} catch (Exception e) {
-					warn("Unable to start web server");
-					e.printStackTrace();
-				}
-			}
-		}
-		
 		try {
 			this.getCommand("jukeit").setExecutor(new CommandHandler());
 		} catch (Exception e) {
@@ -173,17 +127,6 @@ public class JukeIt extends JavaPlugin {
 	
 	public void onDisable()
 	{
-		if (HTTPserver != null && HTTPserver.isRunning()) {
-			try {
-				info("Stopping Web Server...");
-				HTTPserver.stop();
-				HTTPserver.join();
-				info("Web server stopped.");
-			} catch (Exception e) {
-				warn("Could not stop server.");
-				e.printStackTrace();
-			}
-		}
 		info("Disabled");
 	}
 	
@@ -245,27 +188,8 @@ public class JukeIt extends JavaPlugin {
 			Debug.debug("URL Passes, returning url");
 			return url;
 		} catch (MalformedURLException e) {
-			
-			Debug.debug("URL Failed, probably a server file");
-			String newURL = 
-					"http://" + 
-					JukeIt.instance.getConfig().getString("minecraftServerHostname") + 
-					":" + 
-					JukeIt.instance.getConfig().getString("webServerPort") +
-					"/music/" +
-					url;
-			
-			try {
-				Debug.debug("Checking newly patched url: ", newURL);
-				URL serverURL = new URL(newURL);
-				Debug.debug("URL Passes, returning as: ", serverURL.toString());
-				return serverURL.toString();
-				
-			} catch (MalformedURLException e1) {
-				e1.printStackTrace();
-				Debug.debug("New URL Failed, returning Original URL: ", url);
-				return url;
-			}
+			e.printStackTrace();
+			return url;
 		}
 		
 	}

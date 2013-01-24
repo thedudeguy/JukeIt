@@ -63,17 +63,6 @@ public class BurnOptionsGUI extends GenericPopup {
 		
 		this.attachWidgets(JukeIt.getInstance(), border, gradient, label, close);
 		
-		if (!canUseURL() && !canUseServer()) {
-			//no options available.
-			GenericLabel message = new GenericLabel();
-			message.setX(90).setY(50);
-			message.setWidth(250).setHeight(125);
-			message.setPriority(RenderPriority.Lowest);
-			message.setText("No burn options available.");
-			this.attachWidget(JukeIt.getInstance(), message);
-			return;
-		}
-		
 		//info
 		GenericLabel info = new GenericLabel();
 		info.setX(150).setY(50);
@@ -82,58 +71,18 @@ public class BurnOptionsGUI extends GenericPopup {
 		info.setText("Select Burn Method");
 		this.attachWidget(JukeIt.getInstance(), info);
 		
-		int y = 80;
-		
-		// Server List
-		if (canUseServer()) {
-			ServerListButton serverlist = new ServerListButton(block);
-			serverlist.setX(150).setY(y);
-			serverlist.setWidth(120).setHeight(20);
-			serverlist.setPriority(RenderPriority.Lowest);
-			this.attachWidget(JukeIt.getInstance(), serverlist);
-			y = y + 30;
-		}
-		
 		// URL Burn Type
-		if (canUseURL()) {
-			// switch to custom URL
-			CustomURLButton urlbutton = new CustomURLButton(block);
-			urlbutton.setX(150).setY(y);
-			urlbutton.setWidth(120).setHeight(20);
-			urlbutton.setPriority(RenderPriority.Lowest);
-			this.attachWidget(JukeIt.getInstance(), urlbutton);
-			y = y+30;
-		}
+		CustomURLButton urlbutton = new CustomURLButton(block);
+		urlbutton.setX(150).setY(80);
+		urlbutton.setWidth(120).setHeight(20);
+		urlbutton.setPriority(RenderPriority.Lowest);
+		this.attachWidget(JukeIt.getInstance(), urlbutton);
 		
 		this.setTransparent(true);
 	}
 	
 	public static void openBurnGUI(SpoutPlayer player, Block block) {
-		
-		if (canUseURL() && !canUseServer()) {
-			player.getMainScreen().attachPopupScreen(new CustomURLSelecter(player, block, true));
-		} else if (canUseServer() && !canUseURL()){
-			player.getMainScreen().attachPopupScreen(new BurnSelector(player, block, true));
-		} else {
-			player.getMainScreen().attachPopupScreen(new BurnOptionsGUI(block));
-		}
+		player.getMainScreen().attachPopupScreen(new BurnOptionsGUI(block));
 	}
 	
-	public static boolean canUseURL() {
-		if (JukeIt.getInstance().getConfig().getBoolean("allowExternalURLs")) {
-			return true;
-		}
-		return false;
-	}
-	
-	public static boolean canUseServer() {
-		if (
-				JukeIt.getInstance().getConfig().getBoolean("enableWebServer") &&
-				JukeIt.getInstance().HTTPserver != null &&
-				JukeIt.getInstance().HTTPserver.isRunning()
-				) {
-			return true;
-		}
-		return false;
-	}
 }

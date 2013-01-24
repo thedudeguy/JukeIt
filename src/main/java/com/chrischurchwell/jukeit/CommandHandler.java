@@ -18,7 +18,6 @@
  */
 package com.chrischurchwell.jukeit;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -34,10 +33,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.database.DiscData;
-import com.chrischurchwell.jukeit.database.RPStorageData;
 import com.chrischurchwell.jukeit.material.DiscColor;
 import com.chrischurchwell.jukeit.material.blocks.JukeboxBlock;
 import com.chrischurchwell.jukeit.material.blocks.RecordPlayer;
@@ -224,32 +221,6 @@ public class CommandHandler implements CommandExecutor {
 		
 		ResourceManager.resetCache();
 		sender.sendMessage("Cache has been reset.");
-		return true;
-	}
-	
-	public Boolean listmusic(CommandSender sender, String[] args) {
-		sender.sendMessage("-- Server Music List --");
-		
-		if (!JukeIt.getInstance().HTTPserver.isRunning()) {
-			sender.sendMessage("Server is not running");
-			return true;
-		}
-		File musicFolder = new File(JukeIt.getInstance().getDataFolder(), "music");
-		if (!musicFolder.exists()) {
-			sender.sendMessage("No music files on server");
-			return true;
-		}
-		File[] fileList = musicFolder.listFiles(); 
-		if (fileList.length < 1) {
-			sender.sendMessage("No music files on server");
-			return true;
-		}
-		
-		for (File file : fileList) {
-			if (file.isFile()) {
-				sender.sendMessage(file.getName());
-			}
-		}
 		return true;
 	}
 	

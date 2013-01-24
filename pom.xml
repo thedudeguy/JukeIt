@@ -4,7 +4,7 @@
 	<groupId>com.chrischurchwell</groupId>
 	<artifactId>jukeit</artifactId>
 	<version>dev-SNAPSHOT</version>
-	<name>JukeIt</name>
+	<name>JukeIt-Free</name>
 	<repositories>
 		<repository>
 			<id>spout-repo</id>
@@ -24,6 +24,7 @@
 		</repository>
 	</repositories>
 	<build>
+		<finalName>JukeIt-Free</finalName>
 		<defaultGoal>clean install</defaultGoal>
 		<resources>
 			<resource>
@@ -97,22 +98,6 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
-						<configuration>
-							<relocations>
-								<relocation>
-									<pattern>org.eclipse.jetty</pattern>
-									<shadedPattern>cc.thedudeguy.jetty</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>org.apache</pattern>
-									<shadedPattern>cc.thedudeguy.apache</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>freemarker</pattern>
-									<shadedPattern>cc.thedudeguy.freemarker</shadedPattern>
-								</relocation>
-							</relocations>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -132,31 +117,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
-			<version>${jettyVersion}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.2.2</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-			<!-- Latest 2.3.x (not 2.4.x), at least 2.3.19 -->
-			<version>[2.3.19,2.4)</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>1.3.2</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.chrischurchwell</groupId>
 			<artifactId>meshit</artifactId>
 			<version>dev-SNAPSHOT</version>
@@ -171,13 +131,14 @@
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jettyVersion>7.2.0.v20101020</jettyVersion>
 		<bukkitVersion>1.4.7-R0.1</bukkitVersion>
 		<spoutVersion>1.4.7-R0.2-SNAPSHOT</spoutVersion>
 	</properties>
 	<inceptionYear>2011</inceptionYear>
 	<url>http://chrischurchwell.com</url>
-	<description>JukeIt (fomerly known as JukeBukkit) allows users to craft blank discs, called Obsidyiscs. You can burn these discs with music of your liking, music that is hosted on the internet somewhere, and play the music on your obsidyiscs in jukeboxes, also crafted by players.</description>
+	<description>JukeIt allows users to craft blank discs, called Obsidyiscs. You can burn these discs with music of your liking, music that is hosted on the internet somewhere, and play the music on your obsidyiscs in jukeboxes, also crafted by players.
+
+The Free Version has limited Features.</description>
 	<organization>
 		<name>Chris Churchwell</name>
 	</organization>

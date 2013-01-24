@@ -1,7 +1,7 @@
-name: JukeIt
+name: JukeIt-Free
 main: com.chrischurchwell.jukeit.JukeIt
 version: ${version}
-description: Burn music on disc (Obsidyiscs) and play them in many different types of jukeboxes.
+description: Burn music on disc (Obsidyiscs) and play them in many different types of jukeboxes. (Free Version)
 author: Chris Churchwell (thedudeguy)
 website: http://chrischurchwell.com
 depend: [Spout]
