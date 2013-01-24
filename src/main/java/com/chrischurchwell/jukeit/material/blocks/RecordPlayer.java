@@ -283,6 +283,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 				if (sp.isSpoutCraftEnabled()) {
 					try {
 						SpoutManager.getSoundManager().playCustomMusic(JukeIt.getInstance(), sp, url, true, location, range);
+						sp.sendMessage("You are listening to JukeIt (Free). Tell your server admin to upgrade to pro to get more features and remove this message.");
 					} catch (Exception e) {
 						//the disc has an error.
 						SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeIt.getInstance(), "jb_error.wav", false, location, 8);

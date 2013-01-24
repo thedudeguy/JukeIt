@@ -252,6 +252,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 				if (sp.isSpoutCraftEnabled()) {
 					try {
 						SpoutManager.getSoundManager().playCustomMusic(JukeIt.getInstance(), sp, url, true, location, getRange());
+						sp.sendMessage("You are listening to JukeIt (Free). Tell your server admin to upgrade to pro to get more features and remove this message.");
 					} catch (Exception e) {
 						new Sound(SoundEffect.JUKEBOX_STOP, location, 8).play();
 					}
