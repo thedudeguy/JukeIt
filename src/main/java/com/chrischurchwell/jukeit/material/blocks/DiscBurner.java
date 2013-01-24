@@ -55,8 +55,6 @@ public class DiscBurner extends GenericCustomBlock implements CraftPermissible, 
 	@Override
 	public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
 		
-		//plugin.log.info("onBlockInteract");
-		
 		Location location = new Location(world, (double)x, (double)y, (double)z);
 		ItemStack inHand = player.getItemInHand();
 		
