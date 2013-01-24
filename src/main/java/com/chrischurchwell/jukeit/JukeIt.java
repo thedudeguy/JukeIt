@@ -74,7 +74,7 @@ public class JukeIt extends JavaPlugin {
 	}
 	
 	public static void log(Level level, String message) {
-		Bukkit.getLogger().log(level, "["+getInstance().getDescription().getName()+"] " + message);
+		Bukkit.getLogger().log(level, "["+getInstance().getDescription().getName()+"-Free] " + message);
 	}
 	
 	public JukeIt() {
