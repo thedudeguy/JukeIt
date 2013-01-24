@@ -18,9 +18,7 @@
  */
 package com.chrischurchwell.jukeit.material.blocks;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Location;
@@ -42,7 +40,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.database.RPStorageData;
-import com.chrischurchwell.jukeit.database.RepeaterChipData;
 import com.chrischurchwell.jukeit.gui.recordplayer.RecordPlayerGUI;
 import com.chrischurchwell.jukeit.material.Blocks;
 import com.chrischurchwell.jukeit.material.DiscColor;
@@ -160,14 +157,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		RPStorageData rpdata = RPStorageData.getOrCreateEntry(block);
 		
 		if (rpdata.hasDisc() && !RPNeedle.getById(rpdata.getNeedle()).equals(RPNeedle.NONE)) {
-			
 			playMusic(rpdata.getUrl(), block.getLocation(), RPNeedle.getById(rpdata.getNeedle()));
-				
-				long repeat = getRepeatChipTime(block);
-				if (repeat > 0) {
-					Debug.debug("Set to repeat in: ", repeat);
-					RepeaterChipBlock.addRepeatToQueue(block, repeat);
-				}
 		}
 	}
 	
@@ -330,19 +320,6 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		if(playSoundEffect) {
 			new Sound(SoundEffect.RECORD_PLAYER_STOP, location, 8).play();
 		}
-	}
-	
-	public static long getRepeatChipTime(SpoutBlock block) {
-		List<BlockFace> toCheck = Arrays.asList(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST);
-		
-		for (BlockFace face : toCheck) {
-			if (((SpoutBlock)block.getRelative(face)).getCustomBlock() instanceof RepeaterChipBlock) {
-				RepeaterChipData data = RepeaterChipData.getData((SpoutBlock)block.getRelative(face));
-				return data.getTime();
-			}
-		}
-		
-		return 0;
 	}
 	
 	public static HashMap<BlockFace, Speaker> getConnectedBlocks(Location location) {

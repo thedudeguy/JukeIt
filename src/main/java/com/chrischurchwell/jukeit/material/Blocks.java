@@ -27,7 +27,6 @@ import com.chrischurchwell.jukeit.material.blocks.JukeboxMidRange;
 import com.chrischurchwell.jukeit.material.blocks.JukeboxWorldRange;
 import com.chrischurchwell.jukeit.material.blocks.MachineBlock;
 import com.chrischurchwell.jukeit.material.blocks.RecordPlayer;
-import com.chrischurchwell.jukeit.material.blocks.RepeaterChipBlock;
 import com.chrischurchwell.jukeit.material.blocks.Speaker;
 import com.chrischurchwell.jukeit.material.blocks.SpeakerWireBlock;
 
@@ -50,8 +49,6 @@ public class Blocks {
 	
 	public static SpeakerWireBlock speakerWireBlock;
 	
-	public static RepeaterChipBlock repeaterChipBlock;
-	
 	public Blocks() {
 		
 		//speaker must load before recordPlayer
@@ -72,8 +69,6 @@ public class Blocks {
 		jukeboxWorldRange = new JukeboxWorldRange();
 		
 		speakerWireBlock = new SpeakerWireBlock();
-		
-		repeaterChipBlock = new RepeaterChipBlock();
 	}
 	
 }

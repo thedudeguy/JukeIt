@@ -18,42 +18,21 @@
  */
 package com.chrischurchwell.jukeit.listener;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.gui.recordplayer.RecordPlayerGUI;
-import com.chrischurchwell.jukeit.material.blocks.RepeaterChipBlock;
 import com.chrischurchwell.jukeit.permission.CraftPermissible;
 import com.chrischurchwell.jukeit.util.Debug;
 
 
 public class GeneralListener implements Listener {
-	
-	/**
-	 * This event will keep player from placing the wrong Repeater Chip, if a player pulls the repeater chip out of the creative inventory.
-	 * This event must be handled here as opposed to in the spout block overrides as the block removal functions will
-	 * not work in the spout block overrides, only at this level of the listener.
-	 * @param event
-	 */
-	@EventHandler
-	public void onRepeaterChipPlace(BlockPlaceEvent event) {
-		if (((SpoutBlock)event.getBlock()).getCustomBlock() instanceof RepeaterChipBlock) {
-			if (event.getPlayer() != null) {
-				event.getPlayer().sendMessage("This block is not placeable. You must use the Repeater Chip Item on a Record Player.");
-			}
-			((SpoutBlock)event.getBlock()).setCustomBlock(null);
-			((SpoutBlock)event.getBlock()).setType(Material.AIR);
-		}
-	}
 	
 	/**
 	 * Refreshes a players record player gui on item pickup.

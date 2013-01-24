@@ -37,7 +37,6 @@ import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
 import com.chrischurchwell.jukeit.database.DiscData;
 import com.chrischurchwell.jukeit.database.RPStorageData;
-import com.chrischurchwell.jukeit.database.RepeaterChipData;
 import com.chrischurchwell.jukeit.listener.GeneralListener;
 import com.chrischurchwell.jukeit.listener.MachineListener;
 import com.chrischurchwell.jukeit.listener.SpeakerWireListener;
@@ -137,7 +136,6 @@ public class JukeIt extends JavaPlugin {
 		
 		try {
 			getDatabase().find(RPStorageData.class).findRowCount();
-			getDatabase().find(RepeaterChipData.class).findRowCount();
 		} catch (PersistenceException ex) {
 			info("Attempting to install db tables");
 			
@@ -154,7 +152,6 @@ public class JukeIt extends JavaPlugin {
 		List<Class<?>> list = new ArrayList<Class<?>>();
 	    list.add(RPStorageData.class);
 	    list.add(DiscData.class);
-	    list.add(RepeaterChipData.class);
 	    return list;
 	}
 	

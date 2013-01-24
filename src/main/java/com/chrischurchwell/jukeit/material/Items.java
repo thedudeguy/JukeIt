@@ -25,7 +25,6 @@ import com.chrischurchwell.jukeit.material.items.BurnedDisc;
 import com.chrischurchwell.jukeit.material.items.DiscOnAStick;
 import com.chrischurchwell.jukeit.material.items.MachineBottom;
 import com.chrischurchwell.jukeit.material.items.MachineTop;
-import com.chrischurchwell.jukeit.material.items.RepeaterChipItem;
 import com.chrischurchwell.jukeit.material.items.SpeakerWire;
 import com.chrischurchwell.jukeit.material.items.needles.BlazeFlintNeedle;
 import com.chrischurchwell.jukeit.material.items.needles.WoodFlintNeedle;
@@ -79,8 +78,6 @@ public class Items {
 	public static SpeakerWire speakerWire;
 	
 	public static DiscOnAStick discOnAStick;
-	
-	public static RepeaterChipItem repeaterChipItem;
 	
 	public enum Disc {
 		BLACK(		blankDiscBlack, burnedDiscBlack, DiscColor.BLACK),
@@ -178,8 +175,6 @@ public class Items {
 		burnedDiscYellow = new BurnedDisc(DiscColor.YELLOW);
 		
 		discOnAStick = new DiscOnAStick();
-		
-		repeaterChipItem = new RepeaterChipItem();
 		
 	}
 }
