@@ -79,7 +79,9 @@ public enum TextureFile {
 	BLOCK_BURNER(			"discburner.png", 64, 16, 16),
 	
 	BLOCK_JUKEBOX_BASIC(	"jukebox_basic.png", 32, 16, 16),
-	BLOCK_JUKEBOX_LOW(		"jukebox_low.png", 64, 16, 16);
+	BLOCK_JUKEBOX_LOW(		"jukebox_low.png", 64, 16, 16),
+	
+	JUKEIT_LOGO(			"jukeit.png");
 	
 	private String file;
 	private int width;

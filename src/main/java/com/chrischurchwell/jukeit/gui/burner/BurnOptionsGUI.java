@@ -25,10 +25,12 @@ import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
+import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.gui.CloseButton;
+import com.chrischurchwell.jukeit.texture.TextureFile;
 
 
 public class BurnOptionsGUI extends GenericPopup {
@@ -49,31 +51,33 @@ public class BurnOptionsGUI extends GenericPopup {
 		gradient.setX(65).setY(20);
 		gradient.setPriority(RenderPriority.Highest);
 		
-		// Label
-		GenericLabel label = new GenericLabel("Burn Method");
-		label.setX(175).setY(25);
-		label.setPriority(RenderPriority.Lowest);
-		label.setWidth(-1).setHeight(-1);
-		
 		// Close button
 		CloseButton close = new CloseButton();
 		close.setX(95).setY(195);
 		close.setWidth(60).setHeight(20);
 		close.setPriority(RenderPriority.Lowest);
 		
-		this.attachWidgets(JukeIt.getInstance(), border, gradient, label, close);
+		this.attachWidgets(JukeIt.getInstance(), border, gradient, close);
+		
+		//logo.
+		GenericTexture logo = new GenericTexture(TextureFile.JUKEIT_LOGO.getFile());
+		logo.setPriority(RenderPriority.Lowest);
+		logo.setWidth(215).setHeight(97);
+		logo.setFixed(true);
+		logo.setX(100).setY(20);
+		this.attachWidget(JukeIt.getInstance(), logo);
 		
 		//info
 		GenericLabel info = new GenericLabel();
-		info.setX(150).setY(50);
+		info.setX(105).setY(120);
 		info.setWidth(250).setHeight(20);
 		info.setPriority(RenderPriority.Lowest);
-		info.setText("Select Burn Method");
+		info.setText("Upgrade to JukeIt Pro for More Options.");
 		this.attachWidget(JukeIt.getInstance(), info);
 		
 		// URL Burn Type
 		CustomURLButton urlbutton = new CustomURLButton(block);
-		urlbutton.setX(150).setY(80);
+		urlbutton.setX(150).setY(150);
 		urlbutton.setWidth(120).setHeight(20);
 		urlbutton.setPriority(RenderPriority.Lowest);
 		this.attachWidget(JukeIt.getInstance(), urlbutton);
