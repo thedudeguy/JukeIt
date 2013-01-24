@@ -50,33 +50,14 @@ import com.chrischurchwell.jukeit.material.blocks.MachineBlock;
 import com.chrischurchwell.jukeit.material.blocks.MachineRecipe;
 import com.chrischurchwell.jukeit.material.items.BlankDisc;
 import com.chrischurchwell.jukeit.material.items.BurnedDisc;
+import com.chrischurchwell.jukeit.runnable.MachineRunnable;
+import com.chrischurchwell.jukeit.runnable.ParticleGeneratorRunnable;
 import com.chrischurchwell.jukeit.sound.Sound;
 import com.chrischurchwell.jukeit.sound.SoundEffect;
 import com.chrischurchwell.jukeit.util.Debug;
 
 
 public class MachineListener implements Listener {
-
-	public abstract class MachineRunnable implements Runnable {
-		SpoutBlock block;
-		ItemStack primaryItem;
-		ItemStack additionItem;
-		String label;
-		int taskToStop;
-		public MachineRunnable(SpoutBlock block, ItemStack primaryItem, ItemStack additionItem, String label) {
-			this.block = block;
-			this.primaryItem = primaryItem;
-			this.additionItem = additionItem;
-			this.label = label;
-		}
-		public MachineRunnable(SpoutBlock block) {
-			this.block = block;
-		}
-		
-		public MachineRunnable(int taskIdToStop) {
-			this.taskToStop = taskIdToStop;
-		}
-	}
 	
 	@EventHandler
 	public void onPistonPull(BlockPistonRetractEvent event) {
@@ -142,44 +123,38 @@ public class MachineListener implements Listener {
 		
 		new Sound(SoundEffect.MACHINE_PRESS, event.getBlock(), 8).play();
 		
-		Particle particle = new Particle(ParticleType.LARGESMOKE, getParticleLocation(event.getBlock()), new Vector(0,0,0));
+		Particle particle = new Particle(ParticleType.LARGESMOKE, event.getBlock().getLocation().add(0.5d, 1d, 0.5d), new Vector(0,0,0));
 		particle.setAmount(50);
 		particle.setMaxAge(20);
 		particle.spawn();
 		
-		JukeIt.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(JukeIt.getInstance(), new MachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
+		MachineRunnable r = new MachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
+			@Override
 			public void run() {
-				MachineProcessEvent pEvent = new MachineProcessEvent(block, primaryItem, additionItem, label);
+				MachineProcessEvent pEvent = new MachineProcessEvent(getBlock(), getPrimaryItem(), getAdditionalItem(), getLabel());
 				Bukkit.getServer().getPluginManager().callEvent(pEvent);
 			}
-		}, 10L);
+		};
+		r.runTaskLater(JukeIt.getInstance(), 10L);
 	}
 	
 	@EventHandler
 	public void onProcess(MachineProcessEvent event) {
 		Debug.debug("LabelMachineProcessEvent heard - processing graphics. bzzrrt! whirr!! chjkchjk ");
 		
-		int taskID = JukeIt.getInstance().getServer().getScheduler().scheduleSyncRepeatingTask(JukeIt.getInstance(), new MachineRunnable(event.getBlock()) {
-			public void run() {
-				Particle particle = new Particle(ParticleType.SMOKE, getParticleLocation(block), new Vector(0,0.2,0));
-				particle.setMaxAge(10);
-				particle.setAmount(5);
-				particle.spawn();
-			}
-		}, 0, 5L);
+		Particle particle = new Particle(ParticleType.SMOKE, event.getBlock().getLocation().add(0.5d, 1d, 0.5d), new Vector(0,0.2,0));
+		particle.setMaxAge(10);
+		particle.setAmount(5);
+		new ParticleGeneratorRunnable(particle, 5000).runTaskTimer(JukeIt.getInstance(), 0L, 5L);
 		
-		JukeIt.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(JukeIt.getInstance(), new MachineRunnable(taskID) {
+		MachineRunnable r = new MachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
+			@Override
 			public void run() {
-				Bukkit.getScheduler().cancelTask(taskToStop);
-			}
-		}, 100L);
-		
-		JukeIt.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(JukeIt.getInstance(), new MachineRunnable(event.getBlock(), event.getPrimaryItem(), event.getAdditionItem(), event.getLabel()) {
-			public void run() {
-				MachineCompleteEvent pEvent = new MachineCompleteEvent(block, primaryItem, additionItem, label);
+				MachineCompleteEvent pEvent = new MachineCompleteEvent(getBlock(), getPrimaryItem(), getAdditionalItem(), getLabel());
 				Bukkit.getServer().getPluginManager().callEvent(pEvent);
 			}
-		}, 110L);
+		};
+		r.runTaskLater(JukeIt.getInstance(), 110L);
 	}
 	
 	@EventHandler
@@ -187,7 +162,7 @@ public class MachineListener implements Listener {
 		Debug.debug("LabelMachineCompleteEvent heard - its magic.");
 		SpoutManager.getMaterialManager().overrideBlock(event.getBlock().getRelative(BlockFace.UP), Blocks.machineBlock, (byte)1);
 		
-		Particle particle = new Particle(ParticleType.CLOUD, getParticleLocation(event.getBlock()), new Vector(0,0,0));
+		Particle particle = new Particle(ParticleType.CLOUD, event.getBlock().getLocation().add(0.5d, 1d, 0.5d), new Vector(0,0,0));
 		particle.setGravity(0);
 		particle.setScale(0.5F);
 		particle.setAmount(100);
@@ -404,7 +379,7 @@ public class MachineListener implements Listener {
 			eject(event.getBlock(), event.getAdditionItem());
 		}
 	}
-	
+	 /*
 	private Location getParticleLocation(Block block) {
 		Location loc = block.getLocation();
 		loc.setX(loc.getX()+0.5);
@@ -413,6 +388,7 @@ public class MachineListener implements Listener {
 		
 		return loc;
 	}
+	*/
 	
 	/**
 	 * Yes. I know. this is absolutely horrible. shame on me. bad!
