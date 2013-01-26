@@ -24,7 +24,6 @@
 		</repository>
 	</repositories>
 	<build>
-		<finalName>JukeIt-Free</finalName>
 		<defaultGoal>clean install</defaultGoal>
 		<resources>
 			<resource>
