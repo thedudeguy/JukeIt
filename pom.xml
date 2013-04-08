@@ -130,8 +130,8 @@
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<bukkitVersion>1.4.7-R0.1</bukkitVersion>
-		<spoutVersion>1.4.7-R0.2-SNAPSHOT</spoutVersion>
+		<bukkitVersion>1.5.1-R0.1</bukkitVersion>
+		<spoutVersion>1.5.1-R0.2-SNAPSHOT</spoutVersion>
 	</properties>
 	<inceptionYear>2011</inceptionYear>
 	<url>http://chrischurchwell.com</url>
