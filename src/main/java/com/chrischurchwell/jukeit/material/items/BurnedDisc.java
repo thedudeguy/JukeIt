@@ -36,10 +36,10 @@
  */
 package com.chrischurchwell.jukeit.material.items;
 
-import net.minecraft.server.v1_5_R2.NBTTagCompound;
-import net.minecraft.server.v1_5_R2.NBTTagString;
+import net.minecraft.server.v1_5_R3.NBTTagCompound;
+import net.minecraft.server.v1_5_R3.NBTTagString;
 
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.item.GenericCustomItem;
@@ -77,7 +77,7 @@ public class BurnedDisc extends GenericCustomItem implements DiscColorable {
 	}
 	
 	public static ItemStack encodeDisc(ItemStack item, String url) {
-		net.minecraft.server.v1_5_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_5_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
 		if (nmsStack.tag == null) {
 			nmsStack.tag = new NBTTagCompound();
 		}
@@ -86,7 +86,7 @@ public class BurnedDisc extends GenericCustomItem implements DiscColorable {
 	}
 	
 	public static String decodeDisc(ItemStack item) {
-		net.minecraft.server.v1_5_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_5_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
 		if (nmsStack.tag == null) return "";
 		if (nmsStack.tag.hasKey("jukeit")) {
 			return nmsStack.tag.getString("jukeit");
@@ -96,7 +96,7 @@ public class BurnedDisc extends GenericCustomItem implements DiscColorable {
 	}
 	
 	public static String getDiscLabel(ItemStack item) {
-		net.minecraft.server.v1_5_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_5_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
 		if (
 				nmsStack.tag != null &&
 				nmsStack.tag.hasKey("display") &&
@@ -109,7 +109,7 @@ public class BurnedDisc extends GenericCustomItem implements DiscColorable {
 	}
 	
 	public static ItemStack labelDisc(ItemStack item, String label) {
-		net.minecraft.server.v1_5_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_5_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
 		if (nmsStack.tag == null) {
 			nmsStack.tag = new NBTTagCompound();
 		}
