@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chrischurchwell</groupId>
 	<artifactId>jukeit</artifactId>
-	<version>3.1.0-Free</version>
+	<version>3.1.1-Free</version>
 	<name>JukeIt-Free</name>
 	<repositories>
 		<repository>
