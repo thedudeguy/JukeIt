@@ -42,6 +42,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -270,6 +271,13 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	public static int getRange(Location location, RPNeedle needle) {
 		
 		int range = getRange();
+		HashMap<BlockFace,Speaker> blocks = getConnectedBlocks(location);
+		
+		if (blocks.size() == 1) {
+			range = range + 20;
+		} else if (blocks.size() > 1) {
+			range = range + 40;
+		}
 		
 		Debug.debug("Needle modifier is: ", needle.rangeModifier());
 		range = range + ((int)Math.floor((double)range * needle.rangeModifier()));
@@ -356,6 +364,48 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		SpoutManager.getMaterialManager().registerSpoutRecipe(r);
 		
 		
+		
+	}
+	
+	public static HashMap<BlockFace, Speaker> getConnectedBlocks(Location location) {
+		
+		HashMap<BlockFace, Speaker> blocks = new HashMap<BlockFace, Speaker>();
+		
+		Block block = location.getBlock();
+		Block check;
+		
+		//nothing can be on top
+		//check = block.getRelative(BlockFace.UP);
+		//if ( ((SpoutBlock)check).isCustomBlock() && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
+		//	blocks.put(BlockFace.UP, (Speaker)((SpoutBlock)check).getCustomBlock());
+		//}
+		
+		check = block.getRelative(BlockFace.DOWN);
+		if ( ((SpoutBlock)check).getCustomBlock() != null && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
+			blocks.put(BlockFace.DOWN, (Speaker)((SpoutBlock)check).getCustomBlock());
+		}
+		
+		check = block.getRelative(BlockFace.NORTH);
+		if ( ((SpoutBlock)check).getCustomBlock() != null && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
+			blocks.put(BlockFace.NORTH, (Speaker)((SpoutBlock)check).getCustomBlock());
+		}
+		
+		check = block.getRelative(BlockFace.SOUTH);
+		if ( ((SpoutBlock)check).getCustomBlock() != null && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
+			blocks.put(BlockFace.SOUTH, (Speaker)((SpoutBlock)check).getCustomBlock());
+		}
+		
+		check = block.getRelative(BlockFace.EAST);
+		if ( ((SpoutBlock)check).getCustomBlock() != null && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
+			blocks.put(BlockFace.EAST, (Speaker)((SpoutBlock)check).getCustomBlock());
+		}
+		
+		check = block.getRelative(BlockFace.WEST);
+		if ( ((SpoutBlock)check).getCustomBlock() != null && ((SpoutBlock)check).getCustomBlock() instanceof Speaker ) {
+			blocks.put(BlockFace.WEST, (Speaker)((SpoutBlock)check).getCustomBlock());
+		}
+		
+		return blocks;
 		
 	}
 }
