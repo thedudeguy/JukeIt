@@ -36,6 +36,7 @@
  */
 package com.chrischurchwell.jukeit.gui.recordplayer;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.gui.GenericSlot;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
@@ -58,7 +59,7 @@ public class RecordSlot extends GenericSlot {
 		if (!isBurnedDisc(item)) {
 			return false;
 		}
-		if (parent.needleSlot.getItem().getTypeId() == 0) {
+		if (parent.needleSlot.getItem().getType().equals(Material.AIR)) {
 			new Sound(SoundEffect.RECORD_PLAYER_LOAD, parent.block, 8).play();
 		} else {
 			new Sound(SoundEffect.RECORD_PLAYER_START, parent.block, 8).play();
@@ -73,7 +74,7 @@ public class RecordSlot extends GenericSlot {
 			return false;
 		}
 		
-		if (parent.needleSlot.getItem().getTypeId() == 0) {
+		if (parent.needleSlot.getItem().getType().equals(Material.AIR)) {
 			new Sound(SoundEffect.RECORD_PLAYER_LOAD, parent.block, 8).play();
 		} else {
 			new Sound(SoundEffect.RECORD_PLAYER_START, parent.block, 8).play();
@@ -84,9 +85,9 @@ public class RecordSlot extends GenericSlot {
 	}
 	
 	public boolean onItemTake(org.bukkit.inventory.ItemStack item) {
-		Debug.debug(parent.needleSlot.getItem().getTypeId());
+		Debug.debug(parent.needleSlot.getType());
 		
-		if (parent.needleSlot.getItem().getTypeId() == 0) {
+		if (parent.needleSlot.getItem().getType().equals(Material.AIR)) {
 			Debug.debug("No Needle");
 			new Sound(SoundEffect.RECORD_PLAYER_EJECT, parent.block, 8).play();
 		} else {
