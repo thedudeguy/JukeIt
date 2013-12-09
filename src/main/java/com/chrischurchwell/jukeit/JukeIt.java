@@ -36,12 +36,10 @@
  */
 package com.chrischurchwell.jukeit;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -53,8 +51,8 @@ import org.mcstats.Metrics;
 
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
-import com.chrischurchwell.jukeit.database.DiscData;
 import com.chrischurchwell.jukeit.database.RPStorageData;
+import com.chrischurchwell.jukeit.database.URLData;
 import com.chrischurchwell.jukeit.listener.GeneralListener;
 import com.chrischurchwell.jukeit.listener.MachineListener;
 import com.chrischurchwell.jukeit.listener.SpeakerWireListener;
@@ -154,6 +152,7 @@ public class JukeIt extends JavaPlugin {
 		
 		try {
 			getDatabase().find(RPStorageData.class).findRowCount();
+			getDatabase().find(URLData.class).findRowCount();
 		} catch (PersistenceException ex) {
 			info("Attempting to install db tables");
 			
@@ -169,24 +168,8 @@ public class JukeIt extends JavaPlugin {
 	public List<Class<?>> getDatabaseClasses() {
 		List<Class<?>> list = new ArrayList<Class<?>>();
 	    list.add(RPStorageData.class);
-	    list.add(DiscData.class);
+	    list.add(URLData.class);
 	    return list;
-	}
-	
-	public static List<String> getServerFileList() {
-	
-		File musicFolder = new File(JukeIt.instance.getDataFolder(), "music");
-		File[] fileList = musicFolder.listFiles(); 
-		
-		List<String> strList = new ArrayList<String>();
-		
-		for (File file : fileList) {
-			if (file.isFile()) {
-				strList.add(file.getName());
-			}
-		}
-		Collections.sort(strList);
-		return strList;
 	}
 	
 	/**

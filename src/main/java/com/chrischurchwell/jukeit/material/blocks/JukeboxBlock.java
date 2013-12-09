@@ -58,6 +58,7 @@ import com.chrischurchwell.jukeit.permission.UsePermissible;
 import com.chrischurchwell.jukeit.sound.Sound;
 import com.chrischurchwell.jukeit.sound.SoundEffect;
 import com.chrischurchwell.jukeit.util.Debug;
+import com.chrischurchwell.jukeit.util.DiscUtil;
 
 
 public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPermissible, UsePermissible {
@@ -137,7 +138,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 		
 		if (rpdata.hasDisc()) {
 			//create disc to spawn
-			ItemStack disc = BurnedDisc.createDisc(rpdata);
+			ItemStack disc = DiscUtil.createDisc(rpdata);
 			Location spawnLoc = block.getLocation();
 			spawnLoc.setY(spawnLoc.getY()+1);
 			spawnLoc.getWorld().dropItem(spawnLoc, disc);
@@ -170,7 +171,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			
 			//get and eject disc.
 			//create disc to spawn
-			ItemStack disc = BurnedDisc.createDisc(rpdata);
+			ItemStack disc = DiscUtil.createDisc(rpdata);
 			Location spawnLoc = block.getLocation();
 			spawnLoc.setY(spawnLoc.getY()+1);
 			spawnLoc.getWorld().dropItem(spawnLoc, disc);
@@ -204,9 +205,10 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 			new Sound(SoundEffect.JUKEBOX_START, world.getBlockAt(x,y,z), 8).play();
 			
 			//start the music
-			playMusic(BurnedDisc.decodeDisc(inHand), block.getLocation());
+			String url = DiscUtil.decodeDisc(inHand);
+			playMusic(url, block.getLocation());
 			
-			Debug.debug("Attempting to start jukebox with url ", BurnedDisc.decodeDisc(inHand));
+			Debug.debug("Attempting to start jukebox with url ", url);
 			
 			return true;
 		}

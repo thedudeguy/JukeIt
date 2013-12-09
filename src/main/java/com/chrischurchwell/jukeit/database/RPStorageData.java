@@ -34,6 +34,7 @@ import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.material.items.BurnedDisc;
+import com.chrischurchwell.jukeit.util.DiscUtil;
 
 @Entity()
 @Table(name="jb_rp_storage")
@@ -57,8 +58,8 @@ public class RPStorageData {
 		
 		rpdata.setColor(((BurnedDisc)(new SpoutItemStack(discIs)).getMaterial()).getColor().identifier());
 		rpdata.setAuthor("");
-		rpdata.setTitle(BurnedDisc.getDiscLabel(discIs));
-		rpdata.setUrl(BurnedDisc.decodeDisc(discIs));
+		rpdata.setTitle(DiscUtil.getLabel(discIs));
+		rpdata.setUrl(DiscUtil.decodeDisc(discIs));
 		
 		JukeIt.getInstance().getDatabase().save(rpdata);
 		

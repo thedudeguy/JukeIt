@@ -37,26 +37,16 @@
 package com.chrischurchwell.jukeit;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
-import javax.persistence.PersistenceException;
-
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 import org.getspout.spoutapi.block.SpoutBlock;
 
-import com.chrischurchwell.jukeit.database.DiscData;
-import com.chrischurchwell.jukeit.material.DiscColor;
 import com.chrischurchwell.jukeit.material.blocks.JukeboxBlock;
 import com.chrischurchwell.jukeit.material.blocks.RecordPlayer;
-import com.chrischurchwell.jukeit.material.items.BurnedDisc;
 import com.chrischurchwell.jukeit.util.ResourceManager;
 
 
@@ -101,72 +91,6 @@ public class CommandHandler implements CommandExecutor {
 		System.arraycopy(args, 1, shifted, 0, shifted.length);
 		
 		return shifted;
-	}
-	
-	public Boolean removeolddiscs(CommandSender sender, String[] args){
-		Player player = (Player)sender;
-		if(!player.isOp()) {
-			player.sendMessage("Must be OP");
-		}
-		//only need to use if discs table exists and has entries.
-		try {
-			int count = JukeIt.getInstance().getDatabase().find(DiscData.class).findRowCount();
-			if (count < 1) {
-				player.sendMessage("Nothing to Delete");
-				return true;
-			}
-		} catch (PersistenceException ex) {
-			player.sendMessage("Nothing to Delete");
-			return true;
-		}
-		//get entries.
-		List<DiscData> all = JukeIt.getInstance().getDatabase().find(DiscData.class).findList();
-		if (!all.isEmpty()) {
-			player.sendMessage("Nothing to Delete");
-			return true;
-		}
-		JukeIt.getInstance().getDatabase().delete(all);
-		return true;
-	}
-	
-	public Boolean upgradediscs(CommandSender sender, String[] args){
-		
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("Command can only be used by a Player");
-		}
-		Player player = (Player)sender;
-		
-		if(!player.isOp()) {
-			player.sendMessage("Must be OP");
-		}
-		
-		//only need to use if discs table exists and has entries.
-		try {
-			int count = JukeIt.getInstance().getDatabase().find(DiscData.class).findRowCount();
-			if (count < 1) {
-				player.sendMessage("Nothing to Convert");
-				return true;
-			}
-		} catch (PersistenceException ex) {
-			player.sendMessage("Nothing to Convert");
-			return true;
-		}
-		
-		//get entries.
-		List<DiscData> all = JukeIt.getInstance().getDatabase().find(DiscData.class).findList();
-		if (!all.isEmpty()) {
-			player.sendMessage("Nothing to Convert");
-			return true;
-		}
-		
-		for(DiscData disc : all) {
-			ItemStack is = BurnedDisc.createDisc(DiscColor.getByIdentifier(disc.getColor()), disc.getUrl(), disc.getLabel());
-			this.tossItem(player, is);
-		}
-		
-		player.sendMessage("done");
-		
-		return true;
 	}
 	
 	public Boolean help(CommandSender sender, String[] args)
@@ -240,15 +164,5 @@ public class CommandHandler implements CommandExecutor {
 		ResourceManager.resetCache();
 		sender.sendMessage("Cache has been reset.");
 		return true;
-	}
-	
-	private void tossItem(Player player, ItemStack dropItem) {
-		Location loc = player.getLocation();
-        loc.setY(loc.getY() + 1);
-        
-        Item item = loc.getWorld().dropItem(loc, dropItem);
-        Vector v = loc.getDirection().multiply(0.2);
-        v.setY(0.2);
-        item.setVelocity(v);
 	}
 }

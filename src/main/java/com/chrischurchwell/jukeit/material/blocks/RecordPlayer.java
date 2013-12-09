@@ -64,12 +64,12 @@ import com.chrischurchwell.jukeit.material.DiscColor;
 import com.chrischurchwell.jukeit.material.blocks.designs.RPIndicator;
 import com.chrischurchwell.jukeit.material.blocks.designs.RPNeedle;
 import com.chrischurchwell.jukeit.material.blocks.designs.RecordPlayerDesign;
-import com.chrischurchwell.jukeit.material.items.BurnedDisc;
 import com.chrischurchwell.jukeit.permission.CraftPermissible;
 import com.chrischurchwell.jukeit.permission.UsePermissible;
 import com.chrischurchwell.jukeit.sound.Sound;
 import com.chrischurchwell.jukeit.sound.SoundEffect;
 import com.chrischurchwell.jukeit.util.Debug;
+import com.chrischurchwell.jukeit.util.DiscUtil;
 
 
 //TODO This needs to be cleaned up a LOT
@@ -255,7 +255,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		
 		//drop disc if there is a disc.
 		if (rpdata.hasDisc()) {
-			ItemStack disc = BurnedDisc.createDisc(rpdata);
+			ItemStack disc = DiscUtil.createDisc(rpdata);
 			spawnLoc.getWorld().dropItem(spawnLoc, disc);
 			
 			stopMusic(block.getLocation(), RPNeedle.getById(rpdata.getNeedle()));

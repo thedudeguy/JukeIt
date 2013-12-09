@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chrischurchwell</groupId>
 	<artifactId>jukeit</artifactId>
-	<version>3.2.1-Free</version>
+	<version>3.3.0-Free</version>
 	<name>JukeIt-Free</name>
 	<repositories>
 		<repository>
@@ -116,12 +116,6 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>${bukkit.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>craftbukkit</artifactId>
 			<version>${bukkit.version}</version>
 			<scope>provided</scope>
 		</dependency>

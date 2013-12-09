@@ -55,9 +55,9 @@ import com.chrischurchwell.jukeit.database.RPStorageData;
 import com.chrischurchwell.jukeit.gui.PlayerInventorySlot;
 import com.chrischurchwell.jukeit.material.blocks.RecordPlayer;
 import com.chrischurchwell.jukeit.material.blocks.designs.RPNeedle;
-import com.chrischurchwell.jukeit.material.items.BurnedDisc;
 import com.chrischurchwell.jukeit.material.items.needles.Needle;
 import com.chrischurchwell.jukeit.util.Debug;
+import com.chrischurchwell.jukeit.util.DiscUtil;
 
 
 public class RecordPlayerGUI extends GenericPopup {
@@ -173,9 +173,18 @@ public class RecordPlayerGUI extends GenericPopup {
 		RPStorageData data = getData();
 		
 		if(data.hasDisc()) {
-			ItemStack i = BurnedDisc.createDisc(data);
-			if (!recordSlot.getItem().equals(i)) {
+			//see whats in the slot now.
+			if (recordSlot.getItem() == null || recordSlot.getItem().getType().equals(Material.AIR)) {
+				ItemStack i = DiscUtil.createDisc(data);
 				recordSlot.setItem(i);
+				//Debug.sdebug("syncDataSlots", "replaceing empty/air slot", BurnedDisc.decodeDisc(i));
+			} else {
+				ItemStack inSlot = recordSlot.getItem();
+				if (!data.getUrl().equals(DiscUtil.decodeDisc(inSlot))) {
+					ItemStack i = DiscUtil.createDisc(data);
+					recordSlot.setItem(i);
+				}
+				//Debug.sdebug("syncDataSlots", BurnedDisc.decodeDisc(recordSlot.getItem()));
 			}
 		} else {
 			recordSlot.setItem(new ItemStack(Material.AIR));

@@ -58,6 +58,7 @@ import org.getspout.spoutapi.particle.Particle.ParticleType;
 
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.event.MachineCompleteEvent;
+import com.chrischurchwell.jukeit.event.MachineDiscLabelEvent;
 import com.chrischurchwell.jukeit.event.MachineEvent;
 import com.chrischurchwell.jukeit.event.MachineProcessEvent;
 import com.chrischurchwell.jukeit.event.MachineStartEvent;
@@ -73,6 +74,7 @@ import com.chrischurchwell.jukeit.runnable.ParticleGeneratorRunnable;
 import com.chrischurchwell.jukeit.sound.Sound;
 import com.chrischurchwell.jukeit.sound.SoundEffect;
 import com.chrischurchwell.jukeit.util.Debug;
+import com.chrischurchwell.jukeit.util.DiscUtil;
 
 
 public class MachineListener implements Listener {
@@ -176,6 +178,14 @@ public class MachineListener implements Listener {
 	}
 	
 	@EventHandler
+	public void onDiscLabel(MachineDiscLabelEvent event)
+	{
+		Debug.sdebug("MachineDiscLabelEvent", event.getLabel());
+		ItemStack newDisc = DiscUtil.setLabel(event.getDisc(), event.getLabel());
+		event.setDisc(newDisc);
+	}
+	
+	@EventHandler
 	public void onComplete(MachineCompleteEvent event) {
 		Debug.debug("LabelMachineCompleteEvent heard - its magic.");
 		SpoutManager.getMaterialManager().overrideBlock(event.getBlock().getRelative(BlockFace.UP), Blocks.machineBlock, (byte)1);
@@ -189,6 +199,7 @@ public class MachineListener implements Listener {
 		//if either item is air, transaction is a flop, just abort.
 		Debug.sdebug("values -- ", event.getPrimaryItem(), event.getAdditionItem(), event.hasLabel());
 		if (event.getPrimaryItem().getType().equals(Material.AIR) || event.getAdditionItem().getType().equals(Material.AIR)) {
+			Debug.debug("Aborting Machine Transaction - Requires two items.");
 			abortEject(event);
 			return;
 		}
@@ -201,17 +212,41 @@ public class MachineListener implements Listener {
 		
 		if (
 				cAddItem.getType().equals(Material.PAPER) &&
+				sPrimItem.getMaterial() instanceof BurnedDisc
+				) {
+			//labeling event.
+			if (!event.hasLabel()) {
+				event.setLabel("Unlabeled Disc");
+			}
+			MachineDiscLabelEvent e = new MachineDiscLabelEvent(cPrimItem, event.getLabel());
+			Bukkit.getServer().getPluginManager().callEvent(e);
+			
+			eject(event.getBlock(), e.getDisc());
+			if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
+			
+			return;
+		}
+		
+		/*
+		if (
+				cAddItem.getType().equals(Material.PAPER) &&
 				event.hasLabel() &&
-				(new SpoutItemStack(cPrimItem)).getMaterial() instanceof BurnedDisc &&
+				sPrimItem.getMaterial() instanceof BurnedDisc &&
 				!BurnedDisc.decodeDisc(cPrimItem).isEmpty()
 				) {
 			
-			ItemStack newDisc = BurnedDisc.labelDisc(cPrimItem, event.getLabel());
+			//ItemStack newDisc = BurnedDisc.labelDisc(cPrimItem, event.getLabel());
+			DiscColor color = ((BurnedDisc)sPrimItem.getMaterial()).getColor();
+			String url = BurnedDisc.decodeDisc(cPrimItem);
 			
+			Debug.sdebug("Attempting to Label Disc...", color, url, event.getLabel());
+			
+			ItemStack newDisc = BurnedDisc.createDisc(color, url, event.getLabel());
 			eject(event.getBlock(), newDisc);
 			if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
 			return;
 		}
+		*/
 		
 		//check if were cloning a disc.
 		if ( 
@@ -231,10 +266,10 @@ public class MachineListener implements Listener {
 			}
 			
 			
-			ItemStack newDisc = BurnedDisc.createDisc(
+			ItemStack newDisc = DiscUtil.createDisc(
 					((BlankDisc)(new SpoutItemStack(target)).getMaterial()).getColor(), 
-					BurnedDisc.decodeDisc(master), 
-					BurnedDisc.getDiscLabel(master)
+					DiscUtil.decodeDisc(master), 
+					DiscUtil.getLabel(master)
 					);
 			
 			this.eject(event.getBlock(), newDisc);
@@ -292,9 +327,7 @@ public class MachineListener implements Listener {
 		if ( (sPrimItem.getMaterial() instanceof BurnedDisc && sAddItem.getType().equals(Material.INK_SACK)) ) {
 			Debug.debug("coloring burned disc");
 			
-			ItemStack disc = sPrimItem;
-			
-			ItemStack newDisc = BurnedDisc.createDisc(getDiscColor(sAddItem.getData().getData()), BurnedDisc.decodeDisc(disc), BurnedDisc.getDiscLabel(disc));
+			ItemStack newDisc = DiscUtil.createDisc(getDiscColor(sAddItem.getData().getData()), DiscUtil.decodeDisc(cPrimItem), DiscUtil.getLabel(cPrimItem));
 			
 			//eject left over dye.
 			if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));

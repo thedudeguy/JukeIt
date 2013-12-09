@@ -53,7 +53,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.material.DiscColor;
 import com.chrischurchwell.jukeit.material.items.BlankDisc;
-import com.chrischurchwell.jukeit.material.items.BurnedDisc;
+import com.chrischurchwell.jukeit.util.DiscUtil;
 
 
 public class BurnButton extends GenericButton {
@@ -115,30 +115,11 @@ public class BurnButton extends GenericButton {
 			
 		}
 		
-		else if (list != null) {
-			if (list.getSelectedItem() == null || list.getSelectedItem().getTitle().isEmpty()) {
-				event.getPlayer().sendMessage("No selection made");
-				event.getPlayer().getMainScreen().getActivePopup().close();
-				return;
-			}
-			
-			if (
-					!list.getSelectedItem().getTitle().toLowerCase().endsWith(".ogg") && 
-					!list.getSelectedItem().getTitle().toLowerCase().endsWith(".wav") &&
-					!list.getSelectedItem().getTitle().toLowerCase().endsWith(".mp3")
-					) {
-				event.getPlayer().sendMessage("Invalid Selection");
-				event.getPlayer().getMainScreen().getActivePopup().close();
-				return;
-			}
-			
-			url = list.getSelectedItem().getTitle();
-		}
-		
 		if (url == null)
 		{
 			event.getPlayer().sendMessage("An Error Occurred");
 			event.getPlayer().getMainScreen().getActivePopup().close();
+			return;
 		}
 		
 		
@@ -173,7 +154,7 @@ public class BurnButton extends GenericButton {
 		}
 		
 		//create a new disc.
-		ItemStack newDisc = BurnedDisc.createDisc(discColor, url);
+		ItemStack newDisc = DiscUtil.createDisc(discColor, url);
 		
 		location.setY(location.getY()+1);
 		location.getWorld().dropItem(location, newDisc);

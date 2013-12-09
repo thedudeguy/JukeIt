@@ -43,69 +43,66 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.avaje.ebean.validation.NotEmpty;
-import com.avaje.ebean.validation.NotNull;
+import com.chrischurchwell.jukeit.JukeIt;
 
-/**
- * 
- * @deprecated
- *
- */
 @Entity()
-@Table(name="burned_discs")
-public class DiscData {
+@Table(name="jb_url_data")
+public class URLData {
+	
+	public static URLData getEntry(int id) {
+		
+		URLData entry = JukeIt.getInstance().getDatabase().find(URLData.class)
+			.where()
+				.eq("id", id)
+			.findUnique();
+		
+		return entry;
+	}
+	
+	public static URLData getEntry(String url) {
+		URLData entry = JukeIt.getInstance().getDatabase().find(URLData.class)
+			.where()
+				.eq("url", url)
+			.findUnique();
+		
+		return entry;
+	}
+	
+	public static URLData saveEntry(String url) {
+		URLData entry = getEntry(url);
+		
+		if (entry != null) {
+			return entry;
+		}
+		
+		entry = new URLData();
+		entry.setUrl(url);
+		
+		JukeIt.getInstance().getDatabase().save(entry);
+		
+		return entry;
+	}
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	@NotEmpty
-	private String nameKey;
-	
-	@NotNull
-	private int color;
-	
-	@NotEmpty
 	private String url;
 	
-	private String label;
-
 	public int getId() {
 		return id;
 	}
-
+	
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public String getNameKey() {
-		return nameKey;
-	}
-
-	public void setNameKey(String nameKey) {
-		this.nameKey = nameKey;
-	}
-
-	public int getColor() {
-		return color;
-	}
-
-	public void setColor(int color) {
-		this.color = color;
-	}
-
+	
 	public String getUrl() {
 		return url;
 	}
-
+	
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
 	}
 }
