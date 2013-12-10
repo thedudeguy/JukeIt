@@ -227,27 +227,6 @@ public class MachineListener implements Listener {
 			return;
 		}
 		
-		/*
-		if (
-				cAddItem.getType().equals(Material.PAPER) &&
-				event.hasLabel() &&
-				sPrimItem.getMaterial() instanceof BurnedDisc &&
-				!BurnedDisc.decodeDisc(cPrimItem).isEmpty()
-				) {
-			
-			//ItemStack newDisc = BurnedDisc.labelDisc(cPrimItem, event.getLabel());
-			DiscColor color = ((BurnedDisc)sPrimItem.getMaterial()).getColor();
-			String url = BurnedDisc.decodeDisc(cPrimItem);
-			
-			Debug.sdebug("Attempting to Label Disc...", color, url, event.getLabel());
-			
-			ItemStack newDisc = BurnedDisc.createDisc(color, url, event.getLabel());
-			eject(event.getBlock(), newDisc);
-			if (!lastOne(event.getAdditionItem())) eject(event.getBlock(), removeOne(event.getAdditionItem()));
-			return;
-		}
-		*/
-		
 		//check if were cloning a disc.
 		if ( 
 				(sPrimItem.getMaterial() instanceof BlankDisc && sAddItem.getMaterial() instanceof BurnedDisc) ||
