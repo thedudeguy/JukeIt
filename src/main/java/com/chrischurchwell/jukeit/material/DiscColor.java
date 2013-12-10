@@ -21,6 +21,7 @@ package com.chrischurchwell.jukeit.material;
 import com.chrischurchwell.jukeit.texture.TextureFile;
 
 public enum DiscColor {
+	NONE(		0,	null,								null,							0),
 	BLACK(		1,	TextureFile.BLANK_DISC_BLACK,		TextureFile.BURNED_DISC_BLACK,	30),
 	RED(		2,	TextureFile.BLANK_DISC_RED,			TextureFile.BURNED_DISC_RED,	17),
 	GREEN(		3,	TextureFile.BLANK_DISC_GREEN,		TextureFile.BURNED_DISC_GREEN,	25),
@@ -36,9 +37,7 @@ public enum DiscColor {
 	LIGHTBLUE(	13,	TextureFile.BLANK_DISC_LIGHT_BLUE,	TextureFile.BURNED_DISC_LIGHT_BLUE, 24),
 	MAGENTA(	14,	TextureFile.BLANK_DISC_MAGENTA,		TextureFile.BURNED_DISC_MAGENTA,21),
 	ORANGE(		15,	TextureFile.BLANK_DISC_ORANGE,		TextureFile.BURNED_DISC_ORANGE,	20),
-	WHITE(		16,	TextureFile.BLANK_DISC_WHITE,		TextureFile.BURNED_DISC_WHITE,	16),
-	NONE(		0,	null,								null,							0);
-	
+	WHITE(		16,	TextureFile.BLANK_DISC_WHITE,		TextureFile.BURNED_DISC_WHITE,	16);
 	/**
 	 * identifier is a unique hardcoded int to identify this color by int.
 	 */

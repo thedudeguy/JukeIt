@@ -38,7 +38,6 @@ package com.chrischurchwell.jukeit.material.blocks;
 
 import java.util.HashMap;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -86,7 +85,6 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		
 		//reverse the disc color values so that NONE is the first in the array
 		DiscColor[] discs = DiscColor.values();
-		ArrayUtils.reverse(discs);
 		
 		for (DiscColor disc : discs) {
 			for (RPNeedle needle : RPNeedle.values()) {
