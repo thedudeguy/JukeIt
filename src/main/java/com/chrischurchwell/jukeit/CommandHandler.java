@@ -38,6 +38,7 @@ package com.chrischurchwell.jukeit;
 
 import java.lang.reflect.Method;
 
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -95,18 +96,25 @@ public class CommandHandler implements CommandExecutor {
 	
 	public Boolean help(CommandSender sender, String[] args)
 	{
-		sender.sendMessage(plugin.getDescription().getName());
-		sender.sendMessage("------------------------------------");
-		sender.sendMessage("Command Usage: /jukeit {command}");
-		sender.sendMessage("------------------------------------");
-		sender.sendMessage("Commands");
-		sender.sendMessage("========");
-		sender.sendMessage("version - Version Info");
-		sender.sendMessage("help    - Show help");
-		sender.sendMessage("resetcache - Can sometimes fix problems with textures.");
+		Boolean isPlayer = false;
+		Player player = null;
 		
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("playjuke [world] [x] [y] [z] - Play a JukeBox at this location");
+		if (sender instanceof Player) {
+			isPlayer = true;
+			player = (Player)sender;
+		}
+		
+		sender.sendMessage(ChatColor.GOLD.toString() + "-- " + ChatColor.AQUA.toString() + "JukeIt: " + ChatColor.DARK_AQUA.toString() + "Help" + ChatColor.GOLD.toString() + " --");
+		sender.sendMessage(ChatColor.AQUA.toString() + "Commands:");
+		sender.sendMessage(ChatColor.GRAY.toString() + "/jukeit " + ChatColor.DARK_GREEN.toString() + "help");
+		sender.sendMessage(ChatColor.GRAY.toString() + "/jukeit " + ChatColor.DARK_GREEN.toString() + "version");
+		
+		if (!isPlayer || player.hasPermission("jukeit.command.resetcache")) {
+			sender.sendMessage(ChatColor.GRAY.toString() + "/jukeit " + ChatColor.DARK_GREEN.toString() + "resetcache" + ChatColor.GRAY.toString() + " - Can sometimes fix problems with textures.");
+		}
+		
+		if (!isPlayer) {
+			sender.sendMessage(ChatColor.GRAY.toString() + "/jukeit " + ChatColor.DARK_GREEN.toString() + "playjuke" + ChatColor.DARK_AQUA + " {world} {x} {y} {z}" + ChatColor.GRAY.toString() + "");
 		}
 		return true;
 	}
@@ -145,7 +153,8 @@ public class CommandHandler implements CommandExecutor {
 	
 	public Boolean version(CommandSender sender, String[] args)
 	{
-		sender.sendMessage(plugin.getDescription().getFullName());
+		sender.sendMessage(ChatColor.GOLD.toString() + "-- " + ChatColor.AQUA.toString() + "JukeIt: " + ChatColor.DARK_AQUA.toString() + "Version" + ChatColor.GOLD.toString() + " --");
+		sender.sendMessage(ChatColor.DARK_GREEN.toString() + plugin.getDescription().getFullName());
 		return true;
 	}
 	
@@ -155,14 +164,15 @@ public class CommandHandler implements CommandExecutor {
 			Player player = (Player)sender;
 			
 			if (!player.hasPermission("jukeit.command.resetcache")) {
-				player.sendMessage("You do not have permission to use this command.");
-				player.sendMessage("(jukeit.command.resetcache)");
+				player.sendMessage(ChatColor.RED.toString() + "You do not have permission to use this command.");
+				player.sendMessage(ChatColor.GOLD.toString() + "(jukeit.command.resetcache)");
 				return true;
 			}
 		}
 		
 		ResourceManager.resetCache();
-		sender.sendMessage("Cache has been reset.");
+		sender.sendMessage(ChatColor.GOLD.toString() + "-- " + ChatColor.AQUA.toString() + "JukeIt: " + ChatColor.DARK_AQUA.toString() + "Reset Cache" + ChatColor.GOLD.toString() + " --");
+		sender.sendMessage(ChatColor.DARK_GREEN.toString() + "Cache has been reset.");
 		return true;
 	}
 }
