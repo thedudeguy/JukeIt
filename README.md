@@ -43,9 +43,9 @@ Go [Here](http://chrischurchwell.com) to download the Pro version of JukeIt.
 
 JukeIt is built and tested against
 
-* SpoutPlugin at least build 1414
-* SpoutCraft at least build  1938
-* CraftBukkit 1.4.7-R0.1
+* SpoutCraftPlugin at least build 1.6.4-b1
+* SpoutCraft at least build 1.6.4-b5
+* CraftBukkit 1.6.4-R2.0
 
 ## Installation
 
@@ -61,17 +61,9 @@ JukeIt is built and tested against
 * Make sure to set the webServerPort to an open port on your server, and the appropriate port forwarding has been established so that users can connect to the webServer.
 * Restart Server 
 
-## Upgrading from JukeIt 2 to JukeIt 3
+## Upgrading from JukeIt 3.2 to JukeIt 3.3
 
-* As always, back up everything.
-* Shut down your Minecraft Server
-* Download and place the JukeIt plugin jar into your servers plugins folder.
-* Start server.
-
-JukeIt 3.0 Has a new disc system. You will need to transfer the discs to the new system. I tried to make this as easy as possible:
-* Log in to your server as OP.
-* user the command: '/jukeit upgradediscs'. The old disc data will be converted and spawned in the world in front of you. You may need to have some storage space ready if you have a lot of discs!
-* When you are satisfied, you can optionally use the command '/jukeit removeolddiscs' to clean up the old disc data from the server. The old disc data will be permanantly deleted, so be careful.
+Your old discs will no longer work. Bukkit has made it more difficult to use custom NBT Tags. Therefore, I was forced to use a new method of storing URL Data. Previously burned discs will no longer play.
 
 ## Support
 
@@ -83,6 +75,18 @@ JukeIt 3.0 Has a new disc system. You will need to transfer the discs to the new
 [Credits](https://github.com/thedudeguy/JukeIt-Free/wiki/Credits)
 
 ### Change Log
+
+#### Version 3.3.0
+
+* Updated for Minecraft/Bukkit/SpoutCraft 1.6.4
+* Changed the way url data is stored on discs.
+* Polished the help menus some.
+* Added command listurls (PRO Only): list all stored urls.
+* Added command discinfo (PRO Only): Output Disc MetaData
+* Added command givedisc (PRO Only): Give a disc to a player.
+* Added permission jukeit.command.listurls (OP Only default)
+* Added permission jukeit.command.discinfo (OP Only default)
+* Added permission jukeit.command.givedisc (OP Only default)
 
 #### Version 3.0.0
 
