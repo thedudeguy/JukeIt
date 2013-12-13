@@ -151,8 +151,9 @@ public class DiscUtil {
 			Debug.debug("URL Passes, returning url");
 			return url;
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			return url;
+			//e.printStackTrace();
+			Debug.debug("Malformed URL Detected. cannot play Audio.");
+			return SoundEffect.SKIPPING_RECORD.getSoundFileName();
 		}
 		
 	}
