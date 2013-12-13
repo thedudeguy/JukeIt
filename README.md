@@ -61,7 +61,7 @@ JukeIt is built and tested against
 * Make sure to set the webServerPort to an open port on your server, and the appropriate port forwarding has been established so that users can connect to the webServer.
 * Restart Server 
 
-## Upgrading from JukeIt 3.2 to JukeIt 3.3
+## Upgrading to JukeIt 3.3
 
 Your old discs will no longer work. Bukkit has made it more difficult to use custom NBT Tags. Therefore, I was forced to use a new method of storing URL Data. Previously burned discs will no longer play.
 
