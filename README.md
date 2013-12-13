@@ -84,9 +84,10 @@ Your old discs will no longer work. Bukkit has made it more difficult to use cus
 * Added command listurls (PRO Only): list all stored urls.
 * Added command discinfo (PRO Only): Output Disc MetaData
 * Added command givedisc (PRO Only): Give a disc to a player.
-* Added permission jukeit.command.listurls (OP Only default)
-* Added permission jukeit.command.discinfo (OP Only default)
-* Added permission jukeit.command.givedisc (OP Only default)
+* Added permission jukeit.command.listurls (PRO Only, OP Only default)
+* Added permission jukeit.command.discinfo (PRO Only, OP Only default)
+* Added permission jukeit.command.givedisc (PRO Only, OP Only default)
+* Added new soundeffect for "Ruined Discs"
 
 #### Version 3.0.0
 
