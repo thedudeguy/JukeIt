@@ -45,7 +45,8 @@ public enum SoundEffect {
 	JUKEBOX_STOP(			"jb_error.ogg"),
 	MACHINE_PRESS(			"machine.ogg"),
 	NEEDLE_ATTACH(			"needle_attach.ogg"),
-	NEEDLE_EJECT(			"needle_eject.ogg");
+	NEEDLE_EJECT(			"needle_eject.ogg"),
+	SKIPPING_RECORD(		"skipping-vudu-record.ogg");
 	
 	private String soundFileName;
 	

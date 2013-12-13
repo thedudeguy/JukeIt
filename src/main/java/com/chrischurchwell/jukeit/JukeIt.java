@@ -37,8 +37,6 @@
 package com.chrischurchwell.jukeit;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -170,25 +168,5 @@ public class JukeIt extends JavaPlugin {
 	    list.add(RPStorageData.class);
 	    list.add(URLData.class);
 	    return list;
-	}
-	
-	/**
-	 * Checks if a url is only the file name, if it is only a file name, its because its a file
-	 * on the webserver, and we need to add the rest of the url to it manually.
-	 * @param url
-	 * @return
-	 */
-	public static String finishIncompleteURL(String url) {
-		Debug.debug("Checking if URL is complete: ", url);
-		
-		try {
-			new URL(url);
-			Debug.debug("URL Passes, returning url");
-			return url;
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			return url;
-		}
-		
 	}
 }

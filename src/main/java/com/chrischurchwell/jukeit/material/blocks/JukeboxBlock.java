@@ -262,7 +262,7 @@ public abstract class JukeboxBlock extends GenericCustomBlock implements CraftPe
 
 	public void playMusic(String url, Location location) {
 		
-		url = JukeIt.finishIncompleteURL(url);
+		url = DiscUtil.finishIncompleteURL(url);
 		
 		//get players in radius of the jukebox and start it for only those players
 		for(Player p:location.getWorld().getPlayers()) {

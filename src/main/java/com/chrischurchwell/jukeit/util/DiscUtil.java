@@ -1,5 +1,7 @@
 package com.chrischurchwell.jukeit.util;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,8 @@ import com.chrischurchwell.jukeit.database.RPStorageData;
 import com.chrischurchwell.jukeit.database.URLData;
 import com.chrischurchwell.jukeit.material.DiscColor;
 import com.chrischurchwell.jukeit.material.Items;
+import com.chrischurchwell.jukeit.material.items.BurnedDisc;
+import com.chrischurchwell.jukeit.sound.SoundEffect;
 
 public class DiscUtil {
 	
@@ -53,13 +57,15 @@ public class DiscUtil {
 	public static String decodeDisc(ItemStack disc) {
 		int id = getSID(disc);
 		
-		if (id < 0) return null;
+		if (id >= 0) {
+			String url = getURLFromSID(id);
+			if (url != null) {
+				return url;
+			}
+		}
 		
-		URLData entry = URLData.getEntry(id);
-		
-		if (entry == null) return null;
-		
-		return entry.getUrl();
+		setLabel(disc, "Ruined Disc");
+		return SoundEffect.SKIPPING_RECORD.getSoundFileName();
 	}
 	
 	public static ItemStack setLabel(ItemStack disc, String label) {
@@ -112,4 +118,42 @@ public class DiscUtil {
 		return -1;
 	}
 	
+	public static String getURLFromSID(int sid) {
+		URLData entry = URLData.getEntry(sid);
+		
+		if (entry == null) return null;
+		
+		return entry.getUrl();
+	}
+	
+	public static DiscColor getColor(BurnedDisc disc) {
+		return disc.getColor();
+	}
+	
+	public static DiscColor getColor(SpoutItemStack disc) {
+		if (disc.getMaterial() instanceof BurnedDisc) {
+			return getColor((BurnedDisc)disc.getMaterial());
+		}
+		return DiscColor.NONE;
+	}
+	
+	/**
+	 * Checks if a url is only the file name, if it is only a file name, its because its a file
+	 * on the webserver, and we need to add the rest of the url to it manually.
+	 * @param url
+	 * @return
+	 */
+	public static String finishIncompleteURL(String url) {
+		Debug.debug("Checking if URL is complete: ", url);
+		
+		try {
+			new URL(url);
+			Debug.debug("URL Passes, returning url");
+			return url;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return url;
+		}
+		
+	}
 }

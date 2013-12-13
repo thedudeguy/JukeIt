@@ -285,7 +285,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 	
 	public void playMusic(String url, Location location, RPNeedle needle) {
 		
-		url = JukeIt.finishIncompleteURL(url);
+		url = DiscUtil.finishIncompleteURL(url);
 		
 		Particle particle = new Particle(ParticleType.NOTE, location, new Vector(0, 10, 0));
 		particle.setMaxAge(10);
