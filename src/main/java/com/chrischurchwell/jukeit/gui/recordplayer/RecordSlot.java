@@ -1,25 +1,7 @@
 /**
- * This file is part of JukeIt-Free
- *
- * Copyright (C) 2011-2013  Chris Churchwell
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
  * This file is part of JukeIt
  *
- * Copyright (C) 2011-2012  Chris Churchwell
+ * Copyright (C) 2011-2013  Chris Churchwell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +41,7 @@ public class RecordSlot extends GenericSlot {
 		if (!isBurnedDisc(item)) {
 			return false;
 		}
-		if (parent.needleSlot.getItem().getType().equals(Material.AIR)) {
+		if (parent.needleSlot.getItem()== null || parent.needleSlot.getItem().getType().equals(Material.AIR)) {
 			new Sound(SoundEffect.RECORD_PLAYER_LOAD, parent.block, 8).play();
 		} else {
 			new Sound(SoundEffect.RECORD_PLAYER_START, parent.block, 8).play();
@@ -74,7 +56,7 @@ public class RecordSlot extends GenericSlot {
 			return false;
 		}
 		
-		if (parent.needleSlot.getItem().getType().equals(Material.AIR)) {
+		if (parent.needleSlot.getItem()== null || parent.needleSlot.getItem().getType().equals(Material.AIR)) {
 			new Sound(SoundEffect.RECORD_PLAYER_LOAD, parent.block, 8).play();
 		} else {
 			new Sound(SoundEffect.RECORD_PLAYER_START, parent.block, 8).play();
@@ -85,9 +67,7 @@ public class RecordSlot extends GenericSlot {
 	}
 	
 	public boolean onItemTake(org.bukkit.inventory.ItemStack item) {
-		Debug.debug(parent.needleSlot.getType());
-		
-		if (parent.needleSlot.getItem().getType().equals(Material.AIR)) {
+		if (parent.needleSlot.getItem()== null || parent.needleSlot.getItem().getType().equals(Material.AIR)) {
 			Debug.debug("No Needle");
 			new Sound(SoundEffect.RECORD_PLAYER_EJECT, parent.block, 8).play();
 		} else {

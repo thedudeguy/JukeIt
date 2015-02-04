@@ -1,3 +1,21 @@
+/**
+ * This file is part of JukeIt
+ *
+ * Copyright (C) 2011-2013  Chris Churchwell
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.chrischurchwell.jukeit.util;
 
 import java.net.MalformedURLException;
@@ -10,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
 
+import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.database.RPStorageData;
 import com.chrischurchwell.jukeit.database.URLData;
 import com.chrischurchwell.jukeit.material.DiscColor;
@@ -89,9 +108,16 @@ public class DiscUtil {
 	public static ItemStack setSID(ItemStack disc, int sid) {
 		ItemMeta meta = disc.getItemMeta();
 		
-		String sidString = ChatColor.DARK_GRAY.toString() + 
-				ChatColor.MAGIC.toString() + 
-				"sid:"+String.valueOf(sid);
+		String sidString = "sid:"+String.valueOf(sid);
+		
+		if (JukeIt.getInstance().getConfig().getBoolean("encryptSID")) {
+			sidString = ChatColor.DARK_GRAY.toString() + 
+					ChatColor.MAGIC.toString() + 
+					sidString;
+		} else {
+			sidString = ChatColor.DARK_GRAY.toString() + 
+					sidString;
+		}
 		
 		List<String> lore = new ArrayList<String>();
 		lore.add(sidString);
@@ -151,10 +177,29 @@ public class DiscUtil {
 			Debug.debug("URL Passes, returning url");
 			return url;
 		} catch (MalformedURLException e) {
-			//e.printStackTrace();
-			Debug.debug("Malformed URL Detected. cannot play Audio.");
-			return SoundEffect.SKIPPING_RECORD.getSoundFileName();
+			
+			Debug.debug("URL Failed, probably a server file");
+			String newURL = 
+					"http://" + 
+					JukeIt.getInstance().getConfig().getString("minecraftServerHostname") + 
+					":" + 
+					JukeIt.getInstance().getConfig().getString("webServerPort") +
+					"/music/" +
+					url;
+			
+			try {
+				Debug.debug("Checking newly patched url: ", newURL);
+				URL serverURL = new URL(newURL);
+				Debug.debug("URL Passes, returning as: ", serverURL.toString());
+				return serverURL.toString();
+				
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+				Debug.debug("New URL Failed, returning Original URL: ", url);
+				return url;
+			}
 		}
 		
 	}
 }
+

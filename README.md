@@ -2,11 +2,11 @@
 
 ------------------------------------
 
-## Free Version
+## Pro Version
 
 JukeIt (formerly JukeBukkit) allows users to craft blank discs, called Obsidyiscs. You can burn these discs with music of your liking, music that is hosted on the internet somewhere, and play the music on your obsidyiscs in jukeboxes, also crafted by players.
 
-Go [Here](http://chrischurchwell.com) to download the Pro version of JukeIt.
+Go [Here](https://github.com/thedudeguy/JukeIt-Free) to download the Free version of JukeIt.
 
 [Screenshots](https://github.com/thedudeguy/JukeIt-Free/wiki/Screenshots) | [Wiki](https://github.com/thedudeguy/JukeIt-Free/wiki) | [Source](https://github.com/thedudeguy/JukeIt-Free)
 

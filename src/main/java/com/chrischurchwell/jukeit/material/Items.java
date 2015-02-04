@@ -1,25 +1,7 @@
 /**
- * This file is part of JukeIt-Free
- *
- * Copyright (C) 2011-2013  Chris Churchwell
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
  * This file is part of JukeIt
  *
- * Copyright (C) 2011-2012  Chris Churchwell
+ * Copyright (C) 2011-2013  Chris Churchwell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +25,9 @@ import com.chrischurchwell.jukeit.material.items.BurnedDisc;
 import com.chrischurchwell.jukeit.material.items.DiscOnAStick;
 import com.chrischurchwell.jukeit.material.items.MachineBottom;
 import com.chrischurchwell.jukeit.material.items.MachineTop;
+import com.chrischurchwell.jukeit.material.items.RepeaterChipItem;
 import com.chrischurchwell.jukeit.material.items.SpeakerWire;
+import com.chrischurchwell.jukeit.material.items.needles.BlazeFlintNeedle;
 import com.chrischurchwell.jukeit.material.items.needles.WoodFlintNeedle;
 
 
@@ -53,6 +37,7 @@ public class Items {
 	public static MachineBottom machineBottom;
 	
 	public static WoodFlintNeedle woodflintNeedle;
+	public static BlazeFlintNeedle blazeflintNeedle;
 	
 	public static BlankDisc blankDiscBlack;
 	public static BlankDisc blankDiscBlue;
@@ -94,6 +79,8 @@ public class Items {
 	public static SpeakerWire speakerWire;
 	
 	public static DiscOnAStick discOnAStick;
+	
+	public static RepeaterChipItem repeaterChipItem;
 	
 	public enum Disc {
 		BLACK(		blankDiscBlack, burnedDiscBlack, DiscColor.BLACK),
@@ -152,6 +139,7 @@ public class Items {
 		
 		//Init custom items.
 		woodflintNeedle = new WoodFlintNeedle();
+		blazeflintNeedle = new BlazeFlintNeedle();
 		
 		speakerWire = new SpeakerWire();
 		
@@ -190,6 +178,8 @@ public class Items {
 		burnedDiscYellow = new BurnedDisc(DiscColor.YELLOW);
 		
 		discOnAStick = new DiscOnAStick();
+		
+		repeaterChipItem = new RepeaterChipItem();
 		
 	}
 }

@@ -1,25 +1,7 @@
 /**
- * This file is part of JukeIt-Free
- *
- * Copyright (C) 2011-2013  Chris Churchwell
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
  * This file is part of JukeIt
  *
- * Copyright (C) 2011-2012  Chris Churchwell
+ * Copyright (C) 2011-2013  Chris Churchwell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,6 +59,7 @@ public enum TextureFile {
 	BURNED_DISC_WHITE(		"burned_disc_white.png"),
 	BURNED_DISC_YELLOW(		"burned_disc_yellow.png"),
 	
+	NEEDLE_BLAZE_FLINT(		"needle_blaze-flint.png"),
 	NEEDLE_STICK_FLINT(		"needle_stick-flint.png"),
 	
 	ITEM_DISC_ON_A_STICK(	"disconastick.png"),
@@ -84,10 +67,13 @@ public enum TextureFile {
 	ITEM_MACHINE_TOP(		"machineitemtop.png"),
 	ITEM_MACHINE_BOTTOM(	"machineitembot.png"),
 	
+	ITEM_REPEATER_CHIP(		"repeater_item.png"),
+	
 	/* gui */
 	GUI_BG_BLUE(			"borderblue.png"),
 	GUI_BG_MACHINE(			"machinegui.png"),
 	GUI_BG_LABEL_WRITER(	"paper.png"),
+	GUI_BG_REPEATER(		"repeater_bg.png"),
 	
 	/* blocks */
 	BLOCK_MACHINE(			"machineblock.png", 64, 64, 64),
@@ -98,8 +84,12 @@ public enum TextureFile {
 	
 	BLOCK_JUKEBOX_BASIC(	"jukebox_basic.png", 32, 16, 16),
 	BLOCK_JUKEBOX_LOW(		"jukebox_low.png", 64, 16, 16),
+	BLOCK_JUKEBOX_MID(		"jukebox_mid.png", 64, 16, 16),
+	BLOCK_JUKEBOX_LONG(		"jukebox_long.png", 64, 16, 16),
+	BLOCK_JUKEBOX_MAX(		"jukebox_max.png", 64, 16, 16),
+	BLOCK_JUKEBOX_WORLD(	"jukebox_world.png", 64, 16, 16),
 	
-	JUKEIT_LOGO(			"jukeit.png");
+	BLOCK_REPEATER_CHIP(	"repeater.png", 32, 32, 32);
 	
 	private String file;
 	private int width;

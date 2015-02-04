@@ -1,25 +1,7 @@
 /**
- * This file is part of JukeIt-Free
- *
- * Copyright (C) 2011-2013  Chris Churchwell
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
  * This file is part of JukeIt
  *
- * Copyright (C) 2011-2012  Chris Churchwell
+ * Copyright (C) 2011-2013  Chris Churchwell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,6 +20,7 @@ package com.chrischurchwell.jukeit.util;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -51,6 +34,35 @@ import com.chrischurchwell.jukeit.texture.TextureFile;
 
 public class ResourceManager {
 	
+	public static final List<String> music = Arrays.asList(
+			"battle_jesus_vs_cyborg_hitlers.ogg"
+			);
+	
+	public static final List<String> web = Arrays.asList(
+			"index.html",
+			"favicon.png",
+			
+			"css/bootstrap.css",
+			"css/bootstrap.min.css",
+			"css/bootstrap-responsive.css",
+			"css/bootstrap-responsive.min.css",
+			"css/uploadify.css",
+			
+			"img/glyphicons-halflings.png",
+			"img/glyphicons-halflings-white.png",
+			"img/uploadify-cancel.png",
+			"img/jb32logo.png",
+			
+			"js/bootstrap.js",
+			"js/bootstrap.min.js",
+			"js/bootstrap-collapse.js",
+			"js/bootstrap-tooltip.js",
+			"js/bootstrap-popover.js",
+			"js/jquery.js",
+			"js/jquery.uploadify.min.js",
+			"js/uploadify.swf"
+			);
+	
 	public static void copyResources() {
 		for (TextureFile texture : TextureFile.values()) {
 			doCopy(texture.getFile(), "textures/default");
@@ -58,6 +70,14 @@ public class ResourceManager {
 		
 		for (SoundEffect sound : SoundEffect.values()) {
 			doCopy(sound.getSoundFileName(), "sounds");
+		}
+		
+		for (String m : music) {
+			doCopy(m, "music");
+		}
+		
+		for (String w : web) {
+			doCopy(w, "web");
 		}
 	}
 	
@@ -99,7 +119,7 @@ public class ResourceManager {
 	
 	public static void addCache() {
 		for (TextureFile texture : TextureFile.values()) {
-			String pack = "default";
+			String pack = JukeIt.getInstance().getConfig().getString("texturePack", "default");
 			File toCache = new File(JukeIt.getInstance().getDataFolder(), new File("textures/"+pack, texture.getFile()).getPath());
 			if (toCache.exists()) {
 				SpoutManager.getFileManager().addToCache(JukeIt.getInstance(), toCache);

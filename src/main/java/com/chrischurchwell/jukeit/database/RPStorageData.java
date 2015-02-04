@@ -1,5 +1,5 @@
 /**
- * This file is part of JukeIt-Free
+ * This file is part of JukeIt
  *
  * Copyright (C) 2011-2013  Chris Churchwell
  *

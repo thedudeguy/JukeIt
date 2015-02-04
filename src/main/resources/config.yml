@@ -1,1 +1,10 @@
+enableWebServer: true
+webServerPort: 8080
+minecraftServerHostname: change.me.com
+serverName: JukeIt
+allowWebServerUploads: true
+allowExternalURLs: true
+texturePack: default
+encryptSID: true
 debug: false
+

@@ -1,7 +1,7 @@
 name: JukeIt
 main: com.chrischurchwell.jukeit.JukeIt
 version: ${version}
-description: (Free Version) Burn music on disc (Obsidyiscs) and play them in many different types of jukeboxes.
+description: Burn music on disc (Obsidyiscs) and play them in many different types of jukeboxes.
 author: Chris Churchwell (thedudeguy)
 website: http://chrischurchwell.com
 depend: [Spout]
@@ -14,6 +14,15 @@ commands:
 permissions:
   jukeit.command.resetcache:
     description: Gives access to the resetcache command
+    default: op
+  jukeit.command.discinfo:
+    description: Gives access to the discinfo command
+    default: op
+  jukeit.command.givedisc:
+    description: Gives access to the givedisc command
+    default: op
+  jukeit.command.listurls:
+    description: Gives access to the listurls command
     default: op
   jukeit.craft.needle:
     description: Access to craft needles
@@ -30,6 +39,9 @@ permissions:
   jukeit.craft.jukebox:
     description: Access to craft jukeboxes
     default: true
+  jukeit.craft.jukebox.world:
+    description: Access to craft world range jukebox
+    default: op
   jukeit.craft.machinepart:
     description: Access to craft machine parts
     default: true
@@ -63,6 +75,9 @@ permissions:
   jukeit.use.recordplayer:
     description: Access to play recordplayers by punching
     default: true
+  jukeit.use.jukebox.world:
+    description: Access to use world range jukeboxes
+    default: op
   jukeit.use.machine:
     description: Access to use machine
     default: true

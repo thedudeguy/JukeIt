@@ -1,5 +1,5 @@
 /**
- * This file is part of JukeIt-Free
+ * This file is part of JukeIt
  *
  * Copyright (C) 2011-2013  Chris Churchwell
  *
@@ -16,27 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of JukeIt
- *
- * Copyright (C) 2011-2012  Chris Churchwell
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.chrischurchwell.jukeit.material.blocks;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -57,6 +41,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.chrischurchwell.jukeit.JukeIt;
 import com.chrischurchwell.jukeit.database.RPStorageData;
+import com.chrischurchwell.jukeit.database.RepeaterChipData;
 import com.chrischurchwell.jukeit.gui.recordplayer.RecordPlayerGUI;
 import com.chrischurchwell.jukeit.material.Blocks;
 import com.chrischurchwell.jukeit.material.DiscColor;
@@ -84,7 +69,7 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		int n = 0;
 		
 		//reverse the disc color values so that NONE is the first in the array
-		DiscColor[] discs = DiscColor.values();
+		DiscColor[] discs = DiscColor.values();	
 		
 		for (DiscColor disc : discs) {
 			for (RPNeedle needle : RPNeedle.values()) {
@@ -173,7 +158,14 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		RPStorageData rpdata = RPStorageData.getOrCreateEntry(block);
 		
 		if (rpdata.hasDisc() && !RPNeedle.getById(rpdata.getNeedle()).equals(RPNeedle.NONE)) {
+			
 			playMusic(rpdata.getUrl(), block.getLocation(), RPNeedle.getById(rpdata.getNeedle()));
+				
+				long repeat = getRepeatChipTime(block);
+				if (repeat > 0) {
+					Debug.debug("Set to repeat in: ", repeat);
+					RepeaterChipBlock.addRepeatToQueue(block, repeat);
+				}
 		}
 	}
 	
@@ -307,7 +299,6 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 				if (sp.isSpoutCraftEnabled()) {
 					try {
 						SpoutManager.getSoundManager().playCustomMusic(JukeIt.getInstance(), sp, url, true, location, range);
-						sp.sendMessage("You are listening to JukeIt (Free). Tell your server admin to upgrade to pro to get more features and remove this message.");
 					} catch (Exception e) {
 						//the disc has an error.
 						SpoutManager.getSoundManager().playGlobalCustomSoundEffect(JukeIt.getInstance(), "jb_error.wav", false, location, 8);
@@ -339,30 +330,17 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		}
 	}
 	
-	@Override
-	public String getCraftPermission() {
-		return "jukeit.craft.recordplayer";
-	}
-	
-	@Override
-	public String getUsePermission() {
-		return "jukeit.use.recordplayer";
-	}
-	
-	public void setRecipe() {
+	public static long getRepeatChipTime(SpoutBlock block) {
+		List<BlockFace> toCheck = Arrays.asList(BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST);
 		
-		SpoutShapedRecipe r = new SpoutShapedRecipe( new SpoutItemStack(this, 1) );
-		r.shape("sps", "njn", "www");
-		r.setIngredient('s', MaterialData.oakWoodSlab);
-		r.setIngredient('p', MaterialData.stonePressurePlate);
-		r.setIngredient('n', Blocks.speaker);
-		r.setIngredient('j', MaterialData.jukebox);
+		for (BlockFace face : toCheck) {
+			if (((SpoutBlock)block.getRelative(face)).getCustomBlock() instanceof RepeaterChipBlock) {
+				RepeaterChipData data = RepeaterChipData.getData((SpoutBlock)block.getRelative(face));
+				return data.getTime();
+			}
+		}
 		
-		r.setIngredient('w', MaterialData.wood);
-		SpoutManager.getMaterialManager().registerSpoutRecipe(r);
-		
-		
-		
+		return 0;
 	}
 	
 	public static HashMap<BlockFace, Speaker> getConnectedBlocks(Location location) {
@@ -404,6 +382,32 @@ public class RecordPlayer extends GenericCustomBlock implements WireConnector, C
 		}
 		
 		return blocks;
+		
+	}
+
+	@Override
+	public String getCraftPermission() {
+		return "jukeit.craft.recordplayer";
+	}
+	
+	@Override
+	public String getUsePermission() {
+		return "jukeit.use.recordplayer";
+	}
+	
+	public void setRecipe() {
+		
+		SpoutShapedRecipe r = new SpoutShapedRecipe( new SpoutItemStack(this, 1) );
+		r.shape("sps", "njn", "www");
+		r.setIngredient('s', MaterialData.oakWoodSlab);
+		r.setIngredient('p', MaterialData.stonePressurePlate);
+		r.setIngredient('n', Blocks.speaker);
+		r.setIngredient('j', MaterialData.jukebox);
+		
+		r.setIngredient('w', MaterialData.wood);
+		SpoutManager.getMaterialManager().registerSpoutRecipe(r);
+		
+		
 		
 	}
 }

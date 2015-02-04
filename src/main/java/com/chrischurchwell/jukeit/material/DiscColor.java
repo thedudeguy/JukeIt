@@ -1,5 +1,5 @@
 /**
- * This file is part of JukeIt-Free
+ * This file is part of JukeIt
  *
  * Copyright (C) 2011-2013  Chris Churchwell
  *
@@ -38,6 +38,7 @@ public enum DiscColor {
 	MAGENTA(	14,	TextureFile.BLANK_DISC_MAGENTA,		TextureFile.BURNED_DISC_MAGENTA,21),
 	ORANGE(		15,	TextureFile.BLANK_DISC_ORANGE,		TextureFile.BURNED_DISC_ORANGE,	20),
 	WHITE(		16,	TextureFile.BLANK_DISC_WHITE,		TextureFile.BURNED_DISC_WHITE,	16);
+	
 	/**
 	 * identifier is a unique hardcoded int to identify this color by int.
 	 */
@@ -84,6 +85,13 @@ public enum DiscColor {
 	public static DiscColor getByIdentifier(int id) {
 		for (DiscColor d : DiscColor.values()) {
 			if (d.identifier == id) return d;
+		}
+		return DiscColor.NONE;
+	}
+	
+	public static DiscColor getByName(String name) {
+		for (DiscColor d : DiscColor.values()) {
+			if (d.name().equalsIgnoreCase(name)) return d;
 		}
 		return DiscColor.NONE;
 	}
